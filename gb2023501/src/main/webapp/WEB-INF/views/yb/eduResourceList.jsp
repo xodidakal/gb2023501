@@ -11,7 +11,6 @@
 		font-size: 18px;
 	}
 	th {
-		width: 150px;
 		text-align: center;
 		padding: 15px;
 	}
@@ -37,7 +36,7 @@
 
 		<div class="input-group col-md-5 mb-3"> 
 			<!-- 카테고리 분류 -->
-			<select id="search_type" class="w-17 rounded" style="margin-right: 150px; border-color: #ced4da">
+			<select id="search_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
 				<option value="title">튜토리얼</option>
 				<option value="writer">교육</option>
 			</select>&nbsp;&nbsp;
@@ -46,7 +45,7 @@
 				<option value="title">튜토리얼</option>
 				<option value="writer">교육</option>
 			</select>&nbsp;&nbsp;
-            <input id = "search_keyword" class="form-control rounded w-150" type="search" placeholder="검색해라" >
+            <input id = "search_keyword" class="form-control rounded" type="search" placeholder="검색해라" style="width: 160px;">
           	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
          		<a href="#!"><i class="bi bi-search mt-2"></i></a>
           	</div>	
@@ -63,25 +62,27 @@
 	        	<table class="table">
 	        		<thead class="table-light" style="text-align: center;">
 						<tr>
+							<th style="padding: 15px;">No.</th>
 							<th style="padding: 15px;">썸네일</th>
 							<th style="padding: 15px;">학습자료명</th>
 							<th style="padding: 15px;">자료구분</th>
 							<th style="padding: 15px;">자료유형</th>
 							<th style="padding: 15px;">자료주소</th>
 							<th style="padding: 15px;">서비스구분</th>		
-							<th></th>				
+							<th width="100px;"></th>				
 						</tr>
 					</thead>
 					 <tbody>
 <%-- 					 <c:forEach var="" items=""> --%>
 					 	<tr>
+					 		<td>1.</td>
 							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
-							<td><a href="#!"><button type="button" class="btn btn-light rounded py-2 px-3">상세</button></a></td>
+							<td width="100px;"><a href="#!"><button type="button" class="btn btn-light rounded py-2 px-3">상세</button></a></td>
 						</tr>
 <%-- 					 </c:forEach> --%>
 						
