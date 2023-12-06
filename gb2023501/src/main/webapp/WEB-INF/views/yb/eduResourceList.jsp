@@ -15,11 +15,6 @@
 		padding: 15px;
 	}
 </style>
-<script type="text/javascript">
-	function listButton() {
-		location.href="eduResourceList";
-	}
-</script>
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->
@@ -88,10 +83,6 @@
 						
 	                 </tbody>   
                 </table>
-<!--                 <div class="d-grid gap-2 d-md-flex justify-content-center" > -->
-<!-- 					<input class="btn rounded py-2 px-5" type="submit" style="background: #263d94; color: white;" value="등록"> -->
-<!-- 					<input class="btn rounded py-2 px-5" type="button" style="background: #263d94; color: white;" value="등록" onclick="listButton()"> -->
-<!-- 				</div> -->
 			</div>
 		</form>
 	</div>

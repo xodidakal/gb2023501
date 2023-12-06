@@ -18,11 +18,7 @@
 		width: 150px;
 	}
 </style>
-<script type="text/javascript">
-	function listButton() {
-		location.href="eduResourceList";
-	}
-</script>
+
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->
@@ -51,15 +47,15 @@
 					<tr>
 						<th>자료유형</th>
 						<td width="150px;">
-		                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" >
+		                    <input class="form-check-input" type="radio" name="em_type" id="flexRadioDefault1" >
 		                    <label>동영상</label>
 		                </td>
 		                <td width="150px;">
-		                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" >
+		                    <input class="form-check-input" type="radio" name="em_type" id="flexRadioDefault1" >
 		                    <label>교재</label>
 		                </td>
 		                <td>  
-		                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" >
+		                    <input class="form-check-input" type="radio" name="em_type" id="flexRadioDefault1" >
 		                    <label>웹사이트</label>
 						</td>
 					</tr>
