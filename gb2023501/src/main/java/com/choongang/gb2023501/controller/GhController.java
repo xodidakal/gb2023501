@@ -7,5 +7,5 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class GhController {
-	int i = 1;
+	int i = 2;
 }
