@@ -183,7 +183,7 @@
                         <a href="404.html" class="dropdown-item">404 Page</a>
                     </div>
                 </div>
-                <a href="project.html" class="nav-item nav-link">게시판</a>
+                <a href="boardList" class="nav-item nav-link">게시판</a>
             </div>
 <!--             <a href="#" class="btn btn-sm btn-light rounded-pill py-2 px-4 d-none d-lg-block">Get Started</a> -->
         </div>
