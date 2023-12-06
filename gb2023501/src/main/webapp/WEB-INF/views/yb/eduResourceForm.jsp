@@ -39,12 +39,12 @@
 					<tr>
 						<th>자료구분</th>
 						<td width="150px;">
-		                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+		                    <input class="form-check-input" type="radio" name="em_type" id="em_typeTutorial">
 		                    <label>튜토리얼</label>
 		                </td>
 		                <td width="150px;">   
-		                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" >
-		                    <label>교육</label>
+		                    <input class="form-check-input" type="radio" name="em_type" id="em_typeVideo" >
+		                    <label>교육영상</label>
 						</td>
 						<td></td>
 					</tr>
