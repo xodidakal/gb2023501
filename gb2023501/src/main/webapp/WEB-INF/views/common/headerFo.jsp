@@ -56,7 +56,7 @@
         <div class="row gx-0 align-items-center d-none d-lg-flex">
             <div class="col-lg-6 px-5 text-start">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a class="small text-secondary" href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a class="small text-secondary" href="/">Home</a></li>
                     <li class="breadcrumb-item"><a class="small text-secondary" href="#">Career</a></li>
                     <li class="breadcrumb-item"><a class="small text-secondary" href="#">Terms</a></li>
                     <li class="breadcrumb-item"><a class="small text-secondary" href="#">Privacy</a></li>
@@ -151,14 +151,17 @@
 
 
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s" style="background: #263d94">
+    
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s" style="background: #263d94;" >
+   
         <a href="#" class="navbar-brand ms-3 d-lg-none">MENU</a>
         <button type="button" class="navbar-toggler me-3" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav me-auto p-3 p-lg-0">
-                <a href="mainTest" class="nav-item nav-link active" style="color: white;">Home</a>
+            <div class="navbar-nav mx-auto me-auto p-3 p-lg-0 text-center">
+                <a href="/" class="nav-item nav-link active" style="color: white;">Home</a>
                 <a href="about.html" class="nav-item nav-link">이용안내</a>
                 <a href="service.html" class="nav-item nav-link">구독서비스</a>
                 <a href="project.html" class="nav-item nav-link">학습서비스</a>
@@ -176,7 +179,7 @@
                     <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
                         <a href="feature.html" class="dropdown-item">Features</a>
                         <a href="team.html" class="dropdown-item">Our Team</a>
-                        <a href="divView" class="dropdown-item">교육자료 등록</a>
+                        <a href="eduResourceList" class="dropdown-item">학습자료 등록</a>
                         <a href="404.html" class="dropdown-item">404 Page</a>
                     </div>
                 </div>
@@ -184,11 +187,12 @@
             </div>
 <!--             <a href="#" class="btn btn-sm btn-light rounded-pill py-2 px-4 d-none d-lg-block">Get Started</a> -->
         </div>
+
     </nav>
-    <!-- Navbar End -->
+<!-- Navbar End -->
 <main>
     <div class="container-xxl py-5">
-    	<div class="container">
+    	<div class="container mt-5">
     	
     
     
