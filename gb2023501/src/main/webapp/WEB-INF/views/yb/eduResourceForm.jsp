@@ -108,16 +108,17 @@
 		                    <input type="text" class="form-control" id="subject" placeholder="Subject">
 		                </td>
 					</tr>
-	                    
+	                <tr>
+	                	<th>썸네일</th>
+						<td colspan="3">
+		                    <input type="file" class="form-control" id="subject" placeholder="Subject">
+		                </td>
+	                </tr>    
                 </table>
                 <div class="d-grid gap-2 d-md-flex justify-content-center" >
 					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="등록하기">
 					<a href="eduResourceList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록가기</button></a>
 				</div>
-<!-- 				<div class="d-grid gap-2 d-md-flex justify-content-center" > -->
-<!-- 					<input type="submit" class="btn btn-primary mb-2" value="등록하기" style="margin-right: 10px">  -->
-<!-- 					<input type="button"  class="btn btn-secondary mb-2" id="listButton"  value="목록가기"> -->
-<!-- 				</div> -->
                 
 			</div>
 		</form>
