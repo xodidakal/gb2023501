@@ -14,4 +14,10 @@ public class JhController {
 		
 		return "jh/login";
 	}
+	
+	@RequestMapping(value = "signUp")
+	public String signUp() {
+		
+		return "jh/signUp";
+	}
 }
