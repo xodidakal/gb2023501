@@ -15,9 +15,9 @@ public class JhController {
 		return "jh/login";
 	}
 	
-	@RequestMapping(value = "signUp")
+	@RequestMapping(value = "signUpForm")
 	public String signUp() {
 		
-		return "jh/signUp";
+		return "jh/signUpForm";
 	}
 }

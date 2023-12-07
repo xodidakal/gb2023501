@@ -94,7 +94,7 @@
            	 	<div class="col-11">
            	 	  <div class="d-flex align-items-center justify-content-end">
            	 		<div class="ps-3">            	 			
-                       <h6 class="mb-0"><a href="#!">회원가입</a></h6>
+                       <h6 class="mb-0"><a href="/signUpForm">회원가입</a></h6>
                     </div>
                     <div class="ps-3"> 
                        <h6 class="mb-0"><a href="/login">로그인</a></h6>
