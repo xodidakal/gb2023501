@@ -6,5 +6,7 @@
 <configuration>
 	<typeAliases>
 		<typeAlias alias="Member" 			type="com.choongang.gb2023501.model.Member"/>
+		<typeAlias alias="LearnGrp" 		type="com.choongang.gb2023501.model.LearnGrp"/>
+		<typeAlias alias="LGJoin" 			type="com.choongang.gb2023501.model.LGJoin"/>
 	</typeAliases>
 </configuration>
