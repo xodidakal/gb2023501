@@ -1,7 +1,6 @@
 package com.choongang.gb2023501.domain;
 
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,8 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import com.choongang.gb2023501.model.Member;
+//import com.choongang.gb2023501.domain.Member;
 
 import lombok.Data;
 
@@ -34,9 +32,9 @@ public class LearnGrp {
 	private int lgNum;
 	
 	// 교육자_회원번호
-	@ManyToOne	// 1교육자 : M학습그룹
-	@JoinColumn(name = "m_num")
-	private Member member;
+//	@ManyToOne	// 1교육자 : M학습그룹
+//	@JoinColumn(name = "m_num")
+//	private Member member;
 
 	// 게임번호
 	@Column(name = "g_num")
