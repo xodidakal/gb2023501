@@ -10,6 +10,7 @@
 		<typeAlias alias="LGJoin" 			type="com.choongang.gb2023501.model.LGJoin"/>
 		<typeAlias alias="Board" 			type="com.choongang.gb2023501.model.Board"/>
 		<typeAlias alias="BoardComment" 	type="com.choongang.gb2023501.model.BoardComment"/>
+		<typeAlias alias="EduMaterials" 	type="com.choongang.gb2023501.model.EduMaterials"/>
 		
 	</typeAliases>
 </configuration>
