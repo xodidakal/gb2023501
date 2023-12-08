@@ -8,5 +8,8 @@
 		<typeAlias alias="Member" 			type="com.choongang.gb2023501.model.Member"/>
 		<typeAlias alias="LearnGrp" 		type="com.choongang.gb2023501.model.LearnGrp"/>
 		<typeAlias alias="LGJoin" 			type="com.choongang.gb2023501.model.LGJoin"/>
+		<typeAlias alias="Board" 			type="com.choongang.gb2023501.model.Board"/>
+		<typeAlias alias="BoardComment" 	type="com.choongang.gb2023501.model.BoardComment"/>
+		
 	</typeAliases>
 </configuration>
