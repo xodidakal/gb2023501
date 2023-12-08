@@ -31,11 +31,6 @@ public class LearnGrp {
 	@Column(name = "lg_num")
 	private int lgNum;
 	
-	// 교육자_회원번호
-//	@ManyToOne	// 1교육자 : M학습그룹
-//	@JoinColumn(name = "m_num")
-//	private Member member;
-
 	// 게임번호
 	@Column(name = "g_num")
 	private int gNum;
