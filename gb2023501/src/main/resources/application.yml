@@ -23,7 +23,7 @@ spring:
 
     #Operation -> Create / None
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
   
   #View Resolver      
   mvc:
