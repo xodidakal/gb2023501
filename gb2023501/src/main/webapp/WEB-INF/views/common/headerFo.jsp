@@ -94,10 +94,10 @@
            	 	<div class="col-11">
            	 	  <div class="d-flex align-items-center justify-content-end">
            	 		<div class="ps-3">            	 			
-                       <h6 class="mb-0"><a href="#!">회원가입</a></h6>
+                       <h6 class="mb-0"><a href="/signUpForm">회원가입</a></h6>
                     </div>
                     <div class="ps-3"> 
-                       <h6 class="mb-0"><a href="#!">로그인</a></h6>
+                       <h6 class="mb-0"><a href="/login">로그인</a></h6>
                     </div>
                   </div>
 <!--                   <div class="d-flex align-items-center justify-content-end"> -->
@@ -162,28 +162,35 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav mx-auto me-auto p-3 p-lg-0 text-center">
                 <a href="/" class="nav-item nav-link active" style="color: white;">Home</a>
-                <a href="about.html" class="nav-item nav-link">이용안내</a>
-                <a href="service.html" class="nav-item nav-link">구독서비스</a>
-                <a href="project.html" class="nav-item nav-link">학습서비스</a>
+                <a href="#!" class="nav-item nav-link">이용안내</a>
+                <a href="#!" class="nav-item nav-link">구독서비스</a>
+                <a href="#!" class="nav-item nav-link">학습서비스</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">교육자마당</a>
                     <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
-                        <a href="feature.html" class="dropdown-item">Features</a>
-                        <a href="team.html" class="dropdown-item">Our Team</a>
-                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                        <a href="404.html" class="dropdown-item">404 Page</a>
+                        <a href="#!" class="dropdown-item">학습그룹 목록</a>
+                        <a href="#!" class="dropdown-item">Our Team</a>
+                        <a href="#!" class="dropdown-item">Testimonial</a>
+                        <a href="#!" class="dropdown-item">404 Page</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">운영마당</a>
+                    <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#!" class="dropdown-item">게임 콘텐츠 등록</a>
+                        <a href="eduResourceList" class="dropdown-item">학습자료 목록</a>
+                        <a href="#!" class="dropdown-item">회원 관리</a>
+                        <a href="#!" class="dropdown-item">매출 관리</a>
                     </div>
                 </div>
                  <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">운영마당</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">고객센터</a>
                     <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
-                        <a href="feature.html" class="dropdown-item">Features</a>
-                        <a href="team.html" class="dropdown-item">Our Team</a>
-                        <a href="eduResourceList" class="dropdown-item">학습자료 등록</a>
-                        <a href="404.html" class="dropdown-item">404 Page</a>
+                        <a href="boardNotieList" class="dropdown-item">공지사항</a>
+                        <a href="boardQnaList" class="dropdown-item">Q&A</a>
+                        <a href="boardFaqList" class="dropdown-item">FAQ</a>
                     </div>
                 </div>
-                <a href="boardList" class="nav-item nav-link">게시판</a>
             </div>
 <!--             <a href="#" class="btn btn-sm btn-light rounded-pill py-2 px-4 d-none d-lg-block">Get Started</a> -->
         </div>

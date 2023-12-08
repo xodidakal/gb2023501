@@ -25,7 +25,7 @@
 	<div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
 		<div class="mb-9">
 	         <!-- heading -->
-	         <h2 style="margin-bottom: 15px;">공지사항</h2>
+	         <h2 style="margin-bottom: 15px;">Q&A</h2>
 	         <p style="margin-bottom: 35px;">총 9,999 건</p>
 	    </div>
 
@@ -71,28 +71,16 @@
 					</thead>
 					 <tbody>
 <%-- 					 <c:forEach var="" items=""> --%>
-					 	<tr>
+						<tr>
 					 		<td>1.</td>
 							<td>규정 및 정책</td>
 							<td>규정 및 정책은 이렇습니다.</td>
 							<td>문경훈</td>
 							<td>2023-12-07</td>
 							<td>100</td>
-							<td width="100px;"><a href="boardNotieContent"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세(공지)</button></a></td>
+							<td width="100px;"><a href="boardQnaContent"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
 						</tr>
-						
-						<tr>
-					 		<td>2.</td>
-							<td>규정 및 정책</td>
-							<td>규정 및 정책은 이렇습니다.</td>
-							<td>문경훈</td>
-							<td>2023-12-07</td>
-							<td>100</td>
-							<td width="100px;"><a href="boardQnaContent"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세(Q&A+FAQ)</button></a></td>
-						</tr>
-						
 <%-- 					 </c:forEach> --%>
-						
 	                 </tbody>   
                 </table>
 			</div>

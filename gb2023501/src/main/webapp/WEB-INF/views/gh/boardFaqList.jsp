@@ -25,7 +25,7 @@
 	<div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
 		<div class="mb-9">
 	         <!-- heading -->
-	         <h2 style="margin-bottom: 15px;">공지사항</h2>
+	         <h2 style="margin-bottom: 15px;">FAQ</h2>
 	         <p style="margin-bottom: 35px;">총 9,999 건</p>
 	    </div>
 

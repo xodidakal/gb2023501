@@ -18,11 +18,7 @@
 		width: 150px;
 	}
 </style>
-<script type="text/javascript">
-	function listButton() {
-		location.href="eduResourceList";
-	}
-</script>
+
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->
@@ -39,27 +35,27 @@
 					<tr>
 						<th>자료구분</th>
 						<td width="150px;">
-		                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+		                    <input class="form-check-input" type="radio" name="em_type" id="em_typeTutorial">
 		                    <label>튜토리얼</label>
 		                </td>
 		                <td width="150px;">   
-		                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" >
-		                    <label>교육</label>
+		                    <input class="form-check-input" type="radio" name="em_type" id="em_typeVideo" >
+		                    <label>교육영상</label>
 						</td>
 						<td></td>
 					</tr>
 					<tr>
 						<th>자료유형</th>
 						<td width="150px;">
-		                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" >
+		                    <input class="form-check-input" type="radio" name="em_type" id="flexRadioDefault1" >
 		                    <label>동영상</label>
 		                </td>
 		                <td width="150px;">
-		                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" >
+		                    <input class="form-check-input" type="radio" name="em_type" id="flexRadioDefault1" >
 		                    <label>교재</label>
 		                </td>
 		                <td>  
-		                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" >
+		                    <input class="form-check-input" type="radio" name="em_type" id="flexRadioDefault1" >
 		                    <label>웹사이트</label>
 						</td>
 					</tr>
@@ -108,16 +104,17 @@
 		                    <input type="text" class="form-control" id="subject" placeholder="Subject">
 		                </td>
 					</tr>
-	                    
+	                <tr>
+	                	<th>썸네일</th>
+						<td colspan="3">
+		                    <input type="file" class="form-control" id="subject" placeholder="Subject">
+		                </td>
+	                </tr>    
                 </table>
                 <div class="d-grid gap-2 d-md-flex justify-content-center" >
 					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="등록하기">
 					<a href="eduResourceList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록가기</button></a>
 				</div>
-<!-- 				<div class="d-grid gap-2 d-md-flex justify-content-center" > -->
-<!-- 					<input type="submit" class="btn btn-primary mb-2" value="등록하기" style="margin-right: 10px">  -->
-<!-- 					<input type="button"  class="btn btn-secondary mb-2" id="listButton"  value="목록가기"> -->
-<!-- 				</div> -->
                 
 			</div>
 		</form>

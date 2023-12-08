@@ -78,17 +78,7 @@
 							<td>문경훈</td>
 							<td>2023-12-07</td>
 							<td>100</td>
-							<td width="100px;"><a href="boardNotieContent"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세(공지)</button></a></td>
-						</tr>
-						
-						<tr>
-					 		<td>2.</td>
-							<td>규정 및 정책</td>
-							<td>규정 및 정책은 이렇습니다.</td>
-							<td>문경훈</td>
-							<td>2023-12-07</td>
-							<td>100</td>
-							<td width="100px;"><a href="boardQnaContent"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세(Q&A+FAQ)</button></a></td>
+							<td width="100px;"><a href="boardNotieContent"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
 						</tr>
 						
 <%-- 					 </c:forEach> --%>
