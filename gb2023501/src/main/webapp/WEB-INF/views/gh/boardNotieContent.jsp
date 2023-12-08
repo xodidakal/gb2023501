@@ -8,14 +8,14 @@
 <title>Insert title here</title>
 <style type="text/css">
 	tr {
-		height: 50px;
+		height: 70px;
 	}
 	#table {
 		font-size: 18px;
 	}
 	th {
 		text-align: left;
-		width: 40px;
+		width: 100px;
 	}
 </style>
 
@@ -36,48 +36,47 @@
 					<tr>
 						<th>게시 구분</th>
 						<td width="150px;">
-							공지사항
+							<label style="margin-right: 110px;">공지사항</label>
 						</td>
-					</tr>
-					<tr>
+						
 						<th>게시 분류</th>
 						<td width="150px;">
-							규정 및 정책
+							<label style="margin-right: 110px;">규정 및 정책</label>
 						</td>
 					</tr>
 					<tr>
 						<th>제목</th>
 						<td width="150px;">
-							규정 및 정책은 이렇습니다.
+							<label>규정 및 정책은 이렇습니다.</label>
 						</td>
 					</tr>
 					<tr>
 						<th>게시 일자</th>
 						<td width="150px;">
-							2023-12-07
+							<label>2023-12-07</label>
 						</td>
 					</tr>
 					<tr></tr>
 					<tr>
 						<th>내용</th>
-						<td colspan="3">
-							내용은 이렇습니다.
+						<td width="150px;">
+							<label>내용은 이렇습니다.</label>
 						</td>
 					</tr>
 					<tr></tr>
 	                <tr>
 	                	<th>첨부파일</th>
-	                	<td colspan="3">
-	                		첨부파일.jpg
+	                	<td width="150px;">
+	                		<label>첨부파일.jpg</label>
 		                </td>
 	                </tr>
                 </table>
                 <!-- 댓글 등록 -->
                 <hr>
-                <table>
+                <table id=table>
                 	<tr>
 						<th>댓글</th>
-						<td width="150px;">
+						<td width="410px;">
 		                   	<textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 100px"></textarea>    
 						</td>
 					</tr>
@@ -94,7 +93,7 @@
                 <table>
                 	<tr>
                 		<th></th>
-	                	<td width="150px;">
+	                	<td width="410px;">
 	                		<label style="font-size: small;">작성자 : 문경훈   2023 - 12 - 06  11:36</label><p>
 			                <label style="font-size: medium;">댓글내용입니다. <button type="button" style="background: white; border: none; color: orange;">x</button> </label>
 			                
@@ -102,7 +101,7 @@
                 	</tr>
                 	<tr>
                 		<th></th>
-	                	<td width="150px;">
+	                	<td width="410px;">
 	                		<label style="font-size: small;">작성자 : 문경훈   2023 - 12 - 06  11:36</label><p>
 			                <label style="font-size: medium;">댓글내용2 입니다. <button type="button" style="background: white; border: none; color: orange;">x</button></label>
 			            </td>
@@ -110,7 +109,9 @@
                 </table>
                 
                 <div class="d-grid gap-2 d-md-flex justify-content-center" >
-					<a href="boardList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록보기</button></a>
+					<a href="boardList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
+					<a href="boardList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
+					<a href="boardList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">수정</button></a>
 				</div>
                 
 			</div>
