@@ -14,7 +14,19 @@
 		text-align: center;
 		padding: 15px;
 	}
+	.page-item{
+		margin: 0px 5px 0px 5px;
+	}
+	.page-link{
+		color: black;
+	}
 </style>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+	$('#1p').click(function() {
+		
+	})
+</script>
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->
@@ -99,9 +111,16 @@
 		                <nav aria-label="Page navigation example">
 						  <ul class="pagination">
 						    <li class="page-item"><a class="page-link" href="#">이전</a></li>
-						    <li class="page-item"><a class="page-link" href="#">1</a></li>
+						    <li class="page-item" id="1p"><a class="page-link" href="#">1</a></li>
 						    <li class="page-item"><a class="page-link" href="#">2</a></li>
 						    <li class="page-item"><a class="page-link" href="#">3</a></li>
+						    <li class="page-item"><a class="page-link" href="#">4</a></li>
+						    <li class="page-item"><a class="page-link" href="#">5</a></li>
+						    <li class="page-item"><a class="page-link" href="#">6</a></li>
+						    <li class="page-item"><a class="page-link" href="#">7</a></li>
+						    <li class="page-item"><a class="page-link" href="#">8</a></li>
+						    <li class="page-item"><a class="page-link" href="#">9</a></li>
+						    <li class="page-item"><a class="page-link" href="#">10</a></li>
 						    <li class="page-item"><a class="page-link" href="#">다음</a></li>
 						  </ul>
 						</nav>
