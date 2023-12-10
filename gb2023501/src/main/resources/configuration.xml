@@ -11,6 +11,8 @@
 		<typeAlias alias="Board" 			type="com.choongang.gb2023501.model.Board"/>
 		<typeAlias alias="BoardComment" 	type="com.choongang.gb2023501.model.BoardComment"/>
 		<typeAlias alias="EduMaterials" 	type="com.choongang.gb2023501.model.EduMaterials"/>
-		
+		<typeAlias alias="Homework" 		type="com.choongang.gb2023501.model.Homework"/>
+		<typeAlias alias="HwSend" 			type="com.choongang.gb2023501.model.HwSend"/>
+		<typeAlias alias="HwRecord" 		type="com.choongang.gb2023501.model.HwRecord"/>
 	</typeAliases>
 </configuration>
