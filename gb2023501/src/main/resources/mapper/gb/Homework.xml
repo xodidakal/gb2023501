@@ -13,6 +13,7 @@
 		FROM(
 				SELECT rownum rn, hw.* 
 		     	FROM homework hw
+		     	ORDER BY hw.h_regi_date desc
 		     )
 		WHERE rn BETWEEN #{start} AND #{end}
 		

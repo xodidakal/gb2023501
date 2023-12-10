@@ -20,6 +20,11 @@
 	.page-link{
 		color: black;
 	}
+	#hwForm {
+		border: 1px solid black;
+		margin-bottom : 15px;
+		padding: 4% 16%;
+	}
 </style>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">
@@ -38,33 +43,36 @@
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">숙제 생성</h2>
-	         <p style="margin-bottom: 35px;">총 <fmt:formatNumber value="${homeworkListCnt}" groupingUsed="true"/> 건</p>
+	         <div id="hwForm">
+	         	<table>
+	         		<tr style="margin-bottom:10px;">
+	         			<td>숙제명</td>
+	         			<td><input type="text" class="form-control" name="h_title" style="margin-left: 20px; width: 300%;"></td>
+	         		</tr>
+	         		<tr>
+	         			<td>숙제 내용</td>
+	         			<td><textarea type="text" class="form-control" cols="20" rows="5" name="h_content" style="margin-left: 20px; width: 300%;"></textarea></td>
+	         		</tr>
+	         		<tr>
+	         			<td>숙제 진도</td>
+	         			<td><input type="number" class="form-control" name="h_level" style="margin-left: 20px; width: 300%;"></td>
+	         		</tr>
+	         		<tr>
+	         			<td>제출 기한</td>
+	         			<td><input type="date" class="form-control" name="h_deadline" style="margin-left: 20px; width: 300%;"></td>
+	         		</tr>
+	         	</table>
+	         </div>
 	    </div>
 
 		<div class="input-group col-md-5 mb-3"> 
-			<!-- 카테고리 분류 -->
-			<select id="search_type" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
-				<option value="title">10</option>
-				<option value="writer">15</option>
-				<option value="writer">20</option>
-			</select>
-			<!-- 카테고리 검색 -->
-			<select id="search_type" class="w-17 rounded" style="border-color: #ced4da">
-				<option value="title">제목 + 내용</option>
-				<option value="writer">작성자</option>
-			</select>&nbsp;&nbsp;
-            <input id = "search_keyword" class="form-control rounded" type="search" placeholder="검색해라" style="width: 160px;">
-          	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
-         		<a href="#!"><i class="bi bi-search mt-2"></i></a>
-          	</div>
-          	
-          	
 			<div class="col">
-			<div class="d-flex align-items-center justify-content-end">
-          		<div style="width: 65px;">
-	          		<a href="boardForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="등록"></a>
-            	</div>
-            </div>
+				<div class="d-flex align-items-center justify-content-end" style="margin-right:37px;">
+	          		<div style="width: 65px;">
+		          		<a href="boardForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="숙제 저장"></a>
+	            	</div>
+	            </div>
+	            <p style="margin-bottom:-5px;">총 <fmt:formatNumber value="${homeworkListCnt}" groupingUsed="true"/> 건</p>
 			</div>
 	    </div>
 		<form action="#!">
@@ -73,55 +81,43 @@
 	        		<thead class="table-light" style="text-align: center;">
 						<tr>
 							<th style="padding: 15px;">No.</th>
-							<th style="padding: 15px;">분류</th>
-							<th style="padding: 15px;">제목</th>
-							<th style="padding: 15px;">작성자</th>
-							<th style="padding: 15px;">등록일자</th>
-							<th style="padding: 15px;">조회수</th>	
-							<th width="100px;"></th>				
+							<th style="padding: 15px; width: 25%;">숙제명</th>
+							<th style="padding: 15px; width: 45%;">숙제내용</th>
+							<th style="padding: 15px;">진도</th>
+							<th style="padding: 15px;">제출기한</th>
+							<th style="padding: 15px;">생성일자</th>		
 						</tr>
 					</thead>
-					 <tbody>
-<%-- 					 <c:forEach var="" items=""> --%>
-					 	<tr>
-					 		<td>1</td>
-							<td>2</td>
-							<td>3</td>
-							<td>4</td>
-							<td>5</td>
-							<td>6</td>
-							<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
-						</tr>
-						
-						<tr>
-					 		<td>1</td>
-							<td>2</td>
-							<td>3</td>
-							<td>4</td>
-							<td>5</td>
-							<td>6</td>
-							<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
-						</tr>
-						
-<%-- 					 </c:forEach> --%>
-	                 </tbody>   
+					<tbody>
+						<c:forEach var="homework" items="${homeworkList }">
+						 	<tr id="homeworkList" onmouseover="this.style.background='#BFE4FF'; this.style.cursor='pointer'" 
+						 						  onmouseout="this.style.backgroundColor=''">
+						 		<td class="align-middle">${StartRow }</td>
+								<td class="align-middle">${homework.h_title }</td>
+								<td class="align-middle">${homework.h_content }</td>
+								<td class="align-middle">${homework.h_level }</td>
+								<td class="align-middle">${homework.h_deadline }</td>
+								<td class="align-middle">${homework.h_regi_date }</td>
+							</tr>
+							<c:set var="StartRow" value="${StartRow +1}"/>
+						</c:forEach>
+	                </tbody>   
                 </table>
+                
+                <!-- 페이징 처리 -->
                 <div class="row mt-8" style="width:100%;">
-  					<div class="d-flex justify-content-center">
+  					<div class="d-flex justify-content-center" style="margin-top:12px">
 		                <nav aria-label="Page navigation example">
 						  <ul class="pagination">
-						    <li class="page-item"><a class="page-link" href="#">이전</a></li>
-						    <li class="page-item" id="1p"><a class="page-link" href="#">1</a></li>
-						    <li class="page-item"><a class="page-link" href="#">2</a></li>
-						    <li class="page-item"><a class="page-link" href="#">3</a></li>
-						    <li class="page-item"><a class="page-link" href="#">4</a></li>
-						    <li class="page-item"><a class="page-link" href="#">5</a></li>
-						    <li class="page-item"><a class="page-link" href="#">6</a></li>
-						    <li class="page-item"><a class="page-link" href="#">7</a></li>
-						    <li class="page-item"><a class="page-link" href="#">8</a></li>
-						    <li class="page-item"><a class="page-link" href="#">9</a></li>
-						    <li class="page-item"><a class="page-link" href="#">10</a></li>
-						    <li class="page-item"><a class="page-link" href="#">다음</a></li>
+						  	<c:if test="${page.startPage > page.pageLimit}">
+						  		<li class="page-item"><a class="page-link" href="#">이전</a></li>
+						  	</c:if>
+						    <c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
+						    	<li class="page-item"><a class="page-link" href="#">${i }</a></li>
+						    </c:forEach>
+						 	<c:if test="${page.endPage < page.totalPage}">
+						 		<li class="page-item"><a class="page-link" href="#">다음</a></li>
+						 	</c:if>
 						  </ul>
 						</nav>
 					</div>

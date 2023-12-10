@@ -38,6 +38,8 @@ public class GbControlloer {
 		
 		model.addAttribute("homeworkList", homeworkList);
 		model.addAttribute("homeworkListCnt", homeworkListCnt);
+		model.addAttribute("StartRow",page.getStartRow());
+		model.addAttribute("page", page);
 		
 		return "gb/homeworkForm";
 	}

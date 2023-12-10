@@ -102,7 +102,7 @@
 	                 </tbody>   
                 </table>
                 <div class="row mt-8" style="width:100%;">
-  					<div class="d-flex justify-content-center">
+  					<div class="d-flex justify-content-center" style="margin-top:12px">
 		                <nav aria-label="Page navigation example">
 						  <ul class="pagination">
 						    <li class="page-item"><a class="page-link" href="#">이전</a></li>
