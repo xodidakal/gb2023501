@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EduMaterialsDaoImpl implements EduMaterialsDao {
 	private final SqlSession session;
+	
+	// 학습자료 리스트
 	@Override
 	public List<EduMaterials> selectEduMaterialsList(EduMaterials eduMaterials) {
 		System.out.println("YbController EduMaterialsDaoImpl selectEduMaterialsList start...");
@@ -26,5 +28,18 @@ public class EduMaterialsDaoImpl implements EduMaterialsDao {
 		}
 		return selectEduMaterialsList;
 	}
-
+	// 학습자료 갯수
+	@Override
+	public int selectEduMaterialsListCnt(EduMaterials eduMaterials) {
+		System.out.println("YbController EduMaterialsDaoImpl selectEduMaterialsListCnt start...");
+		
+		int selectEduMaterialsListCnt = 0; 
+		try {
+			selectEduMaterialsListCnt = session.selectOne("ybEduListCnt", eduMaterials);
+			System.out.println("YbController EduMaterialsDaoImpl selectEduMaterialsListCnt -> " + selectEduMaterialsListCnt);
+		} catch (Exception e) {
+			System.out.println("YbController EduMaterialsDaoImpl selectEduMaterialsListCnt Exception -> " + e.getMessage());
+		}
+		return selectEduMaterialsListCnt;
+	}
 }

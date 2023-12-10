@@ -13,11 +13,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EduMaterialsServiceImpl implements EduMaterialsService {
 	private final EduMaterialsDao ed;
+	// 학습 자료 리스트
 	@Override
 	public List<EduMaterials> selectEduMaterialsList(EduMaterials eduMaterials) {
 		System.out.println("YbController EduMaterialsServiceImpl selectEduMaterialsList start...");
 		List<EduMaterials> selectEduMaterialsList = ed.selectEduMaterialsList(eduMaterials);
 		return selectEduMaterialsList;
+	}
+	// 학습자료 갯수
+	@Override
+	public int selectEduMaterialsListCnt(EduMaterials eduMaterials) {
+		System.out.println("YbController EduMaterialsServiceImpl selectEduMaterialsListCnt start...");
+		int selectEduMaterialsListCnt = ed.selectEduMaterialsListCnt(eduMaterials);
+		return selectEduMaterialsListCnt;
 	}
 
 }

@@ -8,4 +8,6 @@ public interface EduMaterialsService {
 	// 학습자료 리스트
 	List<EduMaterials> 			selectEduMaterialsList(EduMaterials eduMaterials);
 
+	int 						selectEduMaterialsListCnt(EduMaterials eduMaterials);
+
 }
