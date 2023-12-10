@@ -22,7 +22,7 @@
 <!--         <h2 class="display-6 mb-4">교육 자료 등록</h2> -->
 <!--     </div> -->
 <div class="row g-0 justify-content-center">
-	<div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
+	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">타이틀</h2>
@@ -31,7 +31,7 @@
 
 		<div class="input-group col-md-5 mb-3"> 
 			<!-- 카테고리 분류 -->
-			<select id="search_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
+			<select id="search_type" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
 				<option value="title">10</option>
 				<option value="writer">15</option>
 				<option value="writer">20</option>

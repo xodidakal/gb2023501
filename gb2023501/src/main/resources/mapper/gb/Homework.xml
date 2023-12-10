@@ -8,8 +8,14 @@
 		SELECT count(*) FROM homework
 	</select>
 
-	<select id="gbSelectHomeworkList" resultType="Homework">
-		SELECT * FROM homework
+	<select id="gbSelectHomeworkList" parameterType="Homework" resultType="Homework">
+		SELECT *
+		FROM(
+				SELECT rownum rn, hw.* 
+		     	FROM homework hw
+		     )
+		WHERE rn BETWEEN #{start} AND #{end}
+		
 	</select>
 	
 </mapper>

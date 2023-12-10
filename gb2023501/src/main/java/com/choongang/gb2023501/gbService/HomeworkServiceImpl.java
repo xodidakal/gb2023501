@@ -26,10 +26,10 @@ public class HomeworkServiceImpl implements HomeworkService {
 	}
 	
 	@Override
-	public List<Homework> selectHomeworkList() {
+	public List<Homework> selectHomeworkList(Homework homework) {
 		System.out.println("HomeworkServiceImpl selectHomeworkList start...");
 		
-		List<Homework> homeworkList = hd.selectHomeworkList();
+		List<Homework> homeworkList = hd.selectHomeworkList(homework);
 		System.out.println("HomeworkServiceImpl selectHomeworkList homeworkList.size()->"+homeworkList.size());
 		
 		return homeworkList;

@@ -38,7 +38,10 @@
 	a {
 		color: #263d94;
 	}
-
+	
+	.dropdown-menu {
+		border-color: rgb(38, 61, 148);
+	}
 </style>
 </head>
 
@@ -164,7 +167,7 @@
                 <a href="/" class="nav-item nav-link active" style="color: white;">Home</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">이용안내</a>
-                    <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
+                    <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
                         <a href="#!" class="dropdown-item">사이트 소개</a>
                         <a href="#!" class="dropdown-item">이용 가이드</a>
                         <a href="#!" class="dropdown-item">상품 소개</a>
@@ -172,21 +175,21 @@
                 </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">구독서비스</a>
-                    <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
+                    <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
                         <a href="#!" class="dropdown-item">게임콘텐츠 구독신청</a>
                         <a href="#!" class="dropdown-item">내 구독콘텐츠</a>
                     </div>
                 </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">학습서비스</a>
-                    <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
+                    <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
                         <a href="learning/homeworkList" class="dropdown-item">내 숙제</a>
                         <a href="#!" class="dropdown-item">학습그룹 가입신청</a>
                     </div>
                 </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">교육자마당</a>
-                    <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
+                    <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
                         <a href="#!" class="dropdown-item">학습그룹 등록</a>
                         <a href="#!" class="dropdown-item">내 학습그룹</a>
                         <a href="#!" class="dropdown-item">학습그룹 상세</a>
@@ -198,16 +201,16 @@
                 </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">운영마당</a>
-                    <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
+                    <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
                         <a href="#!" class="dropdown-item">게임콘텐츠 관리</a>
-                        <a href="eduResourceList" class="dropdown-item">학습자료 관리</a>
+                        <a href="eduMaterialsList" class="dropdown-item">학습자료 관리</a>
                         <a href="#!" class="dropdown-item">회원 관리</a>
                         <a href="#!" class="dropdown-item">매출 관리</a>
                     </div>
                 </div>
                  <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">고객센터</a>
-                    <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
+                    <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
                         <a href="boardNotieList" class="dropdown-item">공지사항</a>
                         <a href="boardQnaList" class="dropdown-item">Q&A</a>
                         <a href="boardFaqList" class="dropdown-item">FAQ</a>

@@ -17,4 +17,11 @@ public class EduMaterials {
 	private String	em_attach_name;		// 첨부파일명
 	private String 	em_attach_path;		// 첨부파일경로
 	private int		g_num;				// 게임번호
+
+	// paging
+	private String  pageNum;		// 페이지	
+	private int     start;			// 첫 페이지
+	private int 	end;			// 마지막 페이지
+	
+
 }

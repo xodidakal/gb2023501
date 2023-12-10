@@ -22,7 +22,7 @@
 <!--         <h2 class="display-6 mb-4">교육 자료 등록</h2> -->
 <!--     </div> -->
 <div class="row g-0 justify-content-center">
-	<div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
+	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">숙제 생성</h2>
@@ -31,7 +31,7 @@
 
 		<div class="input-group col-md-5 mb-3"> 
 			<!-- 카테고리 분류 -->
-			<select id="search_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
+			<select id="search_type" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
 				<option value="title">10</option>
 				<option value="writer">15</option>
 				<option value="writer">20</option>
@@ -92,9 +92,21 @@
 						</tr>
 						
 <%-- 					 </c:forEach> --%>
-						
 	                 </tbody>   
                 </table>
+                <div class="row mt-8" style="width:100%;">
+  					<div class="d-flex justify-content-center">
+		                <nav aria-label="Page navigation example">
+						  <ul class="pagination">
+						    <li class="page-item"><a class="page-link" href="#">이전</a></li>
+						    <li class="page-item"><a class="page-link" href="#">1</a></li>
+						    <li class="page-item"><a class="page-link" href="#">2</a></li>
+						    <li class="page-item"><a class="page-link" href="#">3</a></li>
+						    <li class="page-item"><a class="page-link" href="#">다음</a></li>
+						  </ul>
+						</nav>
+					</div>
+				</div>
 			</div>
 		</form>
 	</div>
