@@ -27,9 +27,13 @@ public class GbControlloer {
 		int homeworkListCnt = hs.selectHomeworkListCnt();
 		
 		Paging page = new Paging(homeworkListCnt, currentPage);
+		homework.setStart(page.getStartRow());
+		homework.setEnd(page.getEndRow());
+		System.out.println("homework.getStart ->"+homework.getStart());
+		System.out.println("homework.getEnd ->"+homework.getEnd());
 		
 		// 생성한 숙제 리스트 조회
-		List<Homework> homeworkList = hs.selectHomeworkList();
+		List<Homework> homeworkList = hs.selectHomeworkList(homework);
 		
 		
 		model.addAttribute("homeworkList", homeworkList);

@@ -29,11 +29,11 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	}
 	
 	@Override
-	public List<Homework> selectHomeworkList() {
+	public List<Homework> selectHomeworkList(Homework homework) {
 		System.out.println("HomeworkDaoImpl selectHomeworkList start...");
 		List<Homework> homeworkList = null;
 		try {
-			homeworkList = session.selectList("gbSelectHomeworkList");
+			homeworkList = session.selectList("gbSelectHomeworkList", homework);
 			System.out.println("HomeworkDaoImpl selectHomeworkList homeworkList.size()"+homeworkList.size());
 		} catch (Exception e) {
 			System.out.println("HomeworkDaoImpl selectHomeworkList Exception->"+e.getMessage());

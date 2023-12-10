@@ -22,7 +22,7 @@
 <!--         <h2 class="display-6 mb-4">교육 자료 등록</h2> -->
 <!--     </div> -->
 <div class="row g-0 justify-content-center">
-	<div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
+	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">숙제 생성</h2>
@@ -92,9 +92,21 @@
 						</tr>
 						
 <%-- 					 </c:forEach> --%>
-						
 	                 </tbody>   
                 </table>
+                <div class="row mt-8">
+  					<div class="d-flex justify-content-center">
+		                <nav aria-label="Page navigation example">
+						  <ul class="pagination">
+						    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+						    <li class="page-item"><a class="page-link" href="#">1</a></li>
+						    <li class="page-item"><a class="page-link" href="#">2</a></li>
+						    <li class="page-item"><a class="page-link" href="#">3</a></li>
+						    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+						  </ul>
+						</nav>
+					</div>
+				</div>
 			</div>
 		</form>
 	</div>

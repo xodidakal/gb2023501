@@ -15,4 +15,8 @@ public class Homework {
 	private Date	h_regi_date;	// 등록일자
 	private Date	h_modi_date;	// 수정일자
 	
+	// 조회용
+	private String 	pageNum;			// 페이징번호
+	private int 	start;				// 페이징 시작번호
+	private int 	end;				// 페이징 종료번호
 }
