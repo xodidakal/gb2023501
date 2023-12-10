@@ -28,7 +28,7 @@
 	         <h2 style="margin-bottom: 15px;">학습 자료 목록</h2>
 	         <p style="margin-bottom: 35px;">총 10 건</p>
 	    </div>
-
+		<a href="salesInquiryDetail">가즈아</a>
 		<div class="input-group col-md-5 mb-3"> 
 			<!-- 카테고리 분류 -->
 			<select id="search_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
@@ -68,18 +68,19 @@
 						</tr>
 					</thead>
 					 <tbody>
-<%-- 					 <c:forEach var="" items=""> --%>
+					 
+					 <c:forEach var="eduMaterialsList" items="${selectEduMaterialsList }">
 					 	<tr>
 					 		<td>1.</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td>${eduMaterialsList.em_image }</td>
+							<td>${eduMaterialsList.em_title }</td>
+							<td>${eduMaterialsList.em_category }</td>
+							<td>${eduMaterialsList.em_type }</td>
+							<td>${eduMaterialsList.em_data_addr }</td>
+							<td>${eduMaterialsList.em_payment }</td>
 							<td width="100px;"><a href="#!"><button type="button" class="btn btn-light rounded py-2 px-3">상세</button></a></td>
 						</tr>
-<%-- 					 </c:forEach> --%>
+ 					 </c:forEach>
 						
 	                 </tbody>   
                 </table>
