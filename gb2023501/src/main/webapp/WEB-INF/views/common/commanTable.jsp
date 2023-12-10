@@ -31,7 +31,7 @@
 
 		<div class="input-group col-md-5 mb-3"> 
 			<!-- 카테고리 분류 -->
-			<select id="search_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
+			<select id="search_type" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
 				<option value="title">10</option>
 				<option value="writer">15</option>
 				<option value="writer">20</option>

@@ -31,7 +31,7 @@
 
 		<div class="input-group col-md-5 mb-3"> 
 			<!-- 카테고리 분류 -->
-			<select id="search_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
+			<select id="search_type" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
 				<option value="title">10</option>
 				<option value="writer">15</option>
 				<option value="writer">20</option>
@@ -94,15 +94,15 @@
 <%-- 					 </c:forEach> --%>
 	                 </tbody>   
                 </table>
-                <div class="row mt-8">
+                <div class="row mt-8" style="width:100%;">
   					<div class="d-flex justify-content-center">
 		                <nav aria-label="Page navigation example">
 						  <ul class="pagination">
-						    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+						    <li class="page-item"><a class="page-link" href="#">이전</a></li>
 						    <li class="page-item"><a class="page-link" href="#">1</a></li>
 						    <li class="page-item"><a class="page-link" href="#">2</a></li>
 						    <li class="page-item"><a class="page-link" href="#">3</a></li>
-						    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+						    <li class="page-item"><a class="page-link" href="#">다음</a></li>
 						  </ul>
 						</nav>
 					</div>
