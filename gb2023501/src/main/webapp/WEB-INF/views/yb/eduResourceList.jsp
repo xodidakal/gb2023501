@@ -72,7 +72,7 @@
 					 <c:forEach var="eduMaterialsList" items="${selectEduMaterialsList }">
 					 	<tr>
 					 		<td>1.</td>
-							<td>${eduMaterialsList.em_image }</td>
+							<td>${eduMaterialsList.em_attach_name }</td>
 							<td>${eduMaterialsList.em_title }</td>
 							<td>${eduMaterialsList.em_category }</td>
 							<td>${eduMaterialsList.em_type }</td>

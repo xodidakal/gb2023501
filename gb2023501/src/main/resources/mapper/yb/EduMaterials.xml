@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-	<mapper namespace="com.choongang.s2023501.EduMaterialsMapper">
-		<select id="ybEduList" resultType="EduMaterials">
-			SELECT * FROM EduMaterials
+	<mapper namespace="com.choongang.gb2023501.EduMaterialsMapper">
+		<select id="ybEduList" parameterType="EduMaterials" resultType="EduMaterials">
+			SELECT * FROM Edu_Materials
 		</select>
 	</mapper>
 
