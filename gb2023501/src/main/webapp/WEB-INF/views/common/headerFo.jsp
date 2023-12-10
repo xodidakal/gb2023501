@@ -162,23 +162,45 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav mx-auto me-auto p-3 p-lg-0 text-center">
                 <a href="/" class="nav-item nav-link active" style="color: white;">Home</a>
-                <a href="#!" class="nav-item nav-link">이용안내</a>
-                <a href="#!" class="nav-item nav-link">구독서비스</a>
-                <a href="#!" class="nav-item nav-link">학습서비스</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">이용안내</a>
+                    <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#!" class="dropdown-item">사이트 소개</a>
+                        <a href="#!" class="dropdown-item">이용 가이드</a>
+                        <a href="#!" class="dropdown-item">상품 소개</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">구독서비스</a>
+                    <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#!" class="dropdown-item">게임콘텐츠 구독신청</a>
+                        <a href="#!" class="dropdown-item">내 구독콘텐츠</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">학습서비스</a>
+                    <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
+                        <a href="learning/homeworkList" class="dropdown-item">내 숙제</a>
+                        <a href="#!" class="dropdown-item">학습그룹 가입신청</a>
+                    </div>
+                </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">교육자마당</a>
                     <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#!" class="dropdown-item">학습그룹 목록</a>
-                        <a href="#!" class="dropdown-item">Our Team</a>
-                        <a href="#!" class="dropdown-item">Testimonial</a>
-                        <a href="#!" class="dropdown-item">404 Page</a>
+                        <a href="#!" class="dropdown-item">학습그룹 등록</a>
+                        <a href="#!" class="dropdown-item">내 학습그룹</a>
+                        <a href="#!" class="dropdown-item">학습그룹 상세</a>
+                        <a href="#!" class="dropdown-item">학습그룹 가입승인</a>
+                        <a href="educator/homeworkForm" class="dropdown-item">숙제 생성</a>
+                        <a href="educator/homeworkSend" class="dropdown-item">숙제 전송</a>
+                        <a href="educator/homeworkEval" class="dropdown-item">숙제 평가</a>
                     </div>
                 </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">운영마당</a>
                     <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#!" class="dropdown-item">게임 콘텐츠 등록</a>
-                        <a href="eduResourceList" class="dropdown-item">학습자료 목록</a>
+                        <a href="#!" class="dropdown-item">게임콘텐츠 관리</a>
+                        <a href="eduResourceList" class="dropdown-item">학습자료 관리</a>
                         <a href="#!" class="dropdown-item">회원 관리</a>
                         <a href="#!" class="dropdown-item">매출 관리</a>
                     </div>
@@ -198,7 +220,7 @@
     </nav>
 <!-- Navbar End -->
 <main>
-    <div class="container-xxl py-5">
+    <div class="container-xxl">
     	<div class="container mt-5">
     	
     
