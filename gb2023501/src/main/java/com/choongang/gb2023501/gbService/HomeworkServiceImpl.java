@@ -16,11 +16,21 @@ public class HomeworkServiceImpl implements HomeworkService {
 	private final HomeworkDao hd;
 	
 	@Override
+	public int selectHomeworkListCnt() {
+		System.out.println("HomeworkServiceImpl selectHomeworkListCnt start...");
+		
+		int homeworkListCnt = hd.selectHomeworkListCnt();
+		System.out.println("HomeworkServiceImpl selectHomeworkListCnt homeworkListCnt->"+homeworkListCnt);
+		
+		return homeworkListCnt;
+	}
+	
+	@Override
 	public List<Homework> selectHomeworkList() {
 		System.out.println("HomeworkServiceImpl selectHomeworkList start...");
 		
 		List<Homework> homeworkList = hd.selectHomeworkList();
-		System.out.println("HomeworkServiceImpl selectHomeworkList homeworkList.size()"+homeworkList.size());
+		System.out.println("HomeworkServiceImpl selectHomeworkList homeworkList.size()->"+homeworkList.size());
 		
 		return homeworkList;
 	}

@@ -4,6 +4,10 @@
 
 <mapper namespace="com.choongang.gb2023501.HomeworkMapper"> 
 
+	<select id="gbSelectHomeworkListCnt" resultType="int">
+		SELECT count(*) FROM homework
+	</select>
+
 	<select id="gbSelectHomeworkList" resultType="Homework">
 		SELECT * FROM homework
 	</select>

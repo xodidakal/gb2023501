@@ -5,7 +5,8 @@ import java.util.List;
 import com.choongang.gb2023501.model.Homework;
 
 public interface HomeworkDao {
-
-	List<Homework> selectHomeworkList();
+	
+	int 			selectHomeworkListCnt();
+	List<Homework> 	selectHomeworkList();
 
 }
