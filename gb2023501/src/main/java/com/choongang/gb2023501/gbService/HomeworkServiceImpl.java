@@ -35,4 +35,14 @@ public class HomeworkServiceImpl implements HomeworkService {
 		return homeworkList;
 	}
 
+	@Override
+	public int insertUpdateHomework(Homework homework) {
+		System.out.println("HomeworkServiceImpl insertUpdateHomework start...");
+		
+		int result = hd.insertUpdateHomework(homework);
+		System.out.println("HomeworkServiceImpl insertUpdateHomework result -> "+result);
+		
+		return result;
+	}
+
 }

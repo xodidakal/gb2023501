@@ -8,5 +8,6 @@ public interface HomeworkDao {
 	
 	int 			selectHomeworkListCnt();
 	List<Homework> 	selectHomeworkList(Homework homework);
+	int 			insertUpdateHomework(Homework homework);
 
 }

@@ -41,4 +41,18 @@ public class HomeworkDaoImpl implements HomeworkDao {
 		return homeworkList;
 	}
 
+	@Override
+	public int insertUpdateHomework(Homework homework) {
+		System.out.println("HomeworkDaoImpl insertUpdateHomework start...");
+		int result = 0;
+		try {
+			result = session.insert("gbInsertUpdateHomework", homework);
+			System.out.println("HomeworkDaoImpl insertUpdateHomework result -> "+result);
+		} catch (Exception e) {
+			System.out.println("HomeworkDaoImpl insertUpdateHomework Exception->"+e.getMessage());
+		}
+		
+		return result;
+	}
+
 }

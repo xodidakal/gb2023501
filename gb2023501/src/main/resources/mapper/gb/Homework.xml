@@ -12,11 +12,26 @@
 		SELECT *
 		FROM(
 				SELECT rownum rn, hw.* 
-		     	FROM homework hw
-		     	ORDER BY hw.h_regi_date desc
+		        FROM (SELECT * 
+		              FROM homework
+		              ORDER BY h_regi_date desc ) hw
 		     )
 		WHERE rn BETWEEN #{start} AND #{end}
 		
 	</select>
 	
+	<insert id="gbInsertUpdateHomework" parameterType="Homework">
+		MERGE INTO homework                                
+		USING DUAL                                         
+		ON (h_num = #{h_num})                                 
+		WHEN MATCHED THEN
+		UPDATE SET h_title = #{h_title},
+		           h_content = #{h_content},
+		           h_level = #{h_level},
+		           h_deadline = #{h_deadline},
+		           h_modi_date = sysdate
+		WHEN NOT MATCHED THEN
+		INSERT(h_num, m_num, h_title, h_content, h_level, h_deadline, h_regi_date)
+		VALUES(homework_seq.nextval, #{m_num}, #{h_title}, #{h_content}, #{h_level}, #{h_deadline},  sysdate)  
+	</insert>
 </mapper>

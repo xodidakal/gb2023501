@@ -97,10 +97,10 @@
            	 	<div class="col-11">
            	 	  <div class="d-flex align-items-center justify-content-end">
            	 		<div class="ps-3">            	 			
-                       <h6 class="mb-0"><a href="/signUpForm">회원가입</a></h6>
+                       <h6 class="mb-0"><a href="/joinAgree">회원가입</a></h6>
                     </div>
                     <div class="ps-3"> 
-                       <h6 class="mb-0"><a href="/login">로그인</a></h6>
+                       <h6 class="mb-0"><a href="/loginForm">로그인</a></h6>
                     </div>
                   </div>
 <!--                   <div class="d-flex align-items-center justify-content-end"> -->
@@ -176,7 +176,7 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">구독서비스</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
-                        <a href="#!" class="dropdown-item">게임콘텐츠 구독신청</a>
+                        <a href="subscribe/gameOrderList" class="dropdown-item">게임콘텐츠 구독신청</a>
                         <a href="#!" class="dropdown-item">내 구독콘텐츠</a>
                     </div>
                 </div>
@@ -211,9 +211,9 @@
                  <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">고객센터</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
-                        <a href="boardNotieList" class="dropdown-item">공지사항</a>
-                        <a href="boardQnaList" class="dropdown-item">Q&A</a>
-                        <a href="boardFaqList" class="dropdown-item">FAQ</a>
+                        <a href="boardList?b_category=1" class="dropdown-item">공지사항</a>
+                        <a href="boardList?b_category=2" class="dropdown-item">Q&A</a>
+                        <a href="boardList?b_category=3" class="dropdown-item">FAQ</a>
                     </div>
                 </div>
             </div>

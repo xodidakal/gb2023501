@@ -7,5 +7,6 @@ import com.choongang.gb2023501.model.Homework;
 public interface HomeworkService {
 	int 			selectHomeworkListCnt();
 	List<Homework> 	selectHomeworkList(Homework homework);
+	int 			insertUpdateHomework(Homework homework);
 
 }
