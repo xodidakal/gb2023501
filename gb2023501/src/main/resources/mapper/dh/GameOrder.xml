@@ -3,4 +3,9 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.choongang.gb2023501.NewFileMapper"> 
+	<select id="dhGameOrderList" resultType="GameOrder" parameterType="GameOrder">
+		SELECT g.*, go.* 
+		FROM   game g, game_order go
+		WHERE  g.g_num = go.g_num
+	</select>
 </mapper>
