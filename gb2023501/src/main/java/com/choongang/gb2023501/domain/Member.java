@@ -15,11 +15,11 @@ import lombok.Data;
 @Entity
 @Data
 @SequenceGenerator(name = "member_seq", // 객체기준
-				   sequenceName = "member_seq",	// DB 기
+				   sequenceName = "member_seq",	// DB 기준
 				   initialValue = 21,	// 시작 번호
 				   allocationSize = 1   // 증가 값
 				  )
-@Table(name = "member_seq")
+@Table(name = "member")
 public class Member {
 	
 	//회원번호
