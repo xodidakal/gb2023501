@@ -2,5 +2,57 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.choongang.gb2023501.Board"> 
+<mapper namespace="com.choongang.gb2023501.BoardMapper">
+	<!-- <select id="mkhSelectBoardList" resultType="board" parameterType="board">
+		SELECT b.*, m.*
+		FROM   board b, member m
+		WHERE  m.m_num = b.m_num
+		AND    b.b_category = #{b_category}
+	</select> -->
+	
+	<select id="mkhSelectBoardList" parameterType="board" resultType="board">			
+			SELECT *
+		    FROM
+		    (
+		        SELECT rownum rn, a.*
+			    FROM
+			    (
+				       SELECT b.*, m.m_name
+				       FROM board b, member m
+				       WHERE m.m_num = b.m_num
+				       AND b.b_category = #{b_category}
+			    ) a
+		    )
+		    WHERE rn BETWEEN #{start} AND #{end}	
+	</select>
+	
+	<select id="mkhBoardCount" resultType="int">
+		SELECT count(*)
+		FROM   board
+		WHERE  b_category = #{b_category}
+	</select>
+	
+	<select id="mkhSelectBoard" resultType="board" parameterType="int">
+		SELECT *
+		FROM   board
+		WHERE  b_num = #{b_num}
+	</select>
+	
+	<!-- <update id="updateBoard" parameterType="int">
+	    UPDATE board
+	    SET
+	    <choose>
+	        <when test="b_count == null">b_count = 0</when>
+	        <otherwise>b_count = b_count + 1</otherwise>
+	    </choose>
+	    WHERE b_num = #{b_num}
+	</update> -->
+	
+	<update id="mkhUpdateBdCount" parameterType="int">
+		UPDATE board
+		SET	   b_count = b_count + 1
+		WHERE  b_num = #{b_num}
+	</update>
+	
+
 </mapper>

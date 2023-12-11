@@ -18,6 +18,12 @@
 		border-bottom: 1px solid #f8f8f8;
 	}
 </style>
+<script type="text/javascript">
+	function detailForm(em_num) {
+		alert(em_num);
+		location.href = "eduMaterialsDetail?em_num="+em_num;
+	}
+</script>
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->
@@ -25,7 +31,7 @@
 <!--         <h2 class="display-6 mb-4">교육 자료 등록</h2> -->
 <!--     </div> -->
 <div class="row g-0 justify-content-center">
-	<div class="col-lg-12 wow fadeInUp" data-wow-delay="0.5s">
+	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">학습 자료 목록</h2>
@@ -55,13 +61,13 @@
             </div>
 			</div>
 	    </div>
-		<form action="#!">
+		<form action="" method="get">
 	        <div class="table" style="text-align: center;">
 	        	<table class="table">
 	        		<thead class="table-light" style="text-align: center;">
 						<tr>
 							<th style="padding: 15px;">No.</th>
-							<th style="padding: 15px; width: 100px;" height="100px;">썸네일</th>
+							<th style="padding: 15px;">썸네일</th>
 							<th style="padding: 15px;">학습자료명</th>
 							<th style="padding: 15px;">자료구분</th>
 							<th style="padding: 15px;">자료유형</th>
@@ -75,15 +81,28 @@
 					 <c:forEach var="eduMaterialsList" items="${selectEduMaterialsList }" varStatus="status" begin="1">
 					 	<tr>
 					 		<td>${status.index }</td>
-							<td style="width: 100px;" height="100px;">
-								<img src="${eduMaterialsList.em_attach_name }" alt="도서 썸네일" class="mb-3 img-fluid" style="width: 5rem; height: 5rem;">
+							<td style="width: 100px;" height="80px;">
+								<img src="${eduMaterialsList.em_attach_name }" alt="도서 썸네일" class="mb-3 img-fluid" style="width: 5rem; height: 80px;">
 							</td>
-							<td>${eduMaterialsList.em_title }</td>
-							<td>${eduMaterialsList.em_category }</td>
-							<td>${eduMaterialsList.em_type }</td>
-<%-- 							<td style="width: 250px;">${eduMaterialsList.em_data_addr }</td> --%>
-							<td>${eduMaterialsList.em_payment }</td>
-							<td width="100px;"><a href="#!"><button type="button" class="btn btn-light rounded py-2 px-3">상세</button></a></td>
+							<td>
+								<input type="hidden" value="${eduMaterialsList.em_num }" id="em_num" name="em_num">
+								${eduMaterialsList.em_title }</td>
+							<td>
+								<c:if test="${eduMaterialsList.em_category  == 1}">튜토리얼</c:if>
+								<c:if test="${eduMaterialsList.em_category  == 2}">교육영상</c:if>							
+							</td>
+							<td>
+								<c:if test="${eduMaterialsList.em_type  == 1}">동영상</c:if>
+								<c:if test="${eduMaterialsList.em_type  == 2}">교재</c:if>		
+								<c:if test="${eduMaterialsList.em_type  == 3}">웹사이트</c:if>
+							</td>
+
+							<td>
+								<c:if test="${eduMaterialsList.em_payment == 1}">무료</c:if>
+								<c:if test="${eduMaterialsList.em_payment == 2}">유료</c:if>
+								
+							</td>
+							<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" onclick="detailForm(${eduMaterialsList.em_num })">상세</button></td>
 						</tr>
  					 </c:forEach>
 						

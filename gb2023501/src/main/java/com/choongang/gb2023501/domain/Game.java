@@ -30,7 +30,7 @@ public class Game {
 	private int mNum;
 	
 	@Column(name = "g_title")
-	private String gTitle;
+	private String ggTitle;
 	
 	@Column(name = "g_step")
 	private int gStep;
@@ -47,8 +47,8 @@ public class Game {
 	@Column(name = "discount")
 	private int discount;
 	
-	@Column(name = "g_sell_price;")
-	private int gSellPrice;;
+	@Column(name = "g_sell_price")
+	private int gSellPrice;
 	
 	@Column(name = "g_content")
 	private String gContent;
