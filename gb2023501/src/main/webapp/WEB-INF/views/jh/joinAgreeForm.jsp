@@ -51,16 +51,21 @@
             	// FormData 객체를 사용하여 폼 데이터를 가져옴
                 var formData = new FormData(verificationForm);
             	
-                fetch("joinAgree", {
+            	//ajax를 이용해 회원 존재 유무 비교하고 있으면 이미 가입한 사용자다 아니면 joinform으로 이동(제이쿼리가 아닌 fech api이용 ) -> 시큐리티로 회원 유무 검증 할 수 있을 것 같아 보류
+                fetch("/joinAgree", {
                     method: "POST",
                     body: formData
                 })
-                 .then(response => response.text())
+                 .then(response => response.json())
         		 .then(data => {
         			// 서버로부터의 응답 처리
-        	            console.log(data);
-        	            // 여기에서 필요한 로직을 추가하세요.
-        	        })
+                     if (data.exists) {
+                         alert("이미 가입한 사용자입니다.");
+                     } else {
+                         // 가입한 사용자가 아니라면 joinForm으로 이동
+                         window.location.href = "joinForm";
+                     }
+                 })
         	        .catch(error => {
         	            console.error("에러 발생:", error);
         	        });

@@ -13,7 +13,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity // 스프링 시큐리티 필터(SecurityConfig)가 스프링 기본 필터 체인에 등록됨
 public class SecurityConfig {
 	
-	// 해쉬 암호화 방식을 사용하겠다.
+	// 해쉬 암호화 방식을 사용하겠다. -> password 암호화
+	//@Bean 사용하면 해당 메서드의 리턴되는 오브젝트를 IoC로 등록해줌
 	@Bean
 	public BCryptPasswordEncoder encodePwd() {
 		return new BCryptPasswordEncoder();
@@ -30,7 +31,9 @@ public class SecurityConfig {
 			.anyRequest().permitAll() //위 url 외엔 어떤 요청이든 권한 허가
 			.and() 
 			.formLogin() //권한 없는 페이지에 요청 들어갈 때 로그인 페이지로 이동하기 위한 것
-			.loginPage("/login");
+			.loginPage("/loginForm")
+			.loginProcessingUrl("/login") //login주소가 호출 되면 시큐리티가 낚아채서 대신 로그인 진행해줌
+			.defaultSuccessUrl("/"); //로그인 성공시 메이페이지로 이동
 		return http.build();
 	}
 	

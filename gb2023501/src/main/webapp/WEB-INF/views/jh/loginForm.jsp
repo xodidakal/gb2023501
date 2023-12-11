@@ -6,11 +6,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Insert title here</title>
+<script type="text/javascript">
+	function loginFormSubmit(){
+		var idInput	 	= document.getElementById("id");
+		var pswdInput 	= document.getElementById("pswd");
+		var loginForm	= document.getElementById("loginForm");d
+		
+		if(idInput.value.trim === ""){
+			alert("아이디를 입력해 주세요");
+			idInput.focus();
+			
+		} else if(pswdInput.value.trim === ""){
+			alert("비밀번호를 입력해 주세요");
+			pswdInput.focus();
+		} else{
+			loginForm.submit();
+		}
+		
+	}
+</script>
 </head>
 <body>
     <div class="row g-0 justify-content-center">
         <div class="col-lg-8 wow fadeInUp mb-4" data-wow-delay="0.5s">
-            <form>
+        
+            <form action="/login" method="post" id="loginForm">
+            
                 <div class="row justify-content-center mb-5">
                     <div class="row g-3 col-sm-6">
                         <h2 class="display-7 mb-4 text-center">로그인</h2>
@@ -22,7 +43,7 @@
                             <label class="form-check-label" for="exampleCheck1">아이디 기억하기</label>
                         </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-center">
-                            <input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="한국기원 ID 로그인 하기">
+                            <input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="한국기원 ID 로그인 하기" onclick="loginFormSubmit">
                         </div>
                             <div class="form-group text-center">
                                 <a class="fs-sm text-reset" href="/signUpForm">회원가입 </a>

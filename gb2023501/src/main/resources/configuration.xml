@@ -14,5 +14,7 @@
 		<typeAlias alias="Homework" 		type="com.choongang.gb2023501.model.Homework"/>
 		<typeAlias alias="HwSend" 			type="com.choongang.gb2023501.model.HwSend"/>
 		<typeAlias alias="HwRecord" 		type="com.choongang.gb2023501.model.HwRecord"/>
+		<typeAlias alias="Game" 			type="com.choongang.gb2023501.model.Game"/>
+		<typeAlias alias="GameOrder" 		type="com.choongang.gb2023501.model.GameOrder"/>
 	</typeAliases>
 </configuration>

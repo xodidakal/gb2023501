@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JhController {
 
-	@RequestMapping(value = "login")
+	@RequestMapping(value = "loginForm")
 	public String login() {
 		
-		return "jh/login";
+		return "jh/loginForm";
 	}
 	
 	@RequestMapping(value = "joinAgreeForm")

@@ -100,7 +100,7 @@
                        <h6 class="mb-0"><a href="/joinAgree">회원가입</a></h6>
                     </div>
                     <div class="ps-3"> 
-                       <h6 class="mb-0"><a href="/login">로그인</a></h6>
+                       <h6 class="mb-0"><a href="/loginForm">로그인</a></h6>
                     </div>
                   </div>
 <!--                   <div class="d-flex align-items-center justify-content-end"> -->
@@ -176,7 +176,7 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">구독서비스</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
-                        <a href="#!" class="dropdown-item">게임콘텐츠 구독신청</a>
+                        <a href="subscribe/gameOrderList" class="dropdown-item">게임콘텐츠 구독신청</a>
                         <a href="#!" class="dropdown-item">내 구독콘텐츠</a>
                     </div>
                 </div>
