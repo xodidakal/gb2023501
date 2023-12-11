@@ -1,5 +1,7 @@
 package com.choongang.gb2023501.domain;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +19,7 @@ import lombok.Data;
 @SequenceGenerator(name 		= "em_num_seq",			// 객체 SEQ
 				   sequenceName = "em_num_seq",	// DB SEQ
 				   allocationSize = 1,		// -> 1씩 증가
-				   initialValue = 40021			// 1부터 시작
+				   initialValue = 40001			// 1부터 시작
 				  )
 @Table(name = "edu_Materials")
 public class EduMaterials {
@@ -26,40 +28,42 @@ public class EduMaterials {
 						generator = "em_num_seq"	// 객체 seq
 					   )
 		@Column(name = "em_num")			// --> NUMBER 타입 길이 설정 X
-		private Long   emNum;
+		private int   emNum;
 		
-//		// 관계 설정
-//		@ManyToOne	// team의 PK
-//		@JoinColumn(name = "m_num")
-//		private Member member;
-//		private Long   mNum;
-//		
+		// 관계 설정
+		@ManyToOne	// Member 의 PK
+		@JoinColumn(name = "m_num")
+		private Member member;
+		
 		@Column(name = "em_category")
-		private Long emCategory;
+		private int emCategory;
 
 		@Column(name = "em_type")
-		private Long emType;
+		private int emType;
 		
 		@Column(name = "em_payment")
-		private Long emPayment;
+		private int emPayment;
 		
 		@Column(name = "em_title")
-		private Long emTitle;
+		private String emTitle;
+		
+		@Column(name = "em_content")
+		private String emContent;
 		
 		@Column(name = "em_regi_date")
-		private Long emRegiDate;
+		private Date emRegiDate;
 		
 		@Column(name = "em_data_addr")
-		private Long emDataAddr;
+		private String emDataAddr;
 		
 		@Column(name = "em_attach_name")
-		private Long emAttachName;
+		private String emAttachName;
 		
 		@Column(name = "em_attach_path")
-		private Long emAttachPath;
+		private String emAttachPath;
 		
 		@Column(name = "g_num")
-		private Long gNum;
+		private int ggNum;
 		
 
 
