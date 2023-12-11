@@ -211,9 +211,9 @@
                  <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">고객센터</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
-                        <a href="boardNotieList" class="dropdown-item">공지사항</a>
-                        <a href="boardQnaList" class="dropdown-item">Q&A</a>
-                        <a href="boardFaqList" class="dropdown-item">FAQ</a>
+                        <a href="boardList?b_category=1" class="dropdown-item">공지사항</a>
+                        <a href="boardList?b_category=2" class="dropdown-item">Q&A</a>
+                        <a href="boardList?b_category=3" class="dropdown-item">FAQ</a>
                     </div>
                 </div>
             </div>

@@ -29,7 +29,7 @@
 	<div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
 		<form>
 	        <div class="row g-3">
-	        <h2 class="display-7 mb-4">게시물 등록</h2>
+	        <h2 class="display-7 mb-4">게시물 수정</h2>
 	        <hr class="my-3">
 	        	<table id="table">
 					<tr>
