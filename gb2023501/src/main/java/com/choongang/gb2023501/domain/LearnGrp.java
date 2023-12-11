@@ -28,14 +28,15 @@ public class LearnGrp {
 	@Column(name = "lg_num")
 	private int lgNum;
 	
-	// 교육자_회원번호
+	// 교육자_회원번호 (FK)
 	@ManyToOne	// 1교육자 : M학습그룹
 	@JoinColumn(name = "m_num")
 	private Member member;
 	
-	// 게임번호
-	@Column(name = "g_num")
-	private int gNum;
+	// 게임번호 (FK)
+	@ManyToOne	// 1게임 : M학습그룹
+	@JoinColumn(name = "g_num")
+	private Game game;
 	
 	// 학습그룹명
 	@Column(name = "lg_title")
@@ -61,7 +62,15 @@ public class LearnGrp {
 	@Column(name = "lg_add2")
 	private String lgAdd2;
 	
+	
 	//----- 조회용 ----- //
 	@Transient
-	private String mName;
+	private String m_name;
+	
+	@Transient
+	private String g_title;
+	
+	@Transient
+	private int mmNumCnt;
+
 }

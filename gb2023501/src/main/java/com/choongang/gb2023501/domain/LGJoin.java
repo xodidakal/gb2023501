@@ -8,6 +8,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -39,5 +40,9 @@ public class LGJoin {
 	// 승인일자
 	@Column(name = "lgd_appdate")
 	private Date lgdAppdate;
+
+	
+	//----- 조회용 ----- //
+
 
 }

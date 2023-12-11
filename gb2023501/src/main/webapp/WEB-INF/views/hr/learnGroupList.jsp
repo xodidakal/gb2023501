@@ -22,7 +22,7 @@
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">내 학습 그룹</h2>
-	         <p style="margin-bottom: 35px;">총 ${yb }건</p>
+	         <p style="margin-bottom: 35px;">총 N건</p>
 	    </div>
 
 		<div class="input-group col-md-5 mb-3"> 
@@ -69,18 +69,18 @@
 						</tr>
 					</thead>
 					 <tbody>
-					 	<%-- <c:forEach var="" items=""> --%>
+					 	<c:forEach var="lg" items="${learnGrps }">
 						 	<tr>
 						 		<td><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
 								<td>No.</td>
-								<td>학습그룹명</td>
-								<td>게임콘텐츠명</td>
-								<td>학습 기간</td>
-								<td>수용 가능 인원</td>
-								<td>가입 승인 인원</td>
+								<td>${lg.lgTitle}</td>
+								<td>${lg.game.ggTitle}</td>
+								<td>${lg.lgSdate } ~ ${lg.lgEdate }</td>
+								<td>${lg.lgTo }</td>
+								<td>${lg.lgTo }</td>
 								<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
 							</tr>
-						<%-- </c:forEach> --%>
+						</c:forEach>
 	                 </tbody>   
                 </table>
 			</div>
