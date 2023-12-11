@@ -1,7 +1,11 @@
 package com.choongang.gb2023501.configuration;
 
 public enum Role {
-	USER(1, "USER");
+	//권한 부여 3355조 코드 참고
+	EDUCATOR(1, "EDUCATOR"),
+	STUDENT(2,"STUDENT"),
+	USER(3,"USER"),
+	ADMIN(4,"ADMIN");
 	
 	private final int 	 key;
 	private final String value;
