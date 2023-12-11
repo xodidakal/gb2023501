@@ -176,14 +176,14 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">구독서비스</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
-                        <a href="subscribe/gameOrderList" class="dropdown-item">게임콘텐츠 구독신청</a>
+                        <a href="/subscribe/gameOrderList" class="dropdown-item">게임콘텐츠 구독신청</a>
                         <a href="#!" class="dropdown-item">내 구독콘텐츠</a>
                     </div>
                 </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">학습서비스</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
-                        <a href="learning/homeworkList" class="dropdown-item">내 숙제</a>
+                        <a href="/learning/homeworkList" class="dropdown-item">내 숙제</a>
                         <a href="#!" class="dropdown-item">학습그룹 가입신청</a>
                     </div>
                 </div>
@@ -194,9 +194,9 @@
                         <a href="#!" class="dropdown-item">내 학습그룹</a>
                         <a href="#!" class="dropdown-item">학습그룹 상세</a>
                         <a href="#!" class="dropdown-item">학습그룹 가입승인</a>
-                        <a href="educator/homeworkForm" class="dropdown-item">숙제 생성</a>
-                        <a href="educator/homeworkSend" class="dropdown-item">숙제 전송</a>
-                        <a href="educator/homeworkEval" class="dropdown-item">숙제 평가</a>
+                        <a href="/educator/homeworkForm" class="dropdown-item">숙제 생성</a>
+                        <a href="/educator/homeworkSend" class="dropdown-item">숙제 전송</a>
+                        <a href="/educator/homeworkEval" class="dropdown-item">숙제 평가</a>
                     </div>
                 </div>
                 <div class="nav-item dropdown">
