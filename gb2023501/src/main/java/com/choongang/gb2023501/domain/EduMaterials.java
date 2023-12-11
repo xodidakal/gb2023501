@@ -12,6 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 @Entity				// jpa -> entity써야함  domain 폴더에는 entity 관련된 것들 생성
@@ -50,8 +53,9 @@ public class EduMaterials {
 		@Column(name = "em_content")
 		private String emContent;
 		
+		@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyyMMdd", timezone="Asia/Seoul")
 		@Column(name = "em_regi_date")
-		private Date emRegiDate;
+		private Date emRegiDate = new Date();
 		
 		@Column(name = "em_data_addr")
 		private String emDataAddr;

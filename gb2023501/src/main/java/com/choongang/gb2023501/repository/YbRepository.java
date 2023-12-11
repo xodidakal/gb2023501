@@ -6,7 +6,9 @@ import com.choongang.gb2023501.domain.EduMaterials;
 
 public interface YbRepository {
 
-	EduMaterials 		findByEduMaterials(int em_num);
+	Optional<EduMaterials> 		findByEduMaterials(int em_num);
+
+	void 						updateByEduMaterials(EduMaterials eduMaterials);
 
 
 	

@@ -99,7 +99,7 @@
 
 							<td>
 								<c:if test="${eduMaterialsList.em_payment == 1}">무료</c:if>
-								<c:if test="${eduMaterialsList.em_payment == 1}">유료</c:if>
+								<c:if test="${eduMaterialsList.em_payment == 2}">유료</c:if>
 								
 							</td>
 							<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" onclick="detailForm(${eduMaterialsList.em_num })">상세</button></td>
