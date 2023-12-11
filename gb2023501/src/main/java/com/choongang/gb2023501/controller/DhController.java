@@ -25,7 +25,7 @@ public class DhController {
 		
 		int totalSearchGameOrder = gos.totalSearchGameOrder(gameOrder);
 		
-		Paging page = new Paging(totalSearchGameOrder, currentPage);
+		Paging page = new Paging(totalSearchGameOrder, currentPage, 10);
 		gameOrder.setStart(page.getStartPage());
 		gameOrder.setEnd(page.getEndPage());
 		

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class Paging {
 	// 현재 페이지번호					// row 제한 개수					// page 넘버 제한 개수
-	private int currentPage1 = 1;	private int rowLimit = 10;	private int pageLimit = 10;
+	private int currentPage1 = 1;	private int rowLimit;	private int pageLimit = 10;
 	// row 시작 번호					// row 끝 번호
 	private int startRow;			private int endRow;
 	// page 시작번호					// page 끝번호
@@ -15,7 +15,7 @@ public class Paging {
 	// 총 row 개수						// 총 page 개수
 	private int totalRow;			private int totalPage;
 	
-	public Paging(int inNewbookCnt, String currentPage) {
+	public Paging(int inNewbookCnt, String currentPage, int rowLimit) {
 		this.totalRow = inNewbookCnt;
 
 		if (currentPage != null) {
@@ -30,7 +30,7 @@ public class Paging {
 		
 		// 총 페이지 페이지 개수
 		//if                                   34    /     10     = 3.4  -> ceil 하여 올림처리하면 4     
-		totalPage = (int) Math.ceil((double)totalRow / pageLimit); // int / int = int 이기 떄문에 totalRow를 double로 변경해야 소수점까지 결과값이 나옴.
+		totalPage = (int) Math.ceil((double)totalRow / rowLimit); // int / int = int 이기 떄문에 totalRow를 double로 변경해야 소수점까지 결과값이 나옴.
 		
 		// 한 페이지에 보여줄 start와 end page 개수
 		//if			 2				2   -   1	%    10    

@@ -35,7 +35,7 @@ public class GbController {
 		// 생성한 숙제 총 개수
 		int homeworkListCnt = hs.selectHomeworkListCnt(homework);
 		
-		Paging page = new Paging(homeworkListCnt, currentPage);
+		Paging page = new Paging(homeworkListCnt, currentPage, 10);
 		homework.setStart(page.getStartRow());
 		homework.setEnd(page.getEndRow());
 		System.out.println("homework.getStart ->"+homework.getStart());
@@ -77,8 +77,26 @@ public class GbController {
 	  
 	  // 숙제 전송 화면 이동
 	  @RequestMapping("/educator/homeworkSend")
-	  public String selectHomeworkList(Homework homework, Model model) {
+	  public String selectHomeworkList(Homework homework, String currentPage, Model model) {
 		  System.out.println("GbController selectHomeworkList start...");
+		  // 숙제 목록은 로그인한 교육자가 생성한 목록이 조회되므로 교육자 회원번호를 담는다. (우선 임시로 추후에 변경 예정)
+		  homework.setM_num(3);
+			
+		  // 생성한 숙제 총 개수
+		  int homeworkListCnt = hs.selectHomeworkListCnt(homework);
+			
+		  Paging page = new Paging(homeworkListCnt, currentPage, 5);
+		  homework.setStart(page.getStartRow());
+		  homework.setEnd(page.getEndRow());
+		  System.out.println("homework.getStart ->"+homework.getStart());
+		  System.out.println("homework.getEnd ->"+homework.getEnd());
+		  
+		  // 생성한 숙제 리스트 조회
+		  List<Homework> homeworkList = hs.selectHomeworkList(homework);
+		  
+		  model.addAttribute("homeworkList", homeworkList);
+		  model.addAttribute("StartRow",page.getStartRow());
+		  model.addAttribute("page", page);
 		  
 		  return "gb/homeworkSend";
 	  }

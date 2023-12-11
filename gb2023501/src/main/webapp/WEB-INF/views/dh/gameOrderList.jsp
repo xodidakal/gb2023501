@@ -71,9 +71,9 @@
 			</div>
 			<nav aria-label="Page navigation example ">
 				<ul class="pagination">
-					<c:if test="${page.startPage > page.pageBlock}">
+					<c:if test="${page.startPage > page.pageLimit}">
 						<li class="page-item">
-							<a href="subscribe/gameOrderList?currentPage=${page.startPage-page.pageBlock}" class="pageblock page-link">이전</a>
+							<a href="subscribe/gameOrderList?currentPage=${page.startPage-page.pageLimit}" class="pageblock page-link">이전</a>
 						</li>
 					</c:if>
 					<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
@@ -83,7 +83,7 @@
 					</c:forEach>
 					<c:if test="${page.endPage < page.totalPage}">
 						<li class="page-item">
-							<a href="subscribe/gameOrderList?currentPage=${page.startPage+page.pageBlock}" class="pageblock page-link">다음</a>
+							<a href="subscribe/gameOrderList?currentPage=${page.startPage+page.pageLimit}" class="pageblock page-link">다음</a>
 						</li>
 					</c:if>
 				</ul>

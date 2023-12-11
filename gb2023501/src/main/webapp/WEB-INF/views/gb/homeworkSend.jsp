@@ -21,6 +21,17 @@
 		color: black;
 	}
 </style>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+	$(function(){
+		  $("#searchHtitle").change(function(){
+		    // Value값 가져오기
+		    var val = $("#searchHtitle :selected").val();
+
+			alert("val -> "+val);
+		  });
+	});
+</script>
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->
@@ -36,22 +47,13 @@
 
 		<div class="input-group col-md-5 mb-3"> 
 			<!-- 카테고리 분류 -->
-			숙제명&nbsp;&nbsp;
-			<select id="search_type" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
-				<option value="title">10</option>
-				<option value="writer">15</option>
-				<option value="writer">20</option>
-			</select>
-			<!-- 카테고리 검색 -->
-			<select id="search_type" class="w-17 rounded" style="border-color: #ced4da">
-				<option value="title">제목 + 내용</option>
-				<option value="writer">작성자</option>
-			</select>&nbsp;&nbsp;
-            <input id = "search_keyword" class="form-control rounded" type="search" placeholder="검색해라" style="width: 160px;">
-          	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
-         		<a href="#!"><i class="bi bi-search mt-2"></i></a>
-          	</div>
-          	
+			<span style="margin: 10px 15px 10px 0px;">숙제명</span>&nbsp;&nbsp;
+			<select id="searchHtitle" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
+				<option id="h_title" value="전체">전체</option>
+				<c:forEach var="homework" items="${homeworkList }" varStatus="status">
+					<option id="h_title" value="${homework.h_title }">${homework.h_title }</option>
+				</c:forEach>
+			</select>      	
           	
 			<div class="col">
 			<div class="d-flex align-items-center justify-content-end">
@@ -68,57 +70,71 @@
 						<tr>
 							<th style="padding: 15px;">선택</th>
 							<th style="padding: 15px;">No.</th>
-							<th style="padding: 15px;">숙제명</th>
-							<th style="padding: 15px;">숙제내용</th>
+							<th style="padding: 15px; width: 25%;">숙제명</th>
+							<th style="padding: 15px; width: 45%;">숙제내용</th>
 							<th style="padding: 15px;">진도</th>
 							<th style="padding: 15px;">제출기한</th>			
 						</tr>
 					</thead>
 					 <tbody>
-<%-- 					 <c:forEach var="" items=""> --%>
+ 					 <c:forEach var="homework" items="${homeworkList }">
 					 	<tr>
-					 		<td><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
-							<td>2</td>
-							<td>3</td>
-							<td>4</td>
-							<td>5</td>
-							<td>6</td>
+					 		<td class="align-middle"><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
+							<td class="align-middle">${StartRow }</td>
+							<td class="align-middle">${homework.h_title }</td>
+							<td class="align-middle">${homework.h_content }</td>
+							<td class="align-middle">${homework.h_level }</td>
+							<td class="align-middle">${homework.h_deadline }</td>
 						</tr>
-						
-						<tr>
-					 		<td><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
-							<td>2</td>
-							<td>3</td>
-							<td>4</td>
-							<td>5</td>
-							<td>6</td>
-						</tr>
-						
-<%-- 					 </c:forEach> --%>
+						<c:set var="StartRow" value="${StartRow +1}"/>					
+ 					 </c:forEach>
 						
 	                 </tbody>   
                 </table>
                 <div class="row mt-8" style="width:100%;">
-  					<div class="d-flex justify-content-center" style="margin-top:12px">
+ 					<div class="d-flex justify-content-center" style="margin-top:12px">
 		                <nav aria-label="Page navigation example">
 						  <ul class="pagination">
-						    <li class="page-item"><a class="page-link" href="#">이전</a></li>
-						    <li class="page-item" id="1p"><a class="page-link" href="#">1</a></li>
-						    <li class="page-item"><a class="page-link" href="#">2</a></li>
-						    <li class="page-item"><a class="page-link" href="#">3</a></li>
-						    <li class="page-item"><a class="page-link" href="#">4</a></li>
-						    <li class="page-item"><a class="page-link" href="#">5</a></li>
-						    <li class="page-item"><a class="page-link" href="#">6</a></li>
-						    <li class="page-item"><a class="page-link" href="#">7</a></li>
-						    <li class="page-item"><a class="page-link" href="#">8</a></li>
-						    <li class="page-item"><a class="page-link" href="#">9</a></li>
-						    <li class="page-item"><a class="page-link" href="#">10</a></li>
-						    <li class="page-item"><a class="page-link" href="#">다음</a></li>
+						  	<c:if test="${page.startPage > page.pageLimit}">
+						  		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage-page.pageLimit}">이전</a></li>
+						  	</c:if>
+						    <c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
+						    	<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${i }">${i }</a></li>
+						    </c:forEach>
+						 	<c:if test="${page.endPage < page.totalPage}">
+						 		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage+page.pageLimit}">다음</a></li>
+						 	</c:if>
 						  </ul>
 						</nav>
 					</div>
 				</div>
 			</div>
+			<div class="table-responsive" style="text-align: center;">
+	        	<table class="table">
+	        		<thead class="table-light" style="text-align: center;">
+						<tr>
+							<th style="padding: 15px;">선택</th>
+							<th style="padding: 15px;">학습자명</th>
+							<th style="padding: 15px;">전화번호</th>
+							<th style="padding: 15px;">현재레벨</th>	
+						</tr>
+					</thead>
+					 <tbody>
+ 					 <c:forEach var="homework" items="${homeworkList }">
+					 	<tr>
+					 		<td class="align-middle"><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
+							<td class="align-middle">${StartRow }</td>
+							<td class="align-middle">${homework.h_title }</td>
+							<td class="align-middle">${homework.h_content }</td>
+							<td class="align-middle">${homework.h_level }</td>
+							<td class="align-middle">${homework.h_deadline }</td>
+						</tr>
+						<c:set var="StartRow" value="${StartRow +1}"/>					
+ 					 </c:forEach>
+						
+	                 </tbody>   
+                </table>
+            </div>
 		</form>
 	</div>
 </div>
