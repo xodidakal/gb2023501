@@ -1,7 +1,9 @@
 package com.choongang.gb2023501.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,9 +17,24 @@ public class JhController {
 		return "jh/login";
 	}
 	
-	@RequestMapping(value = "signUpForm")
-	public String signUp() {
+	@RequestMapping(value = "joinAgreeForm")
+	public String joinAgreeForm() {
 		
-		return "jh/signUpForm";
+		return "jh/joinAgreeForm";
 	}
+	
+	@PostMapping(value = "joinAgree")
+	@ResponseBody
+	public String joinAgree() {
+		
+		return "jh/joinAgree";
+	}
+	
+	@RequestMapping(value = "joinForm")
+	public String joinForm() {
+		
+		return "jh/joinForm";
+	}
+	
+	
 }

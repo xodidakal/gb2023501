@@ -27,87 +27,87 @@ public class Member {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,
 					generator = "member_seq")
 	@Column(name = "m_num")
-	private int mNum;			
+	private int mmNum;			
 	
 	
 	//회원명
 	@Column(name = "m_name")
-	private String mName;		
+	private String mmName;		
 	
 	
 	//아이디
 	@Column(name = "m_id")
-	private String mId;			
+	private String mmId;			
 	
 	
 	//비밀번호
 	@Column(name = "m_pswd")
-	private String mPswd;		
+	private String mmPswd;		
 	
 	
 	//회원 구분
 	@Column(name = "m_category")
-	private int mCategory;		
+	private int category;		
 	
 	
 	//자격 유형
 	@Column(name = "m_mship_type")
-	private int mMshipType;		
+	private int mshipType;		
 	
 	
 	//휴대폰 번호
 	@Column(name = "m_phone")
-	private String mPhone;		
+	private String phone;		
 	
 	
 	//연락처
 	@Column(name = "m_tel")
-	private String mTel;		
+	private String tel;		
 	
 	
 	//생년월일
 	@Column(name = "m_birth")
-	private String mBirth;		
+	private String birth;		
 	
 	
 	//성별
 	@Column(name = "m_gender")
-	private int mGender;		
+	private int gender;		
 	
 	
 	//이메일
 	@Column(name = "m_email")
-	private String mEmail;		
+	private String email;		
 	
 	
 	//주소
 	@Column(name = "m_address")
-	private String mAddress;	
+	private String address;	
 	
 	
 	//가입일자
 	@Column(name = "m_regi_date")
-	private Date mRegiDate;		
+	private Date regiDate;		
 	
 	
 	//수정일자
 	@Column(name = "m_modi_date")
-	private Date mModiDate;		
+	private Date modiDate;		
 	
 	
 	//이메일 수신동의
 	@Column(name = "m_econsent")
-	private int mEconsent;		
+	private int econsent;		
 	
 	
 	//SMS 수신동의
 	@Column(name = "m_sconsent")
-	private int mSconsent;		
+	private int sconsent;		
 	
 	
 	//삭제여부
 	@Column(name = "m_dele_status")
-	private int mDeleStatus;	
+	private int deleStatus;	
 	
 	
 	

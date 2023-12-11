@@ -9,9 +9,9 @@
 </head>
 <body>
     <div class="row g-0 justify-content-center">
-        <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
+        <div class="col-lg-8 wow fadeInUp mb-4" data-wow-delay="0.5s">
             <form>
-                <div class="row justify-content-center">
+                <div class="row justify-content-center mb-5">
                     <div class="row g-3 col-sm-6">
                         <h2 class="display-7 mb-4 text-center">로그인</h2>
                         <hr class="my-3">
