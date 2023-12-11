@@ -16,11 +16,11 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	private final SqlSession session;
 
 	@Override
-	public int selectHomeworkListCnt() {
+	public int selectHomeworkListCnt(Homework homework) {
 		System.out.println("HomeworkDaoImpl selectHomeworkListCnt start...");
 		int homeworkListCnt = 0;
 		try {
-			homeworkListCnt = session.selectOne("gbSelectHomeworkListCnt");
+			homeworkListCnt = session.selectOne("gbSelectHomeworkListCnt", homework);
 			System.out.println("HomeworkDaoImpl selectHomeworkListCnt homeworkListCnt -> "+homeworkListCnt);
 		} catch (Exception e) {
 			System.out.println("HomeworkDaoImpl selectHomeworkListCnt Exception->"+e.getMessage());

@@ -4,8 +4,9 @@
 
 <mapper namespace="com.choongang.gb2023501.HomeworkMapper"> 
 
-	<select id="gbSelectHomeworkListCnt" resultType="int">
+	<select id="gbSelectHomeworkListCnt" parameterType="Homework" resultType="int">
 		SELECT count(*) FROM homework
+		WHERE m_num = #{m_num}
 	</select>
 
 	<select id="gbSelectHomeworkList" parameterType="Homework" resultType="Homework">
@@ -14,6 +15,7 @@
 				SELECT rownum rn, hw.* 
 		        FROM (SELECT * 
 		              FROM homework
+		              WHERE m_num = #{m_num}
 		              ORDER BY h_regi_date desc ) hw
 		     )
 		WHERE rn BETWEEN #{start} AND #{end}

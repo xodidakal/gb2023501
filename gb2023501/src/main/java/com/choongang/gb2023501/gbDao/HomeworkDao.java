@@ -6,7 +6,7 @@ import com.choongang.gb2023501.model.Homework;
 
 public interface HomeworkDao {
 	
-	int 			selectHomeworkListCnt();
+	int 			selectHomeworkListCnt(Homework homework);
 	List<Homework> 	selectHomeworkList(Homework homework);
 	int 			insertUpdateHomework(Homework homework);
 

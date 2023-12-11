@@ -23,15 +23,17 @@ public class GbController {
 	@RequestMapping("educator/homeworkForm")
 	public String selectHomeworkList(Homework homework, String currentPage, String result, Model model) {
 		System.out.println("GbController selectHomework start...");
+		// insert 또는 update 결과값을 파라미터로 받아옴
 		String result1 = null;
 		if(result != null) {
 			result1 = result;
 		}
 		
-		System.out.println("result1 -> "+ result1);
+		// 숙제 목록은 로그인한 교육자가 생성한 목록이 조회되므로 교육자 회원번호를 담는다. (우선 임시로 추후에 변경 예정)
+		homework.setM_num(3);
 		
 		// 생성한 숙제 총 개수
-		int homeworkListCnt = hs.selectHomeworkListCnt();
+		int homeworkListCnt = hs.selectHomeworkListCnt(homework);
 		
 		Paging page = new Paging(homeworkListCnt, currentPage);
 		homework.setStart(page.getStartRow());
@@ -63,12 +65,22 @@ public class GbController {
 			  h_num = homework.getH_num();
 		  }
 		  homework.setH_num(h_num);
-		  homework.setM_num(3);	// 임시로 3번 넣었다.
+		  
+		  // 교육자 회원번호 임시로 넣음 (추후 변경 예정)
+		  homework.setM_num(3);
 		  
 		  String result = String.valueOf(hs.insertUpdateHomework(homework));
 		  System.out.println("GbController insertUpdateHomework result -> "+result);
 		  
 		  return "redirect:homeworkForm?result="+result; 
+	  }
+	  
+	  // 숙제 전송 화면 이동
+	  @RequestMapping("/educator/homeworkSend")
+	  public String selectHomeworkList(Homework homework, Model model) {
+		  System.out.println("GbController selectHomeworkList start...");
+		  
+		  return "gb/homeworkSend";
 	  }
 	 
 }
