@@ -7,7 +7,7 @@
 	<typeAliases>
 		<typeAlias alias="Member" 			type="com.choongang.gb2023501.model.Member"/>
 		<typeAlias alias="LearnGrp" 		type="com.choongang.gb2023501.model.LearnGrp"/>
-		<typeAlias alias="LGJoin" 			type="com.choongang.gb2023501.model.LGJoin"/>
+		<typeAlias alias="LgJoin" 			type="com.choongang.gb2023501.model.LgJoin"/>
 		<typeAlias alias="Board" 			type="com.choongang.gb2023501.model.Board"/>
 		<typeAlias alias="BoardComment" 	type="com.choongang.gb2023501.model.BoardComment"/>
 		<typeAlias alias="EduMaterials" 	type="com.choongang.gb2023501.model.EduMaterials"/>
