@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.choongang.gb2023501.domain.GameOrder;
 import com.choongang.gb2023501.model.EduMaterials;
 import com.choongang.gb2023501.ybService.EduMaterialsService;
 import com.choongang.gb2023501.ybService.JpaEduMaterialsService;
@@ -37,26 +41,27 @@ public class YbController {
 		return "yb/eduMaterialsForm";
 	}
 	// 학습자료 리스트
-	@RequestMapping(value = "/operate/eduMaterialsList")
-	public String eduResourceList(EduMaterials eduMaterials, Model model, String currentPage) {
-		System.out.println("ybController operate/eduMaterialsList start...");
-		
-		int selectEduMaterialsListCnt = es.selectEduMaterialsListCnt(eduMaterials);
-		
-		Paging page = new Paging(selectEduMaterialsListCnt, currentPage);
-		
-		eduMaterials.setStart(page.getStart());
-		eduMaterials.setEnd(page.getEnd());
-		// 학습자료 리스트
-		List<EduMaterials> selectEduMaterialsList = es.selectEduMaterialsList(eduMaterials);
-		
-		
-		model.addAttribute("page", page);
-		model.addAttribute("selectEduMaterialsList", selectEduMaterialsList);
-		
-		return "yb/eduMaterialsList";
-	}
+//	@RequestMapping(value = "/operate/eduMaterialsList")
+//	public String eduResourceList(EduMaterials eduMaterials, Model model, String currentPage) {
+//		System.out.println("ybController operate/eduMaterialsList start...");
+//		
+//		int selectEduMaterialsListCnt = es.selectEduMaterialsListCnt(eduMaterials);
+//		
+//		Paging page = new Paging(selectEduMaterialsListCnt, currentPage, 10);
+//		eduMaterials.setStart(page.getStartRow());
+//		eduMaterials.setEnd(page.getEndRow());
+//		// 학습자료 리스트
+//		List<EduMaterials> selectEduMaterialsList = es.selectEduMaterialsList(eduMaterials);
+//		
+//		model.addAttribute("selectEduMaterialsListCnt", selectEduMaterialsListCnt);
+//		model.addAttribute("StartRow",page.getStartRow());
+//		model.addAttribute("page", page);
+//		model.addAttribute("selectEduMaterialsList", selectEduMaterialsList);
+//		
+//		return "yb/eduMaterialsList";
+//	}
 	
+
 	// 학습자료 상세 화면 JPA
 	@GetMapping(value = "/operate/eduMaterialsDetail")
 	public String eduMaterialsDetail(int em_num, Model model) {
@@ -67,13 +72,9 @@ public class YbController {
 		System.out.println("ybController operate/eduMaterialsDetail Optional.eduMaterials -> " + OptiEduMaterials);
 		
 		eduMaterials = OptiEduMaterials.get();
-//		System.out.println("eduMaterials.getMember().getMNum() -> " + eduMaterials.getMember().getMmNum());
-//		int m_num = eduMaterials.getMember().getMmNum();
-//		System.out.println("eduMaterials.getMember().getMNum() = m_num -> " + m_num);
-//		
+		
 		System.out.println("edumaterials.getRegiDate -> " + eduMaterials.getEmRegiDate());
 
-//		model.addAttribute("m_num", m_num);
 		model.addAttribute("eduMaterials", eduMaterials);
 		return "yb/eduMaterialsDetail";
 	}
@@ -97,13 +98,41 @@ public class YbController {
 		return "redirect:/operate/eduMaterialsDetail";
 	}
 	
+	// 학습자료 리스트  jpa
+	@RequestMapping(value = "/operate/eduMaterialsList")
+	public String JpaEduResourceList(EduMaterials eduMaterials, Model model) {
+		log.info("ybController operate/eduMaterialsList start...");
+		Date emRegidate = eduMaterials.getEm_regi_date();
+		
+		// 학습자료 리스트
+		List<com.choongang.gb2023501.domain.EduMaterials> selectEduMaterialsList = js.getListAllEduMaterials();
+
+		model.addAttribute("selectEduMaterialsList", selectEduMaterialsList);
+		
+		return "yb/eduMaterialsList";
+	}
 	
-	// 매출 조회 화면
-	@RequestMapping(value = "salesInquiryDetail")
-	public String salesInquiryDetail() {
-		System.out.println("ybController salesInquiryDetail start...");
+	// 학습자료 검색 리스트 
+	@RequestMapping(value = "/operate/searchEduMaterials")
+	public String searchEduMaterials(String keyword, Model model, String type) {
 		
+		System.out.println("type -> " + type);
+		System.out.println("keyword -> " + keyword);
+		List<com.choongang.gb2023501.domain.EduMaterials> selectEduMaterialsList = js.findByEduMaterialsContaining(keyword, type);
+		System.out.println("selectEduMaterialsList.size() -> " + selectEduMaterialsList.size());
 		
+		model.addAttribute("selectEduMaterialsList", selectEduMaterialsList);
+		return "yb/eduMaterialsList";
+	}
+	
+	// 매출 조회 화면 jsp
+	@RequestMapping(value = "/operate/salesInquiryDetail")
+	public String salesInquiryDetail(Model model) {
+		System.out.println("ybController /operate/salesInquiryDetail start...");
+		
+		List<GameOrder> selectSaleList = js.getListAllGameOrder();
+		log.info("selectSaleList -> " + selectSaleList);
+		model.addAttribute("selectSaleList", selectSaleList);
 		
 		return "yb/salesInquiryDetail";
 	}

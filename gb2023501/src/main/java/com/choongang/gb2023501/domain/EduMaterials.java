@@ -71,6 +71,6 @@ public class EduMaterials {
 		@Column(name = "g_num", nullable = true)
 		private Long ggNum;
 		
-
+		private String type;
 
 }
