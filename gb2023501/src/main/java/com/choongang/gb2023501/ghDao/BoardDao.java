@@ -6,12 +6,15 @@ import com.choongang.gb2023501.model.Board;
 import com.choongang.gb2023501.model.BoardComment;
 
 public interface BoardDao {
+	
 
+	int         		selectBoardListCnt(String b_category);
 	List<Board> 		selectBoardList(Board board);
-	int         		boardCount(String b_category);
-	Board       		selectBdDetail(int b_num);
-	int         		updateBdCount(int b_num);
+	Board       		selectBoard(int b_num);
+	int         		updateBoardCnt(int b_num);
 	List<BoardComment> 	selectCommentList(int b_num);
-	int selectBdCommentListCnt(BoardComment boardComment);
+	int insertBoard(Board board);
+	
+//	int 				selectBdCommentListCnt(BoardComment boardComment);
 
 }

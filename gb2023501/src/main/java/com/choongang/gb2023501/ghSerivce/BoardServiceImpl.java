@@ -15,6 +15,14 @@ import lombok.RequiredArgsConstructor;
 public class BoardServiceImpl implements BoardService {
 	
 	private final BoardDao boardDao;
+	
+	@Override
+	public int selectBoardListCnt(String b_category) {
+		System.out.println("BoardServiceImpl selectBoardListCnt Start...");
+		int result = boardDao.selectBoardListCnt(b_category);
+		
+		return result;
+	}
 
 	@Override
 	public List<Board> selectBoardList(Board board) {
@@ -23,27 +31,19 @@ public class BoardServiceImpl implements BoardService {
 		System.out.println("BoardServiceImpl selectBoardList list.size->"+list.size());
 		return list;
 	}
-
+	
 	@Override
-	public int boardCount(String b_category) {
-		System.out.println("BoardServiceImpl BoardCount Start...");
-		int result = boardDao.boardCount(b_category);
-		
-		return result;
-	}
-
-	@Override
-	public Board selectBdDetail(int b_num) {
-		System.out.println("BoardServiceImpl selectBdDetail Start...");
-		Board board = boardDao.selectBdDetail(b_num);
+	public Board selectBoard(int b_num) {
+		System.out.println("BoardServiceImpl selectBoard Start...");
+		Board board = boardDao.selectBoard(b_num);
 		
 		return board;
 	}
 
 	@Override
-	public int updateBdCount(int b_num) {
+	public int updateBoardCnt(int b_num) {
 		System.out.println("BoardServiceImpl updateBdCount Start...");
-		int result = boardDao.updateBdCount(b_num);
+		int result = boardDao.updateBoardCnt(b_num);
 		
 		return result;
 	}
@@ -57,11 +57,19 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int selectBdCommentListCnt(BoardComment boardComment) {
-		System.out.println("BoardServiceImpl selectBdCommentListCnt Start...");
-		int result = boardDao.selectBdCommentListCnt(boardComment);
+	public int insertBoard(Board board) {
+		System.out.println("BoardServiceImpl insertBoard Start...");
+		int result = boardDao.insertBoard(board);
 		
 		return result;
 	}
+
+//	@Override
+//	public int selectBdCommentListCnt(BoardComment boardComment) {
+//		System.out.println("BoardServiceImpl selectBdCommentListCnt Start...");
+//		int result = boardDao.selectBdCommentListCnt(boardComment);
+//		
+//		return result;
+//	}
 
 }
