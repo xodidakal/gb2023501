@@ -507,7 +507,12 @@
 	}
 	.listTable thead {
 		background-color: #f8f8f8;
+		color: black;
 	}
 	.listTable tr {
+		
 		border-bottom: 1px solid #dfdfdf;
+	}
+	.listTable td {
+		padding: 10px 0px;
 	}

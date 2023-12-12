@@ -52,74 +52,72 @@
             </div>
 			</div>
 	    </div>
-
-		<form action="" method="get" style="text-align: center;">
-	        	<table class="listTable" >
-	        		<thead class="table-light">
-						<tr>
-							<th>No.</th>
-							<th>썸네일</th>
-							<th>학습자료명</th>
-							<th>자료구분</th>
-							<th>자료유형</th>
+        	<table class="listTable" style="text-align: center;">
+        		<thead>
+					<tr>
+						<th>No.</th>
+						<th>썸네일</th>
+						<th>학습자료명</th>
+						<th>자료구분</th>
+						<th>자료유형</th>
 <!-- 							<th style="padding: 15px; width: 250px;">자료주소</th> -->
-							<th>서비스구분</th>		
-							<th width="100px;"></th>				
-						</tr>
-					</thead>
-					<tbody>
-					 <c:forEach var="eduMaterialsList" items="${selectEduMaterialsList }" varStatus="status" begin="1">
-					 	<tr>
-					 		<td>${status.index }</td>
-							<td style="width: 100px;" height="80px;">
-								<img src="${eduMaterialsList.em_attach_name }" alt="도서 썸네일" class="mb-3 img-fluid" style="width: 5rem; height: 80px;">
-							</td>
-							<td>
-								<input type="hidden" value="${eduMaterialsList.em_num }" id="em_num" name="em_num">
-								${eduMaterialsList.em_title }</td>
-							<td>
-								<c:if test="${eduMaterialsList.em_category  == 1}">튜토리얼</c:if>
-								<c:if test="${eduMaterialsList.em_category  == 2}">교육영상</c:if>							
-							</td>
-							<td>
-								<c:if test="${eduMaterialsList.em_type  == 1}">동영상</c:if>
-								<c:if test="${eduMaterialsList.em_type  == 2}">교재</c:if>		
-								<c:if test="${eduMaterialsList.em_type  == 3}">웹사이트</c:if>
-							</td>
+						<th>서비스구분</th>		
+						<th width="100px;"></th>				
+					</tr>
+				</thead>
+				<tbody>
+				 <c:forEach var="eduMaterialsList" items="${selectEduMaterialsList }" varStatus="status" begin="1">
+				 	<tr>
+				 		<td>${status.index }</td>
+						<td style="width: 100px;" height="80px;">
+							<img src="${eduMaterialsList.em_attach_name }" alt="도서 썸네일" class="img-fluid" style="width: 5rem; height: 80px;">
+						</td>
+						<td>
+							<input type="hidden" value="${eduMaterialsList.em_num }" id="em_num" name="em_num">
+							${eduMaterialsList.em_title }</td>
+						<td>
+							<c:if test="${eduMaterialsList.em_category  == 1}">튜토리얼</c:if>
+							<c:if test="${eduMaterialsList.em_category  == 2}">교육영상</c:if>							
+						</td>
+						<td>
+							<c:if test="${eduMaterialsList.em_type  == 1}">동영상</c:if>
+							<c:if test="${eduMaterialsList.em_type  == 2}">교재</c:if>		
+							<c:if test="${eduMaterialsList.em_type  == 3}">웹사이트</c:if>
+						</td>
 
-							<td>
-								<c:if test="${eduMaterialsList.em_payment == 1}">무료</c:if>
-								<c:if test="${eduMaterialsList.em_payment == 2}">유료</c:if>
-								
-							</td>
-							<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" onclick="detailForm(${eduMaterialsList.em_num })">상세</button></td>
-						</tr>
- 					 </c:forEach>
-   				   </tbody>
-                </table>
-              		
-              		<nav class="owl-nav">
-
-				  <ul class="pagination justify-content-center">
-					 	<c:if test="${page.startPage > page.pageBlock }">
-							 <li class="page-item justify-content-center">					
-								<a class="owl-dot text-body" href="eduMaterialsList?currentPage=${page.startPage-page.pageBlock}">이전</a>
-							</li>
-						</c:if>
-		 				<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
-							 <li class="page-item justify-content-center">
-		 						<a class="owl-dot mx-1 text-body" href="eduMaterialsList?currentPage=${i}">${i}</a>
-							</li>
-						</c:forEach>
+						<td>
+							<c:if test="${eduMaterialsList.em_payment == 1}">무료</c:if>
+							<c:if test="${eduMaterialsList.em_payment == 2}">유료</c:if>
 							
-						<c:if test="${page.endPage < page.totalPage }">
-							 <li class="page-item justify-content-center">		 
-								<a class="owl-dot mx-1 text-body" href="eduMaterialsList?currentPage=${page.startPage+page.pageBlock}">다음</a>
-							</li>
-						</c:if>
-				  	</ul>
-				</nav>
-		</form>
+						</td>
+						<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" onclick="detailForm(${eduMaterialsList.em_num })">상세</button></td>
+					</tr>
+					 </c:forEach>
+  				   </tbody>
+               </table>
+             		
+             		<nav class="owl-nav">
+
+			  <ul class="pagination justify-content-center">
+				 	<c:if test="${page.startPage > page.pageBlock }">
+						 <li class="page-item justify-content-center">					
+							<a class="owl-dot text-body" href="eduMaterialsList?currentPage=${page.startPage-page.pageBlock}">이전</a>
+						</li>
+					</c:if>
+	 				<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
+						 <li class="page-item justify-content-center">
+	 						<a class="owl-dot mx-1 text-body" href="eduMaterialsList?currentPage=${i}">${i}</a>
+						</li>
+					</c:forEach>
+						
+					<c:if test="${page.endPage < page.totalPage }">
+						 <li class="page-item justify-content-center">		 
+							<a class="owl-dot mx-1 text-body" href="eduMaterialsList?currentPage=${page.startPage+page.pageBlock}">다음</a>
+						</li>
+					</c:if>
+			  	</ul>
+			</nav>
+
 	</div>
 </div>
 <%@ include file="../common/footerFo.jsp" %>
