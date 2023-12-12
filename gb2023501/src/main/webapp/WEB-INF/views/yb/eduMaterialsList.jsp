@@ -7,16 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-	#table {
-		font-size: 18px;
-	}
-	th {
-		text-align: center;
-		padding: 15px;
-	}
-	tr{
-		border-bottom: 1px solid #f8f8f8;
-	}
+	
 </style>
 <script type="text/javascript">
 	function detailForm(em_num) {
@@ -61,23 +52,22 @@
             </div>
 			</div>
 	    </div>
-		<form action="" method="get">
-	        <div class="table" style="text-align: center;">
-	        	<table class="table">
-	        		<thead class="table-light" style="text-align: center;">
+
+		<form action="" method="get" style="text-align: center;">
+	        	<table class="listTable" >
+	        		<thead class="table-light">
 						<tr>
-							<th style="padding: 15px;">No.</th>
-							<th style="padding: 15px;">썸네일</th>
-							<th style="padding: 15px;">학습자료명</th>
-							<th style="padding: 15px;">자료구분</th>
-							<th style="padding: 15px;">자료유형</th>
+							<th>No.</th>
+							<th>썸네일</th>
+							<th>학습자료명</th>
+							<th>자료구분</th>
+							<th>자료유형</th>
 <!-- 							<th style="padding: 15px; width: 250px;">자료주소</th> -->
-							<th style="padding: 15px;">서비스구분</th>		
+							<th>서비스구분</th>		
 							<th width="100px;"></th>				
 						</tr>
 					</thead>
-					 <tbody>
-					 
+					<tbody>
 					 <c:forEach var="eduMaterialsList" items="${selectEduMaterialsList }" varStatus="status" begin="1">
 					 	<tr>
 					 		<td>${status.index }</td>
@@ -105,8 +95,7 @@
 							<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" onclick="detailForm(${eduMaterialsList.em_num })">상세</button></td>
 						</tr>
  					 </c:forEach>
-						
-	                 </tbody>   
+   				   </tbody>
                 </table>
               		
               		<nav class="owl-nav">
@@ -130,7 +119,6 @@
 						</c:if>
 				  	</ul>
 				</nav>
-			</div>
 		</form>
 	</div>
 </div>

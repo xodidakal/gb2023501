@@ -489,3 +489,25 @@
 .footer .copyright a:hover {
     color: var(--primary);
 }
+
+
+	a {
+		color: #263d94;
+	}
+	
+	.dropdown-menu {
+		border-color: rgb(38, 61, 148);
+	}
+	.listTable {
+		width: 100%;
+	}
+	.listTable th {
+		text-align: center;
+		padding: 15px;
+	}
+	.listTable thead {
+		background-color: #f8f8f8;
+	}
+	.listTable tr {
+		border-bottom: 1px solid #dfdfdf;
+	}
