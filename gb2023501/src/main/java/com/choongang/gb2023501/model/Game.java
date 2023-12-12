@@ -21,4 +21,11 @@ public class Game {
 	private Date	g_regi_date;
 	private Date	g_modi_date;
 	
+	// 조회용
+	private String searchType;
+	private String keyword;
+	private String pageNum;
+	private int	   start;
+	private int	   end;
+	
 }

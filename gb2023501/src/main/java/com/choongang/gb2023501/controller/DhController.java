@@ -19,18 +19,22 @@ public class DhController {
 	
 	private final GameOrderService gos;
 	
+	// 게임 콘텐츠 목록 조회
 	@RequestMapping(value = "subscribe/gameOrderList")
-	public String gameOrderList(GameOrder gameOrder,String currentPage, Model model) {
+	public String gameOrderList(Game game,String currentPage, Model model) {
 		System.out.println("dhController gameOrderList() start..");
-		
-		int totalSearchGameOrder = gos.totalSearchGameOrder(gameOrder);
+		// 게임 콘텐츠 총 개수
+		int totalSearchGameOrder = gos.totalSearchGameOrder(game);
+		String keyword = game.getKeyword();
+		System.out.println("totalSearchGameOrder -> "+totalSearchGameOrder);
 		
 		Paging page = new Paging(totalSearchGameOrder, currentPage, 10);
-		gameOrder.setStart(page.getStartPage());
-		gameOrder.setEnd(page.getEndPage());
+		game.setStart(page.getStartRow());
+		game.setEnd(page.getEndRow());
 		
-		List<GameOrder> listGameOrder = gos.listGameOrder(gameOrder);
+		List<Game> listGameOrder = gos.listGameOrder(game);
 		
+		model.addAttribute("keyword", keyword);
 		model.addAttribute("listGameOrder", listGameOrder);
 		model.addAttribute("page", page);
 		model.addAttribute("totalSearchGameOrder",totalSearchGameOrder);
