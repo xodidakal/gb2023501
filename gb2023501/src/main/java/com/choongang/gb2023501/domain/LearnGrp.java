@@ -2,6 +2,7 @@ package com.choongang.gb2023501.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,7 +35,7 @@ public class LearnGrp {
 	private Member member;
 	
 	// 게임번호 (FK)
-	@ManyToOne	// 1게임 : M학습그룹
+	@ManyToOne(fetch = FetchType.LAZY)	// 1게임 : M학습그룹
 	@JoinColumn(name = "g_num")
 	private Game game;
 	

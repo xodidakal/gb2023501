@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class LgJoinPK implements Serializable {
-	private int LearnGrp;
+	private int learnGrp;
 	private int member;
 }
