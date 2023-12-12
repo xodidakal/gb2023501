@@ -9,11 +9,29 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript">
 	$(function(){
+		  // 숙제명 검색 셀렉트 박스 변경 시 검색
 		  $("#searchHtitle").change(function(){
 		    // Value값 가져오기
-		    var val = $("#searchHtitle :selected").val();
+		    var h_num = $("#searchHtitle :selected").val();
 
-			alert("val -> "+val);
+			alert("h_num -> "+h_num);
+		  });
+		  
+		  // 학습그룹명 검색 셀렉트 박스 변경 시 검색
+		  $("#searchLgtitle").change(function(){
+			    // Value값 가져오기
+			    var lg_num = $("#searchLgtitle :selected").val();
+
+				alert("lg_num -> "+lg_num);
+		  });
+		  
+		  // 전체 선택 클릭 시 발생 이벤트
+		  $("#checkAll").click(function() {
+			  var checkAll = $('#checkAll').val();
+			  if(checkAll == '전체선택'){
+				  alert('전체선택이야');
+				  $("input[name=m_num]").prop("checked", true);
+			  }
 		  });
 	});
 	
@@ -31,7 +49,7 @@
 	         <h2 style="margin-bottom: 15px;">숙제 전송</h2>
 	    </div>
 	    
-		<form action="www.daum.net" name="frm">		
+		<form action="#" name="frm">		
 			<!-- 교육자 숙제 목록 -->
 			<div class="input-group col-md-5 mb-3"> 
 				<!-- 숙제명 검색 셀렉트 박스 -->
@@ -39,7 +57,7 @@
 				<select id="searchHtitle" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
 					<option id="h_title" value="전체">전체</option>
 					<c:forEach var="homework" items="${homeworkList }" varStatus="status">
-						<option id="h_title" value="${homework.h_title }">${homework.h_title }</option>
+						<option id="h_title" value="${homework.h_num }">${homework.h_title }</option>
 					</c:forEach>
 				</select>      	
 		    </div>
@@ -96,45 +114,51 @@
 			<div class="input-group col-md-5 mb-3 mt-5"> 
 				<!-- 카테고리 분류 -->
 				<span style="margin: 10px 15px 10px 0px;">학습그룹명</span>&nbsp;&nbsp;
-				<select id="searchHtitle" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
-					<option id="h_title" value="전체">전체</option>
-					<c:forEach var="homework" items="${homeworkList }" varStatus="status">
-						<option id="h_title" value="${homework.h_title }">${homework.h_title }</option>
+				<select id="searchLgtitle" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
+					<c:forEach var="learnGrp" items="${learnGrpList }" varStatus="status">
+						<option id="lg_title" value="${learnGrp.lg_num }">${learnGrp.lg_title }</option>
 					</c:forEach>
 				</select>      	
 	          	
 				<div class="col">
 				<div class="d-flex align-items-center justify-content-end">
 	          		<div>
-		          		<a onclick="allcheck()"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="전체선택"></a>
+		          		<input id="checkAll" class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="전체선택">
 		          		<button class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;">숙제전송</button>
 	            	</div>
 	            </div>
 				</div>
 		    </div>
 			<div>
-	        	<table class="listTable">
-	        		<thead>
-						<tr>
-							<th>선택</th>
-							<th>학습자명</th>
-							<th>전화번호</th>
-							<th>현재레벨</th>	
-						</tr>
-					</thead>
-					 <tbody>
- 					 <c:forEach var="homework" items="${homeworkList }">
-					 	<tr>
-					 		<td><input class="form-check-input" type="checkbox" name="m_num" id="flexRadioDefault1" ></td>
-							<td>${homework.h_title }</td>
-							<td>${homework.h_content }</td>
-							<td>${homework.h_level }</td>
-						</tr>
-						<c:set var="StartRow" value="${StartRow +1}"/>					
- 					 </c:forEach>
-						
-	                 </tbody>   
-                </table>
+				<c:choose>
+					<c:when test="${lgJoinMemberList.size() > 0 }">
+						<table class="listTable">
+			        		<thead>
+								<tr>
+									<th>선택</th>
+									<th>학습자명</th>
+									<th>전화번호</th>
+									<th>현재레벨</th>	
+								</tr>
+							</thead>
+							 <tbody>
+		 					 <c:forEach var="lgJoinMember" items="${lgJoinMemberList }">
+							 	<tr>
+							 		<td><input class="form-check-input" type="checkbox" name="m_num" value="${lgJoinMember.m_num }" id="flexRadioDefault1" ></td>
+									<td>${lgJoinMember.m_name }</td>
+									<td>${lgJoinMember.m_phone }</td>
+									<td>${lgJoinMember.hr_level }</td>
+								</tr>
+								<c:set var="StartRow" value="${StartRow +1}"/>					
+		 					 </c:forEach>
+								
+			                 </tbody>   
+		                </table>
+					</c:when>
+					<c:otherwise>
+						등록된 학습 그룹이 없습니다.
+					</c:otherwise>
+				</c:choose>
             </div>
 		</form>
 	</div>

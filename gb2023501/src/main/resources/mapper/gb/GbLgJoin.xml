@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.choongang.gb2023501.GbLgJoinMapper"> 
+	
+	<select id="gbSelectLgJoinList" parameterType="homework" resultType="LearnGrp">
+		SELECT *
+		FROM learn_grp
+		WHERE m_num = #{m_num}
+	</select>
+	
+	<select id="gbSelectLgJoinMemberList" parameterType="HwSend" resultType="LgJoin">
+		SELECT a.lg_num, a.m_num, a.m_name, REGEXP_REPLACE(a.m_phone, '(.{3})(.+)(.{4})', '\1-\2-\3') m_phone, b.hr_level
+		FROM (SELECT lgj.lg_num, m.m_num, m.m_name, m.m_phone
+		      FROM lg_join lgj, member m
+		      WHERE lgj.m_num = m.m_num
+		      AND lg_num = #{lg_num}) a,
+		      
+		     (SELECT hr.m_num, MAX(HR_LEVEL) hr_level
+		      FROM lg_join lgj, hw_record hr
+		      WHERE lgj.m_num = hr.m_num
+		      AND lgj.lg_num = #{lg_num}
+		      GROUP BY hr.m_num ) b
+		WHERE a.m_num = b.m_num
+	</select>
+</mapper>

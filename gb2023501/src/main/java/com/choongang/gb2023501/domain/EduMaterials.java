@@ -13,6 +13,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.lang.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
@@ -66,9 +68,9 @@ public class EduMaterials {
 		@Column(name = "em_attach_path")
 		private String emAttachPath;
 		
-		@Column(name = "g_num")
-		private int ggNum;
+		@Column(name = "g_num", nullable = true)
+		private Long ggNum;
 		
-
+		private String type;
 
 }
