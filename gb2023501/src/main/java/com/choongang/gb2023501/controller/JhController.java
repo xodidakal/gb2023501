@@ -5,12 +5,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.choongang.gb2023501.repository.MemberRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
 public class JhController {
 
+	private final MemberRepository mr;
 	@RequestMapping(value = "loginForm")
 	public String login() {
 		
