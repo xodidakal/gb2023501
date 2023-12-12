@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원가입</title>
 </head>
 <body>
 <div class="row g-0 mb-5  justify-content-center">

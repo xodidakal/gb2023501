@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.choongang.gb2023501.domain.Member;
@@ -49,14 +50,8 @@ public class PrincipalDetails implements UserDetails{
 		//근데 member.getCategory(); 이게 사실상 유저의 권한인데 현재 도메인에서 category의 타입을 int로 잡아서 이대로 리턴할 수가 없음
 		//따라서 int -> String으로 바꿈
 		Collection<GrantedAuthority> collect = new ArrayList<>();
-		collect.add(new GrantedAuthority() {
-			
-			@Override
-			public String getAuthority() {
-				String strCategory = String.valueOf(member.getCategory());
-				return strCategory;
-			}
-		});
+		collect.add(new SimpleGrantedAuthority("ROLE_" + member.getRole().name()));
+		
 		
 		
 		return collect;

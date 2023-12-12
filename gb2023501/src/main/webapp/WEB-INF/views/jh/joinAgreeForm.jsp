@@ -62,7 +62,7 @@
     </script>
 
     <meta charset="UTF-8">
-    <title>Insert title here</title>
+    <title>회원 가입 동의</title>
 </head>
 <body>
     <div class="row g-0 mb-5  justify-content-center">
@@ -70,6 +70,7 @@
             <div class="row g-3">
                 <h2 class="display-7 mb-4">회원가입</h2>
 
+<!-- 전체적으로 여백 좁히고  가운데로 놓고  가운데 정렬하고 소제목은 왼쪽 정렬-->
                 <hr class="my-3">
 
                 <div class="mt-5 mb-4">
