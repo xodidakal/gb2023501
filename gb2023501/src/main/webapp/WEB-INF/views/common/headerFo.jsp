@@ -88,10 +88,10 @@
            	 	<div class="col-11">
            	 	  <div class="d-flex align-items-center justify-content-end">
            	 		<div class="ps-3">            	 			
-                       <h6 class="mb-0"><a href="/joinAgreeForm">회원가입</a></h6>
+                       <h6 class="mb-0"><a href="/info/joinAgreeForm">회원가입</a></h6>
                     </div>
                     <div class="ps-3"> 
-                       <h6 class="mb-0"><a href="/loginForm">로그인</a></h6>
+                       <h6 class="mb-0"><a href="/info/loginForm">로그인</a></h6>
                     </div>
                   </div>
 <!--                   <div class="d-flex align-items-center justify-content-end"> -->
@@ -195,7 +195,7 @@
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
                         <a href="/operate/gameList" class="dropdown-item">게임콘텐츠 관리</a>
                         <a href="/operate/eduMaterialsList" class="dropdown-item">학습자료 관리</a>
-                        <a href="#!" class="dropdown-item">회원 관리</a>
+                        <a href="/operate/memberList" class="dropdown-item">회원 관리</a>
                         <a href="#!" class="dropdown-item">매출 관리</a>
                     </div>
                 </div>

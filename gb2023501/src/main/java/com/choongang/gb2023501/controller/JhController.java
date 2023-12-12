@@ -14,13 +14,13 @@ import lombok.RequiredArgsConstructor;
 public class JhController {
 
 	private final MemberRepository mr;
-	@RequestMapping(value = "loginForm")
+	@RequestMapping(value = "info/loginForm")
 	public String login() {
 		
 		return "jh/loginForm";
 	}
 	
-	@RequestMapping(value = "joinAgreeForm")
+	@RequestMapping(value = "info/joinAgreeForm")
 	public String joinAgreeForm() {
 		
 		return "jh/joinAgreeForm";
@@ -37,6 +37,12 @@ public class JhController {
 	public String joinForm() {
 		
 		return "jh/joinForm";
+	}
+	
+	@RequestMapping(value = "operate/memberList")
+	public String memberList() {
+		
+		return "jh/memberList";
 	}
 	
 	

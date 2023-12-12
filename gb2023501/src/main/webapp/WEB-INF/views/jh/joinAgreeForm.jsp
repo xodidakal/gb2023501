@@ -3,19 +3,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style type="text/css">
-        tr {
-            height: 60px;
-        }
-        #table {
-            font-size: 18px;
-        }
-        th {
-            text-align: left;
-            width: 150px;
-        }
-    </style>
-
     <script type="text/javascript">
         function updateVerificationInput() {
             var phoneRadio 		 	= document.getElementById("phone");
@@ -133,7 +120,7 @@
                         <h5 class="mb-4">본인 인증</h5>
                         <div>
                             <form action="joinForm" method="post" id="verificationForm">
-                                <table id="table" class="mx-auto">
+                                <table id="table" class="mx-auto formTable">
                                     <tr>
                                         <th>이름</th>
                                         <td colspan="2">

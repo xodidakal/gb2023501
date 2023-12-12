@@ -34,7 +34,7 @@
             
                 <div class="row justify-content-center mb-5">
                     <div class="row g-3 col-sm-6">
-                        <h2 class="display-7 mb-4 text-center">로그인</h2>
+                        <h2 class="display-7 mb-4 ">로그인</h2>
                         <hr class="my-3">
                         <input type="text" class="form-control" id="id" name="m_id" placeholder="id">
                         <input type="password" class="form-control" id="pswd" name="m_pswd" placeholder="password">
