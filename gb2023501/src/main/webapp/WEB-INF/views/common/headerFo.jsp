@@ -203,7 +203,7 @@
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">운영마당</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
                         <a href="#!" class="dropdown-item">게임콘텐츠 관리</a>
-                        <a href="eduMaterialsList" class="dropdown-item">학습자료 관리</a>
+                        <a href="/operate/eduMaterialsList" class="dropdown-item">학습자료 관리</a>
                         <a href="#!" class="dropdown-item">회원 관리</a>
                         <a href="#!" class="dropdown-item">매출 관리</a>
                     </div>

@@ -21,7 +21,7 @@
 <script type="text/javascript">
 	function detailForm(em_num) {
 		alert(em_num);
-		location.href = "eduMaterialsDetail?em_num="+em_num;
+		location.href = "/operate/eduMaterialsDetail?em_num="+em_num;
 	}
 </script>
 </head>
@@ -56,7 +56,7 @@
 			<div class="col">
 			<div class="d-flex align-items-center justify-content-end">
           		<div style="width: 65px;">
-	          		<a href="eduResourceForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="작성"></a>
+	          		<a href="/operate/eduResourceForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="작성"></a>
             	</div>
             </div>
 			</div>

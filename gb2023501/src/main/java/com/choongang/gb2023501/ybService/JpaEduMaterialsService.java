@@ -27,12 +27,12 @@ public class JpaEduMaterialsService {
 		return findByEduMaterials;
 	}
 
-	public void updateByEduMaterials(EduMaterials eduMaterials) {
+	public int updateByEduMaterials(EduMaterials eduMaterials) {
 		System.out.println("YbJpaEduMaterialsService updateByEduMaterials start...");
-		System.out.println("YbJpaEduMaterialsService updateByEduMaterials em_num -> " + eduMaterials);
+		System.out.println("YbJpaEduMaterialsService updateByEduMaterials eduMaterials -> " + eduMaterials);
 		
-		yr.updateByEduMaterials(eduMaterials);
-		return;
+		int result = yr.updateByEduMaterials(eduMaterials);
+		return result;
 	}
 
 }
