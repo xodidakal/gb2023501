@@ -3,12 +3,12 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.choongang.gb2023501.BoardMapper">
-	<!-- <select id="mkhSelectBoardList" resultType="board" parameterType="board">
-		SELECT b.*, m.*
-		FROM   board b, member m
-		WHERE  m.m_num = b.m_num
-		AND    b.b_category = #{b_category}
-	</select> -->
+	
+	<select id="mkhSelectBoardCnt" resultType="int">
+		SELECT count(*)
+		FROM   board
+		WHERE  b_category = #{b_category}
+	</select>
 	
 	<select id="mkhSelectBoardList" parameterType="board" resultType="board">			
 			SELECT *
@@ -17,25 +17,26 @@
 		        SELECT rownum rn, a.*
 			    FROM
 			    (
-				       SELECT b.*, m.m_name
-				       FROM board b, member m
-				       WHERE m.m_num = b.m_num
-				       AND b.b_category = #{b_category}
+				       SELECT 	b.*, m.m_name,
+					       		(
+					       		 SELECT count(*)
+					       		 FROM   board_comment
+					       		 WHERE  b_num = b.b_num
+					       		 ) comment_count
+				       FROM  	board b, member m
+				       WHERE 	m.m_num = b.m_num
+				       AND 	 	b.b_category = #{b_category}
+				       ORDER BY b.b_flag asc
 			    ) a
 		    )
 		    WHERE rn BETWEEN #{start} AND #{end}	
 	</select>
 	
-	<select id="mkhBoardCount" resultType="int">
-		SELECT count(*)
-		FROM   board
-		WHERE  b_category = #{b_category}
-	</select>
-	
-	<select id="mkhSelectBoard" resultType="board" parameterType="int">
-		SELECT *
-		FROM   board
-		WHERE  b_num = #{b_num}
+	<select id="mkhSelectBoard" parameterType="int" resultType="board">
+		SELECT b.*, m.*
+		FROM   board b, member m
+		WHERE  m.m_num = b.m_num
+		AND    b_num = #{b_num}
 	</select>
 	
 	<!-- <update id="updateBoard" parameterType="int">
@@ -53,6 +54,12 @@
 		SET	   b_count = b_count + 1
 		WHERE  b_num = #{b_num}
 	</update>
+	
+	<!-- <insert id="mkhInsertBoard" parameterType="board">
+		INSERT 
+		INTO   board(b_num,  				b_category, 	b_notie_type, 	b_flag, 	m_num, 		b_title, 	b_content, 		b_regi_date, 		b_modi_date, 					b_count, 	b_attach_name, 	b_attach_path, 		b_ref_num)
+		VALUES 	(seq_board_b_num.nextval, #{b_category}, #{b_notie_type}, 	#{b_flag},	1,			#{b_title}, #{b_content}, 	sysdate, 	#{b_modi_date, jdbcType = DATE}, 		0	, #{b_attach_name}, #{b_attach_path}, #{b_ref_num})
+	</insert> -->
 	
 
 </mapper>

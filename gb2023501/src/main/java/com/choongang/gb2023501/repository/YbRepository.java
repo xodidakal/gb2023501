@@ -8,7 +8,7 @@ public interface YbRepository {
 
 	Optional<EduMaterials> 		findByEduMaterials(int em_num);
 
-	void 						updateByEduMaterials(EduMaterials eduMaterials);
+	int 						updateByEduMaterials(EduMaterials eduMaterials);
 
 
 	

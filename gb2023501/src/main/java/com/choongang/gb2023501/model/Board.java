@@ -22,8 +22,10 @@ public class Board {
 	
 	// 조회용
 	private String      m_name;			// 이름
-	private int			rn;				//목록 rownum번호
-	private int			start;			//페이지 시작번호
-	private int			end;			//페이지 끝번호
+	private int			rn;				// 목록 rownum번호
+	private int			start;			// 페이지 시작번호
+	private int			end;			// 페이지 끝번호
+	private int			comment_count;  // 댓글 수
+	private String		m_category;		// 회원 구분
 
 }

@@ -31,6 +31,7 @@
 			alert("val -> "+val);
 		  });
 	});
+	
 </script>
 </head>
 <body>
@@ -44,26 +45,20 @@
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">숙제 전송</h2>
 	    </div>
-
-		<div class="input-group col-md-5 mb-3"> 
-			<!-- 카테고리 분류 -->
-			<span style="margin: 10px 15px 10px 0px;">숙제명</span>&nbsp;&nbsp;
-			<select id="searchHtitle" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
-				<option id="h_title" value="전체">전체</option>
-				<c:forEach var="homework" items="${homeworkList }" varStatus="status">
-					<option id="h_title" value="${homework.h_title }">${homework.h_title }</option>
-				</c:forEach>
-			</select>      	
-          	
-			<div class="col">
-			<div class="d-flex align-items-center justify-content-end">
-          		<div>
-	          		<a href="boardForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="등록"></a>
-            	</div>
-            </div>
-			</div>
-	    </div>
-		<form action="#!">
+		<form action="www.daum.net" name="frm">
+		
+			<!-- 교육자 숙제 목록 -->
+			<div class="input-group col-md-5 mb-3"> 
+				<!-- 숙제명 검색 셀렉트 박스 -->
+				<span style="margin: 10px 15px 10px 0px;">숙제명</span>&nbsp;&nbsp;
+				<select id="searchHtitle" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
+					<option id="h_title" value="전체">전체</option>
+					<c:forEach var="homework" items="${homeworkList }" varStatus="status">
+						<option id="h_title" value="${homework.h_title }">${homework.h_title }</option>
+					</c:forEach>
+				</select>      	
+		    </div>
+		
 	        <div class="table-responsive" style="text-align: center;">
 	        	<table class="table">
 	        		<thead class="table-light" style="text-align: center;">
@@ -79,7 +74,9 @@
 					 <tbody>
  					 <c:forEach var="homework" items="${homeworkList }">
 					 	<tr>
-					 		<td class="align-middle"><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
+					 		<td class="align-middle">
+					 			<input class="form-check-input" type="checkbox" name="h_num" value="${homework.h_num }" id="flexRadioDefault1" >
+					 		</td>
 							<td class="align-middle">${StartRow }</td>
 							<td class="align-middle">${homework.h_title }</td>
 							<td class="align-middle">${homework.h_content }</td>
@@ -109,6 +106,27 @@
 					</div>
 				</div>
 			</div>
+			<hr>
+			<!-- 교육자 학습그룹 학습자 목록 -->
+			<div class="input-group col-md-5 mb-3 mt-5"> 
+				<!-- 카테고리 분류 -->
+				<span style="margin: 10px 15px 10px 0px;">학습그룹명</span>&nbsp;&nbsp;
+				<select id="searchHtitle" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
+					<option id="h_title" value="전체">전체</option>
+					<c:forEach var="homework" items="${homeworkList }" varStatus="status">
+						<option id="h_title" value="${homework.h_title }">${homework.h_title }</option>
+					</c:forEach>
+				</select>      	
+	          	
+				<div class="col">
+				<div class="d-flex align-items-center justify-content-end">
+	          		<div>
+		          		<a onclick="allcheck()"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="전체선택"></a>
+		          		<button class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;">숙제전송</button>
+	            	</div>
+	            </div>
+				</div>
+		    </div>
 			<div class="table-responsive" style="text-align: center;">
 	        	<table class="table">
 	        		<thead class="table-light" style="text-align: center;">
@@ -123,11 +141,9 @@
  					 <c:forEach var="homework" items="${homeworkList }">
 					 	<tr>
 					 		<td class="align-middle"><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
-							<td class="align-middle">${StartRow }</td>
 							<td class="align-middle">${homework.h_title }</td>
 							<td class="align-middle">${homework.h_content }</td>
 							<td class="align-middle">${homework.h_level }</td>
-							<td class="align-middle">${homework.h_deadline }</td>
 						</tr>
 						<c:set var="StartRow" value="${StartRow +1}"/>					
  					 </c:forEach>

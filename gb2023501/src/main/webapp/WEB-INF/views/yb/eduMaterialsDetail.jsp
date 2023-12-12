@@ -38,8 +38,8 @@ function clickImage2(){
 <!--     </div> -->
 <div class="row g-0 justify-content-center">
 	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
-		<form action="updateEduMaterials" method="post">
-<%-- 			<input type="text" value="${eduMaterials.emNum }" name="emNum" id="emNum"> --%>
+		<form action="/operate/updateEduMaterials" method="post">
+			<input type="hidden" value="${eduMaterials.emNum }" name="em_num" id="em_num">
 <%-- 			<input type="text" value="${m_num }" name="mNum" id="mNum"> --%>
 <%-- 			<input type="text" value="${eduMaterials.ggNum }" name="ggNum" id="ggNum"> --%>
 <%-- 			<input type="text" value="${eduMaterials.emAttachPath }" name="emAttachPath" id="emAttachPath"> --%>
@@ -179,8 +179,8 @@ function clickImage2(){
                 </table>
                 <div class="d-grid gap-2 d-flex justify-content-center" >
 					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="수정">
-					<a href="eduResourceList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
-					<a href="eduResourceList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
+					<a href="/operate/eduMaterialsList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
+					<a href="/operate/eduMaterialsList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
 				</div>
                 
 			</div>

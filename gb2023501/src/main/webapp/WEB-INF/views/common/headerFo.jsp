@@ -34,15 +34,6 @@
 
     <!-- Template Stylesheet -->
     <link href="../assets/css/style.css" rel="stylesheet">
-<style type="text/css">
-	a {
-		color: #263d94;
-	}
-	
-	.dropdown-menu {
-		border-color: rgb(38, 61, 148);
-	}
-</style>
 </head>
 
 <body>
@@ -177,7 +168,7 @@
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">구독서비스</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
                         <a href="/subscribe/gameOrderList" class="dropdown-item">게임콘텐츠 구독신청</a>
-                        <a href="#!" class="dropdown-item">내 구독콘텐츠</a>
+                        <a href="/subscribe/myGameOrderList" class="dropdown-item">내 구독콘텐츠</a>
                     </div>
                 </div>
                 <div class="nav-item dropdown">
@@ -202,8 +193,8 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">운영마당</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
-                        <a href="#!" class="dropdown-item">게임콘텐츠 관리</a>
-                        <a href="eduMaterialsList" class="dropdown-item">학습자료 관리</a>
+                        <a href="/operate/gameList" class="dropdown-item">게임콘텐츠 관리</a>
+                        <a href="/operate/eduMaterialsList" class="dropdown-item">학습자료 관리</a>
                         <a href="#!" class="dropdown-item">회원 관리</a>
                         <a href="#!" class="dropdown-item">매출 관리</a>
                     </div>
@@ -211,9 +202,9 @@
                  <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">고객센터</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
-                        <a href="boardList?b_category=1" class="dropdown-item">공지사항</a>
-                        <a href="boardList?b_category=2" class="dropdown-item">Q&A</a>
-                        <a href="boardList?b_category=3" class="dropdown-item">FAQ</a>
+                        <a href="/customer/boardList?b_category=1" class="dropdown-item">공지사항</a>
+                        <a href="/customer/boardList?b_category=2" class="dropdown-item">Q&A</a>
+                        <a href="/customer/boardList?b_category=3" class="dropdown-item">FAQ</a>
                     </div>
                 </div>
             </div>

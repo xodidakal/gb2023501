@@ -113,7 +113,7 @@
                 </table>
                 <div class="d-grid gap-2 d-md-flex justify-content-center" >
 					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="등록하기">
-					<a href="eduResourceList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록가기</button></a>
+					<a href="/operate/eduResourceList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록가기</button></a>
 				</div>
                 
 			</div>
