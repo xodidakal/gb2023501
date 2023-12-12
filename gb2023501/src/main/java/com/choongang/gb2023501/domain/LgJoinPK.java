@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class LGJoinPK implements Serializable {
+public class LgJoinPK implements Serializable {
 	private int LearnGrp;
 	private int member;
 }

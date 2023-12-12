@@ -6,19 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
-	tr {
-		height: 70px;
-	}
-	#table {
-		font-size: 18px;
-	}
-	th {
-		text-align: left;
-		width: 150px;
-	}
-</style>
-
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->
@@ -31,7 +18,7 @@
 	        <div class="row g-3">
 	        <h2 class="display-7 mb-4">등록화면</h2>
 	        <hr class="my-3">
-	        	<table id="table">
+	        	<table class="formTable">
 					<tr>
 						<th>셀렉스 박스</th>
 							<td width="150px;">
