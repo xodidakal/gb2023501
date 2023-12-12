@@ -46,7 +46,7 @@
             </div>
 			</div>
 	    </div>
-       	<table class="listTable" style="text-align: center;">
+       	<table class="listTable">
        		<thead>
 				<tr>
 					<th>No.</th>

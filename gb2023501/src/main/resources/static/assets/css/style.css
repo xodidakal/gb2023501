@@ -499,6 +499,7 @@ a {
 }
 .listTable {
 	width: 100%;
+	text-align: center;
 }
 .listTable th {
 	text-align: center;

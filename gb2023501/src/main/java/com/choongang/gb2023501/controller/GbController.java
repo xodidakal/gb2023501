@@ -94,6 +94,9 @@ public class GbController {
 		  // 생성한 숙제 리스트 조회
 		  List<Homework> homeworkList = hs.selectHomeworkList(homework);
 		  
+		  // 교육자의 학습그룹 가입 회원 조회
+		  
+		  
 		  model.addAttribute("homeworkList", homeworkList);
 		  model.addAttribute("StartRow",page.getStartRow());
 		  model.addAttribute("page", page);

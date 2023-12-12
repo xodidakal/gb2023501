@@ -7,19 +7,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-	#table {
-		font-size: 18px;
-	}
-	th {
-		text-align: center;
-		padding: 15px;
-	}
-	.page-item{
-		margin: 0px 5px 0px 5px;
-	}
-	.page-link{
-		color: black;
-	}
 	#hwForm {
 		border: 1px solid black;
 		margin-bottom : 15px;
@@ -118,16 +105,15 @@
 	    </form>
 	    
 	    <!-- 생성한 숙제 목록 -->
-        <div class="table-responsive" style="text-align: center;">
-        	<table class="table">
-        		<thead class="table-light" style="text-align: center;">
+        	<table class="listTable">
+        		<thead>
 					<tr>
-						<th style="padding: 15px;">No.</th>
-						<th style="padding: 15px; width: 25%;">숙제명</th>
-						<th style="padding: 15px; width: 45%;">숙제내용</th>
-						<th style="padding: 15px;">진도</th>
-						<th style="padding: 15px;">제출기한</th>
-						<th style="padding: 15px;">생성일자</th>		
+						<th>No.</th>
+						<th style="width: 25%;">숙제명</th>
+						<th style="width: 45%;">숙제내용</th>
+						<th>진도</th>
+						<th>제출기한</th>
+						<th>생성일자</th>		
 					</tr>
 				</thead>
 				<tbody>
@@ -136,22 +122,22 @@
 					 		onmouseout="this.style.backgroundColor=''"
 					 		onclick="homeworkUpdate(${status.index })">
 					 		
-					 		<td class="align-middle">
+					 		<td>
 					 			<input type="hidden" id="h_num${status.index }" value="${homework.h_num }">${StartRow }
 					 		</td>
-							<td class="align-middle">
+							<td>
 								<input type="hidden" id="h_title${status.index }" value="${homework.h_title }"> ${homework.h_title }
 							</td>
-							<td class="align-middle">
+							<td>
 								<input type="hidden" id="h_content${status.index }" value="${homework.h_content }">${homework.h_content }
 							</td>
-							<td class="align-middle">
+							<td>
 								<input type="hidden" id="h_level${status.index }" value="${homework.h_level }">${homework.h_level }
 							</td>
-							<td class="align-middle">
+							<td>
 								<input type="hidden" id="h_deadline${status.index }" value="${homework.h_deadline }">${homework.h_deadline }
 							</td>
-							<td class="align-middle">
+							<td>
 								<input type="hidden" id="h_regi_date${status.index }" value="${homework.h_regi_date }">${homework.h_regi_date }
 							</td>
 						</tr>
@@ -180,7 +166,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
 <%@ include file="../common/footerFo.jsp" %>
 </body>
 </html>
