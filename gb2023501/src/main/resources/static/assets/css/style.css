@@ -498,10 +498,16 @@
 	.dropdown-menu {
 		border-color: rgb(38, 61, 148);
 	}
-	#table {
-		font-size: 18px;
+	.listTable {
+		width: 100%;
 	}
-	th {
+	.listTable th {
 		text-align: center;
 		padding: 15px;
+	}
+	.listTable thead {
+		background-color: #f8f8f8;
+	}
+	.listTable tr {
+		border-bottom: 1px solid #dfdfdf;
 	}
