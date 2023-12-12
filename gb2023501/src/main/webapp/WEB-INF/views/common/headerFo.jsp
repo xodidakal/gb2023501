@@ -34,15 +34,6 @@
 
     <!-- Template Stylesheet -->
     <link href="../assets/css/style.css" rel="stylesheet">
-<style type="text/css">
-	a {
-		color: #263d94;
-	}
-	
-	.dropdown-menu {
-		border-color: rgb(38, 61, 148);
-	}
-</style>
 </head>
 
 <body>

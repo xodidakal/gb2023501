@@ -489,3 +489,19 @@
 .footer .copyright a:hover {
     color: var(--primary);
 }
+
+
+	a {
+		color: #263d94;
+	}
+	
+	.dropdown-menu {
+		border-color: rgb(38, 61, 148);
+	}
+	#table {
+		font-size: 18px;
+	}
+	th {
+		text-align: center;
+		padding: 15px;
+	}
