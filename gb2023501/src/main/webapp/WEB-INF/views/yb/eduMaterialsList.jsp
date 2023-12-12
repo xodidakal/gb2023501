@@ -26,24 +26,22 @@
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">학습 자료 목록</h2>
-	         <p style="margin-bottom: 35px;">총 10 건</p>
+	         <p style="margin-bottom: 35px;">총 ${selectEduMaterialsListCnt } 건</p>
 	    </div>
-		<a href="salesInquiryDetail">가즈아</a>
+	    <form action="/operate/searchEduMaterials" method="GET" role="search"> 
 		<div class="input-group col-md-5 mb-3"> 
 			<!-- 카테고리 분류 -->
-			<select id="search_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
-				<option value="title">튜토리얼</option>
-				<option value="writer">교육</option>
-			</select>&nbsp;&nbsp;
+<!-- 		<select id="search_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da"> -->
+<!-- 			<option value="title">튜토리얼</option> -->
+<!-- 			<option value="writer">교육</option> -->
+<!-- 		</select>&nbsp;&nbsp; -->
 			<!-- 카테고리 검색 -->
-			<select id="search_type" class="w-17 rounded" style="border-color: #ced4da">
-				<option value="title">튜토리얼</option>
+			<select id="type" name="type" class="w-17 rounded" style="border-color: #ced4da">
+				<option value="emTitle">자료명</option>
 				<option value="writer">교육</option>
 			</select>&nbsp;&nbsp;
-            <input id = "search_keyword" class="form-control rounded" type="search" placeholder="검색해라" style="width: 160px;">
-          	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
-         		<a href="#!"><i class="bi bi-search mt-2"></i></a>
-          	</div>	
+	            <input id="search" name="keyword" class="form-control rounded" type="search" placeholder="검색해라" style="width: 160px;">
+	         		<button class="btn bi bi-search rounded"></button>
 			<div class="col">
 			<div class="d-flex align-items-center justify-content-end">
           		<div style="width: 65px;">
@@ -52,6 +50,7 @@
             </div>
 			</div>
 	    </div>
+	    </form>
         	<table class="listTable" style="text-align: center;">
         		<thead>
 					<tr>
@@ -65,58 +64,56 @@
 						<th width="100px;"></th>				
 					</tr>
 				</thead>
+				
 				<tbody>
-				 <c:forEach var="eduMaterialsList" items="${selectEduMaterialsList }" varStatus="status" begin="1">
+				 <c:forEach var="eduMaterialsList" items="${selectEduMaterialsList }">
 				 	<tr>
-				 		<td>${status.index }</td>
+				 		<td>${StartRow }</td>
 						<td style="width: 100px;" height="80px;">
-							<img src="${eduMaterialsList.em_attach_name }" alt="도서 썸네일" class="img-fluid" style="width: 5rem; height: 80px;">
+							<img src="${eduMaterialsList.emAttachName }" alt="도서 썸네일" class="img-fluid" style="width: 5rem; height: 80px;">
 						</td>
 						<td>
-							<input type="hidden" value="${eduMaterialsList.em_num }" id="em_num" name="em_num">
-							${eduMaterialsList.em_title }</td>
+							<input type="hidden" value="${eduMaterialsList.emNum }" id="em_num" name="em_num">
+							${eduMaterialsList.emTitle }</td>
 						<td>
-							<c:if test="${eduMaterialsList.em_category  == 1}">튜토리얼</c:if>
-							<c:if test="${eduMaterialsList.em_category  == 2}">교육영상</c:if>							
+							<c:if test="${eduMaterialsList.emCategory  == 1}">튜토리얼</c:if>
+							<c:if test="${eduMaterialsList.emCategory  == 2}">교육영상</c:if>							
 						</td>
 						<td>
-							<c:if test="${eduMaterialsList.em_type  == 1}">동영상</c:if>
-							<c:if test="${eduMaterialsList.em_type  == 2}">교재</c:if>		
-							<c:if test="${eduMaterialsList.em_type  == 3}">웹사이트</c:if>
+							<c:if test="${eduMaterialsList.emType  == 1}">동영상</c:if>
+							<c:if test="${eduMaterialsList.emType  == 2}">교재</c:if>		
+							<c:if test="${eduMaterialsList.emType  == 3}">웹사이트</c:if>
 						</td>
 
 						<td>
-							<c:if test="${eduMaterialsList.em_payment == 1}">무료</c:if>
-							<c:if test="${eduMaterialsList.em_payment == 2}">유료</c:if>
+							<c:if test="${eduMaterialsList.emPayment == 1}">무료</c:if>
+							<c:if test="${eduMaterialsList.emPayment == 2}">유료</c:if>
 							
 						</td>
-						<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" onclick="detailForm(${eduMaterialsList.em_num })">상세</button></td>
+						<td width="100px;"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" onclick="detailForm(${eduMaterialsList.emNum })">상세</button></td>
 					</tr>
+					<c:set var="StartRow" value="${StartRow +1}"/>
 					 </c:forEach>
   				   </tbody>
                </table>
              		
-             		<nav class="owl-nav">
-
-			  <ul class="pagination justify-content-center">
-				 	<c:if test="${page.startPage > page.pageBlock }">
-						 <li class="page-item justify-content-center">					
-							<a class="owl-dot text-body" href="eduMaterialsList?currentPage=${page.startPage-page.pageBlock}">이전</a>
-						</li>
-					</c:if>
-	 				<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
-						 <li class="page-item justify-content-center">
-	 						<a class="owl-dot mx-1 text-body" href="eduMaterialsList?currentPage=${i}">${i}</a>
-						</li>
-					</c:forEach>
-						
-					<c:if test="${page.endPage < page.totalPage }">
-						 <li class="page-item justify-content-center">		 
-							<a class="owl-dot mx-1 text-body" href="eduMaterialsList?currentPage=${page.startPage+page.pageBlock}">다음</a>
-						</li>
-					</c:if>
-			  	</ul>
-			</nav>
+             <div class="row mt-8" style="width:100%;">
+ 					<div class="d-flex justify-content-center" style="margin-top:12px">
+		                <nav aria-label="Page navigation example">
+						  <ul class="pagination">
+						  	<c:if test="${page.startPage > page.pageLimit}">
+						  		<li class="page-item"><a class="page-link" href="eduMaterialsList?currentPage=${page.startPage-page.pageLimit}">이전</a></li>
+						  	</c:if>
+						    <c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
+						    	<li class="page-item"><a class="page-link" href="eduMaterialsList?currentPage=${i }">${i }</a></li>
+						    </c:forEach>
+						 	<c:if test="${page.endPage < page.totalPage}">
+						 		<li class="page-item"><a class="page-link" href="eduMaterialsList?currentPage=${page.startPage+page.pageLimit}">다음</a></li>
+						 	</c:if>
+						  </ul>
+						</nav>
+					</div>
+				</div>
 
 	</div>
 </div>

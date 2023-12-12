@@ -14,9 +14,9 @@ import lombok.Data;
 
 @Entity
 @Data
-@IdClass(LGJoinPK.class)
+@IdClass(LgJoinPK.class)
 @Table(name = "lg_join")
-public class LGJoin {
+public class LgJoin {
 	// 학습그룹번호
 	@Id
 	@ManyToOne	// 1학습그룹 : M학습그룹가입
@@ -30,16 +30,16 @@ public class LGJoin {
 	private Member member;
 	
 	// 신청일자
-	@Column(name = "lgd_joindate")
+	@Column(name = "lgj_joindate")
 	private Date lgdJoindate;
 	
 	// 승인여부
-	@Column(name = "lgd_approval")
-	private int lgdApproval;
+	@Column(name = "lgj_approval")
+	private int lgjApproval;
 	
 	// 승인일자
-	@Column(name = "lgd_appdate")
-	private Date lgdAppdate;
+	@Column(name = "lgj_appdate")
+	private Date lgjAppdate;
 
 	
 	//----- 조회용 ----- //

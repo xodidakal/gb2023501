@@ -17,17 +17,18 @@ public class GameOrderServiceImpl implements GameOrderService {
 	private final GameOrderDao god;
 	
 	@Override
-	public List<GameOrder> listGameOrder(GameOrder gameOrder) {
+	public List<Game> listGameOrder(Game game) {
 		System.out.println("GameOrderServiceImpl listGameOrder Start...");
-		List<GameOrder> gameOrderList = god.listGameOrder(gameOrder);
+		List<Game> gameOrderList = god.listGameOrder(game);
 		System.out.println("GameOrderServiceImpl listGameOrder list.size->"+gameOrderList.size());
 		
 		return gameOrderList;
 	}
 
 	@Override
-	public int totalSearchGameOrder(GameOrder gameOrder) {
-		int totalSearchGameOrder = god.totalSearchGameOrder(gameOrder);
+	public int totalSearchGameOrder(Game game) {
+		System.out.println("GameOrderServiceImpl totalSearchGameOrder Start...");
+		int totalSearchGameOrder = god.totalSearchGameOrder(game);
 		return totalSearchGameOrder;
 	}
 

@@ -6,29 +6,43 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Paging {
-	private int currentPage = 1;		private int rowPage = 10;
-	private int pageBlock = 10;
-	private int start; 					private int end;
-	private int startPage;				private int endPage;
-	private int total;                  private int totalPage;
+	// 현재 페이지번호					// row 제한 개수					// page 넘버 제한 개수
+	private int currentPage1 = 1;	private int rowLimit;	private int pageLimit = 10;
+	// row 시작 번호					// row 끝 번호
+	private int startRow;			private int endRow;
+	// page 시작번호					// page 끝번호
+	private int startPage;			private int endPage;
+	// 총 row 개수						// 총 page 개수
+	private int totalRow;			private int totalPage;
+	
+	public Paging(int inNewbookCnt, String currentPage, int rowLimit) {
+		this.totalRow = inNewbookCnt;
 
-	//				  23			null
-	public Paging(int total, String currentPage1) {
-		this.total = total;		// 23
-		if(currentPage1 != null) {
-			this.currentPage = Integer.parseInt(currentPage1);	// 2
+		if (currentPage != null) {
+			this.currentPage1 = Integer.parseInt(currentPage);
 		}
-		//			1				10		
-		start = (currentPage -1 ) * rowPage + 1;	// 시작시 1     11
-		end = start + rowPage - 1;					// 시작시 10    20
-						//				25		/	10
-		totalPage = (int)Math.ceil((double)total / rowPage);	// 시작시 3   5   14
-				//		2			2
-		startPage = currentPage - (currentPage - 1) % pageBlock;  // 시작시  1
-		endPage = startPage + pageBlock - 1;	//10
-		//	10			14		공갈페이지 방지
-		if(endPage > totalPage) {
-			endPage = totalPage;
+		
+		// 한 페이지에 보여줄 start와 end row 개수
+		//if			2					10
+		startRow = (currentPage1 - 1) * rowLimit + 1 ;	// 시작 row : 11
+		//if		  11    +    10      
+		endRow	 = startRow + rowLimit - 1; 			// 끝 row  : 20
+		
+		// 총 페이지 페이지 개수
+		//if                                   34    /     10     = 3.4  -> ceil 하여 올림처리하면 4     
+		totalPage = (int) Math.ceil((double)totalRow / rowLimit); // int / int = int 이기 떄문에 totalRow를 double로 변경해야 소수점까지 결과값이 나옴.
+		
+		// 한 페이지에 보여줄 start와 end page 개수
+		//if			 2				2   -   1	%    10    
+		startPage = currentPage1 - (currentPage1-1) % pageLimit; // 시작 page = 1  (현재페이지 : 13이면 시작페이지는 11이 나와야 함. 13-2가 11이니까 2는 현재 페이지에 1을 뺴고 10을 나눈 나머지 값이다.)
+		endPage	  = startPage + pageLimit - 1;					 // 끝 page = 10
+		
+		// 만약 총 page 개수가 pageLimit 보다 작다면
+		// 공갈 페이지를 제거하기 위함.
+		if (endPage > totalPage) {
+			endPage = totalPage ;
 		}
+		
 	}
+
 }

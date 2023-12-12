@@ -7,9 +7,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.choongang.gb2023501.gbService.GbLgJoinService;
 import com.choongang.gb2023501.gbService.HomeworkService;
 import com.choongang.gb2023501.gbService.Paging;
 import com.choongang.gb2023501.model.Homework;
+import com.choongang.gb2023501.model.HwSend;
+import com.choongang.gb2023501.model.LearnGrp;
+import com.choongang.gb2023501.model.LgJoin;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class GbController {
 	
 	private final HomeworkService hs;
+	private final GbLgJoinService gljs;
 	
 	// 숙제 생성 목록
 	@RequestMapping("educator/homeworkForm")
@@ -77,7 +82,7 @@ public class GbController {
 	  
 	  // 숙제 전송 화면 이동
 	  @RequestMapping("/educator/homeworkSend")
-	  public String selectHomeworkList(Homework homework, String currentPage, Model model) {
+	  public String selectHomeworkList(Homework homework, String currentPage, HwSend hwsend, Model model) {
 		  System.out.println("GbController selectHomeworkList start...");
 		  // 숙제 목록은 로그인한 교육자가 생성한 목록이 조회되므로 교육자 회원번호를 담는다. (우선 임시로 추후에 변경 예정)
 		  homework.setM_num(3);
@@ -94,12 +99,32 @@ public class GbController {
 		  // 생성한 숙제 리스트 조회
 		  List<Homework> homeworkList = hs.selectHomeworkList(homework);
 		  
-		  // 교육자의 학습그룹 가입 회원 조회
+		  // 교육자의 학습그룹 목록
+		  List<LearnGrp> learnGrpList = gljs.selectLgJoinList(homework);
+		  
+		  // 학습그룹의 학습자 목록 변수 선언
+		  List<LgJoin> lgJoinMemberList = null;
+		  
+		  // 학습그룹의 학습자 목록은 교육자의 학습그룹 목록이 있을 때만 조회한다.
+		  if(learnGrpList.size() > 0) {
+			if(hwsend.getLg_num() > 0) {
+				System.out.println("학습그룹번호 검색 -> "+hwsend.getLg_num());
+			}else {
+				// 처음 진입할 때 학습그룹 번호는 가장 첫번째 값을 가지고 온다.
+				hwsend.setLg_num(learnGrpList.get(0).getLg_num());
+				System.out.println("처음 진입 -> "+hwsend.getLg_num());
+			}		
+			
+			// 학습그룹의 학습자 목록
+			lgJoinMemberList = gljs.selectLgJoinMemberList(hwsend);
+		  }
 		  
 		  
 		  model.addAttribute("homeworkList", homeworkList);
 		  model.addAttribute("StartRow",page.getStartRow());
 		  model.addAttribute("page", page);
+		  model.addAttribute("learnGrpList", learnGrpList);
+		  model.addAttribute("lgJoinMemberList", lgJoinMemberList);
 		  
 		  return "gb/homeworkSend";
 	  }
