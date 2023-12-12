@@ -175,7 +175,7 @@
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">학습서비스</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
                         <a href="/learning/homeworkList" class="dropdown-item">내 숙제</a>
-                        <a href="#!" class="dropdown-item">학습그룹 가입신청</a>
+                        <a href="/learning/learnGrpJoinForm" class="dropdown-item">학습그룹 가입신청</a>
                     </div>
                 </div>
                 <div class="nav-item dropdown">
@@ -196,7 +196,7 @@
                         <a href="/operate/gameList" class="dropdown-item">게임콘텐츠 관리</a>
                         <a href="/operate/eduMaterialsList" class="dropdown-item">학습자료 관리</a>
                         <a href="/operate/memberList" class="dropdown-item">회원 관리</a>
-                        <a href="#!" class="dropdown-item">매출 관리</a>
+                        <a href="/operate/salesInquiryDetail" class="dropdown-item">매출 관리</a>
                     </div>
                 </div>
                  <div class="nav-item dropdown">

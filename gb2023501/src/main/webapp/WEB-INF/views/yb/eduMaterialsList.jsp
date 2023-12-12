@@ -66,9 +66,9 @@
 					</tr>
 				</thead>
 				<tbody>
-				 <c:forEach var="eduMaterialsList" items="${selectEduMaterialsList }" varStatus="status" begin="1">
+				 <c:forEach var="eduMaterialsList" items="${selectEduMaterialsList }" varStatus="status" begin="0">
 				 	<tr>
-				 		<td>${status.index }</td>
+				 		<td>${status.index +1 }</td>
 						<td style="width: 100px;" height="80px;">
 							<img src="${eduMaterialsList.em_attach_name }" alt="도서 썸네일" class="img-fluid" style="width: 5rem; height: 80px;">
 						</td>
@@ -90,7 +90,7 @@
 							<c:if test="${eduMaterialsList.em_payment == 2}">유료</c:if>
 							
 						</td>
-						<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" onclick="detailForm(${eduMaterialsList.em_num })">상세</button></td>
+						<td width="100px;"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" onclick="detailForm(${eduMaterialsList.em_num })">상세</button></td>
 					</tr>
 					 </c:forEach>
   				   </tbody>
