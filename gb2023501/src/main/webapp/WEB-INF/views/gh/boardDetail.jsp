@@ -151,45 +151,92 @@
 			                </td>
 						</c:if> --%>
 						<td colspan="3">
-	                		<label><a href="/upload/${BdDetail.b_attach_name}" download="test">${BdDetail.b_attach_name}</a></label>
+	                		<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="test">${BdDetail.b_attach_name}</a></label>
 		                </td>
 	                </tr>
                 </table>
-                <!-- 댓글 등록 -->
-                <hr>
-                <table id=table>
-                	<tr>
-						<th>댓글</th>
-						<td width="410px;">
-		                   	<textarea class="form-control" placeholder="Leave a message here" id="message" name="bc_content" style="height: 100px"></textarea>    
-						</td>
-					</tr>
-					<tr>
-						<td colspan="3">
-							<div class="d-grid gap-2 d-md-flex justify-content-right" >
-								<a href="boardList"><button class="btn rounded py-2 px-3" type="button" onclick="insertComment()" style="background: #263d94; color: white;">댓글 등록</button></a>
-							</div>
-						</td>
-					</tr>
-                </table>
-                <hr>
-                <!-- 댓글 화면 -->
-                <table>
-                	<c:forEach var="cList" items="${commentList}">
-	                	<tr>
-	                	<th></th>
-	                		<td width="410px;">
-		                		<label style="font-size: small;">작성자 : ${cList.m_name}&nbsp;&nbsp;&nbsp;<fmt:formatDate value="${cList.bc_regi_date}" type="date" pattern="yyyy-MM-dd"/></label><p>
-				                <label style="font-size: medium;">${cList.bc_content} <button type="button" style="background: white; border: none; color: orange;">x</button> </label>
-				            </td>
-	                	</tr>
-                	</c:forEach>
-                </table>
+                <!-- 공지사항이면 댓글화면 -->
+                <c:choose>
+                	<c:when test="${BdDetail.b_category eq '1'}">
+                		<!-- 댓글 등록 -->
+		                <hr>
+		                <table id=table>
+		                	<tr>
+								<th>댓글</th>
+								<td width="410px;">
+				                   	<textarea class="form-control" placeholder="Leave a message here" id="message" name="bc_content" style="height: 100px"></textarea>    
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<div class="d-grid gap-2 d-md-flex justify-content-right" >
+										<a href="boardList"><button class="btn rounded py-2 px-3" type="button" onclick="insertComment()" style="background: #263d94; color: white;">댓글 등록</button></a>
+									</div>
+								</td>
+							</tr>
+		                </table>
+		                
+		                <!-- 댓글 화면 -->
+		                <hr>
+		                <table>
+		                	<c:forEach var="cList" items="${commentList}">
+			                	<tr>
+			                	<th></th>
+			                		<td width="410px;">
+				                		<label style="font-size: small;">작성자 : ${cList.m_name}&nbsp;&nbsp;&nbsp;<fmt:formatDate value="${cList.bc_regi_date}" type="date" pattern="yyyy-MM-dd"/></label><p>
+						                <label style="font-size: medium;">${cList.bc_content} <button type="button" style="background: white; border: none; color: orange;">x</button> </label>
+						            </td>
+			                	</tr>
+		                	</c:forEach>
+		                </table>
+                	</c:when>
+                	
+                	<c:otherwise>
+                	<!-- 게시판이 나머지면 답변 등록 -->
+	                	<hr>
+		                
+		                <h4 class="display-7 mb-4">답변 작성</h4>
+		                
+		                <table id="table">
+							<tr>
+								<th>작성일</th>
+								<td width="410px;">
+									2023-12-08
+								</td>
+							</tr>
+		                	<tr>
+								<th>제목</th>
+								<td colspan="3">
+				                    <input type="text" class="form-control" id="subject" placeholder="Subject" value="[답변] ">
+				            	</td>
+							</tr>
+							<tr></tr>
+							<tr>
+								<th>내용</th>
+								<td colspan="3">
+				                   	<textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 200px"></textarea>    
+								</td>
+							</tr>
+							<tr></tr>
+							<tr>
+			                	<th>첨부파일</th>
+			                	<td colspan="3">
+			                		<label style="font-size: medium;">파일 1개당 최대 첨부 용량 30MB</label>
+				                    <input type="file" class="form-control" id="subject" placeholder="Subject">
+				                </td>
+			                
+			                </tr>
+		                </table>
+                	</c:otherwise>
+                </c:choose>
                 
+                <!-- 수정, 삭제, 목록 버튼 -->
                 <div class="d-grid gap-2 d-md-flex justify-content-center" >
 					<a href="boardList?b_category=${BdDetail.b_category}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
-					<a href="boardList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
-					<a href="boardList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">수정</button></a>
+					<c:if test="${BdDetail.m_category eq '4'}">
+						<a href="boardList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
+						<a href="boardList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">수정</button></a>
+					</c:if>
 				</div>
                 
 			</div>

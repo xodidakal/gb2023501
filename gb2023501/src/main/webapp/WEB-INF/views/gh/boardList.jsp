@@ -49,7 +49,7 @@
 <!--         <h2 class="display-6 mb-4">교육 자료 등록</h2> -->
 <!--     </div> -->
 <div class="row g-0 justify-content-center">
-	<div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
+	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
 		<div class="mb-9">
 	    	<!-- heading -->
 	        <c:choose>
@@ -80,7 +80,7 @@
 			<div class="col">
 			<div class="d-flex align-items-center justify-content-end">
           		<div style="width: 65px;">
-	          		<a href="boardForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="작성"></a>
+	          		<a href="/customer/boardForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="작성"></a>
             	</div>
             </div>
 			</div>
@@ -100,9 +100,10 @@
 						</tr>
 					</thead>
 					<tbody>
- 					<c:forEach var="Blist" items="${Boardlist}">
+ 					<c:forEach var="Blist" items="${Boardlist}" varStatus="status" begin="0">
 					 	<tr>
-					 		<td>${Blist.b_num}</td>
+					 		<%-- <td>${Blist.b_num}</td> --%>
+					 		<td>${status.index}</td>
 					 		<td>
 						 		<c:choose>
 						 			<c:when test="${Blist.b_notie_type == 1}">공통</c:when>
@@ -111,11 +112,15 @@
 						 			<c:otherwise>규정 및 정책</c:otherwise>
 						 		</c:choose>
 					 		</td>
-							<td>${Blist.b_title} [${comtCount}]</td>
+							<td>
+								<c:if test="${Blist.b_flag eq '0'}"><img src="/assets/img/notice_icon.png" style="margin-bottom:4px"></c:if>
+								${Blist.b_title} &nbsp;
+								<c:if test="${Blist.b_category eq '1'}"><label style="color: orange;">[${Blist.comment_count}]</label></c:if>
+							</td>
 							<td>${Blist.m_name}</td>
 							<td><fmt:formatDate value="${Blist.b_regi_date}" type="date" pattern="yyyy-MM-dd"/></td>
 							<td>${Blist.b_count}</td>
-							<td width="100px;"><a href="boardDetail?b_num=${Blist.b_num}"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
+							<td width="100px;"><a href="/customer/boardDetail?b_num=${Blist.b_num}"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
 						</tr>
  					</c:forEach>
 						
@@ -123,14 +128,35 @@
                 </table>
                 
                 <c:if test="${page.startPage > page.pageBlock }">
-					<a href="boardList?currentPage=${page.startPage-page.pageBlock}&b_category=${BoardCategory}">[이전]</a>
+					<a href="/customer/boardList?currentPage=${page.startPage-page.pageBlock}&b_category=${BoardCategory}">[이전]</a>
 				</c:if>
 				<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
-					<a href="boardList?currentPage=${i}&b_category=${BoardCategory}">[${i}]</a>
+					<a href="/customer/boardList?currentPage=${i}&b_category=${BoardCategory}">[${i}]</a>
 				</c:forEach>
 				<c:if test="${page.endPage > page.totalPage }">
-					<a href="boardList?currentPage=${page.startPage+page.pageBlock}&b_category=${BoardCategory}">[다음]</a>
+					<a href="/customer/boardList?currentPage=${page.startPage+page.pageBlock}&b_category=${BoardCategory}">[다음]</a>
 				</c:if>
+				
+				<%-- <nav class="owl-nav">
+				  <ul class="pagination justify-content-center">
+					 	<c:if test="${page.startPage > page.pageBlock }">
+							 <li class="page-item justify-content-center">					
+								<a class="owl-dot text-body" href="boardList?currentPage=${page.startPage-page.pageBlock}&b_category=${BoardCategory}">이전</a>
+							</li>
+						</c:if>
+		 				<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
+							 <li class="page-item justify-content-center">
+		 						<a class="owl-dot mx-1 text-body" href="boardList?currentPage=${i}&b_category=${BoardCategory}">${i}</a>
+							</li>
+						</c:forEach>
+							
+						<c:if test="${page.endPage < page.totalPage }">
+							 <li class="page-item justify-content-center">		 
+								<a class="owl-dot mx-1 text-body" href="boardList?currentPage=${page.startPage+page.pageBlock}&b_category=${BoardCategory}">다음</a>
+							</li>
+						</c:if>
+				  	</ul>
+				</nav> --%>
                 
 			</div>
 		</form>
