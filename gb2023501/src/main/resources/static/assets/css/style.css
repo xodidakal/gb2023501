@@ -491,28 +491,44 @@
 }
 
 
-	a {
-		color: #263d94;
-	}
+a {
+	color: #263d94;
+}
+.dropdown-menu {
+	border-color: rgb(38, 61, 148);
+}
+.listTable {
+	width: 100%;
+}
+.listTable th {
+	text-align: center;
+	padding: 15px;
+	border-bottom: 1px solid black;
+}
+.listTable thead {
+	background-color: #EEEEEE;
+	color: black;
 	
-	.dropdown-menu {
-		border-color: rgb(38, 61, 148);
-	}
-	.listTable {
-		width: 100%;
-	}
-	.listTable th {
-		text-align: center;
-		padding: 15px;
-	}
-	.listTable thead {
-		background-color: #f8f8f8;
-		color: black;
-	}
-	.listTable tr {
-		
-		border-bottom: 1px solid #dfdfdf;
-	}
-	.listTable td {
-		padding: 10px 0px;
-	}
+}
+.listTable tr {
+	border-bottom: 1px solid #dfdfdf;
+}
+.listTable td {
+	padding: 10px 0px;A
+}
+.page-item{
+	margin: 0px 5px 0px 5px;
+}
+.page-link{
+	color: black;
+}
+.formTable tr {
+	height: 70px;
+}
+.formTable {
+	font-size: 18px;
+}
+.formTable th {
+	text-align: left;
+	width: 150px;
+}

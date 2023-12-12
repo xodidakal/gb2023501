@@ -6,21 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
-	#table {
-		font-size: 18px;
-	}
-	th {
-		text-align: center;
-		padding: 15px;
-	}
-	.page-item{
-		margin: 0px 5px 0px 5px;
-	}
-	.page-link{
-		color: black;
-	}
-</style>
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->
@@ -61,68 +46,64 @@
             </div>
 			</div>
 	    </div>
-		<form action="#!">
-	        <div class="table-responsive" style="text-align: center;">
-	        	<table class="table">
-	        		<thead class="table-light" style="text-align: center;">
-						<tr>
-							<th style="padding: 15px;">No.</th>
-							<th style="padding: 15px;">분류</th>
-							<th style="padding: 15px;">제목</th>
-							<th style="padding: 15px;">작성자</th>
-							<th style="padding: 15px;">등록일자</th>
-							<th style="padding: 15px;">조회수</th>	
-							<th width="100px;"></th>				
-						</tr>
-					</thead>
-					 <tbody>
+       	<table class="listTable" style="text-align: center;">
+       		<thead>
+				<tr>
+					<th>No.</th>
+					<th>분류</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>등록일자</th>
+					<th>조회수</th>	
+					<th width="100px;"></th>				
+				</tr>
+			</thead>
+			 <tbody>
 <%-- 					 <c:forEach var="" items=""> --%>
-					 	<tr>
-					 		<td>1</td>
-							<td>2</td>
-							<td>3</td>
-							<td>4</td>
-							<td>5</td>
-							<td>6</td>
-							<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
-						</tr>
-						
-						<tr>
-					 		<td>1</td>
-							<td>2</td>
-							<td>3</td>
-							<td>4</td>
-							<td>5</td>
-							<td>6</td>
-							<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
-						</tr>
-						
+			 	<tr>
+			 		<td>1</td>
+					<td>2</td>
+					<td>3</td>
+					<td>4</td>
+					<td>5</td>
+					<td>6</td>
+					<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
+				</tr>
+				
+				<tr>
+			 		<td>1</td>
+					<td>2</td>
+					<td>3</td>
+					<td>4</td>
+					<td>5</td>
+					<td>6</td>
+					<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
+				</tr>
+				
 <%-- 					 </c:forEach> --%>
-						
-	                 </tbody>   
-                </table>
-                <div class="row mt-8" style="width:100%;">
-  					<div class="d-flex justify-content-center" style="margin-top:12px">
-		                <nav aria-label="Page navigation example">
-						  <ul class="pagination">
-						    <li class="page-item"><a class="page-link" href="#">이전</a></li>
-						    <li class="page-item" id="1p"><a class="page-link" href="#">1</a></li>
-						    <li class="page-item"><a class="page-link" href="#">2</a></li>
-						    <li class="page-item"><a class="page-link" href="#">3</a></li>
-						    <li class="page-item"><a class="page-link" href="#">4</a></li>
-						    <li class="page-item"><a class="page-link" href="#">5</a></li>
-						    <li class="page-item"><a class="page-link" href="#">6</a></li>
-						    <li class="page-item"><a class="page-link" href="#">7</a></li>
-						    <li class="page-item"><a class="page-link" href="#">8</a></li>
-						    <li class="page-item"><a class="page-link" href="#">9</a></li>
-						    <li class="page-item"><a class="page-link" href="#">10</a></li>
-						    <li class="page-item"><a class="page-link" href="#">다음</a></li>
-						  </ul>
-						</nav>
-					</div>
-				</div>
+				
+                </tbody>   
+              </table>
+              <div class="row mt-8" style="width:100%;">
+					<div class="d-flex justify-content-center" style="margin-top:12px">
+                <nav aria-label="Page navigation example">
+				  <ul class="pagination">
+				    <li class="page-item"><a class="page-link" href="#">이전</a></li>
+				    <li class="page-item" id="1p"><a class="page-link" href="#">1</a></li>
+				    <li class="page-item"><a class="page-link" href="#">2</a></li>
+				    <li class="page-item"><a class="page-link" href="#">3</a></li>
+				    <li class="page-item"><a class="page-link" href="#">4</a></li>
+				    <li class="page-item"><a class="page-link" href="#">5</a></li>
+				    <li class="page-item"><a class="page-link" href="#">6</a></li>
+				    <li class="page-item"><a class="page-link" href="#">7</a></li>
+				    <li class="page-item"><a class="page-link" href="#">8</a></li>
+				    <li class="page-item"><a class="page-link" href="#">9</a></li>
+				    <li class="page-item"><a class="page-link" href="#">10</a></li>
+				    <li class="page-item"><a class="page-link" href="#">다음</a></li>
+				  </ul>
+				</nav>
 			</div>
-		</form>
+		</div>
 	</div>
 </div>
 <%@ include file="../common/footerFo.jsp" %>
