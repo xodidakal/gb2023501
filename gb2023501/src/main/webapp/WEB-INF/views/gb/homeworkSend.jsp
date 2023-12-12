@@ -6,21 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
-	#table {
-		font-size: 18px;
-	}
-	th {
-		text-align: center;
-		padding: 15px;
-	}
-	.page-item{
-		margin: 0px 5px 0px 5px;
-	}
-	.page-link{
-		color: black;
-	}
-</style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript">
 	$(function(){
@@ -45,8 +30,8 @@
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">숙제 전송</h2>
 	    </div>
-		<form action="www.daum.net" name="frm">
-		
+	    
+		<form action="www.daum.net" name="frm">		
 			<!-- 교육자 숙제 목록 -->
 			<div class="input-group col-md-5 mb-3"> 
 				<!-- 숙제명 검색 셀렉트 박스 -->
@@ -59,29 +44,29 @@
 				</select>      	
 		    </div>
 		
-	        <div class="table-responsive" style="text-align: center;">
-	        	<table class="table">
-	        		<thead class="table-light" style="text-align: center;">
+	        <div>
+	        	<table class="listTable" style="text-align: center;">
+	        		<thead>
 						<tr>
-							<th style="padding: 15px;">선택</th>
-							<th style="padding: 15px;">No.</th>
-							<th style="padding: 15px; width: 25%;">숙제명</th>
-							<th style="padding: 15px; width: 45%;">숙제내용</th>
-							<th style="padding: 15px;">진도</th>
-							<th style="padding: 15px;">제출기한</th>			
+							<th>선택</th>
+							<th>No.</th>
+							<th style="width: 25%;">숙제명</th>
+							<th style="width: 45%;">숙제내용</th>
+							<th>진도</th>
+							<th>제출기한</th>			
 						</tr>
 					</thead>
 					 <tbody>
  					 <c:forEach var="homework" items="${homeworkList }">
 					 	<tr>
-					 		<td class="align-middle">
+					 		<td>
 					 			<input class="form-check-input" type="checkbox" name="h_num" value="${homework.h_num }" id="flexRadioDefault1" >
 					 		</td>
-							<td class="align-middle">${StartRow }</td>
-							<td class="align-middle">${homework.h_title }</td>
-							<td class="align-middle">${homework.h_content }</td>
-							<td class="align-middle">${homework.h_level }</td>
-							<td class="align-middle">${homework.h_deadline }</td>
+							<td>${StartRow }</td>
+							<td>${homework.h_title }</td>
+							<td>${homework.h_content }</td>
+							<td>${homework.h_level }</td>
+							<td>${homework.h_deadline }</td>
 						</tr>
 						<c:set var="StartRow" value="${StartRow +1}"/>					
  					 </c:forEach>
@@ -127,23 +112,23 @@
 	            </div>
 				</div>
 		    </div>
-			<div class="table-responsive" style="text-align: center;">
-	        	<table class="table">
-	        		<thead class="table-light" style="text-align: center;">
+			<div>
+	        	<table class="listTable">
+	        		<thead>
 						<tr>
-							<th style="padding: 15px;">선택</th>
-							<th style="padding: 15px;">학습자명</th>
-							<th style="padding: 15px;">전화번호</th>
-							<th style="padding: 15px;">현재레벨</th>	
+							<th>선택</th>
+							<th>학습자명</th>
+							<th>전화번호</th>
+							<th>현재레벨</th>	
 						</tr>
 					</thead>
 					 <tbody>
  					 <c:forEach var="homework" items="${homeworkList }">
 					 	<tr>
-					 		<td class="align-middle"><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
-							<td class="align-middle">${homework.h_title }</td>
-							<td class="align-middle">${homework.h_content }</td>
-							<td class="align-middle">${homework.h_level }</td>
+					 		<td><input class="form-check-input" type="checkbox" name="m_num" id="flexRadioDefault1" ></td>
+							<td>${homework.h_title }</td>
+							<td>${homework.h_content }</td>
+							<td>${homework.h_level }</td>
 						</tr>
 						<c:set var="StartRow" value="${StartRow +1}"/>					
  					 </c:forEach>
