@@ -2,11 +2,11 @@ package com.choongang.gb2023501.dhDao;
 
 import java.util.List;
 
-import com.choongang.gb2023501.model.GameOrder;
+import com.choongang.gb2023501.model.Game;
 
 public interface GameOrderDao {
 
-	List<GameOrder> listGameOrder(GameOrder gameOrder);
-	int             totalSearchGameOrder(GameOrder gameOrder);
+	List<Game> 		listGameOrder(Game game);
+	int             totalSearchGameOrder(Game game);
 
 }

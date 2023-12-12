@@ -6,15 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
-	#table {
-		font-size: 18px;
-	}
-	th {
-		text-align: center;
-		padding: 15px;
-	}
-</style>
 </head>
 <body>
 <div class="row g-0 justify-content-center">
@@ -53,38 +44,34 @@
             </div>
 			</div>
 	    </div>
-		<form action="#!">
-	        <div class="table-responsive" style="text-align: center;">
-	        	<table class="table">
-	        		<thead class="table-light" style="text-align: center;">
-						<tr>
-							<th style="padding: 15px;">선택</th>
-							<th style="padding: 15px;">No.</th>
-							<th style="padding: 15px;">학습그룹명</th>
-							<th style="padding: 15px;">게임콘텐츠명</th>
-							<th style="padding: 15px;">학습 기간</th>
-							<th style="padding: 15px;">수용 가능 인원</th>
-							<th style="padding: 15px;">가입 승인 인원</th>	
-							<th width="100px;"></th>
-						</tr>
-					</thead>
-					 <tbody>
-					 	<c:forEach var="lg" items="${learnGrps }">
-						 	<tr>
-						 		<td><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
-								<td>No.</td>
-								<td>${lg.lgTitle}</td>
-								<td>${lg.game.ggTitle}</td>
-								<td>${lg.lgSdate } ~ ${lg.lgEdate }</td>
-								<td>${lg.lgTo }</td>
-								<td>${lg.lgTo }</td>
-								<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
-							</tr>
-						</c:forEach>
-	                 </tbody>   
-                </table>
-			</div>
-		</form>
+       	<table class="listTable">
+       		<thead>
+				<tr>
+					<th>선택</th>
+					<th>No.</th>
+					<th>학습그룹명</th>
+					<th>게임콘텐츠명</th>
+					<th>학습 기간</th>
+					<th>수용 가능 인원</th>
+					<th>가입 승인 인원</th>	
+					<th width="100px;"></th>
+				</tr>
+			</thead>
+			 <tbody>
+			 	<c:forEach var="lg" items="${learnGrps }">
+				 	<tr>
+				 		<td><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
+						<td>No.</td>
+						<td>${lg.lgTitle}</td>
+						<td>${lg.game.ggTitle}</td>
+						<td>${lg.lgSdate } ~ ${lg.lgEdate }</td>
+						<td>${lg.lgTo }</td>
+						<td>${lg.lgTo }</td>
+						<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
+					</tr>
+				</c:forEach>
+                </tbody>   
+              </table>
 	</div>
 </div>
 <%@ include file="../common/footerFo.jsp" %>

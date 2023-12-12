@@ -17,12 +17,12 @@ public class GameOrderDaoImpl implements GameOrderDao {
 	private final SqlSession session;
 	
 	@Override
-	public List<GameOrder> listGameOrder(GameOrder gameOrder) {
+	public List<Game> listGameOrder(Game game) {
 		System.out.println("GameOrderDaoImpl listGameOrder start...");
-		List<GameOrder> gameOrderList = null;
+		List<Game> gameOrderList = null;
 		
 		try {
-			gameOrderList = session.selectList("dhGameOrderList" , gameOrder);
+			gameOrderList = session.selectList("dhGameOrderList" , game);
 			System.out.println("GameOrderDaoImpl listGameOrder gameOrderList->"+gameOrderList.size());
 		} catch (Exception e) {
 			System.out.println("GameOrderDaoImpl listGameOrder Exception->"+e.getMessage());
@@ -31,10 +31,10 @@ public class GameOrderDaoImpl implements GameOrderDao {
 	}
 
 	@Override
-	public int totalSearchGameOrder(GameOrder gameOrder) {
+	public int totalSearchGameOrder(Game game) {
 		int totalSearchGameOrder = 0;
 		try {
-			totalSearchGameOrder = session.selectOne("dhGameOrderSearchTotal",gameOrder);
+			totalSearchGameOrder = session.selectOne("dhGameOrderSearchTotal",game);
 			System.out.println("GameOrderDaoImpl totalSearchGameOrder()->"+totalSearchGameOrder);
 		} catch (Exception e) {
 			System.out.println("GameOrderDaoImpl totalSearchGameOrder->"+e.getMessage());

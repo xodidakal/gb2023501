@@ -173,16 +173,21 @@ function clickImage2(){
 	                <tr>
 	                	<th>썸네일</th>
 						<td colspan="3">
-		                    <input type="file" class="form-control" id="subject" value="${eduMaterials.emAttachName }">
+							<div class="d-grid gap-2 d-flex justify-content-center" >
+								<label for="emAttachName"><img src="${eduMaterials.emAttachName }" alt="도서 썸네일" class="img-fluid" style="width: 5rem; height: 80px;"></label>
+								<input type="file" class="form-control" id="emAttachName" name="emAttachName" value="" style="visibility: hidden;" >
+			                </div>
 		                </td>
-	                </tr>    
+	                </tr>   
                 </table>
                 <div class="d-grid gap-2 d-flex justify-content-center" >
 					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="수정">
 					<a href="/operate/eduMaterialsList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
 					<a href="/operate/eduMaterialsList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
 				</div>
-                
+				
+
+               
 			</div>
 		</form>
 	</div>

@@ -80,18 +80,21 @@ public class YbController {
 	
 	// 학습자료 수정 JPA
 	@PostMapping(value = "/operate/updateEduMaterials")
-	public String updateEduMaterials(com.choongang.gb2023501.domain.EduMaterials eduMaterials, int em_num) {
+	public String updateEduMaterials(com.choongang.gb2023501.domain.EduMaterials eduMaterials, int em_num, Model model,RedirectAttributes redirect) {
 		log.info("ybController YbJpa/updateEduMaterials start...");
 		
-		
+		log.info("em_num -> " + em_num);
+		eduMaterials.setEmNum(em_num);
 		log.info("eduMaterials -> " + eduMaterials);
+		
 		int result = js.updateByEduMaterials(eduMaterials);
 		
 		log.info("ybController operate/updateEduMaterials result - > " + result);
 		log.info("update After -> " + eduMaterials);
 		
-		
-		return "redirect:/operate/eduMaterialsDetail?em_num="+em_num;
+		redirect.addAttribute("em_num", em_num);
+		model.addAttribute("eduMaterials", eduMaterials);
+		return "redirect:/operate/eduMaterialsDetail";
 	}
 	
 	

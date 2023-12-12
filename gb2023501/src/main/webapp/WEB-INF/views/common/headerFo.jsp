@@ -88,10 +88,10 @@
            	 	<div class="col-11">
            	 	  <div class="d-flex align-items-center justify-content-end">
            	 		<div class="ps-3">            	 			
-                       <h6 class="mb-0"><a href="/joinAgree">회원가입</a></h6>
+                       <h6 class="mb-0"><a href="/info/joinAgreeForm">회원가입</a></h6>
                     </div>
                     <div class="ps-3"> 
-                       <h6 class="mb-0"><a href="/loginForm">로그인</a></h6>
+                       <h6 class="mb-0"><a href="/info/loginForm">로그인</a></h6>
                     </div>
                   </div>
 <!--                   <div class="d-flex align-items-center justify-content-end"> -->
@@ -175,16 +175,16 @@
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">학습서비스</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
                         <a href="/learning/homeworkList" class="dropdown-item">내 숙제</a>
-                        <a href="#!" class="dropdown-item">학습그룹 가입신청</a>
+                        <a href="/learning/learnGrpJoinForm" class="dropdown-item">학습그룹 가입신청</a>
                     </div>
                 </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">교육자마당</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
-                        <a href="#!" class="dropdown-item">학습그룹 등록</a>
-                        <a href="#!" class="dropdown-item">내 학습그룹</a>
-                        <a href="#!" class="dropdown-item">학습그룹 상세</a>
-                        <a href="#!" class="dropdown-item">학습그룹 가입승인</a>
+                        <a href="/educator/learnGroupForm" class="dropdown-item">학습그룹 등록</a>
+                        <a href="/educator/learnGroupList" class="dropdown-item">내 학습그룹</a>
+                        <a href="/educator/learnGroupDetail" class="dropdown-item">학습그룹 상세</a>
+                        <a href="/educator/learnGroupJoinList" class="dropdown-item">학습그룹 가입승인</a>
                         <a href="/educator/homeworkForm" class="dropdown-item">숙제 생성</a>
                         <a href="/educator/homeworkSend" class="dropdown-item">숙제 전송</a>
                         <a href="/educator/homeworkEval" class="dropdown-item">숙제 평가</a>
@@ -195,8 +195,8 @@
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
                         <a href="/operate/gameList" class="dropdown-item">게임콘텐츠 관리</a>
                         <a href="/operate/eduMaterialsList" class="dropdown-item">학습자료 관리</a>
-                        <a href="#!" class="dropdown-item">회원 관리</a>
-                        <a href="#!" class="dropdown-item">매출 관리</a>
+                        <a href="/operate/memberList" class="dropdown-item">회원 관리</a>
+                        <a href="/operate/salesInquiryDetail" class="dropdown-item">매출 관리</a>
                     </div>
                 </div>
                  <div class="nav-item dropdown">

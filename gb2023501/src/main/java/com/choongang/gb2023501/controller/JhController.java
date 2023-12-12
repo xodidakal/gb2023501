@@ -5,19 +5,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.choongang.gb2023501.repository.MemberRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
 public class JhController {
 
-	@RequestMapping(value = "loginForm")
+	private final MemberRepository mr;
+	@RequestMapping(value = "info/loginForm")
 	public String login() {
 		
 		return "jh/loginForm";
 	}
 	
-	@RequestMapping(value = "joinAgreeForm")
+	@RequestMapping(value = "info/joinAgreeForm")
 	public String joinAgreeForm() {
 		
 		return "jh/joinAgreeForm";
@@ -34,6 +37,12 @@ public class JhController {
 	public String joinForm() {
 		
 		return "jh/joinForm";
+	}
+	
+	@RequestMapping(value = "operate/memberList")
+	public String memberList() {
+		
+		return "jh/memberList";
 	}
 	
 	

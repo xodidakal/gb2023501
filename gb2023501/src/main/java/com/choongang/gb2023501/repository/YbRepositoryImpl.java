@@ -35,8 +35,7 @@ public class YbRepositoryImpl implements YbRepository {
 		int result = 0;
 		
 		EduMaterials eduMaterials2 = em.find(EduMaterials.class, eduMaterials.getEmNum());
-		
-		if(eduMaterials2 != null) {
+			eduMaterials2.setEmNum(eduMaterials.getEmNum());
 			eduMaterials2.setEmTitle(eduMaterials.getEmTitle());
 			eduMaterials2.setEmContent(eduMaterials.getEmContent());
 			eduMaterials2.setEmType(eduMaterials.getEmType());
@@ -45,9 +44,9 @@ public class YbRepositoryImpl implements YbRepository {
 			eduMaterials2.setEmPayment(eduMaterials.getEmPayment());
 			
 			em.persist(eduMaterials2);
-			System.out.println("YbRepositoryImpl updateByEduMaterials eduMaterials2 -> " + eduMaterials2);
+			log.info("YbRepositoryImpl updateByEduMaterials eduMaterials2 -> " + eduMaterials2);
 			result = 1;
-		}
+		
 		return result;
 
 		
