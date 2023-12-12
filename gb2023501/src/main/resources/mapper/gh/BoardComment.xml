@@ -4,17 +4,17 @@
 
 <mapper namespace="com.choongang.gb2023501.BoardCommentMapper"> 
 	
-	<select id="mkhSelectComment" resultType="BoardComment" parameterType="int">
+	<select id="mkhSelectCommentList" resultType="BoardComment" parameterType="int">
 		SELECT bc.*, m.*
 		FROM   board_comment bc, member m
 		WHERE  m.m_num = bc.m_num
 		AND    b_num = #{b_num}
 	</select>
 	
-	<select id="mkhSelectCommentListCnt" resultType="int" parameterType="boardcomment">
+	<!-- <select id="mkhSelectCommentList" resultType="int" parameterType="boardcomment">
 		SELECT count(*)
 		FROM   board_comment
 		WHERE  b_num = #{b_num}
-	</select>
+	</select> -->
 	
 </mapper>
