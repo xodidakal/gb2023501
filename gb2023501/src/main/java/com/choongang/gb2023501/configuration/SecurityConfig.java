@@ -49,6 +49,7 @@ public class SecurityConfig {
 		
 		http.formLogin((form) -> form
 				.loginPage("/info/loginForm")
+				.permitAll()
 				.usernameParameter("mmId")		// login에 필요한 id값 설정 (default는 username)
                 .passwordParameter("mmPswd")	// login에 필요한 password 값  (default password)
                 .loginProcessingUrl("/login")	// login주소가 호출 되면 시큐리티가 낚아채서 대신 로그인 진행해줌
