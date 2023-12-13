@@ -500,6 +500,7 @@ a {
 .listTable {
 	width: 100%;
 	text-align: center;
+	margin-bottom: 30px;
 }
 .listTable th {
 	text-align: center;
