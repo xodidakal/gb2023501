@@ -7,25 +7,60 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<script>
+    function toggleInput() {
+        var selectValue = document.getElementById("selectDate").value;
+        var dateInput = document.getElementById("startDate");
+        var endDateInput = document.getElementById("endDate");
+        var smonthInput = document.getElementById("sMonth");
+        var emonthInput = document.getElementById("eMonth");
+
+        if (selectValue === "date") {
+            dateInput.style.display = "block";
+            endDateInput.style.display = "block";
+            smonthInput.style.display = "none";
+            emonthInput.style.display = "none";
+            
+            dateInput.setAttribute("required", "required");
+            endDateInput.setAttribute("required", "required");
+            
+        } else if (selectValue === "month") {
+            dateInput.style.display = "none";
+            endDateInput.style.display = "none";
+            smonthInput.style.display = "block";
+            emonthInput.style.display = "block";
+            
+            emonthInput.setAttribute("required", "required");
+            smonthInput.setAttribute("required", "required");
+            dateInput.removeAttribute("required", "required");
+            endDateInput.removeAttribute("required", "required");
+        
+        }
+    }
+
+
+</script>
 <body>
 <div class="row g-0 justify-content-center">
 	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">매출 조회</h2>
-	         <p style="margin-bottom: 35px;"><span>총 10 건</span><span>총 매출액 : </span></p>
+	         <p style="margin-bottom: 35px;"><span>총 ${selectSaleList.size() } 건</span><span>총 매출액 : </span></p>
 	    </div>
 	    <div class="mb-1">
-	    <form action="/operate/searchSalesInquiry" method="GET" role="search"> 
+	    <form action="/operate/searchSalesInquiry" method="post" role="search"> 
          	<div style="display: flex; ">
-	         	<select id="selectDate" name="selectDate" class="w-17 rounded" style="border-color: #ced4da">
+	         	<select id="selectDate" name="selectDate" class="w-17 rounded" style="border-color: #ced4da" onchange="toggleInput()">
 					<option value="date">일단위</option>
 					<option value="month">월단위</option>
 				</select>&nbsp;&nbsp;
 <!-- 				<div style="margin-right: 20px;"><input type="radio" name="selectCondition" id="date">일 단위</div>  -->
 <!--          		<div style="margin-right: 55px;"><input type="radio" name="selectCondition" id="month">월 단위</div> -->
+				<input class="form-control" type="month" id="sMonth" name="sMonth" style="width: 130px; display: none;">
 				<input class="form-control" type="date" id="startDate" name="startDate" required="required" style="width: 130px;"><div class="mt-2">~</div>					
 				<input class="form-control" type="date" id="endDate" name="endDate" required="required" style="width: 130px;">
+				<input class="form-control" type="month" id="eMonth" name="eMonth" style="width: 130px; display: none;">
 				
 				<button type="submit" class="btn btn-light rounded py-2 px-2">검색</button>
 			</div>

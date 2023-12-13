@@ -72,10 +72,13 @@ public class JpaEduMaterialsService {
 		//List<SalesInquiryDTO> findBySalesContaining = yr.findBySalesContaining(startDate, endDate);
 		return gameOrder;
 	}
-//	public List<SalesInquiryDTO> findBySalesInquiryDtoOrderByGoOrderDate() {
-//		List<SalesInquiryDTO> findBySalesInquiryDtoOrderByGoOrderDate = yr2.findBySalesInquiryDtoOrderByGoOrderDate();
-//		return findBySalesInquiryDtoOrderByGoOrderDate;
-//	}
+	
+	public List<SalesInquiryDTO> selectSaleList(Date month) {
+		List<SalesInquiryDTO> selectSaleList = yr2.findBySalesInquiryDtoOrderByGoOrderDateDesc(month);
+		return selectSaleList;
+	}
+
+
 
 	
 

@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -150,29 +152,60 @@ public class YbController {
 	}
 	// 매출 조회 화면 jpa
 	@RequestMapping(value = "/operate/searchSalesInquiry")
-	public String selectDateList(Model model, String selectDate, String startDate, String endDate, Pageable pageable) {
+	public String selectDateList(Model model, String selectDate, String startDate, String endDate, String sMonth, String eMonth) throws ParseException {
 		System.out.println("ybController /operate/selectDateList start...");
 		List<SalesInquiryDTO> selectSaleList= null;
 		
-		Date s_date = java.sql.Date.valueOf(startDate);
-		Date e_date = java.sql.Date.valueOf(endDate);
-
+		Date s_date = null;
+		Date e_date = null;
+		
+		System.out.println("ybController /operate/selectDateList smonth -> " + sMonth);
+		System.out.println("ybController /operate/selectDateList emonth -> " + eMonth);
 		System.out.println("ybController /operate/selectDateList s_sdate -> " + startDate);
 		System.out.println("ybController /operate/selectDateList e_sdate -> " + endDate);
+		
 		if(selectDate.equals("date")) {
-			selectSaleList = js.findBySalesContaining(s_date, e_date);
+			s_date = java.sql.Date.valueOf(startDate);
+			e_date = java.sql.Date.valueOf(endDate);
 			
+			selectSaleList = js.findBySalesContaining(s_date, e_date);	
 		}
 		
-//		if(selectDate.equals("month")) {
-//			selectSaleList = js.findBySalesInquiryDtoOrderByGoOrderDate();
-//		}
+		if(selectDate.equals("month")) {
+			String firstDay = getFirstDayOfMonth(sMonth);
+	        String lastDay = getLastDayOfMonth(eMonth);
+	        
+	        s_date = java.sql.Date.valueOf(firstDay);
+			e_date = java.sql.Date.valueOf(lastDay);
+	        System.out.println("ybController /operate/selectDateList firstDay -> " + s_date);
+	        System.out.println("ybController /operate/selectDateList lastDay -> " + e_date);
+			/* month = java.sql.Date.valueOf(sMonth); */
+		
+
+			selectSaleList = js.findBySalesContaining(s_date, e_date);
+		}
 		log.info("selectSaleList -> " + selectSaleList);
 		
 		model.addAttribute("selectSaleList", selectSaleList);
 		
 		return "yb/salesInquiryDetail";
 	}
+	
+	    public static String getFirstDayOfMonth(String dateString) {
+	        YearMonth yearMonth = YearMonth.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM"));
+	        LocalDate firstDay = yearMonth.atDay(1);
+	        return formatDate(firstDay);
+	    }
+
+	    public static String getLastDayOfMonth(String dateString) {
+	        YearMonth yearMonth = YearMonth.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM"));
+	        LocalDate lastDay = yearMonth.atEndOfMonth();
+	        return formatDate(lastDay);
+	    }
+
+	    private static String formatDate(LocalDate date) {
+	        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	    }
 	
 	
 }
