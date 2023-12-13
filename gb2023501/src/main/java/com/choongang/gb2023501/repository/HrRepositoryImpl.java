@@ -1,20 +1,20 @@
-//package com.choongang.gb2023501.repository;
-//
-//import java.util.List;
-//import javax.persistence.EntityManager;
-//import org.springframework.stereotype.Repository;
-//import com.choongang.gb2023501.domain.LearnGrp;
+package com.choongang.gb2023501.repository;
+
+import java.util.List;
+import javax.persistence.EntityManager;
+import org.springframework.stereotype.Repository;
+import com.choongang.gb2023501.domain.LearnGrp;
 //import com.choongang.gb2023501.model.LearnGrpDTO;
-//
-//import lombok.RequiredArgsConstructor;
-//
-//@Repository
-//@RequiredArgsConstructor
-//public class HrRepositoryImpl implements HrRepository {
-//	// EntityManager 연결
-//	private final EntityManager em;
-//
-//	// 교육자마당 > 내학습그룹 (SELECT)
+
+import lombok.RequiredArgsConstructor;
+
+@Repository
+@RequiredArgsConstructor
+public class HrRepositoryImpl implements HrRepository {
+	// EntityManager 연결
+	private final EntityManager em;
+
+	// 교육자마당 > 내학습그룹 (SELECT)
 //	@Override
 //	public List<LearnGrpDTO> learnGroupList() {
 //		System.out.println("HrRepositoryImpl learnGroupList() start..");
@@ -45,4 +45,4 @@
 //		System.out.println("HrRepositoryImpl learnGroupList() end..");
 //		return learnGrps;
 //	}
-//}
+}

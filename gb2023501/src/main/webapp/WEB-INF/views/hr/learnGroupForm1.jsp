@@ -33,30 +33,37 @@
          		<a href="#!"><i class="bi bi-search mt-2"></i></a>
           	</div>
 	    </div>
-       	<table class="listTable">
-       		<thead>
-				<tr>
-					<th>선택</th>
-					<th>게임콘텐츠명</th>
-					<th>구독 기간</th>
-					<th>구독 잔여 기간</th>
-					<th>학습 가능 인원</th>
-					<th>학습 잔여 인원</th>	
-				</tr>
-			</thead>
-			<tbody>
-			 	<c:forEach var="gameList" items="${gameList }">
-				 	<tr>
-				 		<td><input class="form-check-input" type="radio" name="em_type" id="flexRadioDefault1" ></td>
-						<td>${gameList.g_title}</td>
-						<td>${gameList.g_period}개월</td>
-						<td>${gameList.remainingPeriod}일</td>
-						<td>${gameList.g_to}명</td>
-						<td>${gameList.remainingTo}명</td>
+	    
+	    <form action="/educator/learnGroupForm2">
+	       	<table class="listTable">
+	       		<thead>
+					<tr>
+						<th>선택</th>
+						<th>게임콘텐츠명</th>
+						<th>구독 기간</th>
+						<th>구독 잔여 기간</th>
+						<th>학습 가능 인원</th>
+						<th>학습 잔여 인원</th>	
 					</tr>
-				</c:forEach>
-			</tbody>   
-       	</table>
+				</thead>
+				<tbody>
+				 	<c:forEach var="gameList" items="${gameList }">
+					 	<tr>
+					 		<td><input class="form-check-input" type="radio" name="g_num" id="flexRadioDefault1" value="${gameList.g_num }"></td>
+							<td>${gameList.g_title}</td>
+							<td>${gameList.g_period}개월</td>
+							<td>${gameList.remainingPeriod}일</td>
+							<td>${gameList.g_to}명</td>
+							<td>${gameList.remainingTo}명</td>
+						</tr>
+					</c:forEach>
+				</tbody>   
+	       	</table>
+	       	
+	       	<div class="d-grid gap-2 d-md-flex justify-content-center" >
+	       		<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="컨텐츠 선택">
+	       	</div>
+       	</form>
               
               
               
@@ -82,10 +89,7 @@
 					</div>
               </div> -->
               
-              <div class="d-grid gap-2 d-md-flex justify-content-center" >
-					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="컨텐츠 선택">
-              </div>
-              
+             
 	</div>
 </div>
 <%@ include file="../common/footerFo.jsp" %>
