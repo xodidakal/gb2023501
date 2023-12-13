@@ -2,6 +2,8 @@ package com.choongang.gb2023501.model;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -13,6 +15,7 @@ public class Board {
 	private int 		m_num;			// 회원번호
 	private String 		b_title;		// 제목
 	private String 		b_content;		// 내용
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date 		b_regi_date;	// 등록일자
 	private Date 		b_modi_date;	// 수정일자
 	private int 		b_count;		// 조회수

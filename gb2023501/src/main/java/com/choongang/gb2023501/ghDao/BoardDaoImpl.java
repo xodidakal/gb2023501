@@ -81,6 +81,11 @@ public class BoardDaoImpl implements BoardDao {
 		System.out.println("BoardDaoImpl insertBoard start...");
 		int result = 0;
 		try {
+			if(board.getB_attach_name() == null) board.setB_attach_name("");
+			if(board.getB_attach_path() == null) board.setB_attach_path("");
+			
+			System.out.println("board.getB_flag()->"+board.getB_flag());
+			
 			result = sqlSession.insert("mkhInsertBoard", board);
 		} catch (Exception e) {
 			System.out.println("BoardDaoImpl insertBoard Exception->"+e.getMessage());

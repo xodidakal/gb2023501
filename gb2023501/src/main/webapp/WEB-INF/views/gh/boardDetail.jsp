@@ -12,12 +12,9 @@
 	tr {
 		height: 70px;
 	}
-	#table {
-		font-size: 18px;
-	}
 	th {
 		text-align: left;
-		width: 100px;
+		width: 130px;
 	}
 </style>
 <!--CSS END -->
@@ -100,14 +97,14 @@
 	        
 	        <hr class="my-3">
 	        	
-	        	<table id="table">
+	        	<table class="formTable">
 					<tr>
 						<th>게시 구분</th>
 						<td width="150px;">
 							<c:choose>
 							 	<c:when test="${BdDetail.b_category == 1}"><label style="margin-right: 110px;">공지사항</label></c:when>
 							 	<c:when test="${BdDetail.b_category == 2}"><label style="margin-right: 110px;">Q&A</label></c:when>
-					 			<c:otherwise><h2 class="display-7 mb-4">FAQ</h2></c:otherwise>
+					 			<c:otherwise><label style="margin-right: 110px;">FAQ</label></c:otherwise>
 							</c:choose>
 						</td>
 						
@@ -160,7 +157,7 @@
                 	<c:when test="${BdDetail.b_category eq '1'}">
                 		<!-- 댓글 등록 -->
 		                <hr>
-		                <table id=table>
+		                <table id=formTable>
 		                	<tr>
 								<th>댓글</th>
 								<td width="410px;">
@@ -197,7 +194,7 @@
 		                
 		                <h4 class="display-7 mb-4">답변 작성</h4>
 		                
-		                <table id="table">
+		                <table id="formTable">
 							<tr>
 								<th>작성일</th>
 								<td width="410px;">
@@ -233,10 +230,10 @@
                 <!-- 수정, 삭제, 목록 버튼 -->
                 <div class="d-grid gap-2 d-md-flex justify-content-center" >
 					<a href="boardList?b_category=${BdDetail.b_category}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
-					<c:if test="${BdDetail.m_category eq '4'}">
+					<c:if test="${BdDetail.m_category eq '4'}"></c:if>
 						<a href="boardList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
-						<a href="boardList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">수정</button></a>
-					</c:if>
+						<a href="/customer/boardUpdate?b_num=${BdDetail.b_num}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">수정</button></a>
+					
 				</div>
                 
 			</div>
