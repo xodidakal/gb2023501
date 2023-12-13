@@ -55,7 +55,7 @@
 	    </table>
 	    
 		<div style="">
-			<h5 style="color: #757575; float: left;">학습자 명단</h5>
+			<h5 style="float: left;">학습자 명단</h5>
 			<div style="margin-bottom: 15px; float: right;">
 <!-- 			<div class="d-flex align-items-center justify-content-end"> -->
           		<div>

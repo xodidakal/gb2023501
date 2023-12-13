@@ -37,7 +37,7 @@ public class HrController {
 	public String learnGroupDetail(Model model, LearnGrp learnGrp) {
 		System.out.println("HrController learnGroupDetail() start..");
 		
-		model.addAttribute("yb", "yb");
+		
 		
 		System.out.println("HrController learnGroupDetail() end..");		
 		return "/hr/learnGroupDetail";
