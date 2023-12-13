@@ -11,6 +11,9 @@
 		WHERE    g.g_num = go.g_num
 		AND      g.g_num = lg.g_num
 		AND      go.m_num = 3
+		<if test="g_num != null and g_num != ''">
+		AND      g.g_num = #{g_num}
+		</if>
 		GROUP by g.g_num, g.g_title, g.g_period, g.g_to
 	</select>
 

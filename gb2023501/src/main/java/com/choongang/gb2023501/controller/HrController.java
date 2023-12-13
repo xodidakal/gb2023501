@@ -40,12 +40,12 @@ public class HrController {
 		return "/hr/learnGroupDetail";
 	}
 	
-	// 교육자마당 > 학습그룹 등록 - 화면 1
+	// 교육자마당 > 학습그룹 등록 - 화면 1 (SELECT)
 	@GetMapping("educator/learnGroupForm1")
 	public String learnGroupForm1(Model model) {
 		System.out.println("HrController learnGroupForm1() start..");
 
-		List<Game> gameList = lgService.learnGroupForm1();
+		List<Game> gameList = lgService.learnGroupForm(0);
 		System.out.println("HrController learnGroupForm1() gameList.size() -> "+ gameList.size());		
 		
 		model.addAttribute("gameList", gameList);
@@ -54,22 +54,34 @@ public class HrController {
 		return "/hr/learnGroupForm1";
 	}
 	
-	// 교육자마당 > 학습그룹 등록 - 화면 2
+	// 교육자마당 > 학습그룹 등록 - 화면 2 (SELECT)
 	@GetMapping("educator/learnGroupForm2")
-	public String learnGroupForm2() {
+	public String learnGroupForm2(Model model, int g_num) {
 		System.out.println("HrController learnGroupForm2() start..");
+		
+		System.out.println("HrController learnGroupForm2() g_num -> "+g_num);
+		
+		List<Game> gameList = lgService.learnGroupForm(g_num);
+		System.out.println("HrController learnGroupForm2() gameList.size() -> "+ gameList.size());		
+		
+		model.addAttribute("gameList", gameList);
+		model.addAttribute("g_num", g_num);
 		
 		System.out.println("HrController learnGroupForm2() end..");
 		return "/hr/learnGroupForm2";
 	}
 	
-	// 교육자마당 > 학습그룹 등록 - 실행
+	// 교육자마당 > 학습그룹 등록 - 실행 (INSERT)
 	@PostMapping("educator/learnGroupFormInsert")
-	public String learnGroupFormInsert() {
+	public String learnGroupFormInsert(Model model, LearnGrp learnGrp) {
 		System.out.println("HrController learnGroupFormInsert() start..");
 		
+		int result = lgService.learnGroupFormInsert(learnGrp);
+		
+		model.addAttribute("result", result);
+		
 		System.out.println("HrController learnGroupFormInsert() end..");
-		return "";
+		return "redirect:/educator/learnGroupForm1";
 	}
 	
 	// 교육자마당 > 학습그룹 가입 승인 - 화면

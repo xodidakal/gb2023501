@@ -15,21 +15,21 @@ public class LearnGrpDaoImpl implements LearnGrpDao {
 	// SqlSession 연결
 	private final SqlSession session;
 	
-	// 교육자마당 > 학습그룹 등록 - 화면 1
+	// 교육자마당 > 학습그룹 등록 - 화면 (SELECT)
 	@Override
-	public List<Game> learnGroupForm1() {
-		System.out.println("LearnGrpDaoImpl learnGroupForm1() start..");
+	public List<Game> learnGroupForm(int g_num) {
+		System.out.println("LearnGrpDaoImpl learnGroupForm() start..");
 		
 		List<Game> gameList = new ArrayList<Game>();
 		
 		try {
-			gameList = session.selectList("hrSelectGameList");
-			System.out.println("LearnGrpDaoImpl learnGroupForm1() gameList.size() -> "+ gameList.size());
+			gameList = session.selectList("hrSelectGameList", g_num);
+			System.out.println("LearnGrpDaoImpl learnGroupForm() gameList.size() -> "+ gameList.size());
 		} catch (Exception e) {
-			System.out.println("LearnGrpDaoImpl learnGroupForm1() e.getMessage() -> "+e.getMessage());
+			System.out.println("LearnGrpDaoImpl learnGroupForm() e.getMessage() -> "+e.getMessage());
 		}
 		
-		System.out.println("LearnGrpDaoImpl learnGroupForm1() end..");		
+		System.out.println("LearnGrpDaoImpl learnGroupForm() end..");		
 		return gameList;
 	}
 
