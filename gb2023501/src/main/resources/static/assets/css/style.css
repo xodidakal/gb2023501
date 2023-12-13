@@ -500,6 +500,7 @@ a {
 .listTable {
 	width: 100%;
 	text-align: center;
+	margin-bottom: 30px;
 }
 .listTable th {
 	text-align: center;
@@ -527,7 +528,8 @@ a {
 	height: 70px;
 }
 .formTable {
-	font-size: 18px;
+	width: 100%;
+	font-size: 16px;
 }
 .formTable th {
 	text-align: left;

@@ -28,4 +28,12 @@ public class Game {
 	private int	   start;
 	private int	   end;
 	
+	// 내구독 조회
+	private String lg_title;
+	private Date	go_order_date;
+	
+	// (희라)학습그룹등록 시 게임콘텐츠선택 화면
+	private int	   remainingPeriod;
+	private int	   joinedTo;
+	
 }
