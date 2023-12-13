@@ -36,11 +36,11 @@
                     <div class="row g-3 col-sm-6">
                         <h2 class="display-7 mb-4 ">로그인</h2>
                         <hr class="my-3">
-<!--                          <input type="text" class="form-control" id="id" name="username" placeholder="id">
-                        <input type="password" class="form-control" id="pswd" name="password" placeholder="password">  -->
                          <input type="text" class="form-control" id="id" name="mmId" placeholder="id">
-                        <input type="password" class="form-control" id="pswd" name="mmPswd" placeholder="password">  
-                        <div class="mb-3 form-check">
+                        <input type="password" class="form-control" id="pswd" name="mmPswd" placeholder="password">
+<!--                          <input type="text" class="form-control" id="id" name="username" placeholder="id">
+                        <input type="password" class="form-control" id="pswd" name="password" placeholder="password">  
+ -->                        <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1">
                             <label class="form-check-label" for="exampleCheck1">아이디 기억하기</label>
                         </div>
