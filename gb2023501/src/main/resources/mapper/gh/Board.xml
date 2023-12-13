@@ -58,8 +58,13 @@
 	<!-- <insert id="mkhInsertBoard" parameterType="board">
 		INSERT 
 		INTO   board(b_num,  				b_category, 	b_notie_type, 	b_flag, 	m_num, 		b_title, 	b_content, 		b_regi_date, 		b_modi_date, 					b_count, 	b_attach_name, 	b_attach_path, 		b_ref_num)
-		VALUES 	(seq_board_b_num.nextval, #{b_category}, #{b_notie_type}, 	#{b_flag},	1,			#{b_title}, #{b_content}, 	sysdate, 	#{b_modi_date, jdbcType = DATE}, 		0	, #{b_attach_name}, #{b_attach_path}, #{b_ref_num})
+		VALUES 	(seq_board_b_num.nextval, #{b_category}, #{b_notie_type}, 	#{b_flag},	1,			#{b_title}, #{b_content}, 	#{b_regi_date}, 	#{b_modi_date, jdbcType = DATE}, 		0	, #{b_attach_name}, #{b_attach_path}, #{b_ref_num})
 	</insert> -->
+	
+	<insert id="mkhInsertBoard" parameterType="board">
+		INSERT INTO board
+		VALUES 	(board_seq.nextval, #{b_category}, #{b_notie_type}, 	#{b_flag},	1,			#{b_title}, #{b_content}, 	#{b_regi_date}, 	#{b_modi_date, jdbcType = DATE}, 		0	, #{b_attach_name}, #{b_attach_path}, board_seq.nextval)
+	</insert>
 	
 
 </mapper>
