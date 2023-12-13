@@ -26,7 +26,7 @@
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">학습 자료 목록</h2>
-	         <p style="margin-bottom: 35px;">총 ${selectEduMaterialsListCnt } 건</p>
+	         <p style="margin-bottom: 35px;">총 ${selectEduMaterialsList.size() } 건</p>
 	    </div>
 	    <form action="/operate/searchEduMaterials" method="GET" role="search"> 
 		<div class="input-group col-md-5 mb-3"> 
@@ -37,7 +37,7 @@
 <!-- 		</select>&nbsp;&nbsp; -->
 			<!-- 카테고리 검색 -->
 			<select id="type" name="type" class="w-17 rounded" style="border-color: #ced4da">
-				<option value="emTitle">자료명</option>
+				<option value="em_title">자료명</option>
 				<option value="writer">교육</option>
 			</select>&nbsp;&nbsp;
 	            <input id="search" name="keyword" class="form-control rounded" type="search" placeholder="검색해라" style="width: 160px;">
