@@ -70,8 +70,4 @@ public class LearnGrp {
 	
 	@Transient
 	private String g_title;
-	
-	@Transient
-	private int mmNumCnt;
-
 }

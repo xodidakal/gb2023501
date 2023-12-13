@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.choongang.gb2023501.domain.LearnGrp;
 import com.choongang.gb2023501.hrService.LearnGrpService;
 import com.choongang.gb2023501.model.Game;
-//import com.choongang.gb2023501.model.LearnGrpDTO;
+import com.choongang.gb2023501.model.LearnGrpDTO;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -18,17 +18,17 @@ public class HrController {
 	private final LearnGrpService lgService;
 	
 	// 교육자마당 > 내학습그룹 (SELECT)
-//	@GetMapping("educator/learnGroupList")
-//	public String learnGroupList(Model model, LearnGrp learnGrp) {
-//		System.out.println("HrController learnGroupList() start..");
-//		
-//		List<LearnGrpDTO> learnGrps = lgService.learnGroupList();
-//		model.addAttribute("learnGrps", learnGrps);
-//		System.out.println("HrController learnGroupList() learnGrps.size() -> "+learnGrps.size());
-//		
-//		System.out.println("HrController learnGroupList() end..");		
-//		return "/hr/learnGroupList";
-//	}
+	@GetMapping("educator/learnGroupList")
+	public String learnGroupList(Model model, LearnGrp learnGrp) {
+		System.out.println("HrController learnGroupList() start..");
+		
+		List<LearnGrpDTO> learnGrps = lgService.learnGroupList();
+		model.addAttribute("learnGrps", learnGrps);
+		System.out.println("HrController learnGroupList() learnGrps.size() -> "+learnGrps.size());
+		
+		System.out.println("HrController learnGroupList() end..");		
+		return "/hr/learnGroupList";
+	}
 	
 	// 교육자마당 > 학습그룹 상세 (SELECT)
 	@GetMapping("educator/learnGroupDetail")
@@ -76,9 +76,12 @@ public class HrController {
 	public String learnGroupFormInsert(Model model, LearnGrp learnGrp) {
 		System.out.println("HrController learnGroupFormInsert() start..");
 		
-		int result = lgService.learnGroupFormInsert(learnGrp);
+		// 회원번호 임시 세팅 ------------------ 추후 뺴야 함
+		learnGrp.getMember().setMmNum(3);
 		
-		model.addAttribute("result", result);
+		lgService.learnGroupFormInsert(learnGrp);
+		
+		System.out.println("HrController learnGroupFormInsert() learnGrp -> "+ learnGrp);		
 		
 		System.out.println("HrController learnGroupFormInsert() end..");
 		return "redirect:/educator/learnGroupForm1";
