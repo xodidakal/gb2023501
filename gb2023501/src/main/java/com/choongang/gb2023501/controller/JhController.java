@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.choongang.gb2023501.jhService.MemberService;
 import com.choongang.gb2023501.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -16,9 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 public class JhController {
 
 	private final MemberRepository mr;
+	private final MemberService ms;
+	
 	@RequestMapping(value = "info/loginForm")
 	public String login() {
-		
+		String mmId = ms.getLoggedInId();
+		log.info("getLoggedInId:{}", mmId);
 		return "jh/loginForm";
 	}
 	
