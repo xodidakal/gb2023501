@@ -6,18 +6,130 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<!--CSS START -->
 <style type="text/css">
 	tr {
 		height: 70px;
-	}
-	#table {
-		font-size: 18px;
 	}
 	th {
 		text-align: left;
 		width: 150px;
 	}
 </style>
+<!--CSS END -->
+
+<!-- JS START -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+
+	// 게시일자 Radio버튼
+	document.addEventListener("DOMContentLoaded", function () {
+	    var nowTimeRadio = document.getElementById("nowTimeRadio");
+	    var notNowTimeRadio = document.getElementById("notNowTimeRadio");
+	    var selectedDateInput = document.getElementById("selectedDate");
+	
+	    // 등록 즉시 게시
+	    nowTimeRadio.addEventListener("change", function () {
+	        selectedDateInput.style.display = "none";
+	        selectedDateInput.value = ""; // 선택된 날짜 초기화
+	    });
+	
+	    // 게시 일자 선택
+	    notNowTimeRadio.addEventListener("change", function () {
+	        selectedDateInput.style.display = "inline";
+	    });
+	    
+	});
+	 
+	// 공지 등록 여부
+	$(function() {
+		$('#check_b_flag').click(function() {
+			var checkboxValue = document.getElementById('check_b_flag').value;
+			var checked = $(this).is(':checked');
+			if(checked) {
+				$(this).val("0");
+				$('input[name=b_flag]').val("0");
+				alert('Checkbox Value: ' + checkboxValue);
+			}
+			else {
+				$(this).val("1");
+				$('input[name=B_flag]').val("1");
+				alert('Checkbox Value: ' + checkboxValue);
+			}
+		});
+	});
+	
+	/* document.addEventListener("DOMContentLoaded", function() {
+		var nowTimeRadio = getElementById("nowTimeRadio");
+		var notNotTimeRadio = getElementById("notNowTimeRadio");
+		var selectedDateInput = getElementById("selectedDate");
+		
+		nowTimeRadio.addEventListner("change", function() {
+			selectedDateInput.value = "sysdate";
+			selectedDateInput.style.display = "none";
+			selectedDateInput.value = "";
+		});
+		
+		notNotTimeRadio.addEventListner("change", function() {
+			selectedDateInput.style.display = "inline";
+		});
+		
+	});
+	 */
+	 
+	 
+	/* $(function() {
+		$('#check_Bflag').change(function() {
+			var checked = $(this).is(':checked');
+			if (checked) {
+                $(this).val("0");
+                $('input[name=b_flag]').val("0");
+            } else {
+                $(this).val("1");
+                $('input[name=b_flag]').val("1");
+            }
+		});
+	}); */
+	
+	/* $(function() {
+        var checkboxValue = document.getElementById('check_Bflag').value;
+        var checked = $(this).is(':checked');
+        
+		$('#check_Bflag').click(function () {
+			alert("클릭");
+            // 체크된 경우
+            if (checked) {
+                // b_flag에 0을 주기
+                $(this).val('0');
+                $('input[name=b_flag]').val("0");
+                alert('Checkbox Value: ' + checkboxValue);
+                
+            } else {
+                // 체크가 해제된 경우 b_flag에 1을 주기
+                $(this).val('1');
+                $('input[name=b_flag]').val("1");
+                alert('Checkbox Value: ' + checkboxValue);
+            }
+		});
+	}); */
+	
+	/* $(function() {
+		
+	    $('#check_Bflag').click(function() {
+	    	var checkboxValue = document.getElementById('check_Bflag').value;
+	        var checked = $(this).is(':checked');
+	        $('input[name=b_flag]').val(checked ? "1" : "0");
+	        alert('Checkbox Value: ' + checkboxValue);
+	    });
+	}); */
+	
+	
+
+
+</script>
+<!-- JS END -->
+
 
 </head>
 <body>
@@ -27,15 +139,16 @@
 <!--     </div> -->
 <div class="row g-0 justify-content-center">
 	<div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
-		<form action="/customer/insertBoard">
+		<form action="/customer/insertBoard" method="post" enctype="multipart/form-data">
 	        <div class="row g-3">
 	        <h2 class="display-7 mb-4">게시물 등록</h2>
 	        <hr class="my-3">
-	        	<table id="table">
+	        	<table class="formTable">
 					<tr>
 						<th>게시 구분</th>
 							<td width="150px;">
 			                    <select id="b_category" name="b_category" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
+			                    <c:if test=""></c:if>
 									<option value="1">공지사항</option>
 									<option value="2">Q&A</option>
 									<option value="3">FAQ</option>
@@ -54,7 +167,8 @@
 					<tr>
 						<th>상단글로 노출</th>
 						<td width="150px;">
-		                    <input class="form-check-input" type="checkbox" value="0" name="b_flag" id="flexRadioDefault1" >
+							<input type="hidden" name="b_flag" value="1">
+		                    <input class="form-check-input" type="checkbox" name="check_b_flag" id="check_b_flag" value="1">
 		                </td>
 					</tr>
 		            <tr>
@@ -67,12 +181,16 @@
 					<tr>
 						<th>게시 일자</th>
 						<td width="150px;">
-							<input class="form-check-input" type="radio" name="em_type" id="flexRadioDefault1" >
-							<label for="subject">등록 즉시 게시</label>
+							<input type="radio" name="b_regi_date" value="sysdate" id="nowTimeRadio">
+							<label class="form-check-label">등록 즉시 게시</label>
 						</td>
 						<td width="150px;">
-							<input class="form-check-input" type="date" name="b_regi_date" id="flexRadioDefault1" >
-							<label for="subject">게시 일자 선택</label>					
+							<input type="radio" name="b_regi_date" value="notNowTime" id="notNowTimeRadio">
+							<label class="form-check-label">게시 일자 선택</label>
+						</td>
+						<td width="150px;">
+							<input type="date" id="selectedDate" name="selectedDate" style="display: none;">
+							<input type="date" name="b_regi_date">
 						</td>
 					</tr>
 					<tr>
