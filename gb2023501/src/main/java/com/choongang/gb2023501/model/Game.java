@@ -28,4 +28,8 @@ public class Game {
 	private int	   start;
 	private int	   end;
 	
+	// 내구독 조회
+	private String lg_title;
+	private Date	go_order_date;
+	
 }
