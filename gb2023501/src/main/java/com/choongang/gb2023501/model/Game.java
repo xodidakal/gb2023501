@@ -33,7 +33,7 @@ public class Game {
 	private Date	go_order_date;
 	
 	// (희라)학습그룹등록 시 게임콘텐츠선택 화면
-	private int	   remainingPeriod;
-	private int	   joinedTo;
+	private int	   remainingPeriod;		// 잔여 기간
+	private int	   remainingTo;			// 잔여 인원
 	
 }

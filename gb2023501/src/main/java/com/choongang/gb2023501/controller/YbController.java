@@ -1,9 +1,14 @@
 package com.choongang.gb2023501.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -16,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.choongang.gb2023501.domain.GameOrder;
 import com.choongang.gb2023501.model.EduMaterials;
+import com.choongang.gb2023501.model.SalesInquiryDTO;
 import com.choongang.gb2023501.ybService.EduMaterialsService;
 import com.choongang.gb2023501.ybService.JpaEduMaterialsService;
 import com.choongang.gb2023501.ybService.Paging;
@@ -112,31 +118,61 @@ public class YbController {
 		return "yb/eduMaterialsList";
 	}
 	
-	// 학습자료 검색 리스트 
+	// 학습자료 검색 리스트 jpa
 	@RequestMapping(value = "/operate/searchEduMaterials")
 	public String searchEduMaterials(String keyword, Model model, String type) {
 		
+		List<com.choongang.gb2023501.domain.EduMaterials> selectEduMaterialsList = null;
+		
 		System.out.println("type -> " + type);
 		System.out.println("keyword -> " + keyword);
-		List<com.choongang.gb2023501.domain.EduMaterials> selectEduMaterialsList = js.findByEduMaterialsContaining(keyword, type);
-		System.out.println("selectEduMaterialsList.size() -> " + selectEduMaterialsList.size());
+		
+		if(type.equals("em_title")) {
+			selectEduMaterialsList = js.findByEduMaterialsContaining(keyword);
+			System.out.println("selectEduMaterialsList.size() -> " + selectEduMaterialsList.size());
+		}
 		
 		model.addAttribute("selectEduMaterialsList", selectEduMaterialsList);
 		return "yb/eduMaterialsList";
 	}
 	
-	// 매출 조회 화면 jsp
+	// 매출 조회 화면 jpa
 	@RequestMapping(value = "/operate/salesInquiryDetail")
-	public String salesInquiryDetail(Model model) {
+	public String salesInquiryDetail(Model model, String selectDate, Pageable pageable) {
 		System.out.println("ybController /operate/salesInquiryDetail start...");
 		
-		List<GameOrder> selectSaleList = js.getListAllGameOrder();
+//		List<GameOrder> selectSaleList = js.getListAllGameOrder();
+//		log.info("selectSaleList -> " + selectSaleList);
+//		
+//		model.addAttribute("selectSaleList", selectSaleList);
+		
+		return "yb/salesInquiryDetail";
+	}
+	// 매출 조회 화면 jpa
+	@RequestMapping(value = "/operate/searchSalesInquiry")
+	public String selectDateList(Model model, String selectDate, String startDate, String endDate, Pageable pageable) {
+		System.out.println("ybController /operate/selectDateList start...");
+		List<SalesInquiryDTO> selectSaleList= null;
+		
+		Date s_date = java.sql.Date.valueOf(startDate);
+		Date e_date = java.sql.Date.valueOf(endDate);
+
+		System.out.println("ybController /operate/selectDateList s_sdate -> " + startDate);
+		System.out.println("ybController /operate/selectDateList e_sdate -> " + endDate);
+		if(selectDate.equals("date")) {
+			selectSaleList = js.findBySalesContaining(s_date, e_date);
+			
+		}
+		
+//		if(selectDate.equals("month")) {
+//			selectSaleList = js.findBySalesInquiryDtoOrderByGoOrderDate();
+//		}
 		log.info("selectSaleList -> " + selectSaleList);
+		
 		model.addAttribute("selectSaleList", selectSaleList);
 		
 		return "yb/salesInquiryDetail";
 	}
-	
 	
 	
 }

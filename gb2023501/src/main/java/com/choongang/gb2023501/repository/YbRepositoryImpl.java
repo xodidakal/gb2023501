@@ -1,5 +1,7 @@
 package com.choongang.gb2023501.repository;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.choongang.gb2023501.domain.EduMaterials;
 import com.choongang.gb2023501.domain.GameOrder;
+import com.choongang.gb2023501.model.SalesInquiryDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -66,17 +69,12 @@ public class YbRepositoryImpl implements YbRepository {
 	}
 	// 학습자료 키워드 리스트 조회
 	@Override
-	public List<EduMaterials> findByEduMaterialsContaining(String keyword, String type) {
+	public List<EduMaterials> findByEduMaterialsContaining(String keyword) {
 		System.out.println("YbRepositoryImpl List<EduMaterials> findByEduContaining start...");
-		EduMaterials eduMaterials = new EduMaterials();
 
-		List<EduMaterials> findByEduMaterialsContaining = em.createQuery("select e from EduMaterials e WHERE e.type LIKE: type And e.emTitle  LIKE :keyword", EduMaterials.class)
-															.setParameter("type",  "%" + type + "%")
+		List<EduMaterials> findByEduMaterialsContaining = em.createQuery("select e from EduMaterials e WHERE e.emTitle LIKE :keyword", EduMaterials.class)
 															.setParameter("keyword", "%" + keyword + "%")
-															
 				   									  		.getResultList();
-	
-
 		return findByEduMaterialsContaining;
 	}
 	
@@ -88,6 +86,31 @@ public class YbRepositoryImpl implements YbRepository {
 				 							.getResultList();
 		 log.info("YbRepositoryImpl List<GameOrder> findAllSales.size() -> " + selectSaleList.size());
 		return selectSaleList;
+	}
+//	@Override
+//	public List<GameOrder> findBySalesContaining(String s_sdate, String s_edate) {
+//		System.out.println("YbRepositoryImpl findBySalesContaining start...");
+//		
+//		 List<GameOrder> selectDateList = em.createQuery("select g from GameOrder g where g.goOrderDate between :s_sdate and :s_edate order by g.goOrderDate desc", GameOrder.class)
+//				 							.setParameter("s_sdate", java.sql.Date.valueOf(s_sdate))
+//				 							.setParameter("s_edate", java.sql.Date.valueOf(s_edate))
+//				 							.getResultList();
+//		 log.info("YbRepositoryImpl List<GameOrder> findAllSales.size() -> " + selectDateList.size());
+//		return selectDateList;
+//	}
+//	
+	@Override
+	public List<SalesInquiryDTO> findBySalesContaining(String s_sdate, String s_edate) {
+		
+		System.out.println("YbRepositoryImpl findBySalesContaining start...");
+		
+		 List<SalesInquiryDTO> selectDateList = em.createQuery("select s from SalesInquiryDTO s where s.goOrderDate "
+		 											   + "between :s_sdate and :s_edate GROUP BY s.goOrderDate order by s.goOrderDate desc", SalesInquiryDTO.class)
+				 							.setParameter("s_sdate", java.sql.Date.valueOf(s_sdate))
+				 							.setParameter("s_edate", java.sql.Date.valueOf(s_edate))
+				 							.getResultList();
+		 log.info("YbRepositoryImpl List<GameOrder> findAllSales.size() -> " + selectDateList.size());
+		return selectDateList;
 	}
 
 	

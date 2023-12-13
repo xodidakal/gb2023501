@@ -37,34 +37,26 @@
        		<thead>
 				<tr>
 					<th>선택</th>
-					<th>No.</th>
 					<th>게임콘텐츠명</th>
 					<th>구독 기간</th>
+					<th>구독 잔여 기간</th>
 					<th>학습 가능 인원</th>
-					<th>학습 확정 인원</th>	
+					<th>학습 잔여 인원</th>	
 				</tr>
 			</thead>
-			 <tbody>
-			 	<%-- <c:forEach var="lg" items="${learnGrps }"> --%>
+			<tbody>
+			 	<c:forEach var="gameList" items="${gameList }">
 				 	<tr>
 				 		<td><input class="form-check-input" type="radio" name="em_type" id="flexRadioDefault1" ></td>
-						<td>No.</td>
-						<td>게임콘텐츠명</td>
-						<td>구독 기간</td>
-						<td>학습 가능 인원</td>
-						<td>학습 확정 인원</td>
+						<td>${gameList.g_title}</td>
+						<td>${gameList.g_period}개월</td>
+						<td>${gameList.remainingPeriod}일</td>
+						<td>${gameList.g_to}명</td>
+						<td>${gameList.remainingTo}명</td>
 					</tr>
-				 	<tr>
-				 		<td><input class="form-check-input" type="radio" name="em_type" id="flexRadioDefault1" ></td>
-						<td>No.</td>
-						<td>게임콘텐츠명</td>
-						<td>구독 기간</td>
-						<td>학습 가능 인원</td>
-						<td>학습 확정 인원</td>
-					</tr>
-				<%-- </c:forEach> --%>
-                </tbody>   
-              </table>
+				</c:forEach>
+			</tbody>   
+       	</table>
               
               
               

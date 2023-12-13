@@ -42,4 +42,30 @@ public class GameOrderDaoImpl implements GameOrderDao {
 		return totalSearchGameOrder;
 	}
 
+	@Override
+	public List<Game> listGameOrder2(Game game) {
+		System.out.println("GameOrderDaoImpl listGameOrder2 start...");
+		List<Game> gameOrderList = null;
+		
+		try {
+			gameOrderList = session.selectList("dhGameOrderList2" , game);
+			System.out.println("GameOrderDaoImpl listGameOrder2 gameOrderList->"+gameOrderList.size());
+		} catch (Exception e) {
+			System.out.println("GameOrderDaoImpl listGameOrder2 Exception->"+e.getMessage());
+		}
+		return gameOrderList;
+	}
+
+	@Override
+	public int totalSearchGameOrder2(Game game) {
+		int totalSearchGameOrder = 0;
+		try {
+			totalSearchGameOrder = session.selectOne("dhGameOrderSearchTotal2",game);
+			System.out.println("GameOrderDaoImpl totalSearchGameOrder2()->"+totalSearchGameOrder);
+		} catch (Exception e) {
+			System.out.println("GameOrderDaoImpl totalSearchGameOrder2->"+e.getMessage());
+		}
+		return totalSearchGameOrder;
+	}
+
 }

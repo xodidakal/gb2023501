@@ -82,11 +82,12 @@ public class GbController {
 	  
 	  // 숙제 전송 화면 이동
 	  @RequestMapping("/educator/homeworkSend")
-	  public String selectHomeworkList(Homework homework, String currentPage, HwSend hwsend, Model model) {
+	  public String selectHomeworkList(Homework homework, String currentPage, HwSend hwsend, String result, Model model) {
 		  System.out.println("GbController selectHomeworkList start...");
 		  // 숙제 목록은 로그인한 교육자가 생성한 목록이 조회되므로 교육자 회원번호를 담는다. (우선 임시로 추후에 변경 예정)
 		  homework.setM_num(3);
-			
+		  System.out.println("homework h_num -> "+homework.getH_num());
+		  
 		  // 생성한 숙제 총 개수
 		  int homeworkListCnt = hs.selectHomeworkListCnt(homework);
 			
@@ -96,7 +97,10 @@ public class GbController {
 		  System.out.println("homework.getStart ->"+homework.getStart());
 		  System.out.println("homework.getEnd ->"+homework.getEnd());
 		  
-		  // 생성한 숙제 리스트 조회
+		  // 생성한 숙제 셀렉트
+		  List<Homework> allhomeworkList = hs.selectAllHomeworkList(homework);
+		  
+		  // 생성한 숙제 목록 조회
 		  List<Homework> homeworkList = hs.selectHomeworkList(homework);
 		  
 		  // 교육자의 학습그룹 목록
@@ -117,16 +121,36 @@ public class GbController {
 			
 			// 학습그룹의 학습자 목록
 			lgJoinMemberList = gljs.selectLgJoinMemberList(hwsend);
+		  }else { // 학습그룹이 하나도 없을 때에는 0으로 초기화
+			  hwsend.setLg_num(0);
 		  }
 		  
-		  
+		  model.addAttribute("homework1", homework);
+		  model.addAttribute("allhomeworkList", allhomeworkList);
 		  model.addAttribute("homeworkList", homeworkList);
 		  model.addAttribute("StartRow",page.getStartRow());
 		  model.addAttribute("page", page);
+		  model.addAttribute("hwsend", hwsend);
 		  model.addAttribute("learnGrpList", learnGrpList);
 		  model.addAttribute("lgJoinMemberList", lgJoinMemberList);
 		  
 		  return "gb/homeworkSend";
 	  }
 	 
+	  // 숙제 전송하기
+	  @PostMapping("/educator/homeworkSendAction")
+	  public String insertHwSendList(int[] h_num, int[] m_num, Model model) {
+		  System.out.println("GbController insertHwSendList start...");
+		  String result = "1";
+		  
+		  for(int i=0; i < h_num.length; i++) {
+			  System.out.println("insertHwSendList h_num -> "+h_num[i]);
+		  }
+		  
+		  for(int i=0; i < m_num.length; i++) {
+			  System.out.println("insertHwSendList m_num -> "+m_num[i]);
+		  }
+		  
+		  return"redirect:homeworkSend?result="+result;
+	  }
 }

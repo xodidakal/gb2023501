@@ -23,4 +23,36 @@
 		</if>
 	
 	</select>
+	<select id="dhGameOrderList2" resultType="Game" parameterType="Game">
+	SELECT *
+	FROM (   
+    		SELECT rownum rn, a.*
+    		FROM 
+    			(select g.*, l.lg_title , go.go_order_date
+            	 from   game g, 
+                        (SELECT g_num, LISTAGG(lg_title,', ')WITHIN GROUP(ORDER BY lg_title) as lg_title
+                         FROM learn_grp
+                         GROUP BY g_num) l , game_order go
+            	 where  g.g_num = l.g_num
+            	 and	g.g_num = go.g_num
+            	 <if test="keyword != null and keyword != ''">
+			 	 and 	g_title like '%' || #{keyword} || '%'
+			 	 </if>
+			    ) a
+		 )
+	WHERE rn BETWEEN #{start} and #{end}
+	</select>
+	
+	<select id="dhGameOrderSearchTotal2" resultType="int" parameterType="Game">
+		SELECT count(*)
+		FROM   game g, (SELECT g_num, LISTAGG(lg_title,',')WITHIN GROUP(ORDER BY lg_title) as lg_title
+                         FROM learn_grp
+                         GROUP BY g_num) l , game_order go
+		where  g.g_num = l.g_num
+        and	   g.g_num = go.g_num
+		<if test="keyword != null and keyword != ''">
+		and    g_title like '%' || #{keyword} || '%'
+		</if>
+	</select>
+	
 </mapper>

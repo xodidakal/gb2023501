@@ -13,24 +13,42 @@
 		  $("#searchHtitle").change(function(){
 		    // Value값 가져오기
 		    var h_num = $("#searchHtitle :selected").val();
-
-			alert("h_num -> "+h_num);
+		    var lg_num = ${hwsend.lg_num};
+			
+		    location.href = "homeworkSend?h_num="+h_num+"&lg_num="+lg_num;
 		  });
 		  
 		  // 학습그룹명 검색 셀렉트 박스 변경 시 검색
 		  $("#searchLgtitle").change(function(){
 			    // Value값 가져오기
 			    var lg_num = $("#searchLgtitle :selected").val();
+			    var h_num = ${homework1.h_num};
 
-				alert("lg_num -> "+lg_num);
+			    location.href = "homeworkSend?h_num="+h_num+"&lg_num="+lg_num;
 		  });
 		  
 		  // 전체 선택 클릭 시 발생 이벤트
 		  $("#checkAll").click(function() {
 			  var checkAll = $('#checkAll').val();
+
 			  if(checkAll == '전체선택'){
-				  alert('전체선택이야');
 				  $("input[name=m_num]").prop("checked", true);
+				  $('#checkAll').val('전체해제');
+			  }else{
+				  $("input[name=m_num]").prop("checked", false);
+				  $('#checkAll').val('전체선택');
+			  }
+		  });
+		  
+		  // 학습자 체크할 때마다 체크
+		  $("input[name=m_num]").click(function() {
+			  var totalM_num = $("input[name=m_num]").length;
+			  var totalChecked = $("input[name=m_num]:checked").length;
+			  
+			  if(totalM_num != totalChecked){
+				  $('#checkAll').val('전체선택');
+			  }else {
+				  $('#checkAll').val('전체해제');
 			  }
 		  });
 	});
@@ -49,15 +67,15 @@
 	         <h2 style="margin-bottom: 15px;">숙제 전송</h2>
 	    </div>
 	    
-		<form action="#" name="frm">		
+		<form action="homeworkSendAction" name="frm" method="post">		
 			<!-- 교육자 숙제 목록 -->
 			<div class="input-group col-md-5 mb-3"> 
 				<!-- 숙제명 검색 셀렉트 박스 -->
 				<span style="margin: 10px 15px 10px 0px;">숙제명</span>&nbsp;&nbsp;
 				<select id="searchHtitle" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
-					<option id="h_title" value="전체">전체</option>
-					<c:forEach var="homework" items="${homeworkList }" varStatus="status">
-						<option id="h_title" value="${homework.h_num }">${homework.h_title }</option>
+					<option id="h_title" value=0>전체</option>
+					<c:forEach var="allhomework" items="${allhomeworkList }" varStatus="status">
+						<option id="h_title" value="${allhomework.h_num }" <c:if test ="${homework1.h_num eq allhomework.h_num}"> selected="selected"</c:if>>${allhomework.h_title }</option>
 					</c:forEach>
 				</select>      	
 		    </div>
@@ -93,19 +111,38 @@
                 </table>
                 <div class="row mt-8" style="width:100%;">
  					<div class="d-flex justify-content-center" style="margin-top:12px">
-		                <nav aria-label="Page navigation example">
-						  <ul class="pagination">
-						  	<c:if test="${page.startPage > page.pageLimit}">
-						  		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage-page.pageLimit}">이전</a></li>
-						  	</c:if>
-						    <c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
-						    	<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${i }">${i }</a></li>
-						    </c:forEach>
-						 	<c:if test="${page.endPage < page.totalPage}">
-						 		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage+page.pageLimit}">다음</a></li>
-						 	</c:if>
-						  </ul>
-						</nav>
+ 						<c:choose>
+ 							<c:when test="${hwsend.lg_num > 0 }">
+				                <nav aria-label="Page navigation example">
+								  <ul class="pagination">
+								  	<c:if test="${page.startPage > page.pageLimit}">
+								  		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage-page.pageLimit}&h_num=${homework1.h_num}&lg_num=${hwsend.lg_num}">이전</a></li>
+								  	</c:if>
+								    <c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
+								    	<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${i }&h_num=${homework1.h_num}&lg_num=${hwsend.lg_num}">${i }</a></li>
+								    </c:forEach>
+								 	<c:if test="${page.endPage < page.totalPage}">
+								 		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage+page.pageLimit}&h_num=${homework1.h_num}&lg_num=${hwsend.lg_num}">다음</a></li>
+								 	</c:if>
+								  </ul>
+								</nav>
+							</c:when>
+							<c:otherwise>
+								<nav aria-label="Page navigation example">
+								  <ul class="pagination">
+								  	<c:if test="${page.startPage > page.pageLimit}">
+								  		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage-page.pageLimit}&h_num=${homework1.h_num}">이전</a></li>
+								  	</c:if>
+								    <c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
+								    	<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${i }&h_num=${homework1.h_num}">${i }</a></li>
+								    </c:forEach>
+								 	<c:if test="${page.endPage < page.totalPage}">
+								 		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage+page.pageLimit}&h_num=${homework1.h_num}">다음</a></li>
+								 	</c:if>
+								  </ul>
+								</nav>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</div>
@@ -116,7 +153,7 @@
 				<span style="margin: 10px 15px 10px 0px;">학습그룹명</span>&nbsp;&nbsp;
 				<select id="searchLgtitle" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
 					<c:forEach var="learnGrp" items="${learnGrpList }" varStatus="status">
-						<option id="lg_title" value="${learnGrp.lg_num }">${learnGrp.lg_title }</option>
+						<option id="lg_title" value="${learnGrp.lg_num }"<c:if test ="${hwsend.lg_num eq learnGrp.lg_num}"> selected="selected"</c:if>>${learnGrp.lg_title }</option>
 					</c:forEach>
 				</select>      	
 	          	

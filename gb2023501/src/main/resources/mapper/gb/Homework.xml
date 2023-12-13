@@ -7,6 +7,17 @@
 	<select id="gbSelectHomeworkListCnt" parameterType="Homework" resultType="int">
 		SELECT count(*) FROM homework
 		WHERE m_num = #{m_num}
+		<if test="h_num gt 0">
+			AND h_num = #{h_num}
+		</if>
+	
+	</select>
+	
+	<select id="gbAllSelectHomeworkList" parameterType="Homework" resultType="Homework">
+		SELECT * 
+        FROM homework
+        WHERE m_num = #{m_num}
+        ORDER BY h_regi_date desc	
 	</select>
 
 	<select id="gbSelectHomeworkList" parameterType="Homework" resultType="Homework">
@@ -16,6 +27,9 @@
 		        FROM (SELECT * 
 		              FROM homework
 		              WHERE m_num = #{m_num}
+		              <if test="h_num gt 0">
+						 AND h_num = #{h_num}
+					  </if>
 		              ORDER BY h_regi_date desc ) hw
 		     )
 		WHERE rn BETWEEN #{start} AND #{end}
