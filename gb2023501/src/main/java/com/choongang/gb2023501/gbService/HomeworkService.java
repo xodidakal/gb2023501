@@ -9,4 +9,5 @@ public interface HomeworkService {
 	int 			selectHomeworkListCnt(Homework homework);
 	List<Homework> 	selectHomeworkList(Homework homework);
 	int 			insertUpdateHomework(Homework homework);
+	List<Homework> 	selectAllHomeworkList(Homework homework);
 }
