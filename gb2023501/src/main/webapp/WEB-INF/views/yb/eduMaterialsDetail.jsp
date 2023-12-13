@@ -18,18 +18,7 @@
 		width: 150px;
 	}
 </style>
-<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script type="text/javascript">
-function clickImage2(){
-		$("#cm_imageChk2").val("n");
-		if($("#cm_imageChk2").prop("checked")){
-			$("#cm_imageChk2").val("y");
-		} else {
-			$("#cm_imageChk2").val("n");
-		}
-	}
 
-</script>
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->

@@ -9,7 +9,8 @@ import com.choongang.gb2023501.domain.Member;
 
 	public interface MemberRepository extends JpaRepository<Member, Integer>{
 
-	Optional<Member> findByMmId(String mmId);
+	//로그인된 아이디로 회원 정보 가져오기
+	Member findByMmId(String mmId);
 	
 	
 

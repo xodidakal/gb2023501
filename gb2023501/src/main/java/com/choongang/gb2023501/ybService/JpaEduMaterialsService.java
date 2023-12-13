@@ -1,5 +1,7 @@
 package com.choongang.gb2023501.ybService;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import com.choongang.gb2023501.domain.EduMaterials;
 import com.choongang.gb2023501.domain.GameOrder;
+import com.choongang.gb2023501.model.SalesInquiryDTO;
+import com.choongang.gb2023501.repository.YbRepository2;
 import com.choongang.gb2023501.repository.YbRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class JpaEduMaterialsService {
 	private final YbRepository yr;
+	private final YbRepository2 yr2;
 	// 학습자료 상세조회
 	public Optional<EduMaterials> findByEduMaterials(int em_num) {
 		System.out.println("YbJpaEduMaterialsService findByEduMaterials start...");
@@ -53,11 +58,27 @@ public class JpaEduMaterialsService {
 		
 		return listSales;
 	}
-	public List<EduMaterials> findByEduMaterialsContaining(String keyword, String type) {
+	// 학습자료 검색 리스트
+	public List<EduMaterials> findByEduMaterialsContaining(String keyword) {
 		log.info("YbJpaEduMaterialsService findByEduContaining start...");
 		
-		List<EduMaterials> findByEduContaining = yr.findByEduMaterialsContaining(keyword, type);
+		List<EduMaterials> findByEduContaining = yr.findByEduMaterialsContaining(keyword);
 		return findByEduContaining;
 	}
+	// 매출 조회 검색 리스트
+	public List<SalesInquiryDTO> findBySalesContaining(Date s_date, Date e_date) {
+		log.info("YbJpaEduMaterialsService findByEduContaining start...");
+		List<SalesInquiryDTO> gameOrder = yr2.findSalesInquiryDtoJPQL(s_date, e_date);
+		//List<SalesInquiryDTO> findBySalesContaining = yr.findBySalesContaining(startDate, endDate);
+		return gameOrder;
+	}
+//	public List<SalesInquiryDTO> findBySalesInquiryDtoOrderByGoOrderDate() {
+//		List<SalesInquiryDTO> findBySalesInquiryDtoOrderByGoOrderDate = yr2.findBySalesInquiryDtoOrderByGoOrderDate();
+//		return findBySalesInquiryDtoOrderByGoOrderDate;
+//	}
+
+	
+
+
 
 }

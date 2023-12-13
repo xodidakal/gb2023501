@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
 //	private final UserService userService;
-	private final MemberRepository ms;
+	private final MemberRepository mr;
 	
 //	@RequiredArgsConstructor는 @RequiredArgsConstructor에 대한 생성자만 자동 생성
 	//비밀번호 암호화
@@ -62,21 +62,21 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	        // 여기서 실제 디비에서 mmId에 해당하는 Member 검색
 	        //Optional->  NPE(Null Pointer Exception)을 처리하기 위해 자바에서 제공하는 클래스
 	        //반환값이 Null이 발생할 수도 있는 메서드에 사용하면 Optional 의 메서드를 통해 Null이 발생했을 때 문제를 해결
-            Optional<Member> memberOptional = ms.findByMmId(mmId);
+            Member member = mr.findByMmId(mmId);
 
-            if (!memberOptional.isPresent()) {
+            if (member == null) {
             	throw new BadCredentialsException("아이디 불일치 =" + mmId);
             }
             
         	//Optional 객체에서 값 꺼내서 memeber에 저장
-            Member member = memberOptional.get();
+//            Member member = memberOptional.get();
 
             // 파라미터 mmPswd와 디비의 패스워드 비교
             if (!mmPswd.equals(member.getMmPswd())) {
             	throw new BadCredentialsException("비밀번호가 일치하지 않습니다." + mmPswd);
             }
             	
-     
+            //
 //	        Optional<Users> user = userService.getUserByEmail(username);
 //	        log.info("user:{}",user);
 ////	        Optional<Users> user = userService.getUserById(Integer.parseInt(username));
