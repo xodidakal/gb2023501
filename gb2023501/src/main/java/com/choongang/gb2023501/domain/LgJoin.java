@@ -21,7 +21,7 @@ public class LgJoin {
 	@Id
 	@ManyToOne	// 1학습그룹 : M학습그룹가입
 	@JoinColumn(name = "lg_num")
-	private LearnGrp LearnGrp;
+	private LearnGrp learnGrp;
 	
 	// 학습자_회원번호
 	@Id
@@ -43,6 +43,7 @@ public class LgJoin {
 
 	
 	//----- 조회용 ----- //
-
+	@Transient
+	private int lg_num;
 
 }

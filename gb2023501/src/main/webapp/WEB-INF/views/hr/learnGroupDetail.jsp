@@ -6,6 +6,26 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+.subTable {
+	width: 100%;
+	text-align: center;
+	margin-bottom: 50px;
+}
+.subTable th {
+	background-color: #EEEEEE;
+	padding: 10px;
+	color: black;
+	width: 25%;
+}
+.subTable td {
+	width: 25%;
+}
+.subTable tr {
+	border-bottom: 1px solid #dfdfdf;
+	border-top: 1px solid #dfdfdf;
+}
+</style>
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->
@@ -14,77 +34,90 @@
 <!--     </div> -->
 <div class="row g-0 justify-content-center">
 	<div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
-		<form>
-	        <div class="row g-3">
-	        <h2 class="display-7 mb-4">등록화면</h2>
-	        <hr class="my-3">
-	        	<table class="formTable">
-					<tr>
-						<th>셀렉스 박스</th>
-							<td width="150px;">
-			                    <select id="search_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
-									<option value="title">1</option>
-									<option value="writer">2</option>
-									<option value="writer">3</option>
-								</select>
-			                </td>
-						<th>셀렉스 박스</th>
-							<td width="150px;">
-								<select id="search_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
-									<option value="title">1</option>
-									<option value="writer">2</option>
-									<option value="writer">3</option>
-									<option value="writer">4</option>
-								</select>							
-							</td>
-					</tr>
-					<tr>
-						<th>체크박스</th>
-						<td width="150px;">
-		                    <input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" >
-		                </td>
-					</tr>
-		            <tr>
-						<th>제목</th>
-						<td colspan="3">
-		                    <input type="text" class="form-control" id="subject" placeholder="Subject">
-<!-- 		                    <label for="subject">자료명</label> -->
-		            	</td>
-					</tr>
-					<tr>
-						<th>라디오 박스</th>
-						<td width="150px;">
-							<input class="form-check-input" type="radio" name="em_type" id="flexRadioDefault1" >
-							<label for="subject">등록 즉시 게시</label>
-						</td>
-						<td width="150px;">
-							<input class="form-check-input" type="radio" name="em_type" id="flexRadioDefault1" >
-							<label for="subject">게시 일자 선택</label>					
-						</td>
-					</tr>
-					<tr>
-						<th>textarea</th>
-						<td colspan="3">
-		                   	<textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 200px"></textarea>    
-						</td>
-					</tr>
-					<tr></tr>
-	                <tr>
-	                	<th>첨부파일</th>
-	                	<td colspan="3">
-	                		<label style="font-size: medium;">파일 1개당 최대 첨부 용량 30MB</label>
-		                    <input type="file" class="form-control" id="subject" placeholder="Subject">
-		                </td>
-	                
-	                </tr>
-                </table>
-                <div class="d-grid gap-2 d-md-flex justify-content-center" >
-					<a href="#"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
-					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="등록">
-				</div>
-                
+		<div class="mb-9">
+	         <!-- heading -->
+	         <h2 style="margin-bottom: 15px;">학습 그룹 상세</h2>
+	    </div>
+	    
+	    <table class="subTable">
+			<tr>
+				<th>학습그룹명</th>
+				<td>ㅇㅇㅇ</td>
+				<th>게임콘텐츠명</th>
+				<td>ㅇㅇㅇ</td>
+			</tr>
+			<tr>
+				<th>수용 가능 인원</th>
+				<td>ㅇㅇㅇ</td>
+				<th>가입 승인 인원</th>
+				<td>ㅇㅇㅇ</td>
+			</tr>
+	    </table>
+	    
+		<div style="">
+			<h5 style="color: #757575; float: left;">학습자 명단</h5>
+			<div style="margin-bottom: 15px; float: right;">
+<!-- 			<div class="d-flex align-items-center justify-content-end"> -->
+          		<div>
+	          		<a href="boardForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="가입 신청 확인"></a>
+            	</div>
+            </div>
+		</div>
+       	<table class="listTable">
+       		<thead>
+				<tr>
+					<th>No.</th>
+					<th>이름</th>
+					<th>연락처</th>
+					<th>이메일</th>
+					<th>주소</th>
+					<th>가입승인일자</th>	
+				</tr>
+			</thead>
+			 <tbody>
+<%-- 					 <c:forEach var="" items=""> --%>
+			 	<tr>
+			 		<td>1</td>
+					<td>2</td>
+					<td>3</td>
+					<td>4</td>
+					<td>5</td>
+					<td>6</td>
+				</tr>
+				
+				<tr>
+			 		<td>1</td>
+					<td>2</td>
+					<td>3</td>
+					<td>4</td>
+					<td>5</td>
+					<td>6</td>
+				</tr>
+				
+<%-- 					 </c:forEach> --%>
+				
+                </tbody>   
+              </table>
+              <div class="row mt-8" style="width:100%;">
+					<div class="d-flex justify-content-center" style="margin-top:12px">
+                <nav aria-label="Page navigation example">
+				  <ul class="pagination">
+				    <li class="page-item"><a class="page-link" href="#">이전</a></li>
+				    <li class="page-item" id="1p"><a class="page-link" href="#">1</a></li>
+				    <li class="page-item"><a class="page-link" href="#">2</a></li>
+				    <li class="page-item"><a class="page-link" href="#">3</a></li>
+				    <li class="page-item"><a class="page-link" href="#">4</a></li>
+				    <li class="page-item"><a class="page-link" href="#">5</a></li>
+				    <li class="page-item"><a class="page-link" href="#">6</a></li>
+				    <li class="page-item"><a class="page-link" href="#">7</a></li>
+				    <li class="page-item"><a class="page-link" href="#">8</a></li>
+				    <li class="page-item"><a class="page-link" href="#">9</a></li>
+				    <li class="page-item"><a class="page-link" href="#">10</a></li>
+				    <li class="page-item"><a class="page-link" href="#">다음</a></li>
+				  </ul>
+				</nav>
 			</div>
-		</form>
+		</div>
 	</div>
 </div>
 <%@ include file="../common/footerFo.jsp" %>
