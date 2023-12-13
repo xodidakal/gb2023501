@@ -25,6 +25,7 @@ public class DhController {
 		System.out.println("dhController gameOrderList() start..");
 		// 게임 콘텐츠 총 개수
 		int totalSearchGameOrder = gos.totalSearchGameOrder(game);
+		// 키워드 검색
 		String keyword = game.getKeyword();
 		System.out.println("totalSearchGameOrder -> "+totalSearchGameOrder);
 		
@@ -42,6 +43,32 @@ public class DhController {
 		
 		return "dh/gameOrderList";
 	}
-}
 	
+	// 내구독 목록 조회
+	@RequestMapping(value = "subscribe/myGameOrderList")
+	public String myGameOrderList(Game game,String currentPage, Model model) {
+		System.out.println("dhController mygameOrderList() start..");
+		// 구독 콘텐츠 총 개수
+		int totalSearchGameOrder = gos.totalSearchGameOrder2(game);
+		// 키워드 검색
+		String keyword = game.getKeyword();
+		System.out.println("totalSearchGameOrder2 -> "+totalSearchGameOrder);
+			
+		Paging page = new Paging(totalSearchGameOrder, currentPage, 10);
+		game.setStart(page.getStartRow());
+		game.setEnd(page.getEndRow());
+			
+		List<Game> listGameOrder = gos.listGameOrder2(game);
+			
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("listGameOrder", listGameOrder);
+		model.addAttribute("page", page);
+		model.addAttribute("totalSearchGameOrder",totalSearchGameOrder);
+		
+		System.out.println("dhController mygameOrderList() end..");
+			
+		return "dh/myGameOrderList";
+
+	}
+}
  

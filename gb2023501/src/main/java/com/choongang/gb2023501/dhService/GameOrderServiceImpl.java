@@ -32,5 +32,21 @@ public class GameOrderServiceImpl implements GameOrderService {
 		return totalSearchGameOrder;
 	}
 
+	@Override
+	public List<Game> listGameOrder2(Game game) {
+		System.out.println("GameOrderServiceImpl listGameOrder2 Start...");
+		List<Game> gameOrderList = god.listGameOrder2(game);
+		System.out.println("GameOrderServiceImpl listGameOrder2 list.size->"+gameOrderList.size());
+		
+		return gameOrderList;
+	}
+
+	@Override
+	public int totalSearchGameOrder2(Game game) {
+		System.out.println("GameOrderServiceImpl totalSearchGameOrder2 Start...");
+		int totalSearchGameOrder = god.totalSearchGameOrder2(game);
+		return totalSearchGameOrder;
+	}
+
 }
 

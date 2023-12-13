@@ -18,6 +18,7 @@ public class HomeworkDaoImpl implements HomeworkDao {
 	@Override
 	public int selectHomeworkListCnt(Homework homework) {
 		System.out.println("HomeworkDaoImpl selectHomeworkListCnt start...");
+		
 		int homeworkListCnt = 0;
 		try {
 			homeworkListCnt = session.selectOne("gbSelectHomeworkListCnt", homework);
@@ -26,6 +27,19 @@ public class HomeworkDaoImpl implements HomeworkDao {
 			System.out.println("HomeworkDaoImpl selectHomeworkListCnt Exception->"+e.getMessage());
 		}
 		return homeworkListCnt;
+	}
+	
+	@Override
+	public List<Homework> selectAllHomeworkList(Homework homework) {
+		System.out.println("HomeworkDaoImpl selectAllHomeworkList start...");
+		List<Homework> allhomeworkList = null;
+		try {
+			allhomeworkList = session.selectList("gbAllSelectHomeworkList", homework);
+		} catch (Exception e) {
+			System.out.println("HomeworkDaoImpl selectAllHomeworkList Exception->"+e.getMessage());
+		}
+		
+		return allhomeworkList;
 	}
 	
 	@Override
@@ -54,5 +68,4 @@ public class HomeworkDaoImpl implements HomeworkDao {
 		
 		return result;
 	}
-
 }
