@@ -10,6 +10,8 @@ import com.choongang.gb2023501.domain.Member;
 	public interface MemberRepository extends JpaRepository<Member, Integer>{
 
 	Optional<Member> findByMmId(String mmId);
+	
+	
 
 	//public Member findByUsername(String username); 
 }

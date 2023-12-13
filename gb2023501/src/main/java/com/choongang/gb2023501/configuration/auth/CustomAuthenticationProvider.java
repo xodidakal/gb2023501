@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,7 +13,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import com.choongang.gb2023501.domain.Member;
+import com.choongang.gb2023501.repository.MemberRepository;
 
 //import com.oracle.s202350104.model.Users;
 //import com.oracle.s202350104.service.user.UserService;
@@ -32,6 +37,13 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
 //	private final UserService userService;
+	private final MemberRepository ms;
+	
+//	@RequiredArgsConstructor는 @RequiredArgsConstructor에 대한 생성자만 자동 생성
+	//비밀번호 암호화
+	//순환참조 발생해서 일단 암호화 보류
+//	@Autowired
+//	private PasswordEncoder passwordEncoder;
 	
 	//실제 인증 로직 이뤄짐
 	@Override
@@ -39,13 +51,32 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		UUID transactionId = UUID.randomUUID();
 		String mmId = "";
 		String mmPswd = "";
-//		List<GrantedAuthority> authorities = new ArrayList<>();
+		List<GrantedAuthority> authorities = new ArrayList<>();
 		try {
 			log.info("[{}]{}:{}",transactionId, "AuthenticationProvider", "start");
 			mmId = authentication.getName();//아이디
 			mmPswd = authentication.getCredentials().toString();//패스워드
 	        log.info("mmId:{}",mmId);
 	        log.info("mmPswd:{}",mmPswd);
+	        
+	        // 여기서 실제 디비에서 mmId에 해당하는 Member 검색
+	        //Optional->  NPE(Null Pointer Exception)을 처리하기 위해 자바에서 제공하는 클래스
+	        //반환값이 Null이 발생할 수도 있는 메서드에 사용하면 Optional 의 메서드를 통해 Null이 발생했을 때 문제를 해결
+            Optional<Member> memberOptional = ms.findByMmId(mmId);
+
+            if (!memberOptional.isPresent()) {
+            	throw new BadCredentialsException("아이디 불일치 =" + mmId);
+            }
+            
+        	//Optional 객체에서 값 꺼내서 memeber에 저장
+            Member member = memberOptional.get();
+
+            // 파라미터 mmPswd와 디비의 패스워드 비교
+            if (!mmPswd.equals(member.getMmPswd())) {
+            	throw new BadCredentialsException("비밀번호가 일치하지 않습니다." + mmPswd);
+            }
+            	
+     
 //	        Optional<Users> user = userService.getUserByEmail(username);
 //	        log.info("user:{}",user);
 ////	        Optional<Users> user = userService.getUserById(Integer.parseInt(username));
@@ -61,14 +92,41 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 //			}
 //			*/
 ////	        userService.updateUserPoint(user.getId(), 9);
-//	        authorities.add(new SimpleGrantedAuthority("ROLE_"+Role.getValueByKey(user.get().getSmall_code())));	
+            
+
+            // category에 따라 권한 부여
+            switch (member.getCategory()) {
+                case 1:
+                    authorities.add(new SimpleGrantedAuthority("ROLE_EDUCATOR"));
+                    break;
+                case 2:
+                    authorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
+                    break;
+                case 3:
+                    authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+                    break;
+                case 4:
+                    authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                    break;
+                default:
+                    throw new BadCredentialsException("유효하지 않은 카테고리 값: " + member.getCategory());
+            
+            }
+            
+            log.info("authorities:{}", authorities);
+            
 		} catch (Exception e) {
+			
 			log.error("[{}]{}:{}",transactionId, "AuthenticationProvider", e.getMessage());
 			 throw e;  // 추가된 부분
 		} finally {
 			log.info("[{}]{}:{}",transactionId, "AuthenticationProvider", "end");
-		}	        
-    	return new UsernamePasswordAuthenticationToken(mmId, mmPswd);
+		}	
+		
+		// 로그인 성공 -> SecurityContextHolder에 Authentication 객체 저장
+		// => SecurityContextHolder(SecurityContext(Authentication))
+		//SecurityContextHolder.getContext().getAuthentication()로 Authentication 호출가능
+    	return new UsernamePasswordAuthenticationToken(mmId,  mmPswd, authorities);
     }
 
 	@Override

@@ -1,10 +1,12 @@
 package com.choongang.gb2023501.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.jhService.MemberService;
 import com.choongang.gb2023501.repository.MemberRepository;
 
@@ -20,9 +22,16 @@ public class JhController {
 	private final MemberService ms;
 	
 	@RequestMapping(value = "info/loginForm")
-	public String login() {
+	public String loginForm(Model model) {
+		
 		String mmId = ms.getLoggedInId();
 		log.info("getLoggedInId:{}", mmId);
+		Member member = ms.selectUserById();
+		
+		System.out.println("회원 이름" + member.getMmName());
+		System.out.println("회원 번호" + member.getMmNum());
+		
+		model.addAttribute("member",member);
 		return "jh/loginForm";
 	}
 	
