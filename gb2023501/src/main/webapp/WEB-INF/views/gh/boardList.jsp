@@ -13,23 +13,27 @@
 <!-- JS START -->
 <script type="text/javascript">
 	function chooseCount() {
-		alert("선택");
 		var selectedValue = document.getElementById("count_type").value;
+		var BoardCategory = ${BoardCategory};
 		
 		switch (selectedValue) {
-			case "count_10":
+			case "10":
 				alert("10");
+				window.location.href="/customer/boardList?b_category=" + BoardCategory + "&rowPage=10";
 				break;
-			case "count_20":
+			case "20":
 				alert("20");
+				window.location.href="/customer/boardList?b_category=" + BoardCategory + "&rowPage=20";
 				break;
-			case "count_30":
+			case "30":
 				alert("30");
+				window.location.href="/customer/boardList?b_category=" + BoardCategory + "&rowPage=30";
 				break;
 			default:
 				break;
 		}
 	}
+	
 </script>
 <!-- JS END -->
 
@@ -54,24 +58,26 @@
 		<div class="input-group col-md-5 mb-3"> 
 			<!-- 카테고리 분류 -->
 			<select id="count_type" class="w-17 rounded" onchange="chooseCount()" style="margin-right: 110px; border-color: #ced4da">
-				<option value="count_10">10</option>
-				<option value="count_20">20</option>
-				<option value="count_30">30</option>
+				<option id="count_10" value="10">10</option>
+				<option id="count_20" value="20">20</option>
+				<option id="count_30" value="30">30</option>
 			</select>
 			<!-- 카테고리 검색 -->
-			<select id="search_type" class="w-17 rounded" style="border-color: #ced4da">
-				<option value="title">제목 + 내용</option>
-				<option value="writer">작성자</option>
-			</select>&nbsp;&nbsp;
-            <input id = "search_keyword" class="form-control rounded" type="search" placeholder="검색해라" style="width: 160px;">
-          	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
-         		<a href="#!"><i class="bi bi-search mt-2"></i></a>
-          	</div>
+          	<!-- <form action="/customer/boardList"> -->
+				<select name="search_type" id="search_type" class="w-17 rounded" style="border-color: #ced4da">
+					<option value="s_title_content">제목 + 내용</option>
+					<option value="s_writer">작성자</option>
+				</select>&nbsp;&nbsp;
+	            <input id = "search_keyword" name="search_keyword" class="form-control rounded" type="search" placeholder="search" style="width: 160px;">
+	          	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
+	         		<a href="#!"><i class="bi bi-search mt-2"></i></a>
+	          	</div>
+			<!-- </form> -->
           	
 			<div class="col">
 			<div class="d-flex align-items-center justify-content-end">
           		<div style="width: 65px;">
-	          		<a href="/customer/boardForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="작성"></a>
+	          		<a href="/customer/boardForm?b_category=${BoardCategory}"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="작성"></a>
             	</div>
             </div>
 			</div>
@@ -88,33 +94,36 @@
 				<th>조회수</th>	
 				<th width="100px;"></th>				
 			</tr>
-			<tbody>
-				<c:forEach var="Blist" items="${Boardlist}">
-			 	<tr>
-			 		<%-- <td>${Blist.b_num}</td> --%>
-			 		<td>${StartRow}</td>
-			 		<td>
-				 		<c:choose>
-				 			<c:when test="${Blist.b_notie_type == 1}">공통</c:when>
-				 			<c:when test="${Blist.b_notie_type == 2}">이벤트</c:when>
-				 			<c:when test="${Blist.b_notie_type == 3}">업데이트</c:when>
-				 			<c:otherwise>규정 및 정책</c:otherwise>
-				 		</c:choose>
-			 		</td>
-					<td>
-						<c:if test="${Blist.b_flag eq '0'}"><img src="/assets/img/notice_icon.png" style="margin-bottom:4px"></c:if>
-						${Blist.b_title} &nbsp;
-						<c:if test="${Blist.b_category eq '1'}"><label style="color: orange;">[${Blist.comment_count}]</label></c:if>
-					</td>
-					<td>${Blist.m_name}</td>
-					<td><fmt:formatDate value="${Blist.b_regi_date}" type="date" pattern="yyyy-MM-dd"/></td>
-					<td>${Blist.b_count}</td>
-					<td width="100px;"><a href="/customer/boardDetail?b_num=${Blist.b_num}"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
-				</tr>
-				<c:set var="StartRow" value="${StartRow +1}"/>
-				</c:forEach>
-				
-              </tbody>   
+				<tbody>
+					<c:forEach var="Blist" items="${Boardlist}">
+						<c:set var="now" value="<fmt:formatDate value='${now}' pattern='yyyy-MM-dd'/>" />
+						<c:if test="${Blist.b_regi_date gt now}">
+					 	<tr>
+					 		<%-- <td>${Blist.b_num}</td> --%>
+					 		<td>${StartRow}</td>
+					 		<td>
+						 		<c:choose>
+						 			<c:when test="${Blist.b_notie_type == 1}">공통</c:when>
+						 			<c:when test="${Blist.b_notie_type == 2}">이벤트</c:when>
+						 			<c:when test="${Blist.b_notie_type == 3}">업데이트</c:when>
+						 			<c:otherwise>규정 및 정책</c:otherwise>
+						 		</c:choose>
+					 		</td>
+							<td>
+								<c:if test="${Blist.b_flag eq '0'}"><img src="/assets/img/notice_icon.png" style="margin-bottom:4px"></c:if>
+								${Blist.b_title} &nbsp;
+								<c:if test="${Blist.b_category eq '1'}"><label style="color: orange;">[${Blist.comment_count}]</label></c:if>
+							</td>
+							<td>${Blist.m_name}</td>
+							<td><fmt:formatDate value="${Blist.b_regi_date}" type="date" pattern="yyyy-MM-dd"/></td>
+							<td>${Blist.b_count}</td>
+							<td width="100px;"><a href="/customer/boardDetail?b_num=${Blist.b_num}"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
+						</tr>
+						<c:set var="StartRow" value="${StartRow +1}"/>
+						</c:if>
+					</c:forEach>
+	            </tbody>
+              		
        	</table>
               
               <!-- 페이징 처리 -->
