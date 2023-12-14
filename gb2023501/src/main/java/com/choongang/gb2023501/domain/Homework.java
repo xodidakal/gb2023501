@@ -1,16 +1,18 @@
 package com.choongang.gb2023501.domain;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity	// JPA 엔티티 선언
 @Data	// getter/setter, constructor를 생성해주는 lombok 어노테이션
@@ -26,27 +28,28 @@ public class Homework {
 	@GeneratedValue(strategy  = GenerationType.SEQUENCE,
 					generator = "homework_seq"
 					)
-	@Column(name="h_num") // h_num을 가진 컬럼과 연결
-	private int hhNum;
+	@Column(name="h_num") 			// h_num을 가진 컬럼과 연결
+	private int hhNum;				// 숙제번호
 	
-	@Column(name="m_num")
-	private int mmNum;
+	@ManyToOne						// 1교육자 : N숙제
+	@JoinColumn(name="m_num")		// m_num로 조인
+	private Member member;			// 교육자_회원번호
 	
 	@Column(name="h_title")
-	private int hhTitle;
+	private String hhTitle;			// 숙제명
 	
 	@Column(name="h_content")
-	private int hhContent;
+	private String hhContent;		// 숙제 내용
 	
 	@Column(name="h_level")
-	private int hhLevel;
+	private int hhLevel;			// 숙제 진도
 	
 	@Column(name="h_deadline")
-	private int hhDeadline;
+	private String hhDeadline;		// 제출 기한
 	
 	@Column(name="h_regi_date")
-	private int hhRegiDate;
+	private Date hhRegiDate;		// 등록일시
 	
 	@Column(name="h_modi_date")
-	private int hhModiDate;
+	private Date hhModiDate;		// 수정일시
 }
