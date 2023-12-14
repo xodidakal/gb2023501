@@ -75,28 +75,17 @@
 				</tr>
 			</thead>
 			 <tbody>
-<%-- 					 <c:forEach var="" items=""> --%>
-			 	<tr>
-			 		<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td>5</td>
-					<td>6</td>
-				</tr>
-				
-				<tr>
-			 		<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td>5</td>
-					<td>6</td>
-				</tr>
-				
-<%-- 					 </c:forEach> --%>
-				
-                </tbody>   
+				<c:forEach var="members" items="${members }">
+				 	<tr>
+				 		<td>No.</td>
+						<td>${members.member.mmName }</td>
+						<td>${members.member.phone }</td>
+						<td>${members.member.email }</td>
+						<td>${members.member.address }</td>
+						<td>${members.lgjAppdate }</td>
+					</tr>
+				</c:forEach>
+			 </tbody>   
               </table>
               <div class="row mt-8" style="width:100%;">
 					<div class="d-flex justify-content-center" style="margin-top:12px">

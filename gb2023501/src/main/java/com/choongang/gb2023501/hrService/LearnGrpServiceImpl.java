@@ -7,6 +7,7 @@ import com.choongang.gb2023501.domain.LearnGrp;
 import com.choongang.gb2023501.hrDao.LearnGrpDao;
 import com.choongang.gb2023501.model.Game;
 import com.choongang.gb2023501.model.LearnGrpDTO;
+import com.choongang.gb2023501.model.MemberDTO;
 import com.choongang.gb2023501.repository.HrRepository;
 //import com.choongang.gb2023501.repository.HrRepository2;
 import lombok.RequiredArgsConstructor;
@@ -52,8 +53,20 @@ public class LearnGrpServiceImpl implements LearnGrpService {
 		
 		hrRepository.learnGroupFormInsert(learnGrp);
 		
-		System.out.println("LearnGrpServiceImpl learnGroupFormInsert() start..");
+		System.out.println("LearnGrpServiceImpl learnGroupFormInsert() end..");
 		return learnGrp;
+	}
+
+	// 교육자마당 > 학습그룹 상세 (SELECT / JPA)
+	@Override
+	public List<MemberDTO> joinedMemberList(int lg_num) {
+		System.out.println("LearnGrpServiceImpl joinedMemberList() start..");
+		
+		List<MemberDTO> members = hrRepository.joinedMemberList(lg_num);
+		System.out.println("LearnGrpServiceImpl learnGroupList() members.size() -> "+members.size());
+		
+		System.out.println("LearnGrpServiceImpl joinedMemberList() end..");
+		return members;
 	}
 
 }

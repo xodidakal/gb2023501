@@ -9,6 +9,8 @@ import com.choongang.gb2023501.domain.Game;
 import com.choongang.gb2023501.domain.LearnGrp;
 import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.model.LearnGrpDTO;
+import com.choongang.gb2023501.model.MemberDTO;
+
 import lombok.RequiredArgsConstructor;
 
 @Repository
@@ -117,6 +119,29 @@ public class HrRepositoryImpl implements HrRepository {
 		
 		System.out.println("HrRepositoryImpl learnGroupFormInsert() end..");
 		return learnGrp;
+	}
+
+	// 교육자마당 > 학습그룹 상세 (SELECT / JPA)
+	@Override
+	public List<MemberDTO> joinedMemberList(int lg_num) {
+		System.out.println("HrRepositoryImpl joinedMemberList() start..");
+		
+//		List<MemberDTO> members = em.createQuery("SELECT new com.choongang.gb2023501.model.MemberDTO(m, lj.lgjAppdate) " + 
+//												 "FROM   LgJoin lj" + 
+//												 "JOIN   lj.member m " +
+//												 "WHERE  lj.learnGrp.lgNum = :lgNum", MemberDTO.class)
+//									.setParameter("lgNum", lg_num)
+//									.getResultList();
+
+		List<MemberDTO> members = em.createQuery("SELECT new com.choongang.gb2023501.model.MemberDTO(m, lgJoin.lgjAppdate) " + 
+												 "FROM   LgJoin lgJoin" + 
+												 "JOIN   lgJoin.member m ", MemberDTO.class)
+									.getResultList();
+		
+		System.out.println("HrRepositoryImpl learnGroupList() members.size() -> "+members.size());
+
+		System.out.println("HrRepositoryImpl joinedMemberList() end..");
+		return members;
 	}
 	
 }

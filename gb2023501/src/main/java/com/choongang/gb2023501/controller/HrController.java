@@ -9,6 +9,8 @@ import com.choongang.gb2023501.domain.LearnGrp;
 import com.choongang.gb2023501.hrService.LearnGrpService;
 import com.choongang.gb2023501.model.Game;
 import com.choongang.gb2023501.model.LearnGrpDTO;
+import com.choongang.gb2023501.model.MemberDTO;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -48,7 +50,10 @@ public class HrController {
 		model.addAttribute("lg_num", lg_num);
 		
 		// 학습자 명단
+		List<MemberDTO> members = lgService.joinedMemberList(lg_num);
+		System.out.println("HrController learnGroupList() members.size() -> "+members.size());
 		
+		model.addAttribute("members", members);
 
 		System.out.println("HrController learnGroupDetail() end..");		
 		return "/hr/learnGroupDetail";
