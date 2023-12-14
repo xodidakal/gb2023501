@@ -5,12 +5,16 @@
 <mapper namespace="com.choongang.gb2023501.BoardMapper">
 	
 	<select id="mkhSelectBoardCnt" resultType="int">
-		SELECT count(*)
-		FROM   board
-		WHERE  b_category = #{b_category}
+		<![CDATA[
+			SELECT count(*)
+			FROM   board
+			WHERE  b_category = #{b_category}
+			AND	   b_regi_date < TRUNC(sysdate) + 1
+		]]>
 	</select>
 	
 	<select id="mkhSelectBoardList" parameterType="board" resultType="board">			
+		<![CDATA[
 			SELECT *
 		    FROM
 		    (
@@ -26,10 +30,12 @@
 				       FROM  	board b, member m
 				       WHERE 	m.m_num = b.m_num
 				       AND 	 	b.b_category = #{b_category}
+				       AND		b.b_regi_date < TRUNC(sysdate) + 1
 				       ORDER BY b.b_flag asc
 			    ) a
 		    )
-		    WHERE rn BETWEEN #{start} AND #{end}	
+		    WHERE rn BETWEEN #{start} AND #{end}
+		]]>
 	</select>
 	
 	<select id="mkhSelectBoard" parameterType="int" resultType="board">
@@ -65,6 +71,72 @@
 		INSERT INTO board
 		VALUES 	(board_seq.nextval, #{b_category}, #{b_notie_type}, 	#{b_flag},	1,			#{b_title}, #{b_content}, 	#{b_regi_date}, 	#{b_modi_date, jdbcType = DATE}, 		0	, #{b_attach_name}, #{b_attach_path}, board_seq.nextval)
 	</insert>
+	
+	<!-- <select id="mkhSearchBoardList" parameterType="board" resultType="board">
+		<![CDATA[
+			SELECT *
+			FROM
+			(
+			    SELECT rownum rn, a.*
+			    FROM
+			    (
+			        SELECT  b.*, m.m_name,
+			                (
+			                    SELECT count(*)
+			                    FROM   board_comment
+			                    WHERE  b_num = b.b_num
+			                ) comment_count
+			        FROM    board b, member m
+			        WHERE   m.m_num = b.m_num
+			        AND     b.b_category = #{b_category}
+			        <if test="search_type == 's_title_content'">
+			            AND (
+		            		b.b_regi_date < TRUNC(sysdate) + 1 
+		            		AND (b.b_title || b.b_content) LIKE '%' || #{search_keyword} || '%'
+		            		)
+			        </if>
+			        <if test="search_type == 's_writer'">
+			        	AND (
+			        		b.b_regi_date < TRUNC(sysdate) + 1 
+			            	AND m.m_name LIKE '%' || #{search_keyword} || '%'
+			            	)
+			        </if>
+			        ORDER BY b.b_flag asc
+			    ) a
+			)
+			WHERE rn BETWEEN #{start} AND #{end}
+		]]>
+	</select> -->
+	
+	<!-- 미완성 (먼저쓴날짜 나옴) -->
+	<select id="mkhSearchBoardList" parameterType="board" resultType="board">
+		SELECT *
+		FROM
+		(
+		    SELECT rownum rn, a.*
+		    FROM
+		    (
+		        SELECT  b.*, m.m_name,
+		                (
+		                    SELECT count(*)
+		                    FROM   board_comment
+		                    WHERE  b_num = b.b_num
+		                ) comment_count
+		        FROM    board b, member m
+		        WHERE   m.m_num = b.m_num
+		        AND     b.b_category = #{b_category}
+		        AND
+		        <if test="search_type == 's_title_content'">
+		            (b.b_title || b.b_content) LIKE '%' || #{search_keyword} || '%'
+		        </if>
+		        <if test="search_type == 's_writer'">
+		            m.m_name LIKE '%' || #{search_keyword} || '%'
+		        </if>
+		        ORDER BY b.b_flag asc
+		    ) a
+		)
+		WHERE rn BETWEEN #{start} AND #{end}
+	</select>
 	
 
 </mapper>

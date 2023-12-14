@@ -93,6 +93,18 @@ public class BoardDaoImpl implements BoardDao {
 		return result;
 	}
 
+	@Override
+	public List<Board> searchBoardList(Board board) {
+		System.out.println("BoardDaoImpl searchBoardList start...");
+		List<Board> list = null;
+		try {
+			list = sqlSession.selectList("mkhSearchBoardList", board);
+		} catch (Exception e) {
+			System.out.println("BoardDaoImpl searchBoardList Exception->"+e.getMessage());
+		}
+		return list;
+	}
+
 //	@Override
 //	public int selectBdCommentListCnt(BoardComment boardComment) {
 //		System.out.println("BoardDaoImpl selectBdCommentListCnt start...");

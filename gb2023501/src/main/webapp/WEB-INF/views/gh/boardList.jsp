@@ -11,10 +11,13 @@
 <!--CSS END -->
 
 <!-- JS START -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
-	function chooseCount() {
+
+	var BoardCategory = ${BoardCategory};
+	// 옵션 선택에 따라 게시 숫자 변경
+	/* function chooseCount() {
 		var selectedValue = document.getElementById("count_type").value;
-		var BoardCategory = ${BoardCategory};
 		
 		switch (selectedValue) {
 			case "10":
@@ -32,7 +35,62 @@
 			default:
 				break;
 		}
-	}
+	} */
+	/* $(function() {
+		var count_type = document.getElementById("count_type").value;
+		
+		$("#count_type").on('change',function() {
+			alert("숫자선택");
+			alert("count_type->"+count_type);
+			
+			window.location.href="/customer/boardList?b_category=" + BoardCategory + "&rowPage=" + count_type;
+			
+		});
+	
+	}); */
+	
+	
+	// 옵션 선택 후 페이지 이동하면 옵션값 선택유지
+	/* window.onload = function () {
+        var countType = '${rowPage}';
+        document.getElementById("count_type").value = countType;
+    } */
+    
+    $(function() {
+    	var count_type = ${rowPage}
+
+    	
+    	// 게시물 개수
+    	$("#count_type").on('change', function(){
+    		var count_type = document.getElementById("count_type").value;
+    		var search_keyword = $('#search_keyword').val();
+    		var search_type = $('#search_type').val();
+    		
+    		alert("count_type->"+count_type);
+//   		window.location.href="/customer/boardList?b_category=" + BoardCategory + "&rowPage=" + count_type;	
+    		window.location.href="/customer/boardList?search_type=" + search_type + "&search_keyword=" + search_keyword + "&b_category=" + BoardCategory + "&rowPage=" + count_type;
+
+    	});
+    	
+    	// 검색
+    	$("#search_start").on('click', function(){
+    		var search_keyword = document.getElementById("search_keyword").value;
+    		var search_type = document.getElementById("search_type").value;
+    		
+    		alert("검색시작");
+    		window.location.href="/customer/boardList?search_type=" + search_type + "&search_keyword=" + search_keyword + "&b_category=" + BoardCategory + "&rowPage=" + count_type;
+    		
+    	});
+    });
+    
+	/* function search_start() {
+		var search_keyword = document.getElementById("search_keyword").value;
+		var search_type = document.getElementById("search_type").value;
+		
+		alert("검색시작");
+		window.location.href="/customer/boardList?search_type=" + search_type + "&search_keyword=" + search_keyword + "&b_category=" + BoardCategory;
+		
+	} */
 	
 </script>
 <!-- JS END -->
@@ -57,22 +115,29 @@
 
 		<div class="input-group col-md-5 mb-3"> 
 			<!-- 카테고리 분류 -->
-			<select id="count_type" class="w-17 rounded" onchange="chooseCount()" style="margin-right: 110px; border-color: #ced4da">
-				<option id="count_10" value="10">10</option>
-				<option id="count_20" value="20">20</option>
-				<option id="count_30" value="30">30</option>
+			
+			<select id="count_type" name="count_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
+				<c:if test="${not empty rowPage}">
+					<option hidden="" value="${rowPage}">${rowPage} 개씩</option>
+				</c:if>
+				<option value="10">10 개씩</option>
+				<option value="20">20 개씩</option>
+				<option value="30">30 개씩</option>
 			</select>
+			
+				
 			<!-- 카테고리 검색 -->
-          	<!-- <form action="/customer/boardList"> -->
-				<select name="search_type" id="search_type" class="w-17 rounded" style="border-color: #ced4da">
-					<option value="s_title_content">제목 + 내용</option>
-					<option value="s_writer">작성자</option>
-				</select>&nbsp;&nbsp;
-	            <input id = "search_keyword" name="search_keyword" class="form-control rounded" type="search" placeholder="search" style="width: 160px;">
-	          	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
-	         		<a href="#!"><i class="bi bi-search mt-2"></i></a>
-	          	</div>
-			<!-- </form> -->
+			<select name="search_type" id="search_type" style="border-color: #ced4da">
+				<%-- <option value="s_title_content" <c:if test="${search_type eq s_title_content}">selected</c:if> >제목 + 내용</option>
+				<option value="s_writer" <c:if test="${search_type eq s_writer}">selected</c:if> >작성자</option> --%>
+				<option value="s_title_content">제목 + 내용</option>
+				<option value="s_writer" >작성자</option>
+			</select>&nbsp;&nbsp;
+            <input id = "search_keyword" name="search_keyword" class="form-control rounded" 
+            	   type="search" value="<c:if test="${not empty search_keyword}">${search_keyword}</c:if>" placeholder="search" style="width: 160px;">
+          	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
+         		<i class="bi bi-search mt-2" id="search_start"></i>
+          	</div>
           	
 			<div class="col">
 			<div class="d-flex align-items-center justify-content-end">
@@ -96,9 +161,7 @@
 			</tr>
 				<tbody>
 					<c:forEach var="Blist" items="${Boardlist}">
-						<c:set var="now" value="<fmt:formatDate value='${now}' pattern='yyyy-MM-dd'/>" />
-						<c:if test="${Blist.b_regi_date gt now}">
-					 	<tr>
+						<tr>
 					 		<%-- <td>${Blist.b_num}</td> --%>
 					 		<td>${StartRow}</td>
 					 		<td>
@@ -120,7 +183,6 @@
 							<td width="100px;"><a href="/customer/boardDetail?b_num=${Blist.b_num}"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
 						</tr>
 						<c:set var="StartRow" value="${StartRow +1}"/>
-						</c:if>
 					</c:forEach>
 	            </tbody>
               		
@@ -132,13 +194,17 @@
 	                <nav aria-label="Page navigation example">
 					  <ul class="pagination">
 					  	<c:if test="${page.startPage > page.pageBlock}">
-					  		<li class="page-item"><a class="page-link" href="/customer/boardList?currentPage=${page.startPage-page.pageBlock}&b_category=${BoardCategory}">이전</a></li>
+					  		<li class="page-item"><a class="page-link" href="/customer/boardList?currentPage=${page.startPage-page.pageBlock}&b_category=${BoardCategory}&rowPage=${rowPage}">이전</a></li>
 					  	</c:if>
 					    <c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
-					    	<li class="page-item"><a class="page-link" href="/customer/boardList?currentPage=${i}&b_category=${BoardCategory}">${i}</a></li>
+					    	<c:choose>
+								<c:when test="${page.currentPage==i}"><li class="page-item active"></c:when>
+								<c:otherwise><li class="page-item"></c:otherwise>
+							</c:choose>
+					    	<li class="page-item"><a class="page-link" href="/customer/boardList?currentPage=${i}&b_category=${BoardCategory}&rowPage=${rowPage}">${i}</a></li>
 					    </c:forEach>
 					 	<c:if test="${page.endPage < page.totalPage}">
-					 		<li class="page-item"><a class="page-link" href="/customer/boardList?currentPage=${page.startPage+page.pageBlock}&b_category=${BoardCategory}">다음</a></li>
+					 		<li class="page-item"><a class="page-link" href="/customer/boardList?currentPage=${page.startPage+page.pageBlock}&b_category=${BoardCategory}&rowPage=${rowPage}">다음</a></li>
 					 	</c:if>
 					  </ul>
 					</nav>
