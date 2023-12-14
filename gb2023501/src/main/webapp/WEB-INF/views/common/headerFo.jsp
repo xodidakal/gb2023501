@@ -165,15 +165,17 @@
                         <a href="/educator/homeworkEval" class="dropdown-item">숙제 평가</a>
                     </div>
                 </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">운영마당</a>
-                    <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
-                        <a href="/operate/gameList" class="dropdown-item">게임콘텐츠 관리</a>
-                        <a href="/operate/eduMaterialsList" class="dropdown-item">학습자료 관리</a>
-                        <a href="/operate/memberList" class="dropdown-item">회원 관리</a>
-                        <a href="/operate/salesInquiryDetail" class="dropdown-item">매출 관리</a>
-                    </div>
-                </div>
+                <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
+	                <div class="nav-item dropdown">
+	                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">운영마당</a>
+	                    <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
+	                        <a href="/operate/gameList" class="dropdown-item">게임콘텐츠 관리</a>
+	                        <a href="/operate/eduMaterialsList" class="dropdown-item">학습자료 관리</a>
+	                        <a href="/operate/memberList" class="dropdown-item">회원 관리</a>
+	                        <a href="/operate/salesInquiryDetail" class="dropdown-item">매출 관리</a>
+	                    </div>
+	                </div>
+                </c:if>
                  <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">고객센터</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
