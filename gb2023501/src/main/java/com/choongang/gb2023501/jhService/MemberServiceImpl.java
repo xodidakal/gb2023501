@@ -51,7 +51,7 @@ public class MemberServiceImpl implements MemberService {
 		if (authentication != null && !authentication.getName().equals("anonymousUser") ){
 				member = mr.findByMmId(authentication.getName());
 				
-				log.info("로그인된 회원 번호 -> " , member.getMmNum());
+				log.info("로그인된 회원 번호: {} " , member.getMmNum());
 				
 				return member.getMmNum();
 		}

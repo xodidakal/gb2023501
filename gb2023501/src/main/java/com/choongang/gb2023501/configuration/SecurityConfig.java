@@ -1,6 +1,8 @@
 package com.choongang.gb2023501.configuration;
 
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,7 +56,8 @@ public class SecurityConfig {
 				.usernameParameter("mmId")		// login에 필요한 id값 설정 (default는 username)
                 .passwordParameter("mmPswd")	// login에 필요한 password 값  (default password)
                 .loginProcessingUrl("/login")	// login주소가 호출 되면 시큐리티가 낚아채서 대신 로그인 진행해줌
-                .failureUrl("/loginFailure")
+                .failureUrl("/info/loginForm?error=true")
+//                .failureUrl("/loginFailure")
 				.defaultSuccessUrl("/")			// 로그인 성공시 이동할 URL (메이페이지로 이동)
 			);
 		

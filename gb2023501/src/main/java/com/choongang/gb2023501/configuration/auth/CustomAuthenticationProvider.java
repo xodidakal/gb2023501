@@ -65,7 +65,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             Member member = mr.findByMmId(mmId);
 
             if (member == null) {
-            	throw new BadCredentialsException("아이디 불일치 =" + mmId);
+            	throw new BadCredentialsException("아이디가 일치하지 않습니다." + mmId);
             }
             
         	//Optional 객체에서 값 꺼내서 memeber에 저장
