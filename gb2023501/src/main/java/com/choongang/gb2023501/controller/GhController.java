@@ -2,6 +2,7 @@ package com.choongang.gb2023501.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.choongang.gb2023501.ghSerivce.BoardService;
@@ -33,7 +35,9 @@ public class GhController {
 	
 	/* 게시판 리스트 */
 	@RequestMapping(value = "customer/boardList")
-	public String boardList(Model model, String b_category, Board board, BoardComment boardComment ,@RequestParam(defaultValue = "1") String currentPage) {
+	public String boardList(Model model, String b_category, 	Board board 
+							,@RequestParam(defaultValue = "1") 	String currentPage
+							,@RequestParam(defaultValue = "10") int rowPage) {
 		System.out.println("GhController boardList Start...");
 //		System.out.println("b_category->"+b_category); 
 //		System.out.println("board.getB_category();->"+board.getB_category());
@@ -44,7 +48,13 @@ public class GhController {
 		System.out.println("GhController selectBoardListCnt bdCount->"+bdCount);
 		
 		// 페이징 작업
-		Paging page = new Paging(bdCount, currentPage);
+//		Paging page = new Paging(bdCount, currentPage);
+//		board.setStart(page.getStart());
+//		board.setEnd(page.getEnd());
+//		model.addAttribute("page", page);
+		
+		// 페이징 작업
+		Paging page = new Paging(bdCount, currentPage, rowPage);
 		board.setStart(page.getStart());
 		board.setEnd(page.getEnd());
 		model.addAttribute("page", page);
@@ -59,8 +69,11 @@ public class GhController {
 		model.addAttribute("BoardCategory", b_category);
 		// 게시판 카테고리 별 count
 		model.addAttribute("BoardCount", bdCount);
-		
+		// 게시판 b_num 정렬
 		model.addAttribute("StartRow",page.getStart());
+		// 게시판 숫자표시[?]
+		model.addAttribute("rowPage", rowPage);
+		
 		// 댓글 count
 //		int comtCount = boardService.selectBdCommentListCnt(boardComment);
 //		System.out.println("GhController comtCount->"+comtCount);
@@ -112,8 +125,11 @@ public class GhController {
 	
 	/* 글 작성 폼 */
 	@RequestMapping(value = "customer/boardForm")
-	public String boardForm() {
+	public String boardForm(Model model, String b_category) {
 		System.out.println("GhController boardForm Start...");
+		
+		// 글 작성 할때 목록 -> 카테고리 목록으로 가기
+		model.addAttribute("BoardCategory", b_category);
 		
 		return "gh/boardForm";
 	}
@@ -122,26 +138,27 @@ public class GhController {
 	@PostMapping(value = "customer/insertBoard")
 	public String insertBoard(Model model, Board board, 
 							  @RequestParam(value = "file1", required = false) 
-							  MultipartFile file1, HttpServletRequest request
+							  MultipartFile file1, HttpServletRequest request, String b_regi_date
 							  ) throws IOException {
 		System.out.println("GhController insertBoard Start...");
-		
-		// file Upload
-		String attach_path = "upload/gh"; // 실제 파일이 저장되는 폴더명, uploadPath의 이름과 동일하게 해야 오류 X
-		String uploadPath = request.getSession().getServletContext().getRealPath("/upload/gh"); // 저장 위치 지정 
-		
-		System.out.println("GhController File Upload Post Start"); 
-		
-		log.info("originalName : " + file1.getOriginalFilename());		// 원본 파일명
-		log.info("size : "         + file1.getSize());					// 파일 사이즈
-		log.info("contextType : "  + file1.getContentType());			// 파일 타입
-		log.info("uploadPath : "   + uploadPath);						// 파일 저장되는 주소
-		
-		String saveName = uploadFile(file1.getOriginalFilename(), file1.getBytes(), uploadPath);  // 저장되는 파일명 
-		log.info("saveName: " + saveName);
+		System.out.println("GhController insertBoard b_regi_date->"+b_regi_date);
 		
 		if(!file1.isEmpty()) {
+			// file Upload
 			log.info("파일o");
+			String attach_path = "upload/gh"; // 실제 파일이 저장되는 폴더명, uploadPath의 이름과 동일하게 해야 오류 X
+			String uploadPath = request.getSession().getServletContext().getRealPath("/upload/gh"); // 저장 위치 지정 
+			
+			System.out.println("GhController File Upload Post Start"); 
+			
+			log.info("originalName : " + file1.getOriginalFilename());		// 원본 파일명
+			log.info("size : "         + file1.getSize());					// 파일 사이즈
+			log.info("contextType : "  + file1.getContentType());			// 파일 타입
+			log.info("uploadPath : "   + uploadPath);						// 파일 저장되는 주소
+			
+			String saveName = uploadFile(file1.getOriginalFilename(), file1.getBytes(), uploadPath);  // 저장되는 파일명 
+			log.info("saveName: " + saveName);
+			
 			board.setB_attach_name(file1.getOriginalFilename());
 			board.setB_attach_path(attach_path);
 		}
@@ -150,6 +167,14 @@ public class GhController {
 		// -----------------------------------------------------
 		int insertForm = boardService.insertBoard(board);
 		// -----------------------------------------------------
+		
+//		if(insertForm > 0) {
+//			log.info("입력 성공");
+//			return "redirect:/customer/boardList?b_category="+board.getB_category();
+//		} else {
+//			log.info("입력 실패");
+//			return "redirect:/customer/boardForm";
+//		}
 		
 		return "redirect:/customer/boardList?b_category="+board.getB_category();
 	}
@@ -200,6 +225,17 @@ public class GhController {
 	
 	
 	
+	/* ajax 테스트 */
+	@ResponseBody
+	@PostMapping(value = "boardNotieList")
+	public String boardNotieList(int b_category, String b_content, String b_title) {
+		System.out.println("boardNotieList b_category->"+b_category);
+		System.out.println("boardNotieList b_content->"+b_content);
+		System.out.println("boardNotieList b_title->"+b_title);
+		
+		return "success";
+	}
+	
 	
 	
 	
@@ -217,12 +253,7 @@ public class GhController {
 //	}
 	
 	
-//	/* 공지사항 리스트 */
-//	@RequestMapping(value = "boardNotieList")
-//	public String boardNotieList() {
-//		
-//		return "gh/boardNotieList";
-//	}
+
 //	
 //	/* Q&A 리스트 */
 //	@RequestMapping(value = "boardQnaList")

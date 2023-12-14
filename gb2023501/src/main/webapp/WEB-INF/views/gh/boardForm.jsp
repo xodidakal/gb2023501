@@ -23,25 +23,7 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
 
-	// 게시일자 Radio버튼
-	document.addEventListener("DOMContentLoaded", function () {
-	    var nowTimeRadio = document.getElementById("nowTimeRadio");
-	    var notNowTimeRadio = document.getElementById("notNowTimeRadio");
-	    var selectedDateInput = document.getElementById("selectedDate");
 	
-	    // 등록 즉시 게시
-	    nowTimeRadio.addEventListener("change", function () {
-	        selectedDateInput.style.display = "none";
-	        selectedDateInput.value = ""; // 선택된 날짜 초기화
-	    });
-	
-	    // 게시 일자 선택
-	    notNowTimeRadio.addEventListener("change", function () {
-	        selectedDateInput.style.display = "inline";
-	    });
-	    
-	});
-	 
 	// 공지 등록 여부
 	$(function() {
 		$('#check_b_flag').click(function() {
@@ -54,78 +36,91 @@
 			}
 			else {
 				$(this).val("1");
-				$('input[name=B_flag]').val("1");
+				$('input[name=b_flag]').val("1");
 				alert('Checkbox Value: ' + checkboxValue);
 			}
 		});
 	});
 	
-	/* document.addEventListener("DOMContentLoaded", function() {
-		var nowTimeRadio = getElementById("nowTimeRadio");
-		var notNotTimeRadio = getElementById("notNowTimeRadio");
-		var selectedDateInput = getElementById("selectedDate");
-		
-		nowTimeRadio.addEventListner("change", function() {
-			selectedDateInput.value = "sysdate";
-			selectedDateInput.style.display = "none";
-			selectedDateInput.value = "";
-		});
-		
-		notNotTimeRadio.addEventListner("change", function() {
-			selectedDateInput.style.display = "inline";
-		});
-		
-	});
-	 */
-	 
-	 
-	/* $(function() {
-		$('#check_Bflag').change(function() {
-			var checked = $(this).is(':checked');
-			if (checked) {
-                $(this).val("0");
-                $('input[name=b_flag]').val("0");
-            } else {
-                $(this).val("1");
-                $('input[name=b_flag]').val("1");
-            }
-		});
-	}); */
-	
-	/* $(function() {
-        var checkboxValue = document.getElementById('check_Bflag').value;
-        var checked = $(this).is(':checked');
-        
-		$('#check_Bflag').click(function () {
-			alert("클릭");
-            // 체크된 경우
-            if (checked) {
-                // b_flag에 0을 주기
-                $(this).val('0');
-                $('input[name=b_flag]').val("0");
-                alert('Checkbox Value: ' + checkboxValue);
-                
-            } else {
-                // 체크가 해제된 경우 b_flag에 1을 주기
-                $(this).val('1');
-                $('input[name=b_flag]').val("1");
-                alert('Checkbox Value: ' + checkboxValue);
-            }
-		});
-	}); */
-	
-	/* $(function() {
-		
-	    $('#check_Bflag').click(function() {
-	    	var checkboxValue = document.getElementById('check_Bflag').value;
-	        var checked = $(this).is(':checked');
-	        $('input[name=b_flag]').val(checked ? "1" : "0");
-	        alert('Checkbox Value: ' + checkboxValue);
-	    });
-	}); */
-	
-	
+	// 게시일자 Radio버튼
+	document.addEventListener("DOMContentLoaded", function () {
+	    var nowTimeRadio = document.getElementById("nowTimeRadio");
+	    var notNowTimeRadio = document.getElementById("notNowTimeRadio");
+	    var selectedDateInput = document.getElementById("selectedDate");
 
+	    // 등록 즉시 게시
+	    nowTimeRadio.addEventListener("click", function () {
+	        selectedDateInput.style.display = "none";
+//	        selectedDateInput.value = ""; // 선택된 날짜 초기화
+	        $('input[name=b_regi_date]').val(getTodayDate);
+	    });
+	
+	    // 게시 일자 선택
+	    notNowTimeRadio.addEventListener("click", function () {
+	        selectedDateInput.style.display = "inline";
+	    });
+	    
+	 	// 날짜 선택 처리
+	    selectedDateInput.addEventListener("change", function () {
+	        // 선택한 날짜로 값을 설정
+	        $('input[name=b_regi_date]').val(selectedDateInput.value);
+	    });
+	 	
+	    function getTodayDate() {
+	        var today = new Date();
+	        var year = today.getFullYear();
+	        var month = today.getMonth() + 1; // 월은 0부터 시작하므로 +1
+	        var day = today.getDate();
+
+	        // 날짜를 'YYYY-MM-DD' 형식으로 반환
+	        return year + '-' + (month < 10 ? '0' : '') + month + '-' + (day < 10 ? '0' : '') + day;
+	    }
+	});
+	
+	
+	
+	// ajax 할거?
+	/* function button_test() {
+		alert("버튼클릭");
+		var params = {};
+		params.b_category = $('select[name=b_category]').val();
+		params.b_notie_type = $('select[name=b_notie_type]').val();
+		params.b_flag = $('input[name=b_flag]').val();
+		params.b_title = $('input[name=b_title]').val();
+		params.b_regi_date = $('input[name=b_regi_date]').val();
+		params.b_content = $('textarea[name=b_content]').val();
+		params.file1 = $('input[name=file1]').val();
+
+		alert("b_category->"+params.b_category);
+		alert("b_notie_type->"+params.b_notie_type);
+		alert("b_flag->"+params.b_flag);
+		alert("b_title->"+params.b_title);
+		alert("b_regi_date->"+params.b_regi_date);
+		alert("b_content->"+params.b_content);
+		alert("file1->"+params.file1);
+		
+		$.ajax({
+			url			: "boardNotieList",
+			type		: 'POST',
+			contentType : 'application/json; charset:utf-8',
+			data		: JSON.stringify(params),
+			dataType	: 'text',
+			success		: function(data) {
+				if(data == "success") {
+					alert("전송 성공");
+				} else {
+					alert("전송 실패");
+				}
+			},
+			error : function(XHR, textStatus, errorThrown) {
+				// http 오류 번호를 반환하며 케이스별 오류 메시지 판정에 사용하면 유용
+				console.log( XHR.status );
+				// url의 full response를 반환하기 때문에 ajax 오류 디버깅 시에 상당한 도움
+				alert( jqXHR.responseText );
+			}
+		});
+	} */
+	
 
 </script>
 <!-- JS END -->
@@ -139,7 +134,7 @@
 <!--     </div> -->
 <div class="row g-0 justify-content-center">
 	<div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
-		<form action="/customer/insertBoard" method="post" enctype="multipart/form-data">
+		<form action="/customer/insertBoard" method="post" enctype="multipart/form-data" id="boardForm">
 	        <div class="row g-3">
 	        <h2 class="display-7 mb-4">게시물 등록</h2>
 	        <hr class="my-3">
@@ -148,8 +143,7 @@
 						<th>게시 구분</th>
 							<td width="150px;">
 			                    <select id="b_category" name="b_category" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
-			                    <c:if test=""></c:if>
-									<option value="1">공지사항</option>
+			                    	<option value="1">공지사항</option>
 									<option value="2">Q&A</option>
 									<option value="3">FAQ</option>
 								</select>
@@ -174,23 +168,23 @@
 		            <tr>
 						<th>제목</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" id="b_title" name="b_title" placeholder="Subject">
+		                    <input type="text" class="form-control" id="b_title" name="b_title" placeholder="Subject" required="required">
 <!-- 		                    <label for="subject">자료명</label> -->
 		            	</td>
 					</tr>
 					<tr>
 						<th>게시 일자</th>
 						<td width="150px;">
-							<input type="radio" name="b_regi_date" value="sysdate" id="nowTimeRadio">
+							<input type="radio" name="b_regi_date" id="nowTimeRadio" required="required">
 							<label class="form-check-label">등록 즉시 게시</label>
 						</td>
 						<td width="150px;">
-							<input type="radio" name="b_regi_date" value="notNowTime" id="notNowTimeRadio">
+							<input type="radio" name="b_regi_date" value="notNowTime" id="notNowTimeRadio" required="required">
 							<label class="form-check-label">게시 일자 선택</label>
 						</td>
 						<td width="150px;">
-							<input type="date" id="selectedDate" name="selectedDate" style="display: none;">
-							<input type="date" name="b_regi_date">
+							<input type="date" id="selectedDate" name="b_regi_date" style="display: none;" required="required">
+							<!-- <input type="date" name="b_regi_date"> -->
 						</td>
 					</tr>
 					<tr>
@@ -210,8 +204,9 @@
 	                </tr>
                 </table>
                 <div class="d-grid gap-2 d-md-flex justify-content-center" >
-					<a href="boardList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
+					<a href="/customer/boardList?b_category=${BoardCategory}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
 					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="등록">
+					<input type="button" onclick="button_test()" value="테스트">
 				</div>
                 
 			</div>
