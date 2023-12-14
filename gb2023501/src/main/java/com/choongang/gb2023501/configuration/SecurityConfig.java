@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 import com.choongang.gb2023501.configuration.auth.CustomAuthenticationProvider;
 //import com.choongang.gb2023501.configuration.auth.PrincipalDetailsService;
@@ -24,6 +25,14 @@ import com.choongang.gb2023501.configuration.auth.CustomAuthenticationProvider;
 @EnableWebSecurity // 스프링 시큐리티 필터(SecurityConfig)가 스프링 기본 필터 체인에 등록됨
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+	
+	//접근 권한 없는 경우 예외 처리 할 클래스 
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+    	//아래는 AccessDeniedHandler 상속받아서 직접 생성
+        return new CustomAccessDeniedHandler();
+    }
+	
 	
 	// 해쉬 암호화 방식을 사용하겠다. -> password 암호화
 	//@Bean 사용하면 해당 메서드의 리턴되는 오브젝트를 IoC로 등록해줌
@@ -41,9 +50,12 @@ public class SecurityConfig {
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		
+		//접근 권한 없는 경우 예외처리할 핸들러 필터체인에 등록
+		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+		
 		http.authorizeHttpRequests((requests) -> requests
-//				.antMatchers("/learning/**").hasRole("STUDENT")
-//				.antMatchers("/educator/**").hasRole("EDUCATOR")
+				.antMatchers("/learning/**").hasAnyRole("STUDENT", "EDUCATOR", "ADMIN")
+				.antMatchers("/educator/**").hasRole("EDUCATOR")
 				/* 개발단계에서는 역할에 따른 접근제한 해제.
 				.antMatchers("/admin/**").hasRole(Role.ADMIN.getValue())
 				.antMatchers("/user/myPage/**").hasRole(Role.USER.getValue())

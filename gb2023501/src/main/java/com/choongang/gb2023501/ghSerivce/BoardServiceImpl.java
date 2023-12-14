@@ -27,7 +27,18 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<Board> selectBoardList(Board board) {
 		System.out.println("BoardServiceImpl selectBoardList Start...");
-		List<Board> list = boardDao.selectBoardList(board);
+		List<Board> list = null;
+		System.out.println("BoardServiceImpl board.getSearch_keyword()->"+board.getSearch_keyword());
+		if(board.getSearch_keyword() != null) {
+			if(!board.getSearch_keyword().equals("")) {
+				System.out.println("검색어로 list 출력");
+				list = boardDao.searchBoardList(board);
+				System.out.println("BoardServiceImpl selectBoardList list.size->"+list.size());
+				return list;
+			}
+		}
+		System.out.println("그냥 list 출력");
+		list = boardDao.selectBoardList(board);
 		System.out.println("BoardServiceImpl selectBoardList list.size->"+list.size());
 		return list;
 	}

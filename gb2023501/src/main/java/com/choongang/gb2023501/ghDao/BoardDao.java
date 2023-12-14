@@ -14,6 +14,7 @@ public interface BoardDao {
 	int         		updateBoardCnt(int b_num);
 	List<BoardComment> 	selectCommentList(int b_num);
 	int insertBoard(Board board);
+	List<Board> searchBoardList(Board board);
 	
 //	int 				selectBdCommentListCnt(BoardComment boardComment);
 

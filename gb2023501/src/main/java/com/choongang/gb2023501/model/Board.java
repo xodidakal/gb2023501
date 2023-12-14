@@ -30,5 +30,8 @@ public class Board {
 	private int			end;			// 페이지 끝번호
 	private int			comment_count;  // 댓글 수
 	private String		m_category;		// 회원 구분
-
+	private String		search_type;	// 검색대상 필드
+	private String		search_keyword;	// 검색어 키워드
+	private int			count_type;		// 몇개씩 보여줄껀지
+	
 }
