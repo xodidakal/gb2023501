@@ -82,7 +82,8 @@
 				 	<tr>
 				 		<td>1.</td>
 						<td>
-							<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyy년MM월dd일"/>
+<%-- 							<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyy년MM월dd일"/> --%>
+							${selectSaleList.goOrderDate }월
 						</td>
 						<td>${selectSaleList.salesCnt } 개</td>
 						<td>
@@ -95,24 +96,7 @@
 				
              </tbody>   
 		</table>
-<!-- 		<div class="row mt-8" style="width:100%;"> -->
-<!-- 			<div class="d-flex justify-content-center" style="margin-top:12px"> -->
-<!-- 	               <nav aria-label="Page navigation example"> -->
-<!-- 				  <ul class="pagination"> -->
-<%-- 				  	<c:if test="${page.startPage > page.pageLimit}"> --%>
-<%-- 				  		<li class="page-item"><a class="page-link" href="eduMaterialsList?currentPage=${page.startPage-page.pageLimit}">이전</a></li> --%>
-<%-- 				  	</c:if> --%>
-<%-- 				    <c:forEach var="i" begin="${page.startPage }" end="${page.endPage }"> --%>
-<%-- 				    	<li class="page-item"><a class="page-link" href="eduMaterialsList?currentPage=${i }">${i }</a></li> --%>
-<%-- 				    </c:forEach> --%>
-<%-- 				 	<c:if test="${page.endPage < page.totalPage}"> --%>
-<%-- 				 		<li class="page-item"><a class="page-link" href="eduMaterialsList?currentPage=${page.startPage+page.pageLimit}">다음</a></li> --%>
-<%-- 				 	</c:if> --%>
-<!-- 				  </ul> -->
-<!-- 				</nav> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-	</div>
+	
 </div>
 <%@ include file="../common/footerFo.jsp" %>
 </body>

@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.choongang.gb2023501.model.LearnGrp;
 import com.choongang.gb2023501.model.EduMaterials;
 
 import lombok.RequiredArgsConstructor;
@@ -41,5 +42,27 @@ public class EduMaterialsDaoImpl implements EduMaterialsDao {
 			System.out.println("YbController EduMaterialsDaoImpl selectEduMaterialsListCnt Exception -> " + e.getMessage());
 		}
 		return selectEduMaterialsListCnt;
+	}
+	@Override
+	public List<com.choongang.gb2023501.domain.LearnGrp> selectLgpListByTitle(LearnGrp learnGrp) {
+		System.out.println("YbController EduMaterialsDaoImpl selectLgpListByTitle start...");
+		List<com.choongang.gb2023501.domain.LearnGrp> selectLgpListByTitle = null;
+		try {
+				selectLgpListByTitle = session.selectList("selectLgpListByTitle", learnGrp);
+		} catch (Exception e) {
+			System.out.println("YbController EduMaterialsDaoImpl selectLgpListByTitle Exception -> " + e.getMessage());
+		}
+		return selectLgpListByTitle;
+	}
+	@Override
+	public int selectLgpListByTitleCnt(String lgTitle) {
+		System.out.println("YbController EduMaterialsDaoImpl selectLgpListByTitleCnt start...");
+		int selectLgpListByTitleCnt = 0;
+		try {
+			selectLgpListByTitleCnt = session.selectOne("selectLgpListByTitleCnt", lgTitle);
+		} catch (Exception e) {
+			System.out.println("YbController EduMaterialsDaoImpl selectLgpListByTitleCnt Exception -> " + e.getMessage());
+		}
+		return selectLgpListByTitleCnt;
 	}
 }
