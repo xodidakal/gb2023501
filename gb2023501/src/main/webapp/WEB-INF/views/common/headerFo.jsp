@@ -94,51 +94,11 @@
                        <h6 class="mb-0"><a href="/info/loginForm">로그인</a></h6>
                     </div>
                   </div>
-<!--                   <div class="d-flex align-items-center justify-content-end"> -->
-<!--                     <div class="ps-3">  -->
-<!--                        <h6 class="mb-0 mt-2" style="width: 127px;"><a href="#!">ID/PW 찾기</a></h6> -->
-<!--                     </div> -->
-<!--            	 	  </div> -->
+
            	 	</div>     
            	   </div>       	 
             </div>
-<!--            <div class="col-lg-8 col-md-7 d-none d-lg-block"> -->
-<!--                <div class="row"> -->
-<!--                     <div class="col-4"> -->
-<!--                         <div class="d-flex align-items-center justify-content-end"> -->
-<!--                             <div class="flex-shrink-0 btn-lg-square border rounded-circle"> -->
-<!--                                 <i class="far fa-clock text-primary"></i> -->
-<!--                             </div> -->
-<!--                             <div class="ps-3"> -->
-<!--                                 <p class="mb-2">Opening Hour</p> -->
-<!--                                 <h6 class="mb-0">Mon - Fri, 8:00 - 9:00</h6> -->
-<!--                             </div> -->
-<!--                         </div> -->
-<!--                     </div> -->
-<!--                    <div class="col-4"> -->
-<!--                        <div class="d-flex align-items-center justify-content-end"> -->
-<!--                            <div class="flex-shrink-0 btn-lg-square border rounded-circle"> -->
-<!--                                <i class="fa fa-phone text-primary"></i> -->
-<!--                            </div> -->
-<!--                            <div class="ps-3"> -->
-<!--                                <p class="mb-2">Call Us</p> -->
-<!--                                <h6 class="mb-0">+012 345 6789</h6> -->
-<!--                            </div> -->
-<!--                        </div> -->
-<!--                    </div> -->
-<!--                    <div class="col-4"> -->
-<!--                        <div class="d-flex align-items-center justify-content-end"> -->
-<!--                            <div class="flex-shrink-0 btn-lg-square border rounded-circle"> -->
-<!--                                <i class="far fa-envelope text-primary"></i> -->
-<!--                            </div> -->
-<!--                            <div class="ps-3"> -->
-<!--                                <p class="mb-2">Email Us</p> -->
-<!--                                <h6 class="mb-0">info@example.com</h6> -->
-<!--                            </div> -->
-<!--                        </div> -->
-<!--                    </div> -->
-<!--                </div> -->
-<!--            </div> -->
+
         </div>
     </div>
     <!-- Brand & Contact End -->
@@ -208,7 +168,6 @@
                     </div>
                 </div>
             </div>
-<!--             <a href="#" class="btn btn-sm btn-light rounded-pill py-2 px-4 d-none d-lg-block">Get Started</a> -->
         </div>
 
     </nav>
