@@ -177,18 +177,20 @@
                         <a href="/learning/learnGrpJoinForm" class="dropdown-item">학습그룹 가입신청</a>
                     </div>
                 </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">교육자마당</a>
-                    <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
-                        <a href="/educator/learnGroupForm1" class="dropdown-item">학습그룹 등록</a>
-                        <a href="/educator/learnGroupList" class="dropdown-item">내 학습그룹</a>
-                        <a href="/educator/learnGroupDetail" class="dropdown-item">학습그룹 상세</a>
-                        <a href="/educator/learnGroupJoinList" class="dropdown-item">학습그룹 가입승인</a>
-                        <a href="/educator/homeworkForm" class="dropdown-item">숙제 생성</a>
-                        <a href="/educator/homeworkSend" class="dropdown-item">숙제 전송</a>
-                        <a href="/educator/homeworkEval" class="dropdown-item">숙제 평가</a>
-                    </div>
-                </div>
+                <c:if test="${pageContext.request.isUserInRole('ADMIN') or pageContext.request.isUserInRole('EDUCATOR')}">
+	                <div class="nav-item dropdown">
+	                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">교육자마당</a>
+	                    <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
+	                        <a href="/educator/learnGroupForm1" class="dropdown-item">학습그룹 등록</a>
+	                        <a href="/educator/learnGroupList" class="dropdown-item">내 학습그룹</a>
+	                        <a href="/educator/learnGroupDetail" class="dropdown-item">학습그룹 상세</a>
+	                        <a href="/educator/learnGroupJoinList" class="dropdown-item">학습그룹 가입승인</a>
+	                        <a href="/educator/homeworkForm" class="dropdown-item">숙제 생성</a>
+	                        <a href="/educator/homeworkSend" class="dropdown-item">숙제 전송</a>
+	                        <a href="/educator/homeworkEval" class="dropdown-item">숙제 평가</a>
+	                    </div>
+	                </div>
+                </c:if>
                 <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
 	                <div class="nav-item dropdown">
 	                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">운영마당</a>
