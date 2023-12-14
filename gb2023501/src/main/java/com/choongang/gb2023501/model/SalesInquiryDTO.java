@@ -1,6 +1,9 @@
 package com.choongang.gb2023501.model;
 
-import com.choongang.gb2023501.domain.LearnGrp;
+
+import java.util.Date;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +11,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LearnGrpDTO {
-	private LearnGrp learnGrp;
-	private Long   	 mmCnt;
+public class SalesInquiryDTO {
+
+	private Date  goOrderDate;
+//	private int	 goPayment;
+	private long  salesCnt;
+	private long  salesSum;
 }

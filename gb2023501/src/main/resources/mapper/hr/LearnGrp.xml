@@ -3,4 +3,18 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.choongang.gb2023501.LearnGrp"> 
+
+	<!-- 교육자마당 > 학습그룹 상세 (SELECT) -->
+	<select id="hrSelectGameList" resultType="Game">
+		SELECT   g.g_num, g.g_title, g.g_period, SUM(TO_DATE(lg.lg_edate) - TO_DATE(lg.lg_sdate)) remainingPeriod, g.g_to, (g.g_to - SUM(lg.lg_to)) remainingTo
+		FROM     game g, game_order go, learn_grp lg
+		WHERE    g.g_num = go.g_num
+		AND      g.g_num = lg.g_num
+		AND      go.m_num = 3
+		<if test="g_num != null and g_num != ''">
+		AND      g.g_num = #{g_num}
+		</if>
+		GROUP by g.g_num, g.g_title, g.g_period, g.g_to
+	</select>
+
 </mapper>

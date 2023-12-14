@@ -58,15 +58,15 @@
 				</tr>
 			</thead>
 			 <tbody>
-			 	<c:forEach var="lg" items="${learnGrps }">
+			 	<c:forEach var="lgDto" items="${learnGrps }">
 				 	<tr>
 				 		<td><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
 						<td>No.</td>
-						<td>${lg.lgTitle}</td>
-						<td>${lg.game.ggTitle}</td>
-						<td>${lg.lgSdate } ~ ${lg.lgEdate }</td>
-						<td>${lg.lgTo }</td>
-						<td>${lg.lgTo }</td>
+						<td>${lgDto.learnGrp.lgTitle}</td>
+						<td>${lgDto.learnGrp.game.ggTitle}</td>
+						<td>${lgDto.learnGrp.lgSdate } ~ ${lgDto.learnGrp.lgEdate }</td>
+						<td>${lgDto.learnGrp.lgTo }명</td>
+						<td>${lgDto.mmCnt }명</td>
 						<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
 					</tr>
 				</c:forEach>

@@ -39,7 +39,7 @@ public class EduMaterials {
 		@ManyToOne	// Member 의 PK
 		@JoinColumn(name = "m_num")
 		private Member member;
-		
+			
 		@Column(name = "em_category")
 		private int emCategory;
 
@@ -70,7 +70,5 @@ public class EduMaterials {
 		
 		@Column(name = "g_num", nullable = true)
 		private Long ggNum;
-		
-		private String type;
 
 }
