@@ -7,17 +7,16 @@
 	<select id="gbSelectHomeworkListCnt" parameterType="Homework" resultType="int">
 		SELECT count(*) FROM homework
 		WHERE m_num = #{m_num}
-		<if test="h_num gt 0">
-			AND h_num = #{h_num}
+		<if test="h_title != null and h_title != ''">
+			AND h_title = #{h_title}
 		</if>
 	
 	</select>
 	
 	<select id="gbAllSelectHomeworkList" parameterType="Homework" resultType="Homework">
-		SELECT * 
+		SELECT DISTINCT h_title 
         FROM homework
         WHERE m_num = #{m_num}
-        ORDER BY h_regi_date desc	
 	</select>
 
 	<select id="gbSelectHomeworkList" parameterType="Homework" resultType="Homework">
@@ -27,8 +26,8 @@
 		        FROM (SELECT * 
 		              FROM homework
 		              WHERE m_num = #{m_num}
-		              <if test="h_num gt 0">
-						 AND h_num = #{h_num}
+		              <if test="h_title != null and h_title != ''">
+						 AND h_title = #{h_title}
 					  </if>
 		              ORDER BY h_regi_date desc ) hw
 		     )
@@ -49,5 +48,16 @@
 		WHEN NOT MATCHED THEN
 		INSERT(h_num, m_num, h_title, h_content, h_level, h_deadline, h_regi_date)
 		VALUES(homework_seq.nextval, #{m_num}, #{h_title}, #{h_content}, #{h_level}, #{h_deadline},  sysdate)  
+	</insert>
+	
+	<insert id="gbInsertHwSend" parameterType="java.util.Map">
+		INSERT ALL
+		<foreach collection="hNumList" item="hNum">
+			<foreach collection="mNumList" item="mNum" separator=" ">
+				INTO hw_send(h_num, m_num, hs_date)
+				VALUES(#{hNum}, #{mNum}, sysdate)
+			</foreach> 
+		</foreach>
+		SELECT * FROM DUAL
 	</insert>
 </mapper>

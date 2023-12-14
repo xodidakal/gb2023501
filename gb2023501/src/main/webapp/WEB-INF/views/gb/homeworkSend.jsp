@@ -9,49 +9,57 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript">
 	$(function(){
-		  // 숙제명 검색 셀렉트 박스 변경 시 검색
-		  $("#searchHtitle").change(function(){
+		
+		var count = ${count};
+		if(count != "0"){
+			alert("숙제를 정상적으로 전송하였습니다.")
+		}else {
+			alert("이미 동일한 숙제를 발송한 학습자입니다.")
+		}
+		
+		// 숙제명 검색 셀렉트 박스 변경 시 검색
+		$("#searchHtitle").change(function(){
 		    // Value값 가져오기
-		    var h_num = $("#searchHtitle :selected").val();
+		    var h_title = $("#searchHtitle :selected").val();
 		    var lg_num = ${hwsend.lg_num};
 			
-		    location.href = "homeworkSend?h_num="+h_num+"&lg_num="+lg_num;
+		    location.href = "homeworkSend?lg_num="+lg_num+"&h_title="+h_title;
 		  });
 		  
-		  // 학습그룹명 검색 셀렉트 박스 변경 시 검색
-		  $("#searchLgtitle").change(function(){
-			    // Value값 가져오기
-			    var lg_num = $("#searchLgtitle :selected").val();
-			    var h_num = ${homework1.h_num};
-
-			    location.href = "homeworkSend?h_num="+h_num+"&lg_num="+lg_num;
-		  });
+		// 학습그룹명 검색 셀렉트 박스 변경 시 검색
+		$("#searchLgtitle").change(function(){
+			// Value값 가져오기
+			var lg_num = $("#searchLgtitle :selected").val();
+			var h_title = $("#searchHtitle :selected").val();
+			
+			location.href = "homeworkSend?lg_num="+lg_num+"&h_title="+h_title;
+		});
 		  
-		  // 전체 선택 클릭 시 발생 이벤트
-		  $("#checkAll").click(function() {
-			  var checkAll = $('#checkAll').val();
-
-			  if(checkAll == '전체선택'){
-				  $("input[name=m_num]").prop("checked", true);
-				  $('#checkAll').val('전체해제');
-			  }else{
-				  $("input[name=m_num]").prop("checked", false);
-				  $('#checkAll').val('전체선택');
-			  }
-		  });
+		// 전체 선택 클릭 시 발생 이벤트
+		$("#checkAll").click(function() {
+			var checkAll = $('#checkAll').val();
+			
+			if(checkAll == '전체선택'){
+				$("input[name=m_num]").prop("checked", true);
+				$('#checkAll').val('전체해제');
+			}else{
+				$("input[name=m_num]").prop("checked", false);
+				$('#checkAll').val('전체선택');
+			}
+		});
 		  
-		  // 학습자 체크할 때마다 체크
-		  $("input[name=m_num]").click(function() {
-			  var totalM_num = $("input[name=m_num]").length;
-			  var totalChecked = $("input[name=m_num]:checked").length;
+		// 학습자 체크할 때마다 체크
+		$("input[name=m_num]").click(function() {
+			var totalM_num = $("input[name=m_num]").length;
+			var totalChecked = $("input[name=m_num]:checked").length;
 			  
-			  if(totalM_num != totalChecked){
-				  $('#checkAll').val('전체선택');
-			  }else {
-				  $('#checkAll').val('전체해제');
-			  }
-		  });
-	});
+			if(totalM_num != totalChecked){
+				$('#checkAll').val('전체선택');
+			}else {
+				$('#checkAll').val('전체해제');
+			}
+		});
+});
 	
 </script>
 </head>
@@ -73,9 +81,9 @@
 				<!-- 숙제명 검색 셀렉트 박스 -->
 				<span style="margin: 10px 15px 10px 0px;">숙제명</span>&nbsp;&nbsp;
 				<select id="searchHtitle" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
-					<option id="h_title" value=0>전체</option>
+					<option id="h_title" value="">전체</option>
 					<c:forEach var="allhomework" items="${allhomeworkList }" varStatus="status">
-						<option id="h_title" value="${allhomework.h_num }" <c:if test ="${homework1.h_num eq allhomework.h_num}"> selected="selected"</c:if>>${allhomework.h_title }</option>
+						<option id="h_title" value="${allhomework.h_title }" <c:if test ="${homework1.h_title eq allhomework.h_title}"> selected="selected"</c:if>>${allhomework.h_title }</option>
 					</c:forEach>
 				</select>      	
 		    </div>
@@ -116,13 +124,13 @@
 				                <nav aria-label="Page navigation example">
 								  <ul class="pagination">
 								  	<c:if test="${page.startPage > page.pageLimit}">
-								  		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage-page.pageLimit}&h_num=${homework1.h_num}&lg_num=${hwsend.lg_num}">이전</a></li>
+								  		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage-page.pageLimit}&h_title=${homework1.h_title}&lg_num=${hwsend.lg_num}">이전</a></li>
 								  	</c:if>
 								    <c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
-								    	<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${i }&h_num=${homework1.h_num}&lg_num=${hwsend.lg_num}">${i }</a></li>
+								    	<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${i }&h_title=${homework1.h_title}&lg_num=${hwsend.lg_num}">${i }</a></li>
 								    </c:forEach>
 								 	<c:if test="${page.endPage < page.totalPage}">
-								 		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage+page.pageLimit}&h_num=${homework1.h_num}&lg_num=${hwsend.lg_num}">다음</a></li>
+								 		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage+page.pageLimit}&h_title=${homework1.h_title}&lg_num=${hwsend.lg_num}">다음</a></li>
 								 	</c:if>
 								  </ul>
 								</nav>
@@ -131,13 +139,13 @@
 								<nav aria-label="Page navigation example">
 								  <ul class="pagination">
 								  	<c:if test="${page.startPage > page.pageLimit}">
-								  		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage-page.pageLimit}&h_num=${homework1.h_num}">이전</a></li>
+								  		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage-page.pageLimit}&h_title=${homework1.h_title}">이전</a></li>
 								  	</c:if>
 								    <c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
-								    	<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${i }&h_num=${homework1.h_num}">${i }</a></li>
+								    	<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${i }&h_title=${homework1.h_title}">${i }</a></li>
 								    </c:forEach>
 								 	<c:if test="${page.endPage < page.totalPage}">
-								 		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage+page.pageLimit}&h_num=${homework1.h_num}">다음</a></li>
+								 		<li class="page-item"><a class="page-link" href="homeworkSend?currentPage=${page.startPage+page.pageLimit}&h_title=${homework1.h_title}">다음</a></li>
 								 	</c:if>
 								  </ul>
 								</nav>
@@ -146,7 +154,7 @@
 					</div>
 				</div>
 			</div>
-			<hr>
+
 			<!-- 교육자 학습그룹 학습자 목록 -->
 			<div class="input-group col-md-5 mb-3 mt-5"> 
 				<!-- 카테고리 분류 -->

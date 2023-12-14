@@ -2,8 +2,15 @@ package com.choongang.gb2023501.controller;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,10 +35,16 @@ public class JhController {
 		return "jh/loginForm";
 	}
 	
+	@GetMapping("logout")
+	public void logout(HttpServletRequest request, HttpServletResponse response) {
+		new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+		//SecurityConfig에서 .logoutSuccessUrl로 처리하므로 return 불필요
+//		return "redirect:/info/loginForm";
+	}
+	
 	//회원약관 동의 페이지
 	@RequestMapping(value = "info/joinAgreeForm")
 	public String joinAgreeForm(Model model) {
-		
 		
 		
 		//로그인 된 아이디 가져오기
@@ -78,16 +91,16 @@ public class JhController {
 	@RequestMapping(value = "operate/memberList")
 	public String memberList() {
 		//테스트 삼아 찍어본 것
-//		int mmNum = ms.selectMmNumById();
-//		System.out.println("회원번호 int " + mmNum);
-//		String mmId = ms.getLoggedInId();
-//		log.info("getLoggedInId:{}", mmId);
-//		Optional<Member> memberOptional = ms.selectUserById();
-//		if(memberOptional.isPresent()) {
-//			Member member = memberOptional.get();
-//			System.out.println("회원 이름" + member.getMmName());
-//			System.out.println("회원 번호" + member.getMmNum());
-//		}
+		int mmNum = ms.selectMmNumById();
+		System.out.println("회원번호 int " + mmNum);
+		String mmId = ms.getLoggedInId();
+		log.info("getLoggedInId:{}", mmId);
+		Optional<Member> memberOptional = ms.selectUserById();
+		if(memberOptional.isPresent()) {
+			Member member = memberOptional.get();
+			System.out.println("회원 이름" + member.getMmName());
+			System.out.println("회원 번호" + member.getMmNum());
+		}
 		return "jh/memberList";
 	}
 	
