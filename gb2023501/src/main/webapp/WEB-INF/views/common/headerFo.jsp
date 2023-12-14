@@ -1,3 +1,4 @@
+<%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -87,14 +88,28 @@
           	   <div class="row">	
            	 	<div class="col-11">
            	 	  <div class="d-flex align-items-center justify-content-end">
-           	 		<div class="ps-3">            	 			
-                       <h6 class="mb-0"><a href="/info/joinAgreeForm">회원가입</a></h6>
-                    </div>
-                    <div class="ps-3"> 
-                       <h6 class="mb-0"><a href="/info/loginForm">로그인</a></h6>
-                    </div>
-                  </div>
+           	 	  <c:set var="authentication" value="${pageContext.request.userPrincipal}" />
+           	 	  <c:choose>
+	           	 	  <c:when test="${empty authentication or not authentication.authenticated}">
+           	 	  
+	           	 		<div class="ps-3">            	 			
+	                       <h6 class="mb-0"><a href="/info/joinAgreeForm">회원가입</a></h6>
+	                    </div>
+	                    <div class="ps-3"> 
+	                       <h6 class="mb-0"><a href="/info/loginForm">로그인</a></h6>
+	                    </div>
 
+	           	 	  </c:when>
+	           	 	  
+	           	 	  <c:otherwise>
+	                    <div class="ps-3"> 
+	                       <h6 class="mb-0"><a href="/logout">로그아웃</a></h6>
+	                    </div>
+	           	 	  	
+	           	 	  </c:otherwise>
+           	 	  </c:choose>
+           	 	  
+                 </div>
            	 	</div>     
            	   </div>       	 
             </div>

@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -53,15 +54,23 @@ public class SecurityConfig {
 				.usernameParameter("mmId")		// login에 필요한 id값 설정 (default는 username)
                 .passwordParameter("mmPswd")	// login에 필요한 password 값  (default password)
                 .loginProcessingUrl("/login")	// login주소가 호출 되면 시큐리티가 낚아채서 대신 로그인 진행해줌
+                .failureUrl("/loginFailure")
 				.defaultSuccessUrl("/")			// 로그인 성공시 이동할 URL (메이페이지로 이동)
 			);
 		
 		// Logout 설정.
 		http.logout((logout) -> logout
 				.permitAll()
-				.logoutSuccessUrl("/")
-				.invalidateHttpSession(true) //세션 날리기
+				.logoutSuccessUrl("/info/loginForm")
+				.invalidateHttpSession(true) //세션 무효화 -현재 세션을 끝내고 새로운 세션을 시작
 			);	
+		//세션을 날렸는데도 헤더에서 계속 로그아웃만 표시 되어서 바꿈 
+		//근데도 문제 지속되어서 헤더에서 <%= SecurityContextHolder.getContext().getAuthentication() %>
+		//에서 지금으로 바꿈
+//				.logoutSuccessHandler((request, response, authentication) -> {
+//			        SecurityContextHolder.clearContext(); // 세션을 무효화하고 SecurityContextHolder를 비웁니다.
+//			        response.sendRedirect("/info/loginForm");
+//				})
 		
 		// Authentication Provider 등록. -> CustomAuthenticationProvider에서 실제 로그인 처리
 		http.authenticationProvider(authProvider);
