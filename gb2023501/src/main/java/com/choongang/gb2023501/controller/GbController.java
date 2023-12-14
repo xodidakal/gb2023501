@@ -161,7 +161,7 @@ public class GbController {
 	  }
 	  
 	// 내 숙제 목록으로 이동
-	@RequestMapping("/learning/myHomeworkList")
+	@RequestMapping("/learning/myhomeworkList")
 	public String selectMyHomeworkList(Model model) {
 		System.out.println("GbController selectMyHomeworkList start...");
 		

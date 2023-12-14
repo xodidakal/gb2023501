@@ -169,7 +169,7 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">학습서비스</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
-                        <a href="/learning/homeworkList" class="dropdown-item">내 숙제</a>
+                        <a href="/learning/myhomeworkList" class="dropdown-item">내 숙제</a>
                         <a href="/learning/learnGrpJoinForm" class="dropdown-item">학습그룹 가입신청</a>
                     </div>
                 </div>

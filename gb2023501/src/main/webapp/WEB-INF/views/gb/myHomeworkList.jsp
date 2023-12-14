@@ -67,7 +67,7 @@
 					<td>4</td>
 					<td>5</td>
 					<td>6</td>
-					<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
+					<td width="100px;"><a href="/learning/myHomeworkDetail"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
 				</tr>
 				
 				<tr>
@@ -77,7 +77,7 @@
 					<td>4</td>
 					<td>5</td>
 					<td>6</td>
-					<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
+					<td width="100px;"><a href="/learning/myHomeworkDetail"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
 				</tr>
 				
 <%-- 					 </c:forEach> --%>
