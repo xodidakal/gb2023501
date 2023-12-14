@@ -104,27 +104,31 @@
 	           	 	  <c:otherwise>
  	                  	<c:if test="${pageContext.request.isUserInRole('EDUCATOR')}">	
 	 	                  	<div class="ps-3">            	 			
-		                       <h6 class="mb-0"><a href="/info/joinAgreeForm">교육자</a></h6>
+		                       <h6 class="mb-0">교육자</a></h6>
 		                    </div>
  	                  	</c:if>	
  	                  	<c:if test="${pageContext.request.isUserInRole('STUDENT')}">	
 	 	                  	<div class="ps-3">            	 			
-		                       <h6 class="mb-0"><a href="/info/joinAgreeForm">학생</a></h6>
+		                       <h6 class="mb-0">학생</a></h6>
 		                    </div>
  	                  	</c:if>	
  	                  	<c:if test="${pageContext.request.isUserInRole('USER')}">	
 	 	                  	<div class="ps-3">            	 			
-		                       <h6 class="mb-0"><a href="/info/joinAgreeForm">사용자</a></h6>
+		                       <h6 class="mb-0">사용자</a></h6>
 		                    </div>
  	                  	</c:if>	
  	                  	<c:if test="${pageContext.request.isUserInRole('ADMIN')}">	
 	 	                  	<div class="ps-3">            	 			
-		                       <h6 class="mb-0"><a href="/info/joinAgreeForm">관리자</a></h6>
+		                       <h6 class="mb-0">관리자</a></h6>
 		                    </div>
  	                  	</c:if>	
-		                    <div class="ps-3"> 
-		                       <h6 class="mb-0"><a href="/logout">로그아웃</a></h6>
-		                    </div>
+ 	                  	
+ 	                  	<div class="ps-3">            	 			
+	                       <h6 class="mb-0"><a href="/">${pageContext.request.userPrincipal.name}</a></h6>
+	                    </div>
+	                    <div class="ps-3"> 
+	                       <h6 class="mb-0"><a href="/logout">로그아웃</a></h6>
+	                    </div>
 	           	 	  	
 	           	 	  </c:otherwise>
            	 	  </c:choose>
