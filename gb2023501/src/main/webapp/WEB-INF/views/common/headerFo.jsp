@@ -1,3 +1,4 @@
+<%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -87,58 +88,52 @@
           	   <div class="row">	
            	 	<div class="col-11">
            	 	  <div class="d-flex align-items-center justify-content-end">
-           	 		<div class="ps-3">            	 			
-                       <h6 class="mb-0"><a href="/info/joinAgreeForm">회원가입</a></h6>
-                    </div>
-                    <div class="ps-3"> 
-                       <h6 class="mb-0"><a href="/info/loginForm">로그인</a></h6>
-                    </div>
-                  </div>
-<!--                   <div class="d-flex align-items-center justify-content-end"> -->
-<!--                     <div class="ps-3">  -->
-<!--                        <h6 class="mb-0 mt-2" style="width: 127px;"><a href="#!">ID/PW 찾기</a></h6> -->
-<!--                     </div> -->
-<!--            	 	  </div> -->
+           	 	  <c:set var="authentication" value="${pageContext.request.userPrincipal}" />
+           	 	  <c:choose>
+	           	 	  <c:when test="${empty authentication or not authentication.authenticated}">
+           	 	  
+	           	 		<div class="ps-3">            	 			
+	                       <h6 class="mb-0"><a href="/info/joinAgreeForm">회원가입</a></h6>
+	                    </div>
+	                    <div class="ps-3"> 
+	                       <h6 class="mb-0"><a href="/info/loginForm">로그인</a></h6>
+	                    </div>
+
+	           	 	  </c:when>
+	           	 	  
+	           	 	  <c:otherwise>
+ 	                  	<c:if test="${pageContext.request.isUserInRole('EDUCATOR')}">	
+	 	                  	<div class="ps-3">            	 			
+		                       <h6 class="mb-0"><a href="/info/joinAgreeForm">교육자</a></h6>
+		                    </div>
+ 	                  	</c:if>	
+ 	                  	<c:if test="${pageContext.request.isUserInRole('STUDENT')}">	
+	 	                  	<div class="ps-3">            	 			
+		                       <h6 class="mb-0"><a href="/info/joinAgreeForm">학생</a></h6>
+		                    </div>
+ 	                  	</c:if>	
+ 	                  	<c:if test="${pageContext.request.isUserInRole('USER')}">	
+	 	                  	<div class="ps-3">            	 			
+		                       <h6 class="mb-0"><a href="/info/joinAgreeForm">사용자</a></h6>
+		                    </div>
+ 	                  	</c:if>	
+ 	                  	<c:if test="${pageContext.request.isUserInRole('ADMIN')}">	
+	 	                  	<div class="ps-3">            	 			
+		                       <h6 class="mb-0"><a href="/info/joinAgreeForm">관리자</a></h6>
+		                    </div>
+ 	                  	</c:if>	
+		                    <div class="ps-3"> 
+		                       <h6 class="mb-0"><a href="/logout">로그아웃</a></h6>
+		                    </div>
+	           	 	  	
+	           	 	  </c:otherwise>
+           	 	  </c:choose>
+           	 	  
+                 </div>
            	 	</div>     
            	   </div>       	 
             </div>
-<!--            <div class="col-lg-8 col-md-7 d-none d-lg-block"> -->
-<!--                <div class="row"> -->
-<!--                     <div class="col-4"> -->
-<!--                         <div class="d-flex align-items-center justify-content-end"> -->
-<!--                             <div class="flex-shrink-0 btn-lg-square border rounded-circle"> -->
-<!--                                 <i class="far fa-clock text-primary"></i> -->
-<!--                             </div> -->
-<!--                             <div class="ps-3"> -->
-<!--                                 <p class="mb-2">Opening Hour</p> -->
-<!--                                 <h6 class="mb-0">Mon - Fri, 8:00 - 9:00</h6> -->
-<!--                             </div> -->
-<!--                         </div> -->
-<!--                     </div> -->
-<!--                    <div class="col-4"> -->
-<!--                        <div class="d-flex align-items-center justify-content-end"> -->
-<!--                            <div class="flex-shrink-0 btn-lg-square border rounded-circle"> -->
-<!--                                <i class="fa fa-phone text-primary"></i> -->
-<!--                            </div> -->
-<!--                            <div class="ps-3"> -->
-<!--                                <p class="mb-2">Call Us</p> -->
-<!--                                <h6 class="mb-0">+012 345 6789</h6> -->
-<!--                            </div> -->
-<!--                        </div> -->
-<!--                    </div> -->
-<!--                    <div class="col-4"> -->
-<!--                        <div class="d-flex align-items-center justify-content-end"> -->
-<!--                            <div class="flex-shrink-0 btn-lg-square border rounded-circle"> -->
-<!--                                <i class="far fa-envelope text-primary"></i> -->
-<!--                            </div> -->
-<!--                            <div class="ps-3"> -->
-<!--                                <p class="mb-2">Email Us</p> -->
-<!--                                <h6 class="mb-0">info@example.com</h6> -->
-<!--                            </div> -->
-<!--                        </div> -->
-<!--                    </div> -->
-<!--                </div> -->
-<!--            </div> -->
+
         </div>
     </div>
     <!-- Brand & Contact End -->
@@ -190,15 +185,17 @@
                         <a href="/educator/homeworkEval" class="dropdown-item">숙제 평가</a>
                     </div>
                 </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">운영마당</a>
-                    <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
-                        <a href="/operate/gameList" class="dropdown-item">게임콘텐츠 관리</a>
-                        <a href="/operate/eduMaterialsList" class="dropdown-item">학습자료 관리</a>
-                        <a href="/operate/memberList" class="dropdown-item">회원 관리</a>
-                        <a href="/operate/salesInquiryDetail" class="dropdown-item">매출 관리</a>
-                    </div>
-                </div>
+                <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
+	                <div class="nav-item dropdown">
+	                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">운영마당</a>
+	                    <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
+	                        <a href="/operate/gameList" class="dropdown-item">게임콘텐츠 관리</a>
+	                        <a href="/operate/eduMaterialsList" class="dropdown-item">학습자료 관리</a>
+	                        <a href="/operate/memberList" class="dropdown-item">회원 관리</a>
+	                        <a href="/operate/salesInquiryDetail" class="dropdown-item">매출 관리</a>
+	                    </div>
+	                </div>
+                </c:if>
                  <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">고객센터</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
@@ -208,7 +205,6 @@
                     </div>
                 </div>
             </div>
-<!--             <a href="#" class="btn btn-sm btn-light rounded-pill py-2 px-4 d-none d-lg-block">Get Started</a> -->
         </div>
 
     </nav>

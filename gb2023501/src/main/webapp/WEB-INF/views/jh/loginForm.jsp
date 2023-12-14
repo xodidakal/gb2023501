@@ -12,11 +12,11 @@
 		var pswdInput 	= document.getElementById("pswd");
 		var loginForm	= document.getElementById("loginForm");
 		
-		if(idInput.value.trim === ""){
+		if(idInput.value.trim() === ""){
 			alert("아이디를 입력해 주세요");
 			idInput.focus();
 			
-		} else if(pswdInput.value.trim === ""){
+		} else if(pswdInput.value.trim() === ""){
 			alert("비밀번호를 입력해 주세요");
 			pswdInput.focus();
 		} else{
@@ -24,9 +24,27 @@
 		}
 		
 	}
+	
+	 function showError() {
+         var errorParam = new URLSearchParams(window.location.search).get('error');
+         if (errorParam) {
+             alert("로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.");
+             // 쿼리 파라미터 'error'를 제거하고 주소를 업데이트
+             urlSearchParams.delete('error');
+             var newUrl = window.location.pathname +  window.location.search.replace(/&?error=true/, '');
+             window.history.replaceState({}, document.title, newUrl);
+         }
+     }
+	 
+	 
+	 $(function () {
+		    showError();
+		});
+	 
 </script>
 </head>
 <body>
+<body onload="showError()">
     <div class="row g-0 justify-content-center">
         <div class="col-lg-8 wow fadeInUp mb-4" data-wow-delay="0.5s">
         
