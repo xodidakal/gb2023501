@@ -42,15 +42,15 @@
 	    <table class="subTable">
 			<tr>
 				<th>학습그룹명</th>
-				<td>ㅇㅇㅇ</td>
+				<td>${learnGrpDTO.learnGrp.lgTitle}</td>
 				<th>게임콘텐츠명</th>
-				<td>ㅇㅇㅇ</td>
+				<td>${learnGrpDTO.learnGrp.game.ggTitle}</td>
 			</tr>
 			<tr>
 				<th>수용 가능 인원</th>
-				<td>ㅇㅇㅇ</td>
+				<td>${learnGrpDTO.learnGrp.lgTo }명</td>
 				<th>가입 승인 인원</th>
-				<td>ㅇㅇㅇ</td>
+				<td>${learnGrpDTO.mmCnt }명</td>
 			</tr>
 	    </table>
 	    

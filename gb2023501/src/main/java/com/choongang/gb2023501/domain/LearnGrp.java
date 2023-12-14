@@ -1,5 +1,7 @@
 package com.choongang.gb2023501.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -66,8 +69,13 @@ public class LearnGrp {
 	
 	//----- 조회용 ----- //
 	@Transient
-	private String m_name;
+	private int g_num;
 	
 	@Transient
-	private String g_title;
+	private int m_num;
+	
+	
+	//----- 1:M 매핑 ----- //
+	@OneToMany(mappedBy = "learnGrp")
+	private List<LgJoin> lgJoin =  new ArrayList<LgJoin>();
 }

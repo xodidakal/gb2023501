@@ -27,15 +27,13 @@
 				</tr>
 			</thead>
 			<tbody>
-			 	<c:forEach var="gameList" items="${gameList }">
-				 	<tr>
-						<td>${gameList.g_title}</td>
-						<td>${gameList.g_period}개월</td>
-						<td>${gameList.remainingPeriod}일</td>
-						<td>${gameList.g_to}명</td>
-						<td>${gameList.remainingTo}명</td>
-					</tr>
-				</c:forEach>
+			 	<tr>
+					<td>${game.g_title}</td>
+					<td>${game.g_period}개월</td>
+					<td>${game.remainingPeriod}일</td>
+					<td>${game.g_to}명</td>
+					<td>${game.remainingTo}명</td>
+				</tr>
 			</tbody>   
               </table>
               
@@ -89,6 +87,7 @@
                 </div>
                 
                 <input type="hidden" name="g_num" value="${g_num }">
+                <input type="hidden" name="m_num" value="3">
 	         </form>
               
 	</div>

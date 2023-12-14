@@ -21,19 +21,19 @@ public class LearnGrpServiceImpl implements LearnGrpService {
 	// Dao 연결
 	private final LearnGrpDao lgDao;
 
-	// 교육자마당 > 내학습그룹 (SELECT)
+	// 교육자마당 > 내학습그룹 (SELECT / JPA)
 	@Override
-	public List<LearnGrpDTO> learnGroupList() {
+	public List<LearnGrpDTO> learnGroupList(int lg_num) {
 		System.out.println("LearnGrpServiceImpl learnGroupList() start..");
 		
-		List<LearnGrpDTO> learnGrps = hrRepository.learnGroupList();
+		List<LearnGrpDTO> learnGrps = hrRepository.learnGroupList(lg_num);
 		System.out.println("LearnGrpServiceImpl learnGroupList() learnGrps.size() -> "+learnGrps.size());
 		
 		System.out.println("LearnGrpServiceImpl learnGroupList() end..");
 		return learnGrps;
 	}
 		
-	// 교육자마당 > 학습그룹 등록 - 화면 (SELECT)
+	// 교육자마당 > 학습그룹 등록 - 화면 (SELECT / MyBatis)
 	@Override
 	public List<Game> learnGroupForm(int g_num) {
 		System.out.println("LearnGrpServiceImpl learnGroupForm() start..");
@@ -45,7 +45,7 @@ public class LearnGrpServiceImpl implements LearnGrpService {
 		return gameList;
 	}
 	
-	// 교육자마당 > 학습그룹 등록 - 실행 (INSERT)
+	// 교육자마당 > 학습그룹 등록 - 실행 (INSERT / JPA)
 	@Override
 	public LearnGrp learnGroupFormInsert(LearnGrp learnGrp) {
 		System.out.println("LearnGrpServiceImpl learnGroupFormInsert() start..");

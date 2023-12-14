@@ -17,12 +17,12 @@ public class HrController {
 	// Service 연결
 	private final LearnGrpService lgService;
 	
-	// 교육자마당 > 내학습그룹 (SELECT)
+	// 교육자마당 > 내학습그룹 (SELECT / JPA)
 	@GetMapping("educator/learnGroupList")
 	public String learnGroupList(Model model, LearnGrp learnGrp) {
 		System.out.println("HrController learnGroupList() start..");
 		
-		List<LearnGrpDTO> learnGrps = lgService.learnGroupList();
+		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(0);
 		model.addAttribute("learnGrps", learnGrps);
 		System.out.println("HrController learnGroupList() learnGrps.size() -> "+learnGrps.size());
 		
@@ -30,17 +30,31 @@ public class HrController {
 		return "/hr/learnGroupList";
 	}
 	
-	// 교육자마당 > 학습그룹 상세 (SELECT)
+	// 교육자마당 > 학습그룹 상세 (SELECT / JPA)
 	@GetMapping("educator/learnGroupDetail")
-	public String learnGroupDetail(Model model) {
+	public String learnGroupDetail(Model model, int lg_num) {
 		System.out.println("HrController learnGroupDetail() start..");
 		
+		System.out.println("HrController learnGroupDetail() lg_num -> "+lg_num);
+
+		// 학습그룹 기본 정보
+		// 기존 method 활용하여 List<Game>(multi row)으로 받은 후 Game(single row)으로 분리
+		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(lg_num);
+		System.out.println("HrController learnGroupList() learnGrps.size() -> "+learnGrps.size());
 		
+		LearnGrpDTO learnGrpDTO = learnGrps.get(0);
+		
+		model.addAttribute("learnGrpDTO", learnGrpDTO);
+		model.addAttribute("lg_num", lg_num);
+		
+		// 학습자 명단
+		
+
 		System.out.println("HrController learnGroupDetail() end..");		
 		return "/hr/learnGroupDetail";
 	}
 	
-	// 교육자마당 > 학습그룹 등록 - 화면 1 (SELECT)
+	// 교육자마당 > 학습그룹 등록 - 화면 1 (SELECT / MyBatis)
 	@GetMapping("educator/learnGroupForm1")
 	public String learnGroupForm1(Model model) {
 		System.out.println("HrController learnGroupForm1() start..");
@@ -54,34 +68,37 @@ public class HrController {
 		return "/hr/learnGroupForm1";
 	}
 	
-	// 교육자마당 > 학습그룹 등록 - 화면 2 (SELECT)
+	// 교육자마당 > 학습그룹 등록 - 화면 2 (SELECT / MyBatis)
 	@GetMapping("educator/learnGroupForm2")
 	public String learnGroupForm2(Model model, int g_num) {
 		System.out.println("HrController learnGroupForm2() start..");
 		
 		System.out.println("HrController learnGroupForm2() g_num -> "+g_num);
 		
+		// 기존 method 활용하여 List<Game>(multi row)으로 받은 후 Game(single row)으로 분리
 		List<Game> gameList = lgService.learnGroupForm(g_num);
-		System.out.println("HrController learnGroupForm2() gameList.size() -> "+ gameList.size());		
+		System.out.println("HrController learnGroupForm2() gameList.size() -> "+ gameList.size());	
 		
-		model.addAttribute("gameList", gameList);
+		Game game = gameList.get(0);
+		
+		model.addAttribute("game", game);
 		model.addAttribute("g_num", g_num);
 		
 		System.out.println("HrController learnGroupForm2() end..");
 		return "/hr/learnGroupForm2";
 	}
 	
-	// 교육자마당 > 학습그룹 등록 - 실행 (INSERT)
+	// 교육자마당 > 학습그룹 등록 - 실행 (INSERT / JPA)
 	@PostMapping("educator/learnGroupFormInsert")
 	public String learnGroupFormInsert(Model model, LearnGrp learnGrp) {
 		System.out.println("HrController learnGroupFormInsert() start..");
 		
 		// 회원번호 임시 세팅 ------------------ 추후 뺴야 함
-		learnGrp.getMember().setMmNum(3);
+		// learnGrp.getMember().setMmNum(3);
+		
+		System.out.println("HrController learnGroupFormInsert() learnGrp -> "+ learnGrp);
 		
 		lgService.learnGroupFormInsert(learnGrp);
-		
-		System.out.println("HrController learnGroupFormInsert() learnGrp -> "+ learnGrp);		
 		
 		System.out.println("HrController learnGroupFormInsert() end..");
 		return "redirect:/educator/learnGroupForm1";

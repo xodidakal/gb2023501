@@ -31,7 +31,7 @@ public class LgJoin {
 	
 	// 신청일자
 	@Column(name = "lgj_joindate")
-	private Date lgdJoindate;
+	private Date lgjJoindate;
 	
 	// 승인여부
 	@Column(name = "lgj_approval")

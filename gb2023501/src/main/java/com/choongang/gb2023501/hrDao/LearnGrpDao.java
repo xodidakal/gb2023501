@@ -5,7 +5,7 @@ import com.choongang.gb2023501.model.Game;
 
 public interface LearnGrpDao {
 
-	// 교육자마당 > 학습그룹 등록 - 화면 (SELECT)
+	// 교육자마당 > 학습그룹 등록 - 화면 (SELECT / MyBatis)
 	List<Game> learnGroupForm(int g_num);
 
 }

@@ -15,7 +15,7 @@ public class LearnGrpDaoImpl implements LearnGrpDao {
 	// SqlSession 연결
 	private final SqlSession session;
 	
-	// 교육자마당 > 학습그룹 등록 - 화면 (SELECT)
+	// 교육자마당 > 학습그룹 등록 - 화면 (SELECT / MyBatis)
 	@Override
 	public List<Game> learnGroupForm(int g_num) {
 		System.out.println("LearnGrpDaoImpl learnGroupForm() start..");
