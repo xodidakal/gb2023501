@@ -73,15 +73,15 @@ public class HrRepositoryImpl implements HrRepository {
 		List<LearnGrpDTO> learnGrps = new ArrayList<LearnGrpDTO>();
 		if (lg_num == 0) {
 			learnGrps = em.createQuery("SELECT     new com.choongang.gb2023501.model.LearnGrpDTO(learnGrp, COUNT(CASE WHEN lj.lgjApproval = 1 THEN lj.member END)) " +
-									   "FROM       LearnGrp learnGrp " +
-									   "LEFT OUTER JOIN  learnGrp.lgJoin lj " +
+									   "FROM       LgJoin lj " +
+									   "JOIN       lj.learnGrp learnGrp " +
 									   "GROUP BY   learnGrp "
 									   , LearnGrpDTO.class)
 						  .getResultList();
 		} else {
 			learnGrps = em.createQuery("SELECT     new com.choongang.gb2023501.model.LearnGrpDTO(learnGrp, COUNT(CASE WHEN lj.lgjApproval = 1 THEN lj.member END)) " +
-									   "FROM       LearnGrp learnGrp " +
-									   "LEFT OUTER JOIN  learnGrp.lgJoin lj " +
+									   "FROM       LgJoin lj " +
+									   "JOIN       lj.learnGrp learnGrp " +
 									   "WHERE      learnGrp.lgNum = " + lg_num + 
 									   "GROUP BY   learnGrp "
 									   , LearnGrpDTO.class)
