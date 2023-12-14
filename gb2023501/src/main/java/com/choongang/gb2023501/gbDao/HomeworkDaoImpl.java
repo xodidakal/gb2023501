@@ -1,6 +1,7 @@
 package com.choongang.gb2023501.gbDao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -67,5 +68,19 @@ public class HomeworkDaoImpl implements HomeworkDao {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public int insertHwSend(Map<String, Object> map) {
+		System.out.println("HomeworkDaoImpl insertHwSend start...");
+		int count = 0;
+		try {
+			count += session.insert("gbInsertHwSend", map);
+			System.out.println("HomeworkDaoImpl insertHwSend count->"+count);
+		} catch (Exception e) {
+			System.out.println("HomeworkDaoImpl insertHwSend Exception->"+e.getMessage());
+		}
+		
+		return count;
 	}
 }

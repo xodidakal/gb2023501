@@ -1,11 +1,14 @@
 package com.choongang.gb2023501.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.choongang.gb2023501.gbService.GbLgJoinService;
 import com.choongang.gb2023501.gbService.HomeworkService;
@@ -82,11 +85,11 @@ public class GbController {
 	  
 	  // 숙제 전송 화면 이동
 	  @RequestMapping("/educator/homeworkSend")
-	  public String selectHomeworkList(Homework homework, String currentPage, HwSend hwsend, String result, Model model) {
+	  public String selectHomeworkList(Homework homework, String currentPage, HwSend hwsend, String count, Model model) {
 		  System.out.println("GbController selectHomeworkList start...");
 		  // 숙제 목록은 로그인한 교육자가 생성한 목록이 조회되므로 교육자 회원번호를 담는다. (우선 임시로 추후에 변경 예정)
 		  homework.setM_num(3);
-		  System.out.println("homework h_num -> "+homework.getH_num());
+		  System.out.println("homework h_title -> "+homework.getH_title());
 		  
 		  // 생성한 숙제 총 개수
 		  int homeworkListCnt = hs.selectHomeworkListCnt(homework);
@@ -133,24 +136,43 @@ public class GbController {
 		  model.addAttribute("hwsend", hwsend);
 		  model.addAttribute("learnGrpList", learnGrpList);
 		  model.addAttribute("lgJoinMemberList", lgJoinMemberList);
+		  model.addAttribute("count", count);
 		  
 		  return "gb/homeworkSend";
 	  }
 	 
 	  // 숙제 전송하기
 	  @PostMapping("/educator/homeworkSendAction")
-	  public String insertHwSendList(int[] h_num, int[] m_num, Model model) {
+	  public String insertHwSendList(@RequestParam(value = "h_num") List<Integer> hNumList, 
+			  						 @RequestParam(value = "m_num") List<Integer> mNumList, Model model) {
 		  System.out.println("GbController insertHwSendList start...");
-		  String result = "1";
+		  // 숙제 전송 결과값을 담을 변수
+		  String count = "0";	  
+		
+		  // 숙제번호, 학습자 번호를 map에 각각 담는다.
+		  Map<String, Object> map = new HashMap<String, Object>(); 
+		  map.put("hNumList", hNumList); 
+		  map.put("mNumList", mNumList);
 		  
-		  for(int i=0; i < h_num.length; i++) {
-			  System.out.println("insertHwSendList h_num -> "+h_num[i]);
-		  }
+		  // 숙제 전송 테이블에 insert하는 메소드
+		  count = String.valueOf(hs.insertHwSend(map));
 		  
-		  for(int i=0; i < m_num.length; i++) {
-			  System.out.println("insertHwSendList m_num -> "+m_num[i]);
-		  }
-		  
-		  return"redirect:homeworkSend?result="+result;
+		  return"redirect:homeworkSend?count="+count;
 	  }
+	  
+	// 내 숙제 목록으로 이동
+	@RequestMapping("/learning/myhomeworkList")
+	public String selectMyHomeworkList(Model model) {
+		System.out.println("GbController selectMyHomeworkList start...");
+		
+		return "gb/myHomeworkList";
+	}
+	
+	// 내 숙제 제출화면으로 이동
+	@RequestMapping("/learning/myHomeworkDetail")
+	public String insertUpdateMyHomework(Model model) {
+		System.out.println("GbController insertUpdateMyHomework start...");
+		
+		return "gb/myHomeworkDetail";
+	}
 }

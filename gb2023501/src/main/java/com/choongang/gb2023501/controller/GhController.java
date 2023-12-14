@@ -37,11 +37,15 @@ public class GhController {
 	@RequestMapping(value = "customer/boardList")
 	public String boardList(Model model, String b_category, 	Board board 
 							,@RequestParam(defaultValue = "1") 	String currentPage
-							,@RequestParam(defaultValue = "10") int rowPage) {
+							,@RequestParam(defaultValue = "10") int rowPage
+							,String search_type, String search_keyword) {
 		System.out.println("GhController boardList Start...");
 //		System.out.println("b_category->"+b_category); 
 //		System.out.println("board.getB_category();->"+board.getB_category());
 //		System.out.println("rowPage->"+rowPage);
+		System.out.println("search_type->"+search_type);
+		System.out.println("search_keyword->"+search_keyword);
+		System.out.println("rowPage->"+rowPage);
 		
 		// 게시물 count
 		int bdCount = boardService.selectBoardListCnt(b_category);
@@ -52,12 +56,17 @@ public class GhController {
 //		board.setStart(page.getStart());
 //		board.setEnd(page.getEnd());
 //		model.addAttribute("page", page);
-		
+
 		// 페이징 작업
+		// bdCount를 list.size로 바꿀방법?
 		Paging page = new Paging(bdCount, currentPage, rowPage);
 		board.setStart(page.getStart());
 		board.setEnd(page.getEnd());
 		model.addAttribute("page", page);
+		
+		// 검색작업
+		board.setSearch_type(search_type);
+		board.setSearch_keyword(search_keyword);
 		
 		// 게시판 list + 댓글 숫자
 		// -----------------------------------------------------
@@ -68,11 +77,14 @@ public class GhController {
 		// 게시판 카테고리
 		model.addAttribute("BoardCategory", b_category);
 		// 게시판 카테고리 별 count
-		model.addAttribute("BoardCount", bdCount);
+		model.addAttribute("BoardCount", list.size());
 		// 게시판 b_num 정렬
 		model.addAttribute("StartRow",page.getStart());
-		// 게시판 숫자표시[?]
+		// 게시판 숫자표시
 		model.addAttribute("rowPage", rowPage);
+		// 검색분류 + 검색어 보냄
+		model.addAttribute("search_type", search_type);
+		model.addAttribute("search_keyword", search_keyword);
 		
 		// 댓글 count
 //		int comtCount = boardService.selectBdCommentListCnt(boardComment);

@@ -1,6 +1,7 @@
 package com.choongang.gb2023501.gbService;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,16 @@ public class HomeworkServiceImpl implements HomeworkService {
 		System.out.println("HomeworkServiceImpl insertUpdateHomework result -> "+result);
 		
 		return result;
+	}
+
+	@Override
+	public int insertHwSend(Map<String, Object> map) {
+		System.out.println("HomeworkServiceImpl insertHwSend start...");
+		
+		int count = hd.insertHwSend(map);
+		System.out.println("HomeworkServiceImpl insertHwSend result -> "+count);
+		
+		return count;
 	}
 
 }
