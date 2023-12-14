@@ -72,12 +72,14 @@ public class HrRepositoryImpl implements HrRepository {
 		
 		List<LearnGrpDTO> learnGrps = new ArrayList<LearnGrpDTO>();
 		if (lg_num == 0) {
-			learnGrps = em.createQuery("SELECT     new com.choongang.gb2023501.model.LearnGrpDTO(learnGrp, COUNT(CASE WHEN lj.lgjApproval = 1 THEN lj.member END)) " +
-									   "FROM       LgJoin lj " +
-									   "JOIN       lj.learnGrp learnGrp " +
-									   "GROUP BY   learnGrp "
-									   , LearnGrpDTO.class)
-						  .getResultList();
+			learnGrps = em.createQuery("SELECT new com.choongang.gb2023501.model.LearnGrpDTO(learnGrp, (select count(lj2) from LgJoin lj2 where lj2.learnGrp = learnGrp and lj2.lgjApproval = 1) as mmNumCnt) " +
+					"FROM LearnGrp learnGrp left join learnGrp.lgJoin lj group by learnGrp ", LearnGrpDTO.class).getResultList();
+//			learnGrps = em.createQuery("SELECT     new com.choongang.gb2023501.model.LearnGrpDTO(learnGrp, COUNT(CASE WHEN lj.lgjApproval = 1 THEN lj.member END)) " +
+//					"FROM       LgJoin lj " +
+//					"LEFT JOIN       lj.learnGrp learnGrp " +
+//					"GROUP BY   learnGrp "
+//					, LearnGrpDTO.class)
+//					.getResultList();
 		} else {
 			learnGrps = em.createQuery("SELECT     new com.choongang.gb2023501.model.LearnGrpDTO(learnGrp, COUNT(CASE WHEN lj.lgjApproval = 1 THEN lj.member END)) " +
 									   "FROM       LgJoin lj " +
