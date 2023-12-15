@@ -130,6 +130,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     	return new UsernamePasswordAuthenticationToken(mmId,  mmPswd, authorities);
     }
 
+	// Provider 적용 가능 여부
 	@Override
 	public boolean supports(Class<?> authentication) {
 		 return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));

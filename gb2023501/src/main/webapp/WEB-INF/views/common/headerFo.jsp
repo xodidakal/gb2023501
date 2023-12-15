@@ -102,7 +102,6 @@
 	           	 	  </c:when>
 	           	 	  
 	           	 	  <c:otherwise>
- 	      
  	                  	
  	                  	<div class="ps-3">            	 			
 	                       <h6 class="mb-0"><a href="/">${pageContext.request.userPrincipal.name}</a></h6>
