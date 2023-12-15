@@ -20,6 +20,7 @@ public class HrRepositoryImpl implements HrRepository {
 	private final EntityManager em;
 
 	// 교육자마당 > 내학습그룹 (SELECT / JPA)
+	// 교육자마당 > 학습그룹 상세 (SELECT / JPA) - 학습그룹 정보
 	@Override
 	public List<LearnGrpDTO> learnGroupList(int lg_num) {
 		System.out.println("HrRepositoryImpl learnGroupList() start..");
@@ -61,6 +62,7 @@ public class HrRepositoryImpl implements HrRepository {
 //		
 //	전용 DTO 활용 (lg 전체 컬럼 받기 시도 - 성공!)
 ////							 서브쿼리 없는 구조로 변경
+////							but 개선 필요 (LgJoin 값 없을 경우 누락되어 OUTER JOIN 필요)
 //		List<LearnGrpDTO> learnGrps = em.createQuery("SELECT   new com.choongang.gb2023501.model.LearnGrpDTO(learnGrp, COUNT(lj.member)) " +
 //													 "FROM     LgJoin lj " +
 //													 "JOIN 	   lj.learnGrp learnGrp " +
@@ -70,27 +72,36 @@ public class HrRepositoryImpl implements HrRepository {
 //			    						.getResultList();
 //		
 //	전용 DTO 활용 (lg 전체 컬럼 받기 시도 - 성공!)
-////							 but 개선 필요 (LgJoin 값 없을 경우 누락되어 OUTER JOIN 필요)
-		
+////							 OUTER JOIN으로 변경
 		List<LearnGrpDTO> learnGrps = new ArrayList<LearnGrpDTO>();
+		
+		// LIST
 		if (lg_num == 0) {
-			learnGrps = em.createQuery("SELECT new com.choongang.gb2023501.model.LearnGrpDTO(learnGrp, (select count(lj2) from LgJoin lj2 where lj2.learnGrp = learnGrp and lj2.lgjApproval = 1) as mmNumCnt) " +
-					"FROM LearnGrp learnGrp left join learnGrp.lgJoin lj group by learnGrp ", LearnGrpDTO.class).getResultList();
-//			learnGrps = em.createQuery("SELECT     new com.choongang.gb2023501.model.LearnGrpDTO(learnGrp, COUNT(CASE WHEN lj.lgjApproval = 1 THEN lj.member END)) " +
-//					"FROM       LgJoin lj " +
-//					"LEFT JOIN       lj.learnGrp learnGrp " +
-//					"GROUP BY   learnGrp "
-//					, LearnGrpDTO.class)
-//					.getResultList();
+			System.out.println("HrRepositoryImpl learnGroupList() lg_num == 0");
+			learnGrps = em.createQuery("SELECT new com.choongang.gb2023501.model.LearnGrpDTO(learnGrp, (SELECT count(lj2) " +
+																									   "FROM   LgJoin lj2 " +
+																									   "WHERE  lj2.learnGrp = learnGrp " +
+																									   "AND    lj2.lgjApproval = 1) as mmNumCnt) " +
+										"FROM LearnGrp learnGrp " +
+										"LEFT JOIN learnGrp.lgJoin lj " +
+					"WHERE learnGrp.lgTitle = '강남 A반' " +
+					"GROUP BY learnGrp " /*
+											 * + "ORDER BY MIN(learnGrp.lgTitle) "
+											 */, LearnGrpDTO.class)
+					      .getResultList();
+		
+		// DETAIL (lg_num 존재 -> single row)
 		} else {
-			learnGrps = em.createQuery("SELECT     new com.choongang.gb2023501.model.LearnGrpDTO(learnGrp, COUNT(CASE WHEN lj.lgjApproval = 1 THEN lj.member END)) " +
-									   "FROM       LgJoin lj " +
-									   "JOIN       lj.learnGrp learnGrp " +
-									   "WHERE      learnGrp.lgNum = " + lg_num + 
-									   "GROUP BY   learnGrp "
-									   , LearnGrpDTO.class)
-						  .getResultList();
-			
+			System.out.println("HrRepositoryImpl learnGroupList() lg_num != 0");
+			learnGrps = em.createQuery("SELECT new com.choongang.gb2023501.model.LearnGrpDTO(learnGrp, (SELECT count(lj2) " +
+																									   "FROM   LgJoin lj2 " +
+																									   "WHERE  lj2.learnGrp = learnGrp " +
+																									   "AND    lj2.lgjApproval = 1) as mmNumCnt) " +
+										"FROM LearnGrp learnGrp " +
+										"LEFT JOIN learnGrp.lgJoin lj " +
+										"WHERE learnGrp.lgNum = " + lg_num + 
+										"GROUP BY learnGrp ", LearnGrpDTO.class)
+						  .getResultList();		
 		}
 		
 		System.out.println("HrRepositoryImpl learnGroupList() learnGrps.size() -> "+learnGrps.size());
@@ -121,21 +132,17 @@ public class HrRepositoryImpl implements HrRepository {
 		return learnGrp;
 	}
 
-	// 교육자마당 > 학습그룹 상세 (SELECT / JPA)
+	// 교육자마당 > 학습그룹 상세 (SELECT / JPA) - 학습자 명단
 	@Override
 	public List<MemberDTO> joinedMemberList(int lg_num) {
 		System.out.println("HrRepositoryImpl joinedMemberList() start..");
 		
-//		List<MemberDTO> members = em.createQuery("SELECT new com.choongang.gb2023501.model.MemberDTO(m, lj.lgjAppdate) " + 
-//												 "FROM   LgJoin lj" + 
-//												 "JOIN   lj.member m " +
-//												 "WHERE  lj.learnGrp.lgNum = :lgNum", MemberDTO.class)
-//									.setParameter("lgNum", lg_num)
-//									.getResultList();
-
-		List<MemberDTO> members = em.createQuery("SELECT new com.choongang.gb2023501.model.MemberDTO(m, lgJoin.lgjAppdate) " + 
-												 "FROM   LgJoin lgJoin" + 
-												 "JOIN   lgJoin.member m ", MemberDTO.class)
+		List<MemberDTO> members = em.createQuery("SELECT new com.choongang.gb2023501.model.MemberDTO(m, lj.lgjAppdate) " + 
+												 "FROM   LgJoin lj " + 
+												 "JOIN   lj.member m " + 
+												 "WHERE  lj.learnGrp.lgNum = :lgNum "
+												 , MemberDTO.class)
+									.setParameter("lgNum", lg_num)
 									.getResultList();
 		
 		System.out.println("HrRepositoryImpl learnGroupList() members.size() -> "+members.size());

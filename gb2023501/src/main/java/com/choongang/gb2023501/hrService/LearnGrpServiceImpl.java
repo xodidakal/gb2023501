@@ -23,6 +23,7 @@ public class LearnGrpServiceImpl implements LearnGrpService {
 	private final LearnGrpDao lgDao;
 
 	// 교육자마당 > 내학습그룹 (SELECT / JPA)
+	// 교육자마당 > 학습그룹 상세 (SELECT / JPA) - 학습그룹 정보
 	@Override
 	public List<LearnGrpDTO> learnGroupList(int lg_num) {
 		System.out.println("LearnGrpServiceImpl learnGroupList() start..");
@@ -57,7 +58,7 @@ public class LearnGrpServiceImpl implements LearnGrpService {
 		return learnGrp;
 	}
 
-	// 교육자마당 > 학습그룹 상세 (SELECT / JPA)
+	// 교육자마당 > 학습그룹 상세 (SELECT / JPA) - 학습자 명단
 	@Override
 	public List<MemberDTO> joinedMemberList(int lg_num) {
 		System.out.println("LearnGrpServiceImpl joinedMemberList() start..");
