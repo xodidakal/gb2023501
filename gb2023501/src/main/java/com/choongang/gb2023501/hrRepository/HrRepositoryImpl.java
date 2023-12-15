@@ -1,4 +1,4 @@
-package com.choongang.gb2023501.repository;
+package com.choongang.gb2023501.hrRepository;
 
 import java.util.ArrayList;
 import java.util.List;
