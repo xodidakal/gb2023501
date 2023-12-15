@@ -37,37 +37,69 @@
 
 
 
-        function updateVerificationInput() {
-            var phoneRadio 		 	= document.getElementById("phone");
-            var emailRadio 		  	= document.getElementById("email");
-            var verificationInput 	= document.getElementById("verificationInput");
+ function updateVerificationInput() {
+	    var phoneRadio = document.getElementById("phone");
+	    var emailRadio = document.getElementById("email");
+	    var verificationInput = document.getElementById("verificationInput");
 
-            if (phoneRadio.checked) {
-            	
-                verificationInput.type 			= "tel";
-                verificationInput.name 			= "m_phone";
-                verificationInput.placeholder 	= "(-)없이 휴대폰 번호를 입력하세요";
-                
-            } else if (emailRadio.checked) {
-            	
-                verificationInput.type 			= "text";
-                verificationInput.name 			= "m_email";
-                verificationInput.placeholder 	= "이메일을 입력하세요";
-            }
-        }
+	    if (phoneRadio.checked) {
+	        verificationInput.type = "tel";
+	        verificationInput.name = "m_phone";
+	        verificationInput.placeholder = "(-)없이 휴대폰 번호를 입력하세요";
+
+	        // 휴대폰 선택 시 최대 11자리 숫자만 입력 가능하도록 설정
+	        verificationInput.setAttribute("maxlength", "11");
+	        // 숫자 이외의 문자 입력 방지
+	        verificationInput.addEventListener("input", function () {
+	            this.value = this.value.replace(/[^0-9]/g, '');
+	        });
+	    } else if (emailRadio.checked) {
+	        verificationInput.type = "email";
+	        verificationInput.name = "m_email";
+	        verificationInput.placeholder = "이메일을 입력하세요";
+
+	        // 이메일 형식 검증
+	        verificationInput.addEventListener("input", function () {
+	            var isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value);
+
+	            // 유효하지 않은 형식이면 값을 지움
+	            if (!isValidEmail) {
+	                this.value = this.value.replace(/[^@a-zA-Z0-9._-]/g, '');
+	            }
+	        });
+	    }
+	}
+//위에 검증 제대로 되는지 확인 
+//아작스로 폼 제출하고 인풋태그 생성해서 인증번호 입력하게 하기
         
-/*          function submitVerificationForm(){
-       		var nameInput 			= document.getElementById("name");
-       		var verificationInput 	= document.getElementById("verificationInput");
-        	var verificationForm 	= document.getElementById("verificationForm");
-        	
-            if (nameInput.value.trim() === "") {
-                alert("이름을 입력해 주세요.");
-                nameInput.focus();
-            } else if (verificationInput.value.trim() === "") {
-                alert("인증수단을 선택하고 값을 입력해 주세요.");
-                verificationInput.focus();
-            } *//* else {
+                
+                
+		function submitVerificationForm(){
+			var	requiredCheckboxes 	= document.querySelectorAll('.chkbox_group .form-check-input[required]');
+		    var nameInput 			= document.getElementById("name");
+		    var verificationInput 	= document.getElementById("verificationInput");
+		    var verificationForm 	= document.getElementById("verificationForm");
+		        	
+		    // 약관 동의 체크 여부 확인
+		    var isAllAgreed = Array.from(requiredCheckboxes).every(function(checkbox) {
+		        return checkbox.checked;
+		    });
+		    
+		    if (!isAllAgreed) {
+		        alert("필수 약관에 동의해야 합니다.");
+		        return; // 폼 제출 막음
+		    }
+		    
+		    if (nameInput.value.trim() === "") {
+		     	alert("이름을 입력해 주세요.");
+		      	nameInput.focus();
+		    } else if (verificationInput.value.trim() === "") {
+		      	alert("인증수단을 선택하고 값을 입력해 주세요.");
+		      	verificationInput.focus();
+		    } 
+        }    
+            
+            /* else {
             	// FormData 객체를 사용하여 폼 데이터를 가져옴
                 var formData = new FormData(verificationForm);
             	
@@ -146,13 +178,13 @@
 	                        <div class="form-check">
 	                            <input class="form-check-input" type="checkbox" value="terms5" id="chk5" >
 	                            <label class="form-check-label" for="chk5">
-	                                개인정보 마케팅 킻 광고 활용 (선택)
+	                                개인정보 마케팅 및 광고 활용 (선택)
 	                            </label>
 	                        </div>
 	                        <div class="form-check">
 	                            <input class="form-check-input" type="checkbox" value="terms6" id="chk6" required>
 	                            <label class="form-check-label" for="chk6">
-	                                개인정보의 위탁 
+	                                개인정보의 위탁 (필수)
 	                            </label>
 	                        </div>
                         </div>
