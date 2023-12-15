@@ -7,6 +7,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.choongang.gb2023501.model.Homework;
+import com.choongang.gb2023501.model.HwSend;
+import com.choongang.gb2023501.model.LgJoin;
 
 import lombok.RequiredArgsConstructor;
 
@@ -75,12 +77,27 @@ public class HomeworkDaoImpl implements HomeworkDao {
 		System.out.println("HomeworkDaoImpl insertHwSend start...");
 		int count = 0;
 		try {
-			count += session.insert("gbInsertHwSend", map);
+			count = session.update("gbInsertHwSend", map);
 			System.out.println("HomeworkDaoImpl insertHwSend count->"+count);
 		} catch (Exception e) {
 			System.out.println("HomeworkDaoImpl insertHwSend Exception->"+e.getMessage());
 		}
 		
 		return count;
+	}
+
+	@Override
+	public List<LgJoin> selectLgHwSendMemberList(HwSend hwsend) {
+		System.out.println("HomeworkDaoImpl selectLgHwSendMemberList start...");
+		List<LgJoin> hwSendMemberList = null;
+		
+		try {
+			hwSendMemberList = session.selectList("gbSelectLgHwSendMemberList", hwsend);
+			System.out.println("HomeworkDaoImpl selectLgHwSendMemberList hwSendMemberList -> "+hwSendMemberList.size());
+		} catch (Exception e) {
+			System.out.println("HomeworkDaoImpl selectLgHwSendMemberList Exception->"+e.getMessage());
+		}
+		
+		return hwSendMemberList;
 	}
 }

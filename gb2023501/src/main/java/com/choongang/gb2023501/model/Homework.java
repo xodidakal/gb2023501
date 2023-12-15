@@ -19,4 +19,5 @@ public class Homework {
 	private String 	pageNum;			// 페이징번호
 	private int 	start;				// 페이징 시작번호
 	private int 	end;				// 페이징 종료번호
+
 }

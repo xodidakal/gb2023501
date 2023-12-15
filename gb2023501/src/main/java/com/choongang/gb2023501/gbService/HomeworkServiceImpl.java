@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.choongang.gb2023501.gbDao.HomeworkDao;
 import com.choongang.gb2023501.model.Homework;
+import com.choongang.gb2023501.model.HwSend;
+import com.choongang.gb2023501.model.LgJoin;
 
 import lombok.RequiredArgsConstructor;
 
@@ -64,6 +66,15 @@ public class HomeworkServiceImpl implements HomeworkService {
 		System.out.println("HomeworkServiceImpl insertHwSend result -> "+count);
 		
 		return count;
+	}
+
+	@Override
+	public List<LgJoin> selectLgHwSendMemberList(HwSend hwsend) {
+		System.out.println("HomeworkServiceImpl insertHwSend start...");
+		
+		List<LgJoin> hwSendMemberList = hd.selectLgHwSendMemberList(hwsend);
+		
+		return hwSendMemberList;
 	}
 
 }

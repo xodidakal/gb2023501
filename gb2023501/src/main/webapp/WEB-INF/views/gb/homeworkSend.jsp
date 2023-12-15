@@ -9,12 +9,12 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript">
 	$(function(){
-		
-		var count = ${count};
-		if(count != "0"){
-			alert("숙제를 정상적으로 전송하였습니다.")
-		}else {
-			alert("이미 동일한 숙제를 발송한 학습자입니다.")
+		// 숙제 전송 여부 확인
+		var count = '${count}';
+		if(count > 0){
+			alert("숙제를 정상적으로 전송하였습니다.");
+		}else if (count == 0){
+			alert("숙제는 이미 학습자에게 발송되었습니다.");
 		}
 		
 		// 숙제명 검색 셀렉트 박스 변경 시 검색
@@ -47,6 +47,25 @@
 				$('#checkAll').val('전체선택');
 			}
 		});
+		
+		// 숙제번호 체크할 때마다 체크
+		$("input[name=h_num]").click(function() {
+			var pH_num = $("input[name=h_num]:checked").val();
+			var pLg_num = $("#searchLgtitle").val();
+			
+			alert("내가 체크한 숙제번호 -> "+h_num);
+			alert("현재 학습그룹번호 -> "+lg_num);
+			
+			$.ajax({
+				url : "/homeworkSendExist",
+				data : {h_num : pH_num, m_num : pLg_num},
+				dataType : 'json',
+				success : function(data){	// data -> homeworkSendExist 결과값
+					var hwSendMemberList = JSON.stringify(data);
+					alert("hwSendMemberList -> "+hwSendMemberList);
+				}
+			});
+		});
 		  
 		// 학습자 체크할 때마다 체크
 		$("input[name=m_num]").click(function() {
@@ -59,8 +78,24 @@
 				$('#checkAll').val('전체해제');
 			}
 		});
-});
-	
+	});
+	function totalCheck() {
+		// m_num 체크박스에서 체크된 개수
+		var totalM_numChecked = $("input[name=m_num]:checked").length;
+		// h_num 체크박스에서 체크된 개수
+		var totalH_numChecked = $("input[name=h_num]:checked").length;
+		
+		// h_num과 m_num이 0보다 커야 true
+		if(totalM_numChecked > 0 && totalH_numChecked > 0){
+			return true;
+		}else if(totalH_numChecked < 1){
+			alert("숙제를 선택해주세요.");
+			return false;
+		}else if(totalM_numChecked < 1){
+			alert("학습자를 선택해주세요.");
+			return false;
+		}
+	}	
 </script>
 </head>
 <body>
@@ -75,7 +110,7 @@
 	         <h2 style="margin-bottom: 15px;">숙제 전송</h2>
 	    </div>
 	    
-		<form action="homeworkSendAction" name="frm" method="post">		
+		<form action="homeworkSendAction" name="frm" method="post" onsubmit="return totalCheck()">		
 			<!-- 교육자 숙제 목록 -->
 			<div class="input-group col-md-5 mb-3"> 
 				<!-- 숙제명 검색 셀렉트 박스 -->
@@ -89,7 +124,7 @@
 		    </div>
 		
 	        <div>
-	        	<table class="listTable" style="text-align: center;">
+	        	<table class="listTable">
 	        		<thead>
 						<tr>
 							<th>선택</th>
@@ -104,7 +139,7 @@
  					 <c:forEach var="homework" items="${homeworkList }">
 					 	<tr>
 					 		<td>
-					 			<input class="form-check-input" type="checkbox" name="h_num" value="${homework.h_num }" id="flexRadioDefault1" >
+					 			<input class="form-check-input" type="radio" name="h_num" value="${homework.h_num }" id="flexRadioDefault1">
 					 		</td>
 							<td>${StartRow }</td>
 							<td>${homework.h_title }</td>
@@ -186,7 +221,7 @@
 									<th>현재레벨</th>	
 								</tr>
 							</thead>
-							 <tbody>
+							 <tbody id="memberTable">
 		 					 <c:forEach var="lgJoinMember" items="${lgJoinMemberList }">
 							 	<tr>
 							 		<td><input class="form-check-input" type="checkbox" name="m_num" value="${lgJoinMember.m_num }" id="flexRadioDefault1" ></td>
