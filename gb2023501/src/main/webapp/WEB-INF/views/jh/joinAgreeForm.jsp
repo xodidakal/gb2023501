@@ -4,6 +4,22 @@
 <html>
 <head>
     <script type="text/javascript">
+/*     $(document).ready(function() {*/
+	//     $('.chkbox_group').on('click', '#chkAll', function() { 
+	function chkBoxAllChecked(event){
+	    	console.log(event.target);
+	    	//const : 상수, 재할당 불가 -> 코드 안정성 높임
+	    	const checked = $(event.target).is(':checked');
+	
+	    	if(checked){
+	    		$(event.target).parents('.chkbox_group').find('input').prop('checked',true);
+	    	} else {
+	    		$(event.target).parents('.chkbox_group').find('input').prop('checked',false);
+	    	}
+	     }   	
+/* 	    });
+
+    }); */
         function updateVerificationInput() {
             var phoneRadio 		 	= document.getElementById("phone");
             var emailRadio 		  	= document.getElementById("email");
@@ -23,7 +39,7 @@
             }
         }
         
-        function submitVerificationForm(){
+/*          function submitVerificationForm(){
        		var nameInput 			= document.getElementById("name");
        		var verificationInput 	= document.getElementById("verificationInput");
         	var verificationForm 	= document.getElementById("verificationForm");
@@ -34,7 +50,7 @@
             } else if (verificationInput.value.trim() === "") {
                 alert("인증수단을 선택하고 값을 입력해 주세요.");
                 verificationInput.focus();
-            } else {
+            } *//* else {
             	// FormData 객체를 사용하여 폼 데이터를 가져옴
                 var formData = new FormData(verificationForm);
             	
@@ -58,7 +74,7 @@
         	        });
         		 }
             }
-        }
+        } */
     </script>
 
     <meta charset="UTF-8">
@@ -66,58 +82,69 @@
 </head>
 <body>
     <div class="row g-0 mb-5  justify-content-center">
-        <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
+        <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
             <div class="row g-3">
                 <h2 class="display-7 mb-4">회원가입</h2>
 
-<!-- 전체적으로 여백 좁히고  가운데로 놓고  가운데 정렬하고 소제목은 왼쪽 정렬-->
                 <hr class="my-3">
 
+				
+				<div class="row">
                 <div class="mt-5 mb-4">
                     <h5 class="mb-4">약관동의</h5>
 
                     <div class="mb-5">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                이용약관 (필수)
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2" >
-                            <label class="form-check-label" for="flexCheckDefault2">
-                                개인정보 필수항목에 대한 처리 및 이용 (필수)
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault3" >
-                            <label class="form-check-label" for="flexCheckDefault3">
-                                개인정보 필수항목에 대한 처리 및 이용 (필수)
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4" >
-                            <label class="form-check-label" for="flexCheckDefault4">
-                                개인정보 선택항목에 대한 처리 및 이용 (선택)
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault5" >
-                            <label class="form-check-label" for="flexCheckDefault5">
-                                개인정보 마케팅 킻 광고 활용 (선택)
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault6">
-                            <label class="form-check-label" for="flexCheckDefault6">
-                                개인정보의 위탁 
-                            </label>
+                    <div class="chkbox_group">
+	                        <div class="form-check">
+<!-- 	                            <input class="form-check-input" type="checkbox" value="selectAll" id="chkAll" > -->
+ 	                            <input class="form-check-input" type="checkbox" value="selectAll" id="chkAll" onclick="chkBoxAllChecked(event)">
+	                            <label class="form-check-label" for="chkAll">
+	                                전체 동의
+	                            </label>
+	                        </div>
+	                        <div class="form-check">
+	                            <input class="form-check-input" type="checkbox" value="terms1" id="chk1" required>
+	                            <label class="form-check-label" for="chk1">
+	                                이용약관 (필수)
+	                            </label>
+	                        </div>
+	                        <div class="form-check">
+	                            <input class="form-check-input" type="checkbox" value="terms2" id="chk2" required>
+	                            <label class="form-check-label" for="chk2">
+	                                개인정보 필수항목에 대한 처리 및 이용 (필수)
+	                            </label>
+	                        </div>
+	                        <div class="form-check">
+	                            <input class="form-check-input" type="checkbox" value="terms3" id="chk3" required>
+	                            <label class="form-check-label" for="chk3">
+	                                개인정보 필수항목에 대한 처리 및 이용 (필수)
+	                            </label>
+	                        </div>
+	                        <div class="form-check">
+	                            <input class="form-check-input" type="checkbox" value="terms4" id="chk4" >
+	                            <label class="form-check-label" for="chk4">
+	                                개인정보 선택항목에 대한 처리 및 이용 (선택)
+	                            </label>
+	                        </div>
+	                        <div class="form-check">
+	                            <input class="form-check-input" type="checkbox" value="terms5" id="chk5" >
+	                            <label class="form-check-label" for="chk5">
+	                                개인정보 마케팅 킻 광고 활용 (선택)
+	                            </label>
+	                        </div>
+	                        <div class="form-check">
+	                            <input class="form-check-input" type="checkbox" value="terms6" id="chk6" required>
+	                            <label class="form-check-label" for="chk6">
+	                                개인정보의 위탁 
+	                            </label>
+	                        </div>
                         </div>
                     </div>
                 </div>
+				</div>
 
                 <div class="row">
-                    <div class="mb-4 text-center">
+                    <div class="mb-4">
                         <h5 class="mb-4">본인 인증</h5>
                         <div>
                             <form action="joinForm" method="post" id="verificationForm">
