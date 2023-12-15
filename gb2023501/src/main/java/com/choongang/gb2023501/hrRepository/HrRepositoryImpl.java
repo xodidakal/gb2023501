@@ -22,7 +22,7 @@ public class HrRepositoryImpl implements HrRepository {
 	// 교육자마당 > 내학습그룹 (SELECT / JPA)
 	// 교육자마당 > 학습그룹 상세 (SELECT / JPA) - 학습그룹 정보
 	@Override
-	public List<LearnGrpDTO> learnGroupList(int lg_num) {
+	public List<LearnGrpDTO> learnGroupList(int lg_num, String sort, String type, String keyword) {
 		System.out.println("HrRepositoryImpl learnGroupList() start..");
 		
 ////	기본값 조회
@@ -78,17 +78,76 @@ public class HrRepositoryImpl implements HrRepository {
 		// LIST
 		if (lg_num == 0) {
 			System.out.println("HrRepositoryImpl learnGroupList() lg_num == 0");
-			learnGrps = em.createQuery("SELECT new com.choongang.gb2023501.model.LearnGrpDTO(learnGrp, (SELECT count(lj2) " +
-																									   "FROM   LgJoin lj2 " +
-																									   "WHERE  lj2.learnGrp = learnGrp " +
-																									   "AND    lj2.lgjApproval = 1) as mmNumCnt) " +
-										"FROM LearnGrp learnGrp " +
-										"LEFT JOIN learnGrp.lgJoin lj " +
-					"WHERE learnGrp.lgTitle = '강남 A반' " +
-					"GROUP BY learnGrp " /*
-											 * + "ORDER BY MIN(learnGrp.lgTitle) "
-											 */, LearnGrpDTO.class)
-					      .getResultList();
+			
+			// QUERY 개별
+			String queryCommon = "SELECT new com.choongang.gb2023501.model.LearnGrpDTO(learnGrp, (SELECT count(lj2) " +
+																							     "FROM   LgJoin lj2 " +
+																							     "WHERE  lj2.learnGrp = learnGrp " +
+																							     "AND    lj2.lgjApproval = 1) as mmNumCnt) " +
+								 "FROM LearnGrp learnGrp " +
+								 "LEFT JOIN learnGrp.lgJoin lj ";
+			String queryWhere = "";
+			String queryGroupBy = "GROUP BY learnGrp ";
+			String queryOrderBy = "";
+
+			System.out.println("HrRepositoryImpl learnGroupList() sort -> "+sort);
+			System.out.println("HrRepositoryImpl learnGroupList() type -> "+type);
+			System.out.println("HrRepositoryImpl learnGroupList() keyword -> "+keyword);
+			
+			// 정렬 : 미선택
+			if(sort == null) {
+				System.out.println("정렬 : 미선택");
+				queryOrderBy = "ORDER BY MIN(learnGrp.lgTitle), MIN(learnGrp.game.ggTitle) ";
+				
+			// 정렬 : 학습그룹명 ㄱㄴㄷ
+			} else if(sort.equals("sortLgTitle")) {
+				System.out.println("정렬 : 학습그룹명 ㄱㄴㄷ");
+				queryOrderBy = "ORDER BY MIN(learnGrp.lgTitle), MIN(learnGrp.game.ggTitle) ";
+				
+			// 정렬 : 게임콘텐츠명 ㄱㄴㄷ
+			} else if(sort.equals("sortGgTitle")) {
+				System.out.println("정렬 : 게임콘텐츠명 ㄱㄴㄷ");
+				queryOrderBy = "ORDER BY MIN(learnGrp.game.ggTitle), MIN(learnGrp.lgTitle) ";
+			}
+			
+			// 검색어 : X
+			if(keyword == null || type == null) {
+				System.out.println("검색어 : X");
+				queryWhere = "";
+				
+			// 검색어 : O
+			} else {
+				System.out.println("검색어 : "+keyword);
+				
+				// 검색유형 : 학습그룹명
+				if(type.equals("typeLgTitle")) {
+					System.out.println("검색유형 : 학습그룹명");
+					queryWhere = "WHERE learnGrp.lgTitle LIKE '%"+keyword+"%' ";
+					
+				// 검색유형 : 게임콘텐츠명
+				} else if(type.equals("typeGgTitle")) {
+					System.out.println("검색유형 : 게임콘텐츠명");
+					queryWhere = "WHERE learnGrp.game.ggTitle = '%"+keyword+"%' ";
+				}
+			}
+
+			// QUERY 통합
+			String query = queryCommon + queryWhere + queryGroupBy + queryOrderBy;
+			System.out.println("HrRepositoryImpl learnGroupList() query -> "+query);
+						
+			learnGrps = em.createQuery(query, LearnGrpDTO.class)
+					.getResultList();
+//			
+//			learnGrps = em.createQuery("SELECT new com.choongang.gb2023501.model.LearnGrpDTO(learnGrp, (SELECT count(lj2) " +
+//																									   "FROM   LgJoin lj2 " +
+//																									   "WHERE  lj2.learnGrp = learnGrp " +
+//																									   "AND    lj2.lgjApproval = 1) as mmNumCnt) " +
+//										"FROM LearnGrp learnGrp " +
+//										"LEFT JOIN learnGrp.lgJoin lj " +
+//										"WHERE learnGrp.lgTitle = '강남 A반' " +
+//										"GROUP BY learnGrp " + 
+//										"ORDER BY MIN(learnGrp.lgTitle) ", LearnGrpDTO.class)
+//					      .getResultList();
 		
 		// DETAIL (lg_num 존재 -> single row)
 		} else {
