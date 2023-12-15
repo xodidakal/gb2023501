@@ -55,7 +55,8 @@ public class SecurityConfig {
 		
 		http.authorizeHttpRequests((requests) -> requests
 				.antMatchers("/learning/**").hasAnyRole("STUDENT", "EDUCATOR", "ADMIN")
-				.antMatchers("/educator/**").hasRole("EDUCATOR")
+				.antMatchers("/educator/**").hasAnyRole( "EDUCATOR", "ADMIN")
+//				.antMatchers("/educator/**").hasRole("EDUCATOR")
 				/* 개발단계에서는 역할에 따른 접근제한 해제.
 				.antMatchers("/admin/**").hasRole(Role.ADMIN.getValue())
 				.antMatchers("/user/myPage/**").hasRole(Role.USER.getValue())
