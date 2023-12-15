@@ -4,22 +4,39 @@
 <html>
 <head>
     <script type="text/javascript">
-/*     $(document).ready(function() {*/
-	//     $('.chkbox_group').on('click', '#chkAll', function() { 
-	function chkBoxAllChecked(event){
-	    	console.log(event.target);
-	    	//const : 상수, 재할당 불가 -> 코드 안정성 높임
-	    	const checked = $(event.target).is(':checked');
-	
-	    	if(checked){
-	    		$(event.target).parents('.chkbox_group').find('input').prop('checked',true);
-	    	} else {
-	    		$(event.target).parents('.chkbox_group').find('input').prop('checked',false);
-	    	}
-	     }   	
-/* 	    });
 
-    }); */
+ 
+
+ $(document).ready(function() {
+	    // 전체 동의 체크박스를 클릭할 때 발생하는 이벤트 핸들러
+	    $('.chkbox_group').on('click', '#chkAll', function(event) {
+	        console.log(event.target);
+
+	    	//const : 상수, 재할당 불가 -> 코드 안정성 높임
+	        const checked = $(event.target).is(':checked');
+
+	        if (checked) {
+	            $(event.target).parents('.chkbox_group').find('input').prop('checked', true);
+	        } else {
+	            $(event.target).parents('.chkbox_group').find('input').prop('checked', false);
+	        }
+	    });
+
+	    // 각각의 체크박스를 클릭할 때 발생하는 이벤트 핸들러
+	    $('.chkbox_group').on('click', '.form-check-input', function() {
+	        let is_checked = true;
+
+	        $('.chkbox_group .form-check-input').each(function() {
+	            is_checked = is_checked && $(this).is(':checked');
+	        });
+
+	        $('#chkAll').prop('checked', is_checked);
+	    });
+	});
+
+
+
+
         function updateVerificationInput() {
             var phoneRadio 		 	= document.getElementById("phone");
             var emailRadio 		  	= document.getElementById("email");
