@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -28,11 +30,13 @@ public class GameOrder {
 	@Column(name = "go_num")
 	private int goNum;
 	
-	@Column(name = "m_num")
-	private int mmNum;
+	@ManyToOne	// Member 의 PK
+	@JoinColumn(name = "m_num")
+	private Member member;
 	
-	@Column(name = "g_num")
-	private int ggNum;
+	@ManyToOne	// Member 의 PK
+	@JoinColumn(name = "g_num")
+	private Game game;
 	
 	@Column(name = "go_order_type")
 	private int goOrderType;

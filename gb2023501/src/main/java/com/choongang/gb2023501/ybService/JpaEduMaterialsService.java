@@ -83,9 +83,9 @@ public class JpaEduMaterialsService {
 		return selectSaleList;
 	}
 	// 매출 조회 검색 리스트 -> 월별
-	public List<MonthSalesDTO> selectSaleList(Date s_date, Date e_date) {
+	public List<SalesInquiryDTO> selectSaleList(Date s_date, Date e_date) {
 		log.info("YbJpaEduMaterialsService selectSaleList start...");
-		List<MonthSalesDTO> selectSaleList = yr2.findSalesInquiryDtoJPQL1(s_date, e_date);
+		List<SalesInquiryDTO> selectSaleList = yr2.findSalesInquiryDtoJPQL1(s_date, e_date);
 		return selectSaleList;
 	}
 	// 학습그룹 등록
@@ -109,6 +109,7 @@ public class JpaEduMaterialsService {
 		lgr.save(lgJoin);
 		
 	}
+	
 
 
 

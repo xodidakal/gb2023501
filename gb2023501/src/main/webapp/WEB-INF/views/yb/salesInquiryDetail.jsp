@@ -38,7 +38,7 @@
         }
     }
     function searchSalesInquiryDetail(go_order_date) {
-    	alert(go_order_date);
+    	alert(go_order_date)
 		var popupW = 1000;
 		var popupH = 500;
 		var left = Math.ceil((window.screen.width - popupW)/2);
@@ -57,7 +57,7 @@
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">매출 조회</h2>
-	         <p style="margin-bottom: 35px;"><span>총 ${selectSaleList.size() } 건</span><span>총 매출액 : </span></p>
+	         <p style="margin-bottom: 35px;"><span style="margin-right: 20px;">총 ${selectSaleList.size() } 건</span><span>총 매출액 : </span></p>
 	    </div>
 	    <div class="mb-1">
 	    <form action="/operate/searchSalesInquiry" method="post" role="search"> 
@@ -89,14 +89,14 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:if test="${selectSaleList.size() != 0 }">
+				<c:if test="${selectSaleList.size() != 0  }">
 				 <c:forEach var="selectSaleList" items="${selectSaleList }">
 				 	<tr>
-				 		<td>1.</td>
+				 		<td>${StartRow +1}</td>
 						<td>
 							<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyy년MM월dd일"/>
 						</td>
-						<td>${selectSaleList.salesCnt } 개</td>
+						<td>${selectSaleList.salesCnt } 건</td>
 						<td>
 							<fmt:formatNumber value="${selectSaleList.salesSum }" pattern="#,###" /> 원
 							
@@ -105,24 +105,25 @@
 												   onclick="searchSalesInquiryDetail(<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyyMMdd"/>)">상세</button></td>
 										
 					</tr>
-				 </c:forEach>
+					<c:set var="StartRow" value="${StartRow +1}"/>
+				 </c:forEach>				 
 				</c:if>
 				<c:if test="${selectSaleList1.size() != 0 }">
 				 <c:forEach var="selectSaleList" items="${selectSaleList1 }">
 				 	<tr>
-				 		<td>1.</td>
+				 		<td>${StartRow +1}</td>
 						<td>
-<%-- 							<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyy년MM월dd일"/> --%>
-							${selectSaleList.goOrderDate }월
+							<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyy년MM월"/>
+						
 						</td>
-						<td>${selectSaleList.salesCnt } 개</td>
+						<td>${selectSaleList.salesCnt } 건</td>
 						<td>
 							<fmt:formatNumber value="${selectSaleList.salesSum }" pattern="#,###" /> 원
-							
 						</td>
-						<td width="100px;"><a href="#!"><button type="button" class="btn btn-light rounded py-2 px-3" type="button" style="background: #263d94; color: white;">상세</button></a></td>
-						<td><input type="button" class="btn btn-primary mb-2" value="포인트 조정" onclick="boMemberPointUpdate(${selectSaleList.goOrderDate })"></td>
+						<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" type="button" style="background: #263d94; color: white;" 
+												   onclick="searchSalesInquiryDetail(<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyyMM"/>)">상세</button></td>
 					</tr>
+					<c:set var="StartRow" value="${StartRow +1}"/>
 				 </c:forEach>
 				</c:if>
              </tbody>   
