@@ -38,7 +38,7 @@
    <div class="mb-6">
       <header class="top">
          <h1 class="infoTit">
-           	매출 상세
+           	매출 상세 <fmt:formatDate value="${date }" pattern="yyyy년MM월dd일"/>
          </h1>
       </header>
    </div>
@@ -47,65 +47,53 @@
 	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
 		<div class="mt-9 mb-9">
 	         <!-- heading -->
-	         <p style="margin-bottom: 15px; margin-top: 20px;">총 9,999 건</p>
+	         <p style="margin-bottom: 15px; margin-top: 20px;">총 ${selectSaleList.size() } 건</p>
 	    </div>
 
        	<table class="listTable">
        		<thead>
 				<tr>
 					<th>No.</th>
-					<th>구매일자</th>
 					<th>구매자</th>
 					<th>구매상품</th>
 					<th>구매금액</th>
-					<th width="100px;"></th>				
 				</tr>
 			</thead>
 			 <tbody>
-					 <c:forEach var="selectSaleList" items="${selectSaleList }">
-			 	<tr>
-			 		<td>1</td>
-					<td>${selectSaleList.goOrderDate }</td>
-					<td>${selectSaleList.goNum }</td>
-					<td>${selectSaleList.gNum }</td>
-					<td>${selectSaleList.goPayment }</td>
-					<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
-				</tr>
-				
-				<tr>
-			 		<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td>5</td>
-					<td>6</td>
-					<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
-				</tr>
-				
-					 </c:forEach>
+				<c:forEach var="selectSaleList" items="${selectSaleList }">
+				 	<tr>
+				 		<td>${startRow + 1}</td>						
+						<td>${selectSaleList.member.mmName }</td>
+						<td>${selectSaleList.game.ggTitle }</td>
+						<td>
+							<fmt:formatNumber value="${selectSaleList.goPayment }" pattern="#,###" /> 원
+						</td>
+					</tr>
+					<c:set var="StartRow" value="${StartRow +1}"/>
+				</c:forEach>
 				
                 </tbody>   
               </table>
-              <div class="row mt-8" style="width:100%;">
-					<div class="d-flex justify-content-center" style="margin-top:12px">
-                <nav aria-label="Page navigation example">
-				  <ul class="pagination">
-				    <li class="page-item"><a class="page-link" href="#">이전</a></li>
-				    <li class="page-item" id="1p"><a class="page-link" href="#">1</a></li>
-				    <li class="page-item"><a class="page-link" href="#">2</a></li>
-				    <li class="page-item"><a class="page-link" href="#">3</a></li>
-				    <li class="page-item"><a class="page-link" href="#">4</a></li>
-				    <li class="page-item"><a class="page-link" href="#">5</a></li>
-				    <li class="page-item"><a class="page-link" href="#">6</a></li>
-				    <li class="page-item"><a class="page-link" href="#">7</a></li>
-				    <li class="page-item"><a class="page-link" href="#">8</a></li>
-				    <li class="page-item"><a class="page-link" href="#">9</a></li>
-				    <li class="page-item"><a class="page-link" href="#">10</a></li>
-				    <li class="page-item"><a class="page-link" href="#">다음</a></li>
-				  </ul>
-				</nav>
-			</div>
-		</div>
+<!--               <div class="row mt-8" style="width:100%;"> -->
+<!-- 					<div class="d-flex justify-content-center" style="margin-top:12px"> -->
+<!--                 <nav aria-label="Page navigation example"> -->
+<!-- 				  <ul class="pagination"> -->
+<!-- 				    <li class="page-item"><a class="page-link" href="#">이전</a></li> -->
+<!-- 				    <li class="page-item" id="1p"><a class="page-link" href="#">1</a></li> -->
+<!-- 				    <li class="page-item"><a class="page-link" href="#">2</a></li> -->
+<!-- 				    <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+<!-- 				    <li class="page-item"><a class="page-link" href="#">4</a></li> -->
+<!-- 				    <li class="page-item"><a class="page-link" href="#">5</a></li> -->
+<!-- 				    <li class="page-item"><a class="page-link" href="#">6</a></li> -->
+<!-- 				    <li class="page-item"><a class="page-link" href="#">7</a></li> -->
+<!-- 				    <li class="page-item"><a class="page-link" href="#">8</a></li> -->
+<!-- 				    <li class="page-item"><a class="page-link" href="#">9</a></li> -->
+<!-- 				    <li class="page-item"><a class="page-link" href="#">10</a></li> -->
+<!-- 				    <li class="page-item"><a class="page-link" href="#">다음</a></li> -->
+<!-- 				  </ul> -->
+<!-- 				</nav> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
 	</div>
 </div>
 </main>

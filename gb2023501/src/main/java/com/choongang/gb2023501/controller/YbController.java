@@ -45,42 +45,48 @@ public class YbController {
 	private final JpaEduMaterialsService js;
 	private final MemberService ms;
 	
-	private Member aboutMember(Model model) {
-		Optional<Member> memberOptional = ms.selectUserById();
-		Member member = null;
-		if(memberOptional.isPresent()) {
-			member = memberOptional.get();
-			System.out.println("로그인 회원 정보 -> " + member);
-			System.out.println("member name -> " + member.getMmName());
-			model.addAttribute("member", member);
-		}
-		return member;
-	}
+//	private Member aboutMember(Model model) {
+//		Optional<Member> memberOptional = ms.selectUserById();
+//		Member member = null;
+//		if(memberOptional.isPresent()) {
+//			member = memberOptional.get();
+//			System.out.println("로그인 회원 정보 -> " + member);
+//			System.out.println("member name -> " + member.getMmName());
+//			model.addAttribute("member", member);
+//		}
+//		return member;
+//	}
 	
 	@RequestMapping(value = "/")
 	public String main(Model model) {
 		System.out.println("Main start...");
 
-		aboutMember(model);
-		
+		Optional<Member> memberOptional = ms.selectUserById();
+		Member member = null;		
+		if(memberOptional.isPresent()) {
+			member = memberOptional.get();
+			System.out.println("로그인 회원 정보 -> " + member);
+			System.out.println("member name -> " + member.getMmName());
+			
+		}
+		model.addAttribute("member", member);
 		return "main";
 	}
 	// 학습자료 등록 페이지
 	@RequestMapping(value = "/operate/eduMaterialsForm")
 	public String eduResourceForm(Model model) {	
-//		Optional<Member> memberOptional = ms.selectUserById();
-//		Member member = null;		
-//		if(memberOptional.isPresent()) {
-//			member = memberOptional.get();
-//			System.out.println("로그인 회원 정보 -> " + member);
-//			System.out.println("member name -> " + member.getMmName());
-//			
-//		}
-		Member member = aboutMember(model);
-		
+		Optional<Member> memberOptional = ms.selectUserById();
+		Member member = null;		
+		if(memberOptional.isPresent()) {
+			member = memberOptional.get();
+			System.out.println("로그인 회원 정보 -> " + member);
+			System.out.println("member name -> " + member.getMmName());
+			
+		}
+
 		System.out.println("model after member name -> " + member.getMmName());
 		
-//		model.addAttribute("member", member);
+		model.addAttribute("member", member);
 		return "yb/eduMaterialsForm";
 	}
 	// 학습자료 등록
@@ -209,7 +215,7 @@ public class YbController {
 								 SalesInquiryDTO salesInquiryDTO)  throws ParseException {
 		System.out.println("ybController /operate/selectDateList start...");
 		List<SalesInquiryDTO> selectSaleList= null;
-		List<MonthSalesDTO> selectSaleList1 = null;
+		List<SalesInquiryDTO> selectSaleList1 = null;
 		Date s_date = null;
 		Date e_date = null;
 		
@@ -231,6 +237,8 @@ public class YbController {
 			System.out.println(selectSaleList.get(2)); 
 			
 			log.info("selectSaleList -> " + selectSaleList.size());
+			
+			model.addAttribute("selectSaleList", selectSaleList);
 		}
 		// 월별 검색
 		else if(selectDate.equals("month")) {
@@ -248,11 +256,13 @@ public class YbController {
 	        System.out.println("ybController /operate/selectDateList lastDay -> " + e_date);
 			/* month = java.sql.Date.valueOf(sMonth); */
 	        
-	        selectSaleList1 = js.selectSaleList(s_date, e_date);
+	        selectSaleList = js.selectSaleList(s_date, e_date);
+	        
+	        model.addAttribute("selectSaleList1", selectSaleList);
 		}
 
-		model.addAttribute("selectSaleList", selectSaleList);
-		model.addAttribute("selectSaleList1", selectSaleList1);
+		
+		
 		return "yb/salesInquiryDetail";
 	}
 	// 매출 상세 리스트 
@@ -263,17 +273,19 @@ public class YbController {
 		String stringDate = go_order_date.substring(0,4) + "-" +go_order_date.substring(4,6) + "-" +go_order_date.substring(6,8);
 		Date orderDate = java.sql.Date.valueOf(stringDate);
 		
+		
+		
 		System.out.println("orderDate -> " + orderDate);
 		gameOrder.setGoOrderDate(orderDate);
 //		List<com.choongang.gb2023501.model.GameOrder> selectSalesDetailList = es.selectSalesDetailList(gameOrder);
-//		
-		
 		
 		List<GameOrder> selectSaleList = js.getListAllGameOrder(orderDate);
 		log.info("selectSaleList -> " + selectSaleList);
 		
-		model.addAttribute("selectSaleList", selectSaleList);
+		selectSaleList.get(0);
 		
+		model.addAttribute("selectSaleList", selectSaleList);
+		model.addAttribute("date", selectSaleList.get(0).getGoOrderDate());
 		return "yb/searchSalesInquiryDetail";
 	}
 	
@@ -305,6 +317,7 @@ public class YbController {
     	System.out.println("ybController /learning/learnGrpJoin selectLGpList.size() -> " + selectLGpList.size());
     	List<LearnGrp> selectLgpListByTitle = es.selecLgpListByTitle(learnGrp);
     	int selectLgpListByTitleCnt = es.selectLgpListByTitleCnt(lgTitle);
+    	
     	model.addAttribute("selectLgpListByTitleCnt", selectLgpListByTitleCnt);
     	model.addAttribute("selectLgpListByTitle", selectLgpListByTitle);
     	model.addAttribute("selectLGpList", selectLGpList);	    	

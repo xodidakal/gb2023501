@@ -28,7 +28,7 @@
 	         <h2 style="margin-bottom: 15px;">학습 자료 목록</h2>
 	         <p style="margin-bottom: 35px;">총 ${selectEduMaterialsList.size() } 건</p>
 	    </div>
-	    <form action="/operate/searchEduMaterials" method="GET" role="search"> 
+	    <form action="/operate/searchEduMaterials" method="GET"> 
 		<div class="input-group col-md-5 mb-3"> 
 			<!-- 카테고리 분류 -->
 <!-- 		<select id="search_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da"> -->
@@ -68,7 +68,7 @@
 				<tbody>
 				 <c:forEach var="eduMaterialsList" items="${selectEduMaterialsList }">
 				 	<tr>
-				 		<td>${StartRow }</td>
+				 		<td>${StartRow + 1}</td>
 						<td style="width: 100px;" height="80px;">
 							<img src="${eduMaterialsList.emAttachName }" alt="도서 썸네일" class="img-fluid" style="width: 5rem; height: 80px;">
 						</td>
