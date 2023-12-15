@@ -38,6 +38,8 @@ public interface YbRepository2 extends JpaRepository<GameOrder, Long> {
 	
 	List<MonthSalesDTO> findSalesInquiryDtoJPQL1(@Param("sDate") Date s_date, @Param("eDate") Date e_date);
 
+	List<GameOrder> findByGoOrderDate(Date orderDate);
+
 
 }
 

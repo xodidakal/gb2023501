@@ -54,23 +54,21 @@
        		<thead>
 				<tr>
 					<th>No.</th>
-					<th>분류</th>
-					<th>제목</th>
-					<th>작성자</th>
-					<th>등록일자</th>
-					<th>조회수</th>	
+					<th>구매일자</th>
+					<th>구매자</th>
+					<th>구매상품</th>
+					<th>구매금액</th>
 					<th width="100px;"></th>				
 				</tr>
 			</thead>
 			 <tbody>
-<%-- 					 <c:forEach var="" items=""> --%>
+					 <c:forEach var="selectSaleList" items="${selectSaleList }">
 			 	<tr>
 			 		<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td>5</td>
-					<td>6</td>
+					<td>${selectSaleList.goOrderDate }</td>
+					<td>${selectSaleList.goNum }</td>
+					<td>${selectSaleList.gNum }</td>
+					<td>${selectSaleList.goPayment }</td>
 					<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
 				</tr>
 				
@@ -84,7 +82,7 @@
 					<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
 				</tr>
 				
-<%-- 					 </c:forEach> --%>
+					 </c:forEach>
 				
                 </tbody>   
               </table>

@@ -257,15 +257,19 @@ public class YbController {
 	}
 	// 매출 상세 리스트 
 	@RequestMapping(value = "/operate/searchSalesInquiryDetail")
-	public String searchSalesInquiryDetail(@Param("go_order_date") String go_order_date, com.choongang.gb2023501.model.GameOrder gameOrder, Model model) {
+	public String searchSalesInquiryDetail(@Param("go_order_date") String go_order_date, GameOrder gameOrder, Model model) throws ParseException {
+		System.out.println("ybController /operate/searchSalesInquiryDetail go_order_date -> " + go_order_date);
 		System.out.println("go_order_date -> " + go_order_date);
-//		Date orderDate = java.sql.Date.valueOf(go_order_date);
-//		gameOrder.setGo_order_date(orderDate);
+		String stringDate = go_order_date.substring(0,4) + "-" +go_order_date.substring(4,6) + "-" +go_order_date.substring(6,8);
+		Date orderDate = java.sql.Date.valueOf(stringDate);
+		
+		System.out.println("orderDate -> " + orderDate);
+		gameOrder.setGoOrderDate(orderDate);
 //		List<com.choongang.gb2023501.model.GameOrder> selectSalesDetailList = es.selectSalesDetailList(gameOrder);
 //		
 		
 		
-		List<GameOrder> selectSaleList = js.getListAllGameOrder();
+		List<GameOrder> selectSaleList = js.getListAllGameOrder(orderDate);
 		log.info("selectSaleList -> " + selectSaleList);
 		
 		model.addAttribute("selectSaleList", selectSaleList);
@@ -289,6 +293,7 @@ public class YbController {
     private static String formatDate(LocalDate date) {
         return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
+    
  
     // 학습 그룹 가입 신청 페이지
     @RequestMapping(value = "/learning/learnGrpJoinForm")

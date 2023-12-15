@@ -29,10 +29,10 @@ public class GameOrder {
 	private int goNum;
 	
 	@Column(name = "m_num")
-	private int mNum;
+	private int mmNum;
 	
 	@Column(name = "g_num")
-	private int gNum;
+	private int ggNum;
 	
 	@Column(name = "go_order_type")
 	private int goOrderType;
