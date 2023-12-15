@@ -13,6 +13,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.choongang.gb2023501.domain.GameOrder;
 import com.choongang.gb2023501.domain.LearnGrp;
+import com.choongang.gb2023501.domain.LgJoin;
 import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.jhService.MemberService;
 import com.choongang.gb2023501.model.EduMaterials;
@@ -66,18 +68,19 @@ public class YbController {
 	// 학습자료 등록 페이지
 	@RequestMapping(value = "/operate/eduMaterialsForm")
 	public String eduResourceForm(Model model) {	
-		Optional<Member> memberOptional = ms.selectUserById();
-		Member member = null;		
-		if(memberOptional.isPresent()) {
-			member = memberOptional.get();
-			System.out.println("로그인 회원 정보 -> " + member);
-			System.out.println("member name -> " + member.getMmName());
-			
-		}
-
+//		Optional<Member> memberOptional = ms.selectUserById();
+//		Member member = null;		
+//		if(memberOptional.isPresent()) {
+//			member = memberOptional.get();
+//			System.out.println("로그인 회원 정보 -> " + member);
+//			System.out.println("member name -> " + member.getMmName());
+//			
+//		}
+		Member member = aboutMember(model);
+		
 		System.out.println("model after member name -> " + member.getMmName());
 		
-		model.addAttribute("member", member);
+//		model.addAttribute("member", member);
 		return "yb/eduMaterialsForm";
 	}
 	// 학습자료 등록
@@ -197,20 +200,15 @@ public class YbController {
 	@RequestMapping(value = "/operate/salesInquiryDetail")
 	public String salesInquiryDetail(Model model, String selectDate, Pageable pageable) {
 		System.out.println("ybController /operate/salesInquiryDetail start...");
-		
-//		List<GameOrder> selectSaleList = js.getListAllGameOrder();
-//		log.info("selectSaleList -> " + selectSaleList);
-//		
-//		model.addAttribute("selectSaleList", selectSaleList);
-		
+
 		return "yb/salesInquiryDetail";
 	}
 	// 매출 조회 화면 jpa
 	@RequestMapping(value = "/operate/searchSalesInquiry")
-	public String selectDateList(Model model, String selectDate, String startDate, String endDate, String sMonth, String eMonth,
-								 @PageableDefault(page = 1, size = 10) Pageable pageable)  throws ParseException {
+	public String selectDateList(Model model, String selectDate, String startDate, String endDate, String sMonth, String eMonth, 
+								 SalesInquiryDTO salesInquiryDTO)  throws ParseException {
 		System.out.println("ybController /operate/selectDateList start...");
-		Page<SalesInquiryDTO> selectSaleList= null;
+		List<SalesInquiryDTO> selectSaleList= null;
 		List<MonthSalesDTO> selectSaleList1 = null;
 		Date s_date = null;
 		Date e_date = null;
@@ -223,12 +221,19 @@ public class YbController {
 			s_date = java.sql.Date.valueOf(startDate);
 			e_date = java.sql.Date.valueOf(endDate);
 			
-			selectSaleList = js.findBySales(s_date, e_date, pageable);	
-			System.out.println(pageable.getPageSize());
-			System.out.println(pageable.getPageNumber());
+			selectSaleList = js.findBySalesContaining(s_date, e_date);	//, pageable
+			System.out.println("ybController /operate/selectDateList selectSaleList -> " + selectSaleList);
+			//System.out.println(pageable.getPageSize());
+			//System.out.println(pageable.getPageNumber());
+			
+			System.out.println(selectSaleList.get(0)); 
+			System.out.println(selectSaleList.get(1)); 
+			System.out.println(selectSaleList.get(2)); 
+			
+			log.info("selectSaleList -> " + selectSaleList.size());
 		}
 		// 월별 검색
-		if(selectDate.equals("month")) {
+		else if(selectDate.equals("month")) {
 
 			System.out.println("ybController /operate/selectDateList smonth -> " + sMonth);
 			System.out.println("ybController /operate/selectDateList emonth -> " + eMonth);
@@ -245,13 +250,29 @@ public class YbController {
 	        
 	        selectSaleList1 = js.selectSaleList(s_date, e_date);
 		}
-		log.info("selectSaleList -> " + selectSaleList);
-		
-		model.addAttribute("pageable", pageable);
+
 		model.addAttribute("selectSaleList", selectSaleList);
-		model.addAttribute("selectSaleList", selectSaleList1);
+		model.addAttribute("selectSaleList1", selectSaleList1);
 		return "yb/salesInquiryDetail";
 	}
+	// 매출 상세 리스트 
+	@RequestMapping(value = "/operate/searchSalesInquiryDetail")
+	public String searchSalesInquiryDetail(@Param("go_order_date") String go_order_date, com.choongang.gb2023501.model.GameOrder gameOrder, Model model) {
+		System.out.println("go_order_date -> " + go_order_date);
+//		Date orderDate = java.sql.Date.valueOf(go_order_date);
+//		gameOrder.setGo_order_date(orderDate);
+//		List<com.choongang.gb2023501.model.GameOrder> selectSalesDetailList = es.selectSalesDetailList(gameOrder);
+//		
+		
+		
+		List<GameOrder> selectSaleList = js.getListAllGameOrder();
+		log.info("selectSaleList -> " + selectSaleList);
+		
+		model.addAttribute("selectSaleList", selectSaleList);
+		
+		return "yb/searchSalesInquiryDetail";
+	}
+	
 	//  해당 월의 첫 번째 날 (atDay(1)) 얻기
     public static String getFirstDayOfMonth(String dateString) {
         YearMonth yearMonth = YearMonth.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM"));
@@ -268,20 +289,23 @@ public class YbController {
     private static String formatDate(LocalDate date) {
         return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
+ 
     // 학습 그룹 가입 신청 페이지
     @RequestMapping(value = "/learning/learnGrpJoinForm")
-    public String learnGrpJoin(Model model) {
+    public String learnGrpJoin(Model model,  com.choongang.gb2023501.model.LearnGrp learnGrp, String lgTitle) {
     	System.out.println("ybController /learning/learnGrpJoin start...");
     	
     	List<LearnGrp> selectLGpList = js.selectLGpList();
     	
     	System.out.println("ybController /learning/learnGrpJoin selectLGpList.size() -> " + selectLGpList.size());
-    	
-    	
+    	List<LearnGrp> selectLgpListByTitle = es.selecLgpListByTitle(learnGrp);
+    	int selectLgpListByTitleCnt = es.selectLgpListByTitleCnt(lgTitle);
+    	model.addAttribute("selectLgpListByTitleCnt", selectLgpListByTitleCnt);
+    	model.addAttribute("selectLgpListByTitle", selectLgpListByTitle);
     	model.addAttribute("selectLGpList", selectLGpList);	    	
     	return "yb/learnGrpJoinForm";
     }
-    // 
+    // 학습 그룹 조건 검색
 	@RequestMapping(value = "/learning/searchGrpList")
 	public String searchGrpList(Model model, String searchType, com.choongang.gb2023501.model.LearnGrp learnGrp, String lgTitle,String mmName) {
 		System.out.println("ybController /learning/searchGrpList start...");
@@ -304,5 +328,24 @@ public class YbController {
 		model.addAttribute("selectLgpListByTitle", selectLgpListByTitle);
     	return "yb/learnGrpJoinForm";
 	}
-
+	// 학습 그룹 가입 신청 전송
+	@RequestMapping(value = "/learning/learnGrpJoinDo")
+	public String learnGrpJoinDo(@Param("lg_num") int lg_num, LgJoin lgJoin) {
+		System.out.println("ybController /learning/learnGrpJoinDo start...");
+		System.out.println("ybController /learning/learnGrpJoinDo lg_num -> " + lg_num);
+		
+		Optional<Member> memberOptional = ms.selectUserById();
+		Member member = null;		
+		if(memberOptional.isPresent()) {
+			member = memberOptional.get();
+			System.out.println("로그인 회원 정보 -> " + member);
+			System.out.println("member name -> " + member.getMmName());
+			
+		}
+		lgJoin.setMember(member);
+		lgJoin.setLg_num(lg_num);
+		js.insertJoin(lgJoin);
+		
+		return "yb/learnGrpJoinForm";
+	}
 }

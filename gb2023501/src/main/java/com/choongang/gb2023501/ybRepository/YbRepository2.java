@@ -1,4 +1,4 @@
-package com.choongang.gb2023501.repository;
+package com.choongang.gb2023501.ybRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -24,12 +24,12 @@ public interface YbRepository2 extends JpaRepository<GameOrder, Long> {
 			+ "FROM GameOrder go "
 			+ "WHERE go.goOrderDate BETWEEN :startDate and :endDate "
 			+ "GROUP BY go.goOrderDate "
-			
+			+ "order by go.goOrderDate desc" 
 	)
-	Page<SalesInquiryDTO> findSalesInquiryDtoJPQL(@Param("startDate") Date s_date, @Param("endDate") Date e_date, Pageable pageable);
+	List<SalesInquiryDTO> findSalesInquiryDtoJPQL(@Param("startDate") Date s_date, @Param("endDate") Date e_date);
 	
 	@Query(
-		    "SELECT NEW com.choongang.gb2023501.model.MonthSalesDTO(FUNCTION('MONTH', go.goOrderDate), COUNT(go.gNum), SUM(go.goPayment)) " +
+		    "SELECT NEW com.choongang.gb2023501.model.MonthSalesDTO(FUNCTION('MONTH', go.goOrderDate), COUNT(gNum), SUM(goPayment)) " +
 		    "FROM GameOrder go " +
 		    "WHERE go.goOrderDate BETWEEN :sDate AND :eDate " +
 		    "GROUP BY FUNCTION('MONTH', go.goOrderDate) " +

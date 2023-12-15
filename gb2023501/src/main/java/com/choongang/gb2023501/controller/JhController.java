@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.gb2023501.domain.Member;
+import com.choongang.gb2023501.jhRepository.MemberRepository;
 import com.choongang.gb2023501.jhService.MemberService;
-import com.choongang.gb2023501.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

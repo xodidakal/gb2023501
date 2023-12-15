@@ -68,23 +68,33 @@
 				<tr>
 					<th>No.</th>
 					<th>이름</th>
-					<th>연락처</th>
+					<th>휴대전화</th>
 					<th>이메일</th>
 					<th>주소</th>
 					<th>가입승인일자</th>	
 				</tr>
 			</thead>
 			 <tbody>
-				<c:forEach var="members" items="${members }">
-				 	<tr>
-				 		<td>No.</td>
-						<td>${members.member.mmName }</td>
-						<td>${members.member.phone }</td>
-						<td>${members.member.email }</td>
-						<td>${members.member.address }</td>
-						<td>${members.lgjAppdate }</td>
-					</tr>
-				</c:forEach>
+			 	<c:choose>
+			 		<c:when test="${empty members}">
+			 			<tr>
+			 				<td colspan="6">아직 학습자가 없습니다.</td>
+			 			</tr>
+			 		</c:when>
+			 		
+			 		<c:otherwise>
+						<c:forEach var="members" items="${members }">
+						 	<tr>
+						 		<td>No.</td>
+								<td>${members.member.mmName }</td>
+								<td>${members.member.phone }</td>
+								<td>${members.member.email }</td>
+								<td>${members.member.address }</td>
+								<td><fmt:formatDate value="${members.lgjAppdate }" pattern="yyyy-MM-dd"/></td>
+							</tr>
+						</c:forEach>
+			 		</c:otherwise>
+			 	</c:choose>
 			 </tbody>   
               </table>
               <div class="row mt-8" style="width:100%;">

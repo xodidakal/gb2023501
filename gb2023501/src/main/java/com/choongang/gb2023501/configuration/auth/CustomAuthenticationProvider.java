@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.choongang.gb2023501.domain.Member;
-import com.choongang.gb2023501.repository.MemberRepository;
+import com.choongang.gb2023501.jhRepository.MemberRepository;
 
 //import com.oracle.s202350104.model.Users;
 //import com.oracle.s202350104.service.user.UserService;

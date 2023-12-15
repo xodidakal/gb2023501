@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.choongang.gb2023501.domain.LearnGrp;
+import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.hrService.LearnGrpService;
 import com.choongang.gb2023501.model.Game;
 import com.choongang.gb2023501.model.LearnGrpDTO;
@@ -52,6 +53,26 @@ public class HrController {
 		// 학습자 명단
 		List<MemberDTO> members = lgService.joinedMemberList(lg_num);
 		System.out.println("HrController learnGroupList() members.size() -> "+members.size());
+		
+		// 휴대전화 하이픈 추가
+		for(MemberDTO member : members) {
+			// Member 객체 추출
+			Member memberObject = member.getMember();
+			
+			// 휴대전화 추출
+			String ph = memberObject.getPhone();
+			System.out.println("ph -> "+ph);
+			
+			// 하이픈 추가
+			String phHyphen = ph.substring(0,3) + "-" + ph.substring(3,7) + "-" + ph.substring(7,11);
+			System.out.println("phHyphen -> "+phHyphen);
+			
+			// 휴대전화 재설정
+			memberObject.setPhone(phHyphen);
+			
+			// Member 재설정
+			member.setMember(memberObject);
+		}
 		
 		model.addAttribute("members", members);
 
