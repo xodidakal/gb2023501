@@ -16,34 +16,33 @@
 	         <p style="margin-bottom: 35px;">총 N건</p>
 	    </div>
 
-		<div class="input-group col-md-5 mb-3"> 
-			<!-- 카테고리 분류 -->
-			<select id="search_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
-				<option value="title">학습그룹명순</option>
-				<option value="writer">가입확정인원순</option>
-				<option value="writer">학습만료임박순</option>
-			</select>
-			<!-- 카테고리 검색 -->
-			<select id="search_type" class="w-17 rounded" style="border-color: #ced4da">
-				<option value="learnGrpTitle">학습그룹명</option>
-				<option value="gameTitle">게임콘텐츠명</option>
-				<option value="add1">추가항목1</option>
-				<option value="add2">추가항목2</option>
-			</select>&nbsp;&nbsp;
-            <input id = "search_keyword" class="form-control rounded" type="search" placeholder="내용을 입력해주세요." style="width: 160px;">
-          	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
-         		<a href="#!"><i class="bi bi-search mt-2"></i></a>
-          	</div>
-          	
-          	
-			<div class="col">
-			<div class="d-flex align-items-center justify-content-end">
-          		<div style="width: 65px;">
-	          		<a href="boardForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="삭제"></a>
-            	</div>
-            </div>
-			</div>
-	    </div>
+		<form action="/educator/learnGroupList">
+			<div class="input-group col-md-5 mb-3"> 
+				<!-- 카테고리 분류 -->
+				<select id="sort_type" name="sort" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
+					<option value="sortLgTitle">학습그룹명순</option>
+					<option value="sortGgTitle">게임콘텐츠명순</option>
+				</select>
+				<!-- 카테고리 검색 -->
+				
+				<select id="search_type" name="type" class="w-17 rounded" style="border-color: #ced4da">
+					<option value="typeLgTitle">학습그룹명</option>
+					<option value="typeGgTitle">게임콘텐츠명</option>
+				</select>&nbsp;&nbsp;
+	            <input id = "search_keyword" name="keyword" class="form-control rounded" type="search" placeholder="내용을 입력해주세요." style="width: 160px;">
+	          	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
+	         		<button class="btn bi bi-search rounded"></button>
+	          	</div>
+
+				<div class="col">
+				<div class="d-flex align-items-center justify-content-end">
+	          		<div style="width: 65px;">
+		          		<a href="boardForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="삭제"></a>
+	            	</div>
+	            </div>
+				</div>
+		    </div>
+	    </form>
        	<table class="listTable">
        		<thead>
 				<tr>

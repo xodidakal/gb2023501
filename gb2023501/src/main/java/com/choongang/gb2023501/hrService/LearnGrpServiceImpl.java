@@ -25,10 +25,10 @@ public class LearnGrpServiceImpl implements LearnGrpService {
 	// 교육자마당 > 내학습그룹 (SELECT / JPA)
 	// 교육자마당 > 학습그룹 상세 (SELECT / JPA) - 학습그룹 정보
 	@Override
-	public List<LearnGrpDTO> learnGroupList(int lg_num) {
+	public List<LearnGrpDTO> learnGroupList(int lg_num, String sort, String type, String keyword) {
 		System.out.println("LearnGrpServiceImpl learnGroupList() start..");
 		
-		List<LearnGrpDTO> learnGrps = hrRepository.learnGroupList(lg_num);
+		List<LearnGrpDTO> learnGrps = hrRepository.learnGroupList(lg_num, sort, type, keyword);
 		System.out.println("LearnGrpServiceImpl learnGroupList() learnGrps.size() -> "+learnGrps.size());
 		
 		System.out.println("LearnGrpServiceImpl learnGroupList() end..");

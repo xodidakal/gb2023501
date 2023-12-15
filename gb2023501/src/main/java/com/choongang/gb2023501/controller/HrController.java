@@ -22,10 +22,10 @@ public class HrController {
 	
 	// 교육자마당 > 내학습그룹 (SELECT / JPA)
 	@GetMapping("educator/learnGroupList")
-	public String learnGroupList(Model model, LearnGrp learnGrp) {
+	public String learnGroupList(Model model, String sort, String type, String keyword) {
 		System.out.println("HrController learnGroupList() start..");
 		
-		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(0);
+		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(0, sort, type, keyword);
 		model.addAttribute("learnGrps", learnGrps);
 		System.out.println("HrController learnGroupList() learnGrps.size() -> "+learnGrps.size());
 		
@@ -42,7 +42,7 @@ public class HrController {
 
 		// 학습그룹 기본 정보
 		// 기존 method 활용하여 List<Game>(multi row)으로 받은 후 Game(single row)으로 분리
-		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(lg_num);
+		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(lg_num, "", "", "");
 		System.out.println("HrController learnGroupList() learnGrps.size() -> "+learnGrps.size());
 		
 		LearnGrpDTO learnGrpDTO = learnGrps.get(0);
