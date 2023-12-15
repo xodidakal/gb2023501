@@ -22,40 +22,33 @@
 
 		<div class="input-group col-md-5 mb-3"> 
 			<!-- 카테고리 분류 -->
-			<select id="search_type" class="w-17 rounded" style="margin-right: 20%; border-color: #ced4da">
-				<option value="title">10</option>
-				<option value="writer">15</option>
-				<option value="writer">20</option>
+			<select id="search_submit" class="w-17 rounded" style="margin-right: 15%; border-color: #ced4da">
+				<option value="title">전체</option>
+				<option value="writer">제출완료</option>
+				<option value="writer">미제출</option>
 			</select>
 			<!-- 카테고리 검색 -->
 			<select id="search_type" class="w-17 rounded" style="border-color: #ced4da">
-				<option value="title">제목 + 내용</option>
-				<option value="writer">작성자</option>
+				<option value="title">게임콘텐츠</option>
+				<option value="writer">교육자</option>
+				<option value="writer">숙제명</option>
 			</select>&nbsp;&nbsp;
-            <input id = "search_keyword" class="form-control rounded" type="search" placeholder="검색해라" style="width: 160px;">
+            <input id = "search_keyword" class="form-control rounded" type="search" placeholder="내용을 입력해주세요" style="width: 160px;">
           	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
          		<a href="#!"><i class="bi bi-search mt-2"></i></a>
           	</div>
-          	
-          	
-			<div class="col">
-			<div class="d-flex align-items-center justify-content-end">
-          		<div>
-	          		<a href="boardForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="등록"></a>
-            	</div>
-            </div>
-			</div>
 	    </div>
+	    
        	<table class="listTable">
        		<thead>
 				<tr>
 					<th>No.</th>
-					<th>분류</th>
-					<th>제목</th>
-					<th>작성자</th>
-					<th>등록일자</th>
-					<th>조회수</th>	
-					<th width="100px;"></th>				
+					<th>게임콘텐츠</th>
+					<th>교육자</th>
+					<th>숙제명</th>
+					<th>진도</th>
+					<th>제출기한</th>	
+					<th width="100px;">상세</th>				
 				</tr>
 			</thead>
 			 <tbody>
