@@ -9,10 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.gb2023501.gbService.GbLgJoinService;
 import com.choongang.gb2023501.gbService.HomeworkService;
 import com.choongang.gb2023501.gbService.Paging;
+import com.choongang.gb2023501.jhService.MemberService;
 import com.choongang.gb2023501.model.Homework;
 import com.choongang.gb2023501.model.HwSend;
 import com.choongang.gb2023501.model.LearnGrp;
@@ -26,6 +28,7 @@ public class GbController {
 	
 	private final HomeworkService hs;
 	private final GbLgJoinService gljs;
+	private final MemberService ms;
 	
 	// 숙제 생성 목록
 	@RequestMapping("educator/homeworkForm")
@@ -37,8 +40,9 @@ public class GbController {
 			result1 = result;
 		}
 		
-		// 숙제 목록은 로그인한 교육자가 생성한 목록이 조회되므로 교육자 회원번호를 담는다. (우선 임시로 추후에 변경 예정)
-		homework.setM_num(3);
+		// 숙제 목록은 로그인한 교육자가 생성한 목록이 조회되므로 교육자 회원번호를 담는다.
+		int m_num = ms.selectMmNumById();	
+		homework.setM_num(m_num);
 		
 		// 생성한 숙제 총 개수
 		int homeworkListCnt = hs.selectHomeworkListCnt(homework);
@@ -75,7 +79,8 @@ public class GbController {
 		  homework.setH_num(h_num);
 		  
 		  // 교육자 회원번호 임시로 넣음 (추후 변경 예정)
-		  homework.setM_num(3);
+		  int m_num = ms.selectMmNumById();	
+		  homework.setM_num(m_num);
 		  
 		  String result = String.valueOf(hs.insertUpdateHomework(homework));
 		  System.out.println("GbController insertUpdateHomework result -> "+result);
@@ -88,7 +93,8 @@ public class GbController {
 	  public String selectHomeworkList(Homework homework, String currentPage, HwSend hwsend, String count, Model model) {
 		  System.out.println("GbController selectHomeworkList start...");
 		  // 숙제 목록은 로그인한 교육자가 생성한 목록이 조회되므로 교육자 회원번호를 담는다. (우선 임시로 추후에 변경 예정)
-		  homework.setM_num(3);
+		  int m_num = ms.selectMmNumById();	
+		  homework.setM_num(m_num);
 		  System.out.println("homework h_title -> "+homework.getH_title());
 		  
 		  // 생성한 숙제 총 개수
@@ -128,6 +134,12 @@ public class GbController {
 			  hwsend.setLg_num(0);
 		  }
 		  
+		  int count1 = -1;
+		  
+		  if(count != null && count != "0") {
+			  count1 = Integer.parseInt(count);
+		  }
+		  
 		  model.addAttribute("homework1", homework);
 		  model.addAttribute("allhomeworkList", allhomeworkList);
 		  model.addAttribute("homeworkList", homeworkList);
@@ -136,14 +148,25 @@ public class GbController {
 		  model.addAttribute("hwsend", hwsend);
 		  model.addAttribute("learnGrpList", learnGrpList);
 		  model.addAttribute("lgJoinMemberList", lgJoinMemberList);
-		  model.addAttribute("count", count);
+		  model.addAttribute("count", count1);
 		  
 		  return "gb/homeworkSend";
+	  }
+	  
+	  // 학습자에게 숙제 전송여부 컬럼 추가하여 리스트 반환
+	  @ResponseBody
+	  @RequestMapping("/educator/homeworkSendExist")
+	  public List<LgJoin> selectLgHwSendMemberList(HwSend hwsend) {
+		  System.out.println("GbController selectLgHwSendMemberList start...");
+		  List<LgJoin> hwSendMemberList = hs.selectLgHwSendMemberList(hwsend);
+		  System.out.println("GbController selectLgHwSendMemberList hwSendMemberList -> "+hwSendMemberList.size());
+		  
+		  return hwSendMemberList;
 	  }
 	 
 	  // 숙제 전송하기
 	  @PostMapping("/educator/homeworkSendAction")
-	  public String insertHwSendList(@RequestParam(value = "h_num") List<Integer> hNumList, 
+	  public String insertHwSendList(@RequestParam(value = "h_num") int hNum, 
 			  						 @RequestParam(value = "m_num") List<Integer> mNumList, Model model) {
 		  System.out.println("GbController insertHwSendList start...");
 		  // 숙제 전송 결과값을 담을 변수
@@ -151,8 +174,8 @@ public class GbController {
 		
 		  // 숙제번호, 학습자 번호를 map에 각각 담는다.
 		  Map<String, Object> map = new HashMap<String, Object>(); 
-		  map.put("hNumList", hNumList); 
-		  map.put("mNumList", mNumList);
+		  map.put("hNum", hNum); // 숙제번호 리스트
+		  map.put("mNumList", mNumList); // 학습자번호 리스트
 		  
 		  // 숙제 전송 테이블에 insert하는 메소드
 		  count = String.valueOf(hs.insertHwSend(map));
@@ -164,7 +187,8 @@ public class GbController {
 	@RequestMapping("/learning/myhomeworkList")
 	public String selectMyHomeworkList(Model model) {
 		System.out.println("GbController selectMyHomeworkList start...");
-		
+		int m_num = ms.selectMmNumById();	
+
 		return "gb/myHomeworkList";
 	}
 	

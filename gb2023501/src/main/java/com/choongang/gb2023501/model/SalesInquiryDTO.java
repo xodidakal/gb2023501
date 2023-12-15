@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 public class SalesInquiryDTO {
 
 	private Date  goOrderDate;
-//	private int	 goPayment;
 	private long  salesCnt;
 	private long  salesSum;
 }

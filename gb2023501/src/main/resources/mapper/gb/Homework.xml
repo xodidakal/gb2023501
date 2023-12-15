@@ -52,12 +52,10 @@
 	
 	<insert id="gbInsertHwSend" parameterType="java.util.Map">
 		INSERT ALL
-		<foreach collection="hNumList" item="hNum">
-			<foreach collection="mNumList" item="mNum" separator=" ">
-				INTO hw_send(h_num, m_num, hs_date)
-				VALUES(#{hNum}, #{mNum}, sysdate)
-			</foreach> 
-		</foreach>
+		<foreach collection="mNumList" item="mNum" separator=" ">
+			INTO hw_send(h_num, m_num, hs_date)
+			VALUES(#{hNum}, #{mNum}, sysdate)
+		</foreach> 
 		SELECT * FROM DUAL
 	</insert>
 </mapper>

@@ -5,10 +5,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.choongang.gb2023501.domain.LearnGrp;
 import com.choongang.gb2023501.hrDao.LearnGrpDao;
+import com.choongang.gb2023501.hrRepository.HrRepository;
 import com.choongang.gb2023501.model.Game;
 import com.choongang.gb2023501.model.LearnGrpDTO;
 import com.choongang.gb2023501.model.MemberDTO;
-import com.choongang.gb2023501.repository.HrRepository;
+
 //import com.choongang.gb2023501.repository.HrRepository2;
 import lombok.RequiredArgsConstructor;
 

@@ -1,3 +1,4 @@
+package com.choongang.gb2023501.hrRepository;
 //package com.choongang.gb2023501.repository;
 //
 //import java.util.List;

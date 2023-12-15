@@ -43,6 +43,9 @@ public class SecurityConfig {
 	
 
 	@Autowired
+	private CustomAuthenticationSuccessHandler successHandler;
+	 
+	@Autowired
 	private  CustomAuthenticationProvider authProvider;
 	
 //	WebSecurityConfigurerAdapter는  Deprecated 되었으므로 사용하지 않고 아래와 같이 SecurityFilterChain을 Bean으로 등록하여 사용 
@@ -55,7 +58,8 @@ public class SecurityConfig {
 		
 		http.authorizeHttpRequests((requests) -> requests
 				.antMatchers("/learning/**").hasAnyRole("STUDENT", "EDUCATOR", "ADMIN")
-				.antMatchers("/educator/**").hasRole("EDUCATOR")
+				.antMatchers("/educator/**").hasAnyRole( "EDUCATOR", "ADMIN")
+//				.antMatchers("/educator/**").hasRole("EDUCATOR")
 				/* 개발단계에서는 역할에 따른 접근제한 해제.
 				.antMatchers("/admin/**").hasRole(Role.ADMIN.getValue())
 				.antMatchers("/user/myPage/**").hasRole(Role.USER.getValue())
@@ -71,6 +75,7 @@ public class SecurityConfig {
                 .passwordParameter("mmPswd")	// login에 필요한 password 값  (default password)
                 .loginProcessingUrl("/login")	// login주소가 호출 되면 시큐리티가 낚아채서 대신 로그인 진행해줌
                 .failureUrl("/info/loginForm?error=true")
+                .successHandler(successHandler)
 //                .failureUrl("/loginFailure")
 				.defaultSuccessUrl("/")			// 로그인 성공시 이동할 URL (메이페이지로 이동)
 			);

@@ -1,4 +1,4 @@
-package com.choongang.gb2023501.repository;
+package com.choongang.gb2023501.ybRepository;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
