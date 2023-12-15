@@ -6,6 +6,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+	// 정렬기준 변경
+	function changeSort(){
+		var sort = $('#sort').val();
+		var type = $('#type').val();
+		var keyword = $('#keyword').val();
+		
+		location.href = "/educator/learnGroupList?sort="+sort+"&type="+type+"&keyword="+keyword;
+	}
+</script>
 </head>
 <body>
 <div class="row g-0 justify-content-center">
@@ -19,17 +29,18 @@
 		<form action="/educator/learnGroupList">
 			<div class="input-group col-md-5 mb-3"> 
 				<!-- 카테고리 분류 -->
-				<select id="sort_type" name="sort" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
+				<select id="sort" name="sort" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da"
+						onchange="changeSort()">
 					<option value="sortLgTitle">학습그룹명순</option>
 					<option value="sortGgTitle">게임콘텐츠명순</option>
 				</select>
 				<!-- 카테고리 검색 -->
 				
-				<select id="search_type" name="type" class="w-17 rounded" style="border-color: #ced4da">
+				<select id="type" name="type" class="w-17 rounded" style="border-color: #ced4da">
 					<option value="typeLgTitle">학습그룹명</option>
 					<option value="typeGgTitle">게임콘텐츠명</option>
 				</select>&nbsp;&nbsp;
-	            <input id = "search_keyword" name="keyword" class="form-control rounded" type="search" placeholder="내용을 입력해주세요." style="width: 160px;">
+	            <input id = "keyword" name="keyword" class="form-control rounded" type="search" placeholder="내용을 입력해주세요." style="width: 160px;">
 	          	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
 	         		<button class="btn bi bi-search rounded"></button>
 	          	</div>
