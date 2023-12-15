@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.choongang.gb2023501.domain.LearnGrp;
 import com.choongang.gb2023501.model.EduMaterials;
+import com.choongang.gb2023501.model.GameOrder;
 import com.choongang.gb2023501.ybDao.EduMaterialsDao;
 
 import lombok.RequiredArgsConstructor;
@@ -27,5 +29,26 @@ public class EduMaterialsServiceImpl implements EduMaterialsService {
 		int selectEduMaterialsListCnt = ed.selectEduMaterialsListCnt(eduMaterials);
 		return selectEduMaterialsListCnt;
 	}
+	// 학습그룹 검색 리스트
+	@Override
+	public List<LearnGrp> selecLgpListByTitle(com.choongang.gb2023501.model.LearnGrp learnGrp) {
+		System.out.println("YbController EduMaterialsServiceImpl selectLgpListByTitle start...");
+		
+		List<LearnGrp> selecLgpListByTitle = ed.selectLgpListByTitle(learnGrp);
+		return selecLgpListByTitle;
+	}
+	// 학습그룹 검색 리스트 개수
+	@Override
+	public int selectLgpListByTitleCnt(String lgTitle) {
+		System.out.println("YbController EduMaterialsServiceImpl selectLgpListByTitleCnt start...");
+		int selectEduMaterialsListCnt = ed.selectLgpListByTitleCnt(lgTitle);
+		return selectEduMaterialsListCnt;
+	}
+	@Override
+	public List<GameOrder> selectSalesDetailList(GameOrder gameOrder) {
+		System.out.println("YbController EduMaterialsServiceImpl selectSalesDetailList start...");
+		return null;
+	}
+
 
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="com.choongang.gb2023501.LearnGrpsMapper">
+		<select id="selectLgpListByTitle" parameterType="LearnGrp" resultType="LearnGrp">			
+			 SELECT g.g_attach_name, lg.lg_title, m.m_name, lg.lg_sdate, lg.lg_edate, lg.lg_to, lg.lg_num, (lg.lg_to - (count(lj.lgj_approval))) remainningTo
+			 From   game g, learn_grp lg, member m, lg_join lj
+			 where  lg.g_num = g.g_num 
+			 and    lg.m_num = m.m_num 
+			 and    lg.lg_num = lj.lg_num
+			 and    sysdate between (select ROUND((to_date(lg_edate) - TO_DATE(lg_sdate))/2) +TO_DATE(lg_sdate) From learn_grp lg where lg.lg_num = lj.lg_num) and lg.lg_edate
+			  <if test="lg_title != null and lg_title != '' and lg_title != 'reload'">
+			 and    lg.lg_title = #{lg_title} 			 
+			 </if>
+			 group by g.g_attach_name, lg.lg_title, m.m_name, lg.lg_sdate, lg.lg_edate, lg.lg_to, lg.lg_num
+			 ORDER BY lg.lg_sdate
+		</select>
+		
+		<select id="selectLgpListByTitleCnt" parameterType="String" resultType="int">
+			SELECT COUNT(*) 
+			FROM learn_grp 
+			WHERE sysdate BETWEEN 
+    		(SELECT MAX(ROUND((TO_DATE(lg_edate, 'YYYY-MM-DD') - TO_DATE(lg_sdate, 'YYYY-MM-DD')) / 2) + TO_DATE(lg_sdate, 'YYYY-MM-DD')) FROM learn_grp) AND lg_edate
+    		<if test="lg_title != null and lg_title != '' and lg_title != 'reload'">
+			and    lg_title = #{lg_title}
+			</if>
+		</select>
+	</mapper>

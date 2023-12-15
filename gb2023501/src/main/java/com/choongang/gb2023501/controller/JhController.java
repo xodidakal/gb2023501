@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.gb2023501.domain.Member;
+import com.choongang.gb2023501.jhRepository.MemberRepository;
 import com.choongang.gb2023501.jhService.MemberService;
-import com.choongang.gb2023501.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +29,17 @@ public class JhController {
 
 	private final MemberRepository mr;
 	private final MemberService ms;
+	
+	public Member aboutMember() {
+		Optional<Member> memberOptional = ms.selectUserById();
+		Member member = null;
+		if(memberOptional.isPresent()) {
+			member = memberOptional.get();
+			System.out.println("로그인 회원 정보 -> " + member);
+			System.out.println("member name -> " + member.getMmName());
+		}
+		return member;
+	}
 	
 	@RequestMapping(value = "info/loginForm")
 	public String loginForm() {
@@ -50,7 +61,7 @@ public class JhController {
 		//로그인 된 아이디 가져오기
 		String mmId = ms.getLoggedInId();
 		//로그로 아이디 확인
-		log.info("getLoggedInId:{}", mmId);
+		log.info("로그인된 아이디:{}", mmId);
 		
 		
 		
@@ -58,16 +69,17 @@ public class JhController {
 		int mmNum = ms.selectMmNumById();
 		System.out.println("회원번호 int " + mmNum);
 		
-		
-		
+		Member member = aboutMember();
+		model.addAttribute("member", member);
+
 		//로그인 된 회원정보 전체 가져오기 
-		Optional<Member> memberOptional = ms.selectUserById();
-		if(memberOptional.isPresent()) {
-			Member member = memberOptional.get();
-			System.out.println("회원 이름" + member.getMmName());
-			System.out.println("회원 번호" + member.getMmNum());
-			model.addAttribute("member",member);
-		}
+//		Optional<Member> memberOptional = ms.selectUserById();
+//		if(memberOptional.isPresent()) {
+//			Member member = memberOptional.get();
+//			System.out.println("회원 이름" + member.getMmName());
+//			System.out.println("회원 번호" + member.getMmNum());
+//			model.addAttribute("member",member);
+//		}
 		
 		return "jh/joinAgreeForm";
 	}

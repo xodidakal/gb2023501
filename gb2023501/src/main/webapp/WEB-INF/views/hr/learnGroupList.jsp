@@ -67,7 +67,7 @@
 						<td>${lgDto.learnGrp.lgSdate } ~ ${lgDto.learnGrp.lgEdate }</td>
 						<td>${lgDto.learnGrp.lgTo }명</td>
 						<td>${lgDto.mmCnt }명</td>
-						<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
+						<td width="100px;"><a href="/educator/learnGroupDetail?lg_num=${lgDto.learnGrp.lgNum }"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
 					</tr>
 				</c:forEach>
                 </tbody>   

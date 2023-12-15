@@ -7,6 +7,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <meta charset="utf-8">
     <title>한국기원</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -102,26 +103,6 @@
 	           	 	  </c:when>
 	           	 	  
 	           	 	  <c:otherwise>
- 	                  	<c:if test="${pageContext.request.isUserInRole('EDUCATOR')}">	
-	 	                  	<div class="ps-3">            	 			
-		                       <h6 class="mb-0">교육자</a></h6>
-		                    </div>
- 	                  	</c:if>	
- 	                  	<c:if test="${pageContext.request.isUserInRole('STUDENT')}">	
-	 	                  	<div class="ps-3">            	 			
-		                       <h6 class="mb-0">학생</a></h6>
-		                    </div>
- 	                  	</c:if>	
- 	                  	<c:if test="${pageContext.request.isUserInRole('USER')}">	
-	 	                  	<div class="ps-3">            	 			
-		                       <h6 class="mb-0">사용자</a></h6>
-		                    </div>
- 	                  	</c:if>	
- 	                  	<c:if test="${pageContext.request.isUserInRole('ADMIN')}">	
-	 	                  	<div class="ps-3">            	 			
-		                       <h6 class="mb-0">관리자</a></h6>
-		                    </div>
- 	                  	</c:if>	
  	                  	
  	                  	<div class="ps-3">            	 			
 	                       <h6 class="mb-0"><a href="/">${pageContext.request.userPrincipal.name}</a></h6>

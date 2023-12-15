@@ -42,15 +42,15 @@
 	    <table class="subTable">
 			<tr>
 				<th>학습그룹명</th>
-				<td>ㅇㅇㅇ</td>
+				<td>${learnGrpDTO.learnGrp.lgTitle}</td>
 				<th>게임콘텐츠명</th>
-				<td>ㅇㅇㅇ</td>
+				<td>${learnGrpDTO.learnGrp.game.ggTitle}</td>
 			</tr>
 			<tr>
 				<th>수용 가능 인원</th>
-				<td>ㅇㅇㅇ</td>
+				<td>${learnGrpDTO.learnGrp.lgTo }명</td>
 				<th>가입 승인 인원</th>
-				<td>ㅇㅇㅇ</td>
+				<td>${learnGrpDTO.mmCnt }명</td>
 			</tr>
 	    </table>
 	    
@@ -68,35 +68,34 @@
 				<tr>
 					<th>No.</th>
 					<th>이름</th>
-					<th>연락처</th>
+					<th>휴대전화</th>
 					<th>이메일</th>
 					<th>주소</th>
 					<th>가입승인일자</th>	
 				</tr>
 			</thead>
 			 <tbody>
-<%-- 					 <c:forEach var="" items=""> --%>
-			 	<tr>
-			 		<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td>5</td>
-					<td>6</td>
-				</tr>
-				
-				<tr>
-			 		<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td>5</td>
-					<td>6</td>
-				</tr>
-				
-<%-- 					 </c:forEach> --%>
-				
-                </tbody>   
+			 	<c:choose>
+			 		<c:when test="${empty members}">
+			 			<tr>
+			 				<td colspan="6">아직 학습자가 없습니다.</td>
+			 			</tr>
+			 		</c:when>
+			 		
+			 		<c:otherwise>
+						<c:forEach var="members" items="${members }">
+						 	<tr>
+						 		<td>No.</td>
+								<td>${members.member.mmName }</td>
+								<td>${members.member.phone }</td>
+								<td>${members.member.email }</td>
+								<td>${members.member.address }</td>
+								<td><fmt:formatDate value="${members.lgjAppdate }" pattern="yyyy-MM-dd"/></td>
+							</tr>
+						</c:forEach>
+			 		</c:otherwise>
+			 	</c:choose>
+			 </tbody>   
               </table>
               <div class="row mt-8" style="width:100%;">
 					<div class="d-flex justify-content-center" style="margin-top:12px">

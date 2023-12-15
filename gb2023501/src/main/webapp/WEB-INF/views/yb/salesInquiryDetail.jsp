@@ -37,7 +37,18 @@
         
         }
     }
-
+    function searchSalesInquiryDetail(go_order_date) {
+    	alert(go_order_date);
+		var popupW = 1000;
+		var popupH = 500;
+		var left = Math.ceil((window.screen.width - popupW)/2);
+		var top = Math.ceil((window.screen.height - popupH)/2);
+	
+		var url = "/operate/searchSalesInquiryDetail?go_order_date="+go_order_date;
+        var name = "searchSalesInquiryDetail";
+        
+        window.open(url, name, 'width='+popupW+',height='+popupH+',left='+left+',top='+top);
+	}
 
 </script>
 <body>
@@ -78,6 +89,7 @@
 				</tr>
 			</thead>
 			<tbody>
+				<c:if test="${selectSaleList.size() != 0 }">
 				 <c:forEach var="selectSaleList" items="${selectSaleList }">
 				 	<tr>
 				 		<td>1.</td>
@@ -89,29 +101,32 @@
 							<fmt:formatNumber value="${selectSaleList.salesSum }" pattern="#,###" /> 원
 							
 						</td>
-						<td width="100px;"><a href="#!"><button type="button" class="btn btn-light rounded py-2 px-3" type="button" style="background: #263d94; color: white;">상세</button></a></td>
+						<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" type="button" style="background: #263d94; color: white;" 
+												   onclick="searchSalesInquiryDetail(<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyyMMdd"/>)">상세</button></td>
+										
 					</tr>
 				 </c:forEach>
-				
+				</c:if>
+				<c:if test="${selectSaleList1.size() != 0 }">
+				 <c:forEach var="selectSaleList" items="${selectSaleList1 }">
+				 	<tr>
+				 		<td>1.</td>
+						<td>
+<%-- 							<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyy년MM월dd일"/> --%>
+							${selectSaleList.goOrderDate }월
+						</td>
+						<td>${selectSaleList.salesCnt } 개</td>
+						<td>
+							<fmt:formatNumber value="${selectSaleList.salesSum }" pattern="#,###" /> 원
+							
+						</td>
+						<td width="100px;"><a href="#!"><button type="button" class="btn btn-light rounded py-2 px-3" type="button" style="background: #263d94; color: white;">상세</button></a></td>
+						<td><input type="button" class="btn btn-primary mb-2" value="포인트 조정" onclick="boMemberPointUpdate(${selectSaleList.goOrderDate })"></td>
+					</tr>
+				 </c:forEach>
+				</c:if>
              </tbody>   
 		</table>
-<!-- 		<div class="row mt-8" style="width:100%;"> -->
-<!-- 			<div class="d-flex justify-content-center" style="margin-top:12px"> -->
-<!-- 	               <nav aria-label="Page navigation example"> -->
-<!-- 				  <ul class="pagination"> -->
-<%-- 				  	<c:if test="${page.startPage > page.pageLimit}"> --%>
-<%-- 				  		<li class="page-item"><a class="page-link" href="eduMaterialsList?currentPage=${page.startPage-page.pageLimit}">이전</a></li> --%>
-<%-- 				  	</c:if> --%>
-<%-- 				    <c:forEach var="i" begin="${page.startPage }" end="${page.endPage }"> --%>
-<%-- 				    	<li class="page-item"><a class="page-link" href="eduMaterialsList?currentPage=${i }">${i }</a></li> --%>
-<%-- 				    </c:forEach> --%>
-<%-- 				 	<c:if test="${page.endPage < page.totalPage}"> --%>
-<%-- 				 		<li class="page-item"><a class="page-link" href="eduMaterialsList?currentPage=${page.startPage+page.pageLimit}">다음</a></li> --%>
-<%-- 				 	</c:if> --%>
-<!-- 				  </ul> -->
-<!-- 				</nav> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
 	</div>
 </div>
 <%@ include file="../common/footerFo.jsp" %>

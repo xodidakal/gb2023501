@@ -7,15 +7,22 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.choongang.gb2023501.domain.EduMaterials;
 import com.choongang.gb2023501.domain.GameOrder;
+import com.choongang.gb2023501.domain.LearnGrp;
+import com.choongang.gb2023501.domain.LgJoin;
+import com.choongang.gb2023501.domain.Member;
+import com.choongang.gb2023501.model.MonthSalesDTO;
 import com.choongang.gb2023501.model.SalesInquiryDTO;
-import com.choongang.gb2023501.repository.YbRepository2;
-import com.choongang.gb2023501.repository.YbRepository;
+import com.choongang.gb2023501.ybRepository.EduRepository;
+import com.choongang.gb2023501.ybRepository.LearnGrpRepository;
+import com.choongang.gb2023501.ybRepository.YbRepository;
+import com.choongang.gb2023501.ybRepository.YbRepository2;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +34,9 @@ import lombok.extern.slf4j.Slf4j;
 public class JpaEduMaterialsService {
 	private final YbRepository yr;
 	private final YbRepository2 yr2;
+	private final EduRepository er;
+	private final LearnGrpRepository lgr;
+	
 	// 학습자료 상세조회
 	public Optional<EduMaterials> findByEduMaterials(int em_num) {
 		System.out.println("YbJpaEduMaterialsService findByEduMaterials start...");
@@ -65,18 +75,42 @@ public class JpaEduMaterialsService {
 		List<EduMaterials> findByEduContaining = yr.findByEduMaterialsContaining(keyword);
 		return findByEduContaining;
 	}
-	// 매출 조회 검색 리스트
+	// 매출 조회 검색 리스트 -> 일별
 	public List<SalesInquiryDTO> findBySalesContaining(Date s_date, Date e_date) {
 		log.info("YbJpaEduMaterialsService findByEduContaining start...");
-		List<SalesInquiryDTO> gameOrder = yr2.findSalesInquiryDtoJPQL(s_date, e_date);
+		List<SalesInquiryDTO> selectSaleList = yr2.findSalesInquiryDtoJPQL(s_date, e_date);
 		//List<SalesInquiryDTO> findBySalesContaining = yr.findBySalesContaining(startDate, endDate);
-		return gameOrder;
-	}
-	
-	public List<SalesInquiryDTO> selectSaleList(Date month) {
-		List<SalesInquiryDTO> selectSaleList = yr2.findBySalesInquiryDtoOrderByGoOrderDateDesc(month);
 		return selectSaleList;
 	}
+	// 매출 조회 검색 리스트 -> 월별
+	public List<MonthSalesDTO> selectSaleList(Date s_date, Date e_date) {
+		log.info("YbJpaEduMaterialsService selectSaleList start...");
+		List<MonthSalesDTO> selectSaleList = yr2.findSalesInquiryDtoJPQL1(s_date, e_date);
+		return selectSaleList;
+	}
+	// 학습그룹 등록
+	public int insertMaterials(EduMaterials eduMaterials, Member member) {
+		log.info("YbJpaEduMaterialsService insertMaterials start...");
+		eduMaterials.setMember(member);
+		EduMaterials insertMaterials = er.save(eduMaterials);
+		
+		return 0;
+	}
+	// 학습그룹 가입신청 리스트 조회
+	public List<LearnGrp> selectLGpList() {
+		log.info("YbJpaEduMaterialsService selectLGpList start...");
+		List<LearnGrp> selectLGpList = yr.selectLGpList();
+		 
+		return selectLGpList;
+	}
+	// 
+	public void insertJoin(LgJoin lgJoin) {
+		log.info("YbJpaEduMaterialsService insertJoin start...");
+		lgr.save(lgJoin);
+		
+	}
+
+
 
 
 

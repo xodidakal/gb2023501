@@ -66,11 +66,11 @@
                             <input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="한국기원 ID 로그인 하기" onclick="loginFormSubmit()">
                         </div>
                             <div class="form-group text-center">
-                                <a class="fs-sm text-reset" href="/signUpForm">회원가입 </a>
+                                <a class="fs-sm text-reset" href="/info/joinAgreeForm">회원가입 </a>
                                 <small class="fs-sm text-reset"> | </small>
-                                <a class="fs-sm text-reset" data-bs-toggle="modal" href="#modalFindId">아이디 찾기 </a>
-                                <small class="fs-sm text-reset"> | </small>
-                                <a class="fs-sm text-reset" data-bs-toggle="modal" href="#modalPasswordReset">비밀번호 찾기 </a>
+                                <a class="fs-sm text-reset" data-bs-toggle="modal" href="/info/idPwInquiry">아이디 찾기 | 비밀번호 찾기 </a>
+<!--                                 <small class="fs-sm text-reset"> | </small>
+                                <a class="fs-sm text-reset" data-bs-toggle="modal" href="#modalPasswordReset">비밀번호 찾기 </a> -->
                             </div>
                     </div>
                 </div>

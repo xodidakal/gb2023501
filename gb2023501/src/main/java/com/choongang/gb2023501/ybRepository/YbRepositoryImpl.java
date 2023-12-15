@@ -1,4 +1,4 @@
-package com.choongang.gb2023501.repository;
+package com.choongang.gb2023501.ybRepository;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.choongang.gb2023501.domain.EduMaterials;
 import com.choongang.gb2023501.domain.GameOrder;
+import com.choongang.gb2023501.domain.LearnGrp;
 import com.choongang.gb2023501.model.SalesInquiryDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -98,7 +99,7 @@ public class YbRepositoryImpl implements YbRepository {
 //		 log.info("YbRepositoryImpl List<GameOrder> findAllSales.size() -> " + selectDateList.size());
 //		return selectDateList;
 //	}
-//	
+	// 매출 조회 검색 리스트 -> 일별 	
 	@Override
 	public List<SalesInquiryDTO> findBySalesContaining(String s_sdate, String s_edate) {
 		
@@ -111,6 +112,16 @@ public class YbRepositoryImpl implements YbRepository {
 				 							.getResultList();
 		 log.info("YbRepositoryImpl List<GameOrder> findAllSales.size() -> " + selectDateList.size());
 		return selectDateList;
+	}
+	// 학습그룹 리스트 조회
+	@Override
+	public List<LearnGrp> selectLGpList() {
+		
+		System.out.println("YbRepositoryImpl selectLGpList start...");
+		List<LearnGrp> selectLGpList = em.createQuery("select DISTINCT l from LearnGrp l", LearnGrp.class)
+				   						 .getResultList();	
+		
+		return selectLGpList;
 	}
 
 	

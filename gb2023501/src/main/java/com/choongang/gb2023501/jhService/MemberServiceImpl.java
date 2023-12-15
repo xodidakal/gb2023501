@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.choongang.gb2023501.domain.Member;
-import com.choongang.gb2023501.repository.MemberRepository;
+import com.choongang.gb2023501.jhRepository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,20 +1,23 @@
-package com.choongang.gb2023501.repository;
+package com.choongang.gb2023501.ybRepository;
 
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.choongang.gb2023501.domain.EduMaterials;
 import com.choongang.gb2023501.domain.GameOrder;
+import com.choongang.gb2023501.model.MonthSalesDTO;
 import com.choongang.gb2023501.model.SalesInquiryDTO;
 
 @Repository
 public interface YbRepository2 extends JpaRepository<GameOrder, Long> {
-
+	
 	@Query( 
 			"SELECT "
 			+ "new com.choongang.gb2023501.model.SalesInquiryDTO(go.goOrderDate, count(gNum), sum(goPayment)) "
@@ -22,19 +25,21 @@ public interface YbRepository2 extends JpaRepository<GameOrder, Long> {
 			+ "WHERE go.goOrderDate BETWEEN :startDate and :endDate "
 			+ "GROUP BY go.goOrderDate "
 			+ "order by go.goOrderDate desc" 
-			
 	)
 	List<SalesInquiryDTO> findSalesInquiryDtoJPQL(@Param("startDate") Date s_date, @Param("endDate") Date e_date);
 	
 	@Query(
-			"SELECT "
-		  + "new com.choongang.gb2023501.model.SalesInquiryDTO(go.goOrderDate, count(gNum), sum(goPayment)) "
-		  + "FROM GameOrder go "
-	      + "WHERE go.goOrderDate = :sDate "
-		  + "GROUP BY go.goOrderDate" 
-	)
+		    "SELECT NEW com.choongang.gb2023501.model.MonthSalesDTO(FUNCTION('MONTH', go.goOrderDate), COUNT(gNum), SUM(goPayment)) " +
+		    "FROM GameOrder go " +
+		    "WHERE go.goOrderDate BETWEEN :sDate AND :eDate " +
+		    "GROUP BY FUNCTION('MONTH', go.goOrderDate) " +
+		    "ORDER BY FUNCTION('MONTH', go.goOrderDate) DESC"
+		)
 	
-	List<SalesInquiryDTO> findBySalesInquiryDtoOrderByGoOrderDateDesc(@Param("sDate") Date month);
+	List<MonthSalesDTO> findSalesInquiryDtoJPQL1(@Param("sDate") Date s_date, @Param("eDate") Date e_date);
 
 
 }
+
+
+

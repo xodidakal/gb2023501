@@ -1,6 +1,5 @@
 package com.choongang.gb2023501.model;
 
-
 import java.util.Date;
 
 
@@ -11,9 +10,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SalesInquiryDTO {
+public class MonthSalesDTO {
 
-	private Date  goOrderDate;
+	private int  goOrderDate;
+
 	private long  salesCnt;
 	private long  salesSum;
 }
+
