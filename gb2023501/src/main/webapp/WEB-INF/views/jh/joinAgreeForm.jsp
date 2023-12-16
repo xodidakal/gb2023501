@@ -21,16 +21,21 @@
 	            $(event.target).parents('.chkbox_group').find('input').prop('checked', false);
 	        }
 	    });
+/* 	    위와 같은 기능
+ 
+ 		$(document).ready(function() {
+	        // 전체 동의 체크박스를 클릭할 때 발생하는 이벤트 핸들러
+	        $('.chkbox_group').on('click', '#chkAll', function(event) {
+	            const checked = $(event.target).is(':checked');
+	            // 모든 체크박스 상태를 전체 동의 체크박스와 동기화
+	            $('.chkbox_group .form-check-input').prop('checked', checked);
+	        }); */
 
 	    // 각각의 체크박스를 클릭할 때 발생하는 이벤트 핸들러
 	    $('.chkbox_group').on('click', '.form-check-input', function() {
-	        let is_checked = true;
-
-	        $('.chkbox_group .form-check-input').each(function() {
-	            is_checked = is_checked && $(this).is(':checked');
-	        });
-
-	        $('#chkAll').prop('checked', is_checked);
+	        // 모든 체크박스가 선택되었을 때 전체 동의 체크박스를 체크
+	        const is_all_checked = $('.chkbox_group .form-check-input:not(#chkAll)').length === $('.chkbox_group .form-check-input:checked:not(#chkAll)').length;
+	        $('#chkAll').prop('checked', is_all_checked);
 	    });
 	});
 
@@ -44,7 +49,7 @@
 
 	    if (phoneRadio.checked) {
 	        verificationInput.type = "tel";
-	        verificationInput.name = "m_phone";
+	        verificationInput.name = "phone";
 	        verificationInput.placeholder = "(-)없이 휴대폰 번호를 입력하세요";
 
 	        // 휴대폰 선택 시 최대 11자리 숫자만 입력 가능하도록 설정
@@ -55,7 +60,7 @@
 	        });
 	    } else if (emailRadio.checked) {
 	        verificationInput.type = "email";
-	        verificationInput.name = "m_email";
+	        verificationInput.name = "email";
 	        verificationInput.placeholder = "이메일을 입력하세요";
 
 	        // 이메일 형식 검증
@@ -78,7 +83,7 @@
 			var	requiredCheckboxes 	= document.querySelectorAll('.chkbox_group .form-check-input[required]');
 		    var nameInput 			= document.getElementById("name");
 		    var verificationInput 	= document.getElementById("verificationInput");
-		    var verificationForm 	= document.getElementById("verificationForm");
+		   // var verificationForm 	= document.getElementById("verificationForm");
 		        	
 		    // 약관 동의 체크 여부 확인
 		    var isAllAgreed = Array.from(requiredCheckboxes).every(function(checkbox) {
@@ -96,11 +101,42 @@
 		    } else if (verificationInput.value.trim() === "") {
 		      	alert("인증수단을 선택하고 값을 입력해 주세요.");
 		      	verificationInput.focus();
+		    } else{
+            	// FormData 객체를 사용하여 폼 데이터를 가져옴
+		    	//var formData = new FormData(verificationForm);
+        var verificationType  = verificationInput.name;
+        var verificationValue = verificationInput.value;
+        var nameInputValue = document.getElementById("name").value;
+		    	
+            	
+            	alert("verificationType -> " + verificationType);
+            	//alert("verificationValue -> " + verificationValue);
+            	//alert("nameInput -> " + nameInputValue);
+            	
+            	var data = {};
+       						data["name"] = nameInputValue;
+        					data[verificationType] = verificationValue;
+            	
+            	alert("data -> " + JSON.stringify(data));
+            	
+             	$.ajax({
+            		url	: "/joinAgree",
+            		type: "POST",
+            		data: JSON.stringify(data),
+            		 success: function (response) {
+                         // 서버로부터의 응답 처리
+                         alert("서버 응답: " + response);
+                         // 필요한 추가 작업 수행
+                     },
+                     error: function (error) {
+                         console.error("에러 발생:", error);
+                     }
+            	}); 
+		    	
 		    } 
         }    
             
             /* else {
-            	// FormData 객체를 사용하여 폼 데이터를 가져옴
                 var formData = new FormData(verificationForm);
             	
             	//ajax를 이용해 회원 존재 유무 비교하고 있으면 이미 가입한 사용자다 아니면 joinform으로 이동(제이쿼리가 아닌 fech api이용 ) -> 시큐리티로 회원 유무 검증 할 수 있을 것 같아 보류
@@ -201,7 +237,7 @@
                                     <tr>
                                         <th>이름</th>
                                         <td colspan="2">
-                                            <input type="text" class="form-control" id="name" name="m_name" required>
+                                            <input type="text" class="form-control" id="name" name="name" required>
                                         </td>
                                     </tr>
                                     <tr>
@@ -218,7 +254,7 @@
                                     <tr>
                                         <th></th>
                                         <td colspan="2">
-                                            <input type="tel" class="form-control" id="verificationInput" placeholder="(-)없이 휴대폰 번호를 입력하세요">
+                                            <input type="tel" class="form-control" id="verificationInput" name="phone" placeholder="(-)없이 휴대폰 번호를 입력하세요">
                                         </td>
                                     </tr>
                                 </table>
