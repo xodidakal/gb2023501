@@ -55,4 +55,29 @@
 		</if>
 	</select>
 	
+	<select id="dhGameList" resultType="Game" parameterType="Game">
+		SELECT 	a.*
+		FROM   (SELECT rownum rn, g.*
+				FROM  game g
+				<if test="keyword != null and keyword != ''">
+			 	where g_title like '%' || #{keyword} || '%'
+			 	</if>
+			 	<if test="g_dele_status != null and g_dele_status != ''">
+			 	and g_dele_status = #{g_dele_status}
+			 	</if>
+				) a
+		WHERE rn BETWEEN #{start} AND #{end}
+		
+	</select>
+	
+	<select id="dhGameSearchTotal" resultType="int" parameterType="Game">
+		SELECT count(*)
+		FROM   game
+		<if test="keyword != null and keyword != ''">
+		WHERE  g_title like '%' || #{keyword} || '%'
+		</if>
+		<if test="g_dele_status != null and g_dele_status != ''">
+		AND    g_dele_status = #{g_dele_status}
+		</if>
+	</select>
 </mapper>
