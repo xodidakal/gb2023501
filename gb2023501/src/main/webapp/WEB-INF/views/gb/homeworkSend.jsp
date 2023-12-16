@@ -48,25 +48,6 @@
 			}
 		});
 		
-		// 숙제번호 체크할 때마다 체크
-		$("input[name=h_num]").click(function() {
-			var pH_num = $("input[name=h_num]:checked").val();
-			var pLg_num = $("#searchLgtitle").val();
-			
-			alert("내가 체크한 숙제번호 -> "+h_num);
-			alert("현재 학습그룹번호 -> "+lg_num);
-			
-			$.ajax({
-				url : "/homeworkSendExist",
-				data : {h_num : pH_num, m_num : pLg_num},
-				dataType : 'json',
-				success : function(data){	// data -> homeworkSendExist 결과값
-					var hwSendMemberList = JSON.stringify(data);
-					alert("hwSendMemberList -> "+hwSendMemberList);
-				}
-			});
-		});
-		  
 		// 학습자 체크할 때마다 체크
 		$("input[name=m_num]").click(function() {
 			var totalM_num = $("input[name=m_num]").length;
@@ -78,7 +59,46 @@
 				$('#checkAll').val('전체해제');
 			}
 		});
+		
+		// 숙제번호 체크할 때마다 체크
+		$("input[name=h_num]").click(function() {
+			var pH_num = $("input[name=h_num]:checked").val();
+			var pLg_num = $("#searchLgtitle").val();
+
+			$.ajax({
+				url : "/educator/homeworkSendExist",
+				data : {h_num : pH_num, lg_num : pLg_num},
+				dataType : 'json',
+				success : function(data){	// data -> homeworkSendExist 결과값
+					var hwSendMemberList = JSON.stringify(data);
+					// alert("hwSendMemberList -> "+hwSendMemberList);
+					
+					if(hwSendMemberList == "[]"){
+						$('#memberTable').empty();
+						$('#memberTable').append("<tr><td>가입한 학습자가 없습니다.</td></tr>");
+					}else {
+						$('#memberTable').empty();
+						var html = "";
+						$(data).each(function() {
+							html += "<tr>";
+							if(this.existence == 1){
+								html += "<td><span style='color:red;'>전송완료</span></td>";
+							}else{
+								html += "<td><input class='form-check-input' type='checkbox' name='m_num' value="+this.m_num;
+								html += " id='flexRadioDefault1'></td>";
+							}
+							html += "<td>"+this.m_name+"</td>";
+							html += "<td>"+this.m_phone+"</td>";
+							html += "<td>"+this.hr_level+"</td></tr>";
+						});
+						$('#memberTable').append(html);
+					}
+				}
+			});
+		});
+		  
 	});
+	
 	function totalCheck() {
 		// m_num 체크박스에서 체크된 개수
 		var totalM_numChecked = $("input[name=m_num]:checked").length;

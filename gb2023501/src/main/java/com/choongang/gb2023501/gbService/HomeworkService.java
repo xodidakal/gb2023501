@@ -13,5 +13,4 @@ public interface HomeworkService {
 	int 			insertUpdateHomework(Homework homework);
 	List<Homework> 	selectAllHomeworkList(Homework homework);
 	int 			insertHwSend(Map<String, Object> map);
-	List<LgJoin> 	selectLgHwSendMemberList(HwSend hwsend);
 } 

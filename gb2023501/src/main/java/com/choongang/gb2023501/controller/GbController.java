@@ -156,9 +156,12 @@ public class GbController {
 	  // 학습자에게 숙제 전송여부 컬럼 추가하여 리스트 반환
 	  @ResponseBody
 	  @RequestMapping("/educator/homeworkSendExist")
-	  public List<LgJoin> selectLgHwSendMemberList(HwSend hwsend) {
+	  public List<LgJoin> selectLgHwSendMemberList(int h_num, int lg_num) {
 		  System.out.println("GbController selectLgHwSendMemberList start...");
-		  List<LgJoin> hwSendMemberList = hs.selectLgHwSendMemberList(hwsend);
+		  HwSend hwsend = new HwSend();
+		  hwsend.setH_num(h_num);
+		  hwsend.setLg_num(lg_num);
+		  List<LgJoin> hwSendMemberList = gljs.selectLgHwSendMemberList(hwsend);
 		  System.out.println("GbController selectLgHwSendMemberList hwSendMemberList -> "+hwSendMemberList.size());
 		  
 		  return hwSendMemberList;
@@ -187,7 +190,7 @@ public class GbController {
 	@RequestMapping("/learning/myhomeworkList")
 	public String selectMyHomeworkList(Model model) {
 		System.out.println("GbController selectMyHomeworkList start...");
-		int m_num = ms.selectMmNumById();	
+		int m_num = ms.selectMmNumById();		
 
 		return "gb/myHomeworkList";
 	}

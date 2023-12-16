@@ -68,13 +68,4 @@ public class HomeworkServiceImpl implements HomeworkService {
 		return count;
 	}
 
-	@Override
-	public List<LgJoin> selectLgHwSendMemberList(HwSend hwsend) {
-		System.out.println("HomeworkServiceImpl insertHwSend start...");
-		
-		List<LgJoin> hwSendMemberList = hd.selectLgHwSendMemberList(hwsend);
-		
-		return hwSendMemberList;
-	}
-
 }
