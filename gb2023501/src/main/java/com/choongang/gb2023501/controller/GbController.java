@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.gb2023501.gbService.GbLgJoinService;
 import com.choongang.gb2023501.gbService.HomeworkService;
+import com.choongang.gb2023501.gbService.JpaHomeworkService;
 import com.choongang.gb2023501.gbService.Paging;
 import com.choongang.gb2023501.jhService.MemberService;
 import com.choongang.gb2023501.model.Homework;
@@ -29,6 +30,7 @@ public class GbController {
 	private final HomeworkService hs;
 	private final GbLgJoinService gljs;
 	private final MemberService ms;
+	private final JpaHomeworkService jms;
 	
 	// 숙제 생성 목록
 	@RequestMapping("educator/homeworkForm")
@@ -190,7 +192,12 @@ public class GbController {
 	@RequestMapping("/learning/myhomeworkList")
 	public String selectMyHomeworkList(Model model) {
 		System.out.println("GbController selectMyHomeworkList start...");
-		int m_num = ms.selectMmNumById();		
+		// 학습자 번호를 담는다.
+		int m_num = ms.selectMmNumById();	
+		
+		// 나의 숙제 목록 가져오기
+		List<com.choongang.gb2023501.domain.HwSend> myHomeworkList = jms.selectMyHomeworkList(m_num);
+		System.out.println("GbController selectMyHomeworkList myHomeworkList ->"+myHomeworkList.size());
 
 		return "gb/myHomeworkList";
 	}
