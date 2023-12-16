@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.gb2023501.gbService.GbLgJoinService;
 import com.choongang.gb2023501.gbService.HomeworkService;
+import com.choongang.gb2023501.gbService.JpaHomeworkService;
 import com.choongang.gb2023501.gbService.Paging;
 import com.choongang.gb2023501.jhService.MemberService;
 import com.choongang.gb2023501.model.Homework;
@@ -29,6 +30,7 @@ public class GbController {
 	private final HomeworkService hs;
 	private final GbLgJoinService gljs;
 	private final MemberService ms;
+	private final JpaHomeworkService jms;
 	
 	// 숙제 생성 목록
 	@RequestMapping("educator/homeworkForm")
@@ -156,9 +158,12 @@ public class GbController {
 	  // 학습자에게 숙제 전송여부 컬럼 추가하여 리스트 반환
 	  @ResponseBody
 	  @RequestMapping("/educator/homeworkSendExist")
-	  public List<LgJoin> selectLgHwSendMemberList(HwSend hwsend) {
+	  public List<LgJoin> selectLgHwSendMemberList(int h_num, int lg_num) {
 		  System.out.println("GbController selectLgHwSendMemberList start...");
-		  List<LgJoin> hwSendMemberList = hs.selectLgHwSendMemberList(hwsend);
+		  HwSend hwsend = new HwSend();
+		  hwsend.setH_num(h_num);
+		  hwsend.setLg_num(lg_num);
+		  List<LgJoin> hwSendMemberList = gljs.selectLgHwSendMemberList(hwsend);
 		  System.out.println("GbController selectLgHwSendMemberList hwSendMemberList -> "+hwSendMemberList.size());
 		  
 		  return hwSendMemberList;
@@ -187,7 +192,12 @@ public class GbController {
 	@RequestMapping("/learning/myhomeworkList")
 	public String selectMyHomeworkList(Model model) {
 		System.out.println("GbController selectMyHomeworkList start...");
+		// 학습자 번호를 담는다.
 		int m_num = ms.selectMmNumById();	
+		
+		// 나의 숙제 목록 가져오기
+		List<com.choongang.gb2023501.domain.HwSend> myHomeworkList = jms.selectMyHomeworkList(m_num);
+		System.out.println("GbController selectMyHomeworkList myHomeworkList ->"+myHomeworkList.size());
 
 		return "gb/myHomeworkList";
 	}

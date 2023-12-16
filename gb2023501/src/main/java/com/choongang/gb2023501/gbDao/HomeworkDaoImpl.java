@@ -86,18 +86,4 @@ public class HomeworkDaoImpl implements HomeworkDao {
 		return count;
 	}
 
-	@Override
-	public List<LgJoin> selectLgHwSendMemberList(HwSend hwsend) {
-		System.out.println("HomeworkDaoImpl selectLgHwSendMemberList start...");
-		List<LgJoin> hwSendMemberList = null;
-		
-		try {
-			hwSendMemberList = session.selectList("gbSelectLgHwSendMemberList", hwsend);
-			System.out.println("HomeworkDaoImpl selectLgHwSendMemberList hwSendMemberList -> "+hwSendMemberList.size());
-		} catch (Exception e) {
-			System.out.println("HomeworkDaoImpl selectLgHwSendMemberList Exception->"+e.getMessage());
-		}
-		
-		return hwSendMemberList;
-	}
 }

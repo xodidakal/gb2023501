@@ -70,5 +70,31 @@ public class DhController {
 		return "dh/myGameOrderList";
 
 	}
+	// 게임콘텐츠관리
+		@RequestMapping(value = "operate/gameList")
+		public String gameList(Game game,String currentPage, Model model) {
+			System.out.println("dhController gameList() start..");
+			// 게임콘텐츠 총 개수
+			int totalSearchGame = gos.totalSearchGame(game);
+			// 키워드 검색
+			String keyword = game.getKeyword();
+			System.out.println("totalSearchGame -> "+totalSearchGame);
+				
+			Paging page = new Paging(totalSearchGame, currentPage, 10);
+			game.setStart(page.getStartRow());
+			game.setEnd(page.getEndRow());
+				
+			List<Game> listGame = gos.listGame(game);
+				
+			model.addAttribute("keyword", keyword);
+			model.addAttribute("listGame", listGame);
+			model.addAttribute("page", page);
+			model.addAttribute("totalSearchGame",totalSearchGame);
+			
+			System.out.println("dhController gameList() end..");
+				
+			return "dh/gameList";
+
+		}
 }
  

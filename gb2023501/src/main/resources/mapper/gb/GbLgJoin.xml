@@ -18,11 +18,14 @@
 		      WHERE lgj.m_num = m.m_num
 		      AND lg_num = #{lg_num}) a,
 		      
-		     (SELECT hr.m_num, MAX(HR_LEVEL) hr_level
-		      FROM lg_join lgj, hw_record hr
-		      WHERE lgj.m_num = hr.m_num
-		      AND lgj.lg_num = #{lg_num}
-		      GROUP BY hr.m_num ) b
+		     (SELECT lgj.m_num, NVL(hr.hr_level, 0) hr_level
+			  FROM (SELECT m_num
+			        FROM lg_join lgj
+			        WHERE lgj.lg_num = #{lg_num}) lgj,
+			       (SELECT m_num, max(hr_level) hr_level
+			        FROM hw_record
+			        GROUP BY m_num) hr
+			  WHERE lgj.m_num = hr.m_num(+) ) b
 		WHERE a.m_num = b.m_num
 	</select>
 	
@@ -33,11 +36,15 @@
 		      WHERE lgj.m_num = m.m_num
 		      AND lg_num = #{lg_num}) a,
 		      
-		     (SELECT hr.m_num, MAX(HR_LEVEL) hr_level
-		      FROM lg_join lgj, hw_record hr
-		      WHERE lgj.m_num = hr.m_num
-		      AND lgj.lg_num = #{lg_num}
-		      GROUP BY hr.m_num ) b, 
+		     (SELECT lgj.m_num, NVL(hr.hr_level, 0) hr_level
+			  FROM (SELECT m_num
+			        FROM lg_join lgj
+			        WHERE lgj.lg_num = #{lg_num}) lgj,
+			       (SELECT m_num, max(hr_level) hr_level
+			        FROM hw_record
+			        WHERE h_num = #{h_num}
+			        GROUP BY m_num) hr
+			  WHERE lgj.m_num = hr.m_num(+) ) b, 
 		      
 		      (SELECT c1.m_num, NVL(c2.existence, 0) existence
 		       FROM (SELECT m_num
