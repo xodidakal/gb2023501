@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
 import com.choongang.gb2023501.domain.HwSend;
+import com.choongang.gb2023501.model.HomeworkDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,16 +19,23 @@ public class JpaHomeworkRepositoryImpl implements JpaHomeworkRepository {
 	private final EntityManager em;
 	
 	@Override
-	public List<HwSend> selectMyHomeworkList(int m_num) {
+	public List<HomeworkDTO> selectMyHomeworkList(int m_num) {
 		System.out.println("JpaHomeworkRepositoryImpl selectMyHomeworkList start...");
+		List<HomeworkDTO> myHomeworkList = null;
 		
 		try {
 			
+			String sql = "SELECT new com.choongang.gb2023501.model.HomeworkDTO(h.hhNum, h.hhTitle, h.hhLevel, h.hhDeadline, hm.mmName) "
+					   + "FROM HwSend hs join hs.homework h join hs.member hsm join h.member hm "
+					   + "WHERE hsm.mmNum = : mmNum";
+			myHomeworkList = em.createQuery(sql, HomeworkDTO.class).setParameter("mmNum", m_num).getResultList();
+			System.out.println("JpaHomeworkRepositoryImpl selectMyHomeworkList myHomeworkList -> "+myHomeworkList.size());
+			
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.out.println("JpaHomeworkRepositoryImpl selectMyHomeworkList Exception -> "+ e.getMessage());
 		}
 		
-		return null;
+		return myHomeworkList;
 	}
 
 }

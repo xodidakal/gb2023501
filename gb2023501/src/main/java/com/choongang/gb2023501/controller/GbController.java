@@ -17,6 +17,7 @@ import com.choongang.gb2023501.gbService.JpaHomeworkService;
 import com.choongang.gb2023501.gbService.Paging;
 import com.choongang.gb2023501.jhService.MemberService;
 import com.choongang.gb2023501.model.Homework;
+import com.choongang.gb2023501.model.HomeworkDTO;
 import com.choongang.gb2023501.model.HwSend;
 import com.choongang.gb2023501.model.LearnGrp;
 import com.choongang.gb2023501.model.LgJoin;
@@ -196,9 +197,11 @@ public class GbController {
 		int m_num = ms.selectMmNumById();	
 		
 		// 나의 숙제 목록 가져오기
-		List<com.choongang.gb2023501.domain.HwSend> myHomeworkList = jms.selectMyHomeworkList(m_num);
+		List<HomeworkDTO> myHomeworkList = jms.selectMyHomeworkList(m_num);
 		System.out.println("GbController selectMyHomeworkList myHomeworkList ->"+myHomeworkList.size());
-
+		
+		model.addAttribute("myHomeworkList", myHomeworkList);
+		model.addAttribute("startRow", 1);
 		return "gb/myHomeworkList";
 	}
 	
