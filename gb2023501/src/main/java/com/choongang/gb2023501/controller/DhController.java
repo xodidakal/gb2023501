@@ -1,6 +1,7 @@
 package com.choongang.gb2023501.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,7 +71,38 @@ public class DhController {
 		return "dh/myGameOrderList";
 
 	}
-	// 게임콘텐츠관리
+	@RequestMapping(value = "operate/gameInsertForm")
+	public String gameinsertForm(Model model) {
+		try {
+			System.out.println("dhController gameinsertForm() start..");
+		} catch (Exception e) {
+			System.out.println("dhController gameinsertForm() ->"+e.getMessage());
+		} finally {
+			System.out.println("dhController gameinsertForm() end..");
+		}
+		return "dh/gameForm";
+	}
+	// 게임콘텐츠 등록
+	@RequestMapping(value = "operate/gameInsertResult")
+	public String gameInsertResult(Game game, Model model) {
+		int result = 0;
+		try {
+			System.out.println("dhController gameInsertResult() start..");
+			result = gos.insertGame(game);
+			
+		} catch (Exception e) {
+			System.out.println("dhController gameInsertResult() ->"+e.getMessage());
+		} finally {
+			System.out.println("dhController gameInsertResult() end..");
+		}
+			if (result > 0) {
+				return "redirect:gameList";
+			} else {
+				model.addAttribute("msg", "등록에 실패하였습니다.");
+				return "forward:gameInsertForm";
+			}
+		}
+		// 게임콘텐츠 관리
 		@RequestMapping(value = "operate/gameList")
 		public String gameList(Game game,String currentPage, Model model) {
 			System.out.println("dhController gameList() start..");
@@ -79,20 +111,20 @@ public class DhController {
 			// 키워드 검색
 			String keyword = game.getKeyword();
 			System.out.println("totalSearchGame -> "+totalSearchGame);
-				
+						
 			Paging page = new Paging(totalSearchGame, currentPage, 10);
 			game.setStart(page.getStartRow());
 			game.setEnd(page.getEndRow());
-				
+						
 			List<Game> listGame = gos.listGame(game);
-				
+						
 			model.addAttribute("keyword", keyword);
 			model.addAttribute("listGame", listGame);
 			model.addAttribute("page", page);
 			model.addAttribute("totalSearchGame",totalSearchGame);
-			
+					
 			System.out.println("dhController gameList() end..");
-				
+						
 			return "dh/gameList";
 
 		}

@@ -12,5 +12,6 @@ public interface GameOrderService {
 	int        totalSearchGameOrder2(Game game);
 	List<Game> listGame(Game game);
 	int        totalSearchGame(Game game);
+	int        insertGame(Game game);
 
 }
