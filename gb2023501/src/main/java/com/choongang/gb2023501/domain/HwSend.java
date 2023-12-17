@@ -34,18 +34,18 @@ public class HwSend {
 	
 	// 조회용
 	@Transient					// 테이블과 매핑시키지 않는 변수 및 메소드를 선언하는 어노테이션
-	private String h_title; 	// 숙제명
+	private String hhTitle; 	// 숙제명
 	
 	@Transient
-	private String m_name;		// 교육자명
+	private String mmName;		// 교육자명
 	
 	@Transient
-	private int h_level;		// 숙제 최종 진도
+	private int hhLevel;		// 숙제 최종 진도
 	
 	@Transient
-	private int hr_level;		// 학습자 현재 레벨
+	private int hrLevel;		// 학습자 현재 레벨
 	
 	@Transient
-	private Date h_deadline;	// 제출기한
+	private Date hhDeadline;	// 제출기한
 	
 }

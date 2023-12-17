@@ -42,7 +42,7 @@
        		<thead>
 				<tr>
 					<th>No.</th>
-					<th>숙제명</th>
+					<th style="width:40%">숙제명</th>
 					<th>교육자</th>
 					<th>진도</th>
 					<th>제출기한</th>	
@@ -50,26 +50,19 @@
 				</tr>
 			</thead>
 			 <tbody>
-<%-- 					 <c:forEach var="" items=""> --%>
+			 <c:set var="startRow" value="${startRow }"></c:set>
+			 <c:forEach var="myHomework" items="${myHomeworkList }">
+			 	
 			 	<tr>
-			 		<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td>5</td>
+			 		<td>${startRow}</td>
+					<td>${myHomework.hhTitle }</td>
+					<td>${myHomework.mmName }</td>
+					<td>${myHomework.hhLevel }</td>
+					<td>${myHomework.hhDeadline }</td>
 					<td width="100px;"><a href="/learning/myHomeworkDetail"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
 				</tr>
-				
-				<tr>
-			 		<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td>5</td>
-					<td width="100px;"><a href="/learning/myHomeworkDetail"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
-				</tr>
-				
-<%-- 					 </c:forEach> --%>
+				<c:set var="startRow" value="${startRow + 1 }"></c:set>				
+			 </c:forEach>
 				
                 </tbody>   
               </table>
