@@ -105,4 +105,29 @@ public class GameOrderDaoImpl implements GameOrderDao {
 		return result;
 	}
 
+	@Override
+	public Game selectGame(int g_num, int m_num) {
+		Game gameselect = new Game();
+		Game game = new Game();
+		game.setG_num(g_num);
+		game.setM_num(m_num);
+		try {
+			gameselect = session.selectOne("dhGameSelect", game);
+		}catch (Exception e) {
+			System.out.println("GameOrderDaoImpl selectGame->"+e.getMessage());
+		}
+		return gameselect;
+	}
+
+	@Override
+	public int updateGame(Game game) {
+		int result = 0;
+		try {
+			result = session.update("dhGameUpdate",game);
+		} catch (Exception e) {
+			System.out.println("GameOrderDaoImpl  updateGame->"+e.getMessage());
+		}
+		return result;
+		}
+
 }

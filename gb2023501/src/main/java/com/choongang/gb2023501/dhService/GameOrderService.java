@@ -13,5 +13,7 @@ public interface GameOrderService {
 	List<Game> listGame(Game game);
 	int        totalSearchGame(Game game);
 	int        insertGame(Game game);
+	Game       selectGame(int g_num, int m_num);
+	int        updateGame(Game game);
 
 }
