@@ -15,5 +15,6 @@ public interface GameOrderService {
 	int        insertGame(Game game);
 	Game       selectGame(int g_num, int m_num);
 	int        updateGame(Game game);
+	int        insertGameOrder(Game game);
 
 }

@@ -84,5 +84,13 @@ public class GameOrderServiceImpl implements GameOrderService {
 		return result;
 	}
 
+	@Override
+	public int insertGameOrder(Game game) {
+		int result = 0;
+		result = god.insertGameOrder(game);
+		
+		return result;
+	}
+
 }
 

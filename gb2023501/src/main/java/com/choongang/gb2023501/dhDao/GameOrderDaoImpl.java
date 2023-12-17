@@ -130,4 +130,15 @@ public class GameOrderDaoImpl implements GameOrderDao {
 		return result;
 		}
 
+	@Override
+	public int insertGameOrder(Game game) {
+		int result = 0;
+		try {
+			result = session.insert("dhGameOrderInsert", game);
+		} catch (Exception e) {
+			System.out.println("GameOrderDaoImpl insertGameOrder->"+e.getMessage());
+		}
+		return result;
+	}
+
 }
