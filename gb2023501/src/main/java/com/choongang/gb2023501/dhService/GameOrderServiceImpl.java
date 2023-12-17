@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.choongang.gb2023501.dhDao.GameOrderDao;
 import com.choongang.gb2023501.model.Game;
-import com.choongang.gb2023501.model.GameOrder;
 
 import lombok.RequiredArgsConstructor;
 
@@ -68,6 +67,27 @@ public class GameOrderServiceImpl implements GameOrderService {
 	public int insertGame(Game game) {
 		int result = 0;
 		result = god.insertGame(game);
+		
+		return result;
+	}
+
+	@Override
+	public Game selectGame(int g_num, int m_num) {
+		Game game = god.selectGame(g_num, m_num);
+		return game;
+	}
+
+	@Override
+	public int updateGame(Game game) {
+		int result = 0;
+		result = god.updateGame(game);
+		return result;
+	}
+
+	@Override
+	public int insertGameOrder(Game game) {
+		int result = 0;
+		result = god.insertGameOrder(game);
 		
 		return result;
 	}

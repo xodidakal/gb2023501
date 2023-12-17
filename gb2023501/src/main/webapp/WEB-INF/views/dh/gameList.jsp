@@ -76,7 +76,9 @@
 								<c:if test="${game.g_dele_status == 0}">Y</c:if>
 								<c:if test="${game.g_dele_status == 1}">N</c:if>
 							</td>
-							<td width="100px;"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" onclick="gameUpdate(${gameList.g_num})">상세</button></td>
+							<td width="100px;">
+								<a href="gameUpdate?g_num=${game.g_num}&m_num=${game.m_num}"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="상세"></a>
+							</td>
 						</tr>
 						<c:set var="num" value="${num+1}"/>
  					 </c:forEach>

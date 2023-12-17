@@ -40,7 +40,7 @@
 			<div class="col">
 			<div class="d-flex align-items-center justify-content-end">
           		<div style="width: 100px;">
-	          		<a href="gameOrderForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="구독하기"></a>
+	          		<a href="gameOrderInsert"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="구독하기"></a>
             	</div>
             </div>
 			</div>
