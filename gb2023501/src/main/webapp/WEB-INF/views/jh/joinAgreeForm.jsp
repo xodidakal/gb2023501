@@ -37,11 +37,19 @@
 	        const is_all_checked = $('.chkbox_group .form-check-input:not(#chkAll)').length === $('.chkbox_group .form-check-input:checked:not(#chkAll)').length;
 	        $('#chkAll').prop('checked', is_all_checked);
 	    });
+	       
+        // 추가: 페이지 로딩 시 버튼 숨기기(원래  style="display: none;"로 안보였어야 하는데 보여서 추가함)    
+        $("#verificationButton").hide();    
+	        
+        // 인증확인 버튼 클릭 시 회원가입 페이지로 이동
+        //$("#joinFormButton").on("click", function() {
+          //  window.location.href = "/info/joinForm";
+        //});    
 	});
 
 
 
-
+//인증 수단 선택하기
  function updateVerificationInput() {
 	    var phoneRadio = document.getElementById("phone");
 	    var emailRadio = document.getElementById("email");
@@ -52,6 +60,7 @@
 	        verificationInput.name = "phone";
 	        verificationInput.placeholder = "(-)없이 휴대폰 번호를 입력하세요";
 
+	        // 아래 검증 제대로 안됨 추후에 변경 예정 11자 이하일땐 버튼 비활성화했다가 11자 되면 활성화 되게 하기?
 	        // 휴대폰 선택 시 최대 11자리 숫자만 입력 가능하도록 설정
 	        verificationInput.setAttribute("maxlength", "11");
 	        // 숫자 이외의 문자 입력 방지
@@ -78,7 +87,7 @@
 //아작스로 폼 제출하고 인풋태그 생성해서 인증번호 입력하게 하기
         
                 
-                
+       //인증번호 전송 버튼 클릭 시          
 		function submitVerificationForm(){
 			var	requiredCheckboxes 	= document.querySelectorAll('.chkbox_group .form-check-input[required]');
 		    var nameInput 			= document.getElementById("name");
@@ -104,9 +113,9 @@
 		    } else{
             	// FormData 객체를 사용하여 폼 데이터를 가져옴
 		    	//var formData = new FormData(verificationForm);
-        var verificationType  = verificationInput.name;
-        var verificationValue = verificationInput.value;
-        var nameInputValue = document.getElementById("name").value;
+		        var verificationType  = verificationInput.name;
+		        var verificationValue = verificationInput.value;            
+		        var nameInputValue = document.getElementById("name").value;
 		    	
             	
             	alert("verificationType -> " + verificationType);
@@ -120,13 +129,31 @@
             	alert("data -> " + JSON.stringify(data));
             	
              	$.ajax({
-            		url	: "/joinAgree",
+            		url	: "/info/joinAgree",
             		type: "POST",
             		data: JSON.stringify(data),
-            		 success: function (response) {
+            		contentType: "application/json",
+            		dataType:'text',
+            		success: function (response) {
                          // 서버로부터의 응답 처리
                          alert("서버 응답: " + response);
                          // 필요한 추가 작업 수행
+                         
+                         if(response === "1"){
+                        	 alert("이미 가입된 사용자 입니다.");
+                         } else if(response === "2"){
+                        	 location.href="/info/joinForm";
+                         } else if(response === "3"){
+                        	 alert("인증번호가 전송되었습니다.");
+                        	// 추가: 버튼 숨기기
+                             $("#verificationNumButton").hide();
+                             // 추가: 인증 번호 입력 필드 보이기
+                             $("#verificationNumInput").show();
+                             $("#verificationButton").show();
+                         } else{
+                        	 alert("메일전송에 실패했습니다.");
+                        	 
+                         }
                      },
                      error: function (error) {
                          console.error("에러 발생:", error);
@@ -136,30 +163,26 @@
 		    } 
         }    
             
-            /* else {
-                var formData = new FormData(verificationForm);
-            	
-            	//ajax를 이용해 회원 존재 유무 비교하고 있으면 이미 가입한 사용자다 아니면 joinform으로 이동(제이쿼리가 아닌 fech api이용 ) -> 시큐리티로 회원 유무 검증 할 수 있을 것 같아 보류
-                fetch("/joinAgree", {
-                    method: "POST",
-                    body: formData
-                })
-                 .then(response => response.json())
-        		 .then(data => {
-        			// 서버로부터의 응답 처리
-                     if (data.exists) {
-                         alert("이미 가입한 사용자입니다.");
-                     } else {
-                         // 가입한 사용자가 아니라면 joinForm으로 이동
-                         window.location.href = "joinForm";
-                     }
-                 })
-        	        .catch(error => {
-        	            console.error("에러 발생:", error);
-        	        });
-        		 }
-            }
-        } */
+	function submitVerificationNum(){
+		var pVerificationNum = parseInt(document.getElementById("verificationNumInput").value);
+        alert("pVerificationNum : " + pVerificationNum);
+        
+        $.ajax({
+        	url : "/info/varification",
+        	type : "POST",
+        	data : {verificationNum : pVerificationNum},
+        	dataType:'text',
+        	success:function(data){
+        		alert("result -> " + data);
+        		if(data === "1"){
+        			 location.href="/info/joinForm";
+        		} else {
+        			alert("인증번호가 맞지 않습니다. 다시 입력해 주세요!");
+        		}
+        	}
+        });
+		
+	}
     </script>
 
     <meta charset="UTF-8">
@@ -182,7 +205,7 @@
                     <div class="chkbox_group">
 	                        <div class="form-check">
 <!-- 	                            <input class="form-check-input" type="checkbox" value="selectAll" id="chkAll" > -->
- 	                            <input class="form-check-input" type="checkbox" value="selectAll" id="chkAll" onclick="chkBoxAllChecked(event)">
+ 	                            <input class="form-check-input" type="checkbox" value="selectAll" id="chkAll">
 	                            <label class="form-check-label" for="chkAll">
 	                                전체 동의
 	                            </label>
@@ -255,6 +278,8 @@
                                         <th></th>
                                         <td colspan="2">
                                             <input type="tel" class="form-control" id="verificationInput" name="phone" placeholder="(-)없이 휴대폰 번호를 입력하세요">
+                                             <!-- 수정: 인증 번호 입력 필드 추가, 초기에는 숨김 상태로 설정 -->
+    										<input type="text" class="form-control mt-2" id="verificationNumInput" name="verificationNum" placeholder="인증 번호를 입력하세요" style="display: none;">
                                         </td>
                                     </tr>
                                 </table>
@@ -264,7 +289,8 @@
                 </div>
 
                 <div class="d-grid gap-2 d-md-flex justify-content-center">
-                    <input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="본인인증" onclick="submitVerificationForm()">
+                    <input id="verificationNumButton" class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="인증번호전송" onclick="submitVerificationForm()">
+                    <input id="verificationButton" class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="인증확인" onclick="submitVerificationNum()">
                 </div>
             </div>
         </div>

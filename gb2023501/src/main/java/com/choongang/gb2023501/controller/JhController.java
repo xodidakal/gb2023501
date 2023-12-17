@@ -1,5 +1,6 @@
 package com.choongang.gb2023501.controller;
 
+import java.security.SecureRandom;
 import java.util.Map;
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.gb2023501.domain.Member;
@@ -33,7 +35,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class JhController {
 
-	private final MemberRepository mr;
+	//private final MemberRepository mr;
+	//서비스 -> 레파지토리 이므로 여기선 mr 안 씀
 	private final MemberService ms;
 	private final JavaMailSender mailSender;
 	
@@ -104,7 +107,7 @@ public class JhController {
 //	}
 	
 	//약관동의 후 회원 가입 정보 입력 페이지
-	@RequestMapping(value = "joinForm")
+	@RequestMapping(value = "info/joinForm")
 	public String joinForm() {
 		System.out.println("JhController joinForm Start...");
 		
@@ -138,67 +141,124 @@ public class JhController {
 		
 	}
 	
+	//약관 동의 후 본인인증(휴대폰은 유료라 생략 메일인증만 진행)
 	@ResponseBody
-	@PostMapping(value = "joinAgree")
-	public void joinAgree(@RequestBody Map<String, String> data, Model model, HttpSession session ) {
+	@PostMapping(value = "info/joinAgree")
+	public String joinAgree(@RequestBody Map<String, String> data, HttpSession session ) {
+		System.out.println("JhController joinAgree Start...");
+		
 	    // data에는 클라이언트가 전송한 JSON 데이터가 Map으로 변환되어 들어옴
 	    // 예: {"name": "John", "phone": "123-456-7890", "email": "john@example.com"}
 	    String name = data.get("name");
 	    String phone = data.get("phone");
 	    String email = data.get("email");
+	    System.out.println("name -> " + name);
+	    System.out.println("phone -> " + phone);
+	    System.out.println("email -> " + email);
+	    
+	    String result = null;
 	    
 //	public void joinAgree(HttpServletRequest request, Model model) {
-//		System.out.println("JhController joinAgree Start...");
-//		
+		
 //		Object name = request.getAttribute("name");
 //		Object phone = request.getAttribute("phone");
 //		Object email = request.getAttribute("email");
 		
-		String title = null;
-		String toEmail = null;
-		String setFrom= null;
 		
+		Optional<Member> currentUser = null;
 		
-		//기존 사용자인지 비교 먼저하고 결과 반환하기 
+		//휴대폰 인증
 		if(phone != null) {
-			System.out.println("phone -> " + phone);
-			model.addAttribute("phone",phone);
+			//기존 사용자인지 비교 먼저하고 결과 반환하기 
+			currentUser = ms.findByNameAndPhone(name, phone);
 			
-			
-			
-			
-		} else if (email != null) {
-			System.out.println("email -> " + email);
-			toEmail = (String) email;
-			title = "한국바둑기원 회원가입 인증번호 입니다.";
-			
-			try {
-				//Mime 전자우편 Internet 표준 Format
-				MimeMessage message = mailSender.createMimeMessage();
-				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-				
-				//messageHelper를 통해 메일정보 세팅
-				messageHelper.setFrom(setFrom);		//보내는 사람 이메일
-				messageHelper.setTo(toEmail);		//받는 사람 이메일
-				messageHelper.setSubject(title);
-				
-				String tempPassword = (int) (Math.random() * 999999) + 1 + "";
-				messageHelper.setText("인증번호 입니다 : " + tempPassword); //메일내용
-				System.out.println("인증번호 입니다 : " +tempPassword);
-				mailSender.send(message);
-				session.setAttribute("check", 1); //정상 전달
-				
-			} catch (Exception e) {
-				System.out.println("JhController joinAgree mailTransport e.getMessage() -> " + e.getMessage());
-				session.setAttribute("check", 2); //메일 전달 실패
+			if(currentUser.isPresent()) {
+				System.out.println("JhController joinAgree currentUser -> " + currentUser);
+				result = "1"; // 이미 가입된 사용자
+			} else{
+				session.setAttribute("phone", phone);
+				session.setAttribute("name", name);
+				result = "2"; // 신규 가입자, 폼 이동 필요
 			}
 			
+//			model.addAttribute("phone",phone);
+			
+		//메일 인증	
+		} else if (email != null) {
+			//기존 사용자인지 비교 먼저하고 결과 반환하기 
+			currentUser = ms.findByNameAndEmail(name, email);
+			
+			if(currentUser.isPresent()) {
+				System.out.println("JhController joinAgree currentUser -> " + currentUser);
+				result = "1";// 이미 가입된 사용자
+				
+			} else{
+			
+				
+				try {
+					String title = "한국바둑기원 회원가입 인증번호 입니다.";
+					String toEmail = (String) email;
+					String setFrom= "awg3200@gmail.com";
+					
+					//Mime 전자우편 Internet 표준 Format
+					MimeMessage message = mailSender.createMimeMessage();
+					MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+					
+					//messageHelper를 통해 메일정보 세팅
+					messageHelper.setFrom(setFrom);		//보내는 사람 이메일
+					messageHelper.setTo(toEmail);		//받는 사람 이메일
+					messageHelper.setSubject(title);
+					
+					 // 안전한 난수 생성 (6자리의 임시 비밀번호를 생성)
+	                SecureRandom secureRandom = new SecureRandom();
+	                int tempPassword = 100000 + secureRandom.nextInt(900000);
+					//String tempPassword = (int) (Math.random() * 999999) + 1 + "";
+					
+					
+					messageHelper.setText("인증번호 입니다 : " + tempPassword); //메일내용
+					System.out.println("인증번호 입니다 : " +tempPassword);
+					mailSender.send(message);
+					//session.setAttribute("check", 1); //정상 전달
+					session.setAttribute("name", name);
+					session.setAttribute("email", email);
+					session.setAttribute("tempPassword", tempPassword);
+					
+					result = "3"; // 가입 인증번호 전송 성공
+					
+				} catch (Exception e) {
+					System.out.println("JhController joinAgree mailTransport e.getMessage() -> " + e.getMessage());
+					//session.setAttribute("check", 2); //메일 전달 실패
+					result = "4"; // 가입 인증번호 전송 실패
+				}
+			}
 		}
 		
-		session.setAttribute("name", name);
+		return result;
 		
 		
-//		return "";
+	}
+	
+	
+	//메일 인증번호 받은 후 맞는지 확인
+	@ResponseBody
+	@PostMapping(value = "info/varification")
+	public String varification(@RequestParam int verificationNum, HttpSession session ) {
+		System.out.println("JhController varification Start...");
+		int tempPassword = (int) session.getAttribute("tempPassword");
+		System.out.println("JhController varification tempPassword -> " + tempPassword);
+		System.out.println("JhController varification verificationNum -> " + verificationNum);
+		
+		String result = null;
+//		비밀번호나 인증 번호와 같은 값의 비교는 == 연산자보다는 equals 메서드를 사용하는 것이 안전
+//		equals는 객체 간의 내용 비교를 수행하는 반면, ==는 참조 비교를 수행
+		if(Integer.valueOf(verificationNum).equals(tempPassword)) {
+		//	if(verificationNum == tempPassword) {
+			result = "1";
+		} else {
+			result = "2";
+		}
+		
+		return result;
 	}
 	
 }

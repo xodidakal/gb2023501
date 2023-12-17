@@ -27,6 +27,7 @@ public class MemberServiceImpl implements MemberService {
 	//로그인된 id가져오기 /없을 경우 null반환
 	@Override
 	public String getLoggedInId() {
+		System.out.println("MemberServiceImpl getLoggedInId Start...");
 		//Authentication (인증) : 증명, 유저가 누구인지 확인하는 과정
 		//로그인 성공시 인증된 사용자 정보 Authentication 호출가능
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -44,11 +45,13 @@ public class MemberServiceImpl implements MemberService {
 	//로그인된 id로 pk 회원번호 가져오기
 	@Override
 	public int selectMmNumById() {
+		System.out.println("MemberServiceImpl selectMmNumById Start...");
 		Member member = new Member();
 		member.setMmNum(0);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		
 		if (authentication != null && !authentication.getName().equals("anonymousUser") ){
+			
 				member = mr.findByMmId(authentication.getName());
 				
 				log.info("로그인된 회원 번호: {} " , member.getMmNum());
@@ -63,8 +66,9 @@ public class MemberServiceImpl implements MemberService {
 	//null포인트에러 방지 위해 Optional타입사용
 	@Override
 	public Optional<Member> selectUserById() {
+		System.out.println("MemberServiceImpl selectUserById Start...");
 		
-		//로그인된 아이디 가져오기
+		//SecurityContextHolder에서 로그인된 아이디 가져오기
 		String mmId = getLoggedInId();
 		
 		Member member = mr.findByMmId(mmId);
@@ -74,6 +78,26 @@ public class MemberServiceImpl implements MemberService {
 		//따라서 아래방법 쓰면 null이아니면 해당 객체 member / null이면  빈 Optional객체 반환 
 		//로그인 안해도 강제 로그인화면 이동, 무한 리디렉션 문제 해결
 		return  Optional.ofNullable(member);
+	}
+
+	//휴대폰과 이름으로 기존 사용자인지 찾기
+	@Override
+	public Optional<Member> findByNameAndPhone(String name, String phone) {
+		System.out.println("MemberServiceImpl findByNameAndPhone Start...");
+		
+		Optional<Member> currentUser = mr.findBymmNameAndPhone(name, phone);
+		
+		//System.out.println("MemberServiceImpl currentUser -> " + currentUser);
+		return currentUser;
+	}
+
+	//이메일과 이름으로 기존 사용자인지 찾기
+	@Override
+	public Optional<Member> findByNameAndEmail(String name, String email) {
+		System.out.println("MemberServiceImpl findByNameAndEmail Start...");
+		
+		Optional<Member> currentUser = mr.findBymmNameAndEmail(name, email);
+		return currentUser;
 	}
 
 
