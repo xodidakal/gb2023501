@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.jhRepository.MemberRepository;
@@ -51,12 +52,22 @@ public class JhController {
 		return member;
 	}
 	
+	//로그인 화면 이동
 	@RequestMapping(value = "info/loginForm")
 	public String loginForm() {
 		System.out.println("JhController loginForm Start...");
 		return "jh/loginForm";
 	}
 	
+	//로그인 실패시 갈 페이지 -> 페이지 내용 수정 필요 -> 없어도 될 듯
+//	@RequestMapping(value = "loginFailure")
+//	public String loginFailure() {
+//		System.out.println("JhController loginFailure Start...");
+//		return "jh/loginFailure";
+//		
+//	}
+	
+	//로그아웃
 	@GetMapping("logout")
 	public void logout(HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("JhController logout Start...");
@@ -97,50 +108,7 @@ public class JhController {
 		return "jh/joinAgreeForm";
 	}
 	
-//	//회원약관 동의 후?
-//	@PostMapping(value = "joinAgree")
-//	@ResponseBody
-//	public String joinAgree() {
-//		System.out.println("JhController joinAgree Start...");
-//		
-//		return "jh/joinAgree";
-//	}
-	
-	//약관동의 후 회원 가입 정보 입력 페이지
-	@RequestMapping(value = "info/joinForm")
-	public String joinForm() {
-		System.out.println("JhController joinForm Start...");
-		
-		return "jh/joinForm";
-	}
-	
-	//회원 목록 관리 페이지
-	@RequestMapping(value = "operate/memberList")
-	public String memberList() {
-		System.out.println("JhController memberList Start...");
-		//테스트 삼아 찍어본 것
-		int mmNum = ms.selectMmNumById();
-		System.out.println("회원번호 int " + mmNum);
-		String mmId = ms.getLoggedInId();
-		log.info("getLoggedInId:{}", mmId);
-		Optional<Member> memberOptional = ms.selectUserById();
-		if(memberOptional.isPresent()) {
-			Member member = memberOptional.get();
-			System.out.println("회원 이름" + member.getMmName());
-			System.out.println("회원 번호" + member.getMmNum());
-		}
-		return "jh/memberList";
-	}
-	
-	
-	//로그인 실패시 갈 페이지 -> 페이지 내용 수정 필요
-	@RequestMapping(value = "loginFailure")
-	public String loginFailure() {
-		System.out.println("JhController loginFailure Start...");
-		return "jh/loginFailure";
-		
-	}
-	
+
 	//약관 동의 후 본인인증(휴대폰은 유료라 생략 메일인증만 진행)
 	@ResponseBody
 	@PostMapping(value = "info/joinAgree")
@@ -260,5 +228,52 @@ public class JhController {
 		
 		return result;
 	}
+	
+	
+	//약관동의 후 회원 가입 정보 입력 페이지
+	@RequestMapping(value = "info/joinForm")
+	public ModelAndView joinForm(HttpSession session) {
+		System.out.println("JhController joinForm Start...");
+		
+		// ModelAndView 객체 생성 및 모델과 뷰 이름 설정
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("jh/joinForm");
+		
+		String name = (String) session.getAttribute("name");
+		String phone = (String) session.getAttribute("phone");
+		String email = (String) session.getAttribute("email");
+		System.out.println("JhController joinForm name -> " + name);
+		System.out.println("JhController joinForm phone -> " + phone);
+		System.out.println("JhController joinForm email -> " + email);
+		modelAndView.addObject("name", name);
+		
+		if(phone != null) {
+			modelAndView.addObject("phone", phone);
+		} else {
+			modelAndView.addObject("email", email);
+			
+		}
+		
+		return modelAndView;
+	}
+	
+	//회원 목록 관리 페이지
+	@RequestMapping(value = "operate/memberList")
+	public String memberList() {
+		System.out.println("JhController memberList Start...");
+		//테스트 삼아 찍어본 것
+		int mmNum = ms.selectMmNumById();
+		System.out.println("회원번호 int " + mmNum);
+		String mmId = ms.getLoggedInId();
+		log.info("getLoggedInId:{}", mmId);
+		Optional<Member> memberOptional = ms.selectUserById();
+		if(memberOptional.isPresent()) {
+			Member member = memberOptional.get();
+			System.out.println("회원 이름" + member.getMmName());
+			System.out.println("회원 번호" + member.getMmNum());
+		}
+		return "jh/memberList";
+	}
+	
 	
 }

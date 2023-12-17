@@ -117,8 +117,11 @@
 		        var verificationValue = verificationInput.value;            
 		        var nameInputValue = document.getElementById("name").value;
 		    	
+		        //radio 버튼과 verificationInput을 disabled 상태로 변경
+                $("input[name='verification']").prop("disabled", true);
+                $("#verificationInput").prop("disabled", true);
             	
-            	alert("verificationType -> " + verificationType);
+            	//alert("verificationType -> " + verificationType);
             	//alert("verificationValue -> " + verificationValue);
             	//alert("nameInput -> " + nameInputValue);
             	
@@ -136,7 +139,7 @@
             		dataType:'text',
             		success: function (response) {
                          // 서버로부터의 응답 처리
-                         alert("서버 응답: " + response);
+                         //alert("서버 응답: " + response);
                          // 필요한 추가 작업 수행
                          
                          if(response === "1"){
@@ -150,6 +153,8 @@
                              // 추가: 인증 번호 입력 필드 보이기
                              $("#verificationNumInput").show();
                              $("#verificationButton").show();
+                             
+                            
                          } else{
                         	 alert("메일전송에 실패했습니다.");
                         	 
