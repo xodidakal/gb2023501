@@ -40,10 +40,7 @@
 			<div class="col">
 			<div class="d-flex align-items-center justify-content-end">
           		<div style="width: 100px;">
-	          		<a href="gameForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="등록"></a>
-            	</div>
-            	<div style="width: 100px;">	
-            		<a href="gameUpdate"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="수정"></a>
+	          		<a href="gameInsertForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="등록"></a>
             	</div>
             </div>
 			</div>
@@ -54,8 +51,8 @@
 						<tr>
 							<th>No.</th>
 							<th>썸네일</th>
-							<th width= "120">게임명</th>
-							<th width= "200" >가격/구독기간</th>
+							<th width= "180">게임명</th>
+							<th width= "250" >가격/구독기간</th>
 							<th>등록일</th>
 							<th>전시여부</th>
 							<th width="100px;"></th>				
@@ -78,7 +75,8 @@
 							<td>
 								<c:if test="${game.g_dele_status == 0}">Y</c:if>
 								<c:if test="${game.g_dele_status == 1}">N</c:if>
-										</td>
+							</td>
+							<td width="100px;"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" onclick="gameUpdate(${gameList.g_num})">상세</button></td>
 						</tr>
 						<c:set var="num" value="${num+1}"/>
  					 </c:forEach>

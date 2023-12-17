@@ -80,4 +80,10 @@
 		AND    g_dele_status = #{g_dele_status}
 		</if>
 	</select>
+	
+	<insert id="dhGameInsert" parameterType="Game">
+   INSERT INTO 	game(g_num, m_num, g_title,g_step, g_period, g_to, g_price, discount, g_sell_price, g_content,g_attach_name, g_attach_path,g_dele_status)
+   VALUES(game_g_num_seq.nextval,#{m_num},#{g_title},#{g_step},#{g_period},#{g_to},#{g_price},#{discount},#{g_sell_price},#{g_content},#{g_attach_name},#{g_attach_path},#{g_dele_status})
+   </insert>
+	
 </mapper>

@@ -94,4 +94,15 @@ public class GameOrderDaoImpl implements GameOrderDao {
 		return totalSearchGame;
 	}
 
+	@Override
+	public int insertGame(Game game) {
+		int result = 0;
+		try {
+			result = session.insert("dhGameInsert", game);
+		} catch (Exception e) {
+			System.out.println("GameOrderDaoImpl insertGame->"+e.getMessage());
+		}
+		return result;
+	}
+
 }
