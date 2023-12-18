@@ -140,6 +140,9 @@ public class DhController {
 	// 게임콘텐츠 등록
 	@RequestMapping(value = "operate/gameInsertResult")
 	public String gameInsertResult(Game game, Model model) {
+		int m_num = ms.selectMmNumById();
+		game.setM_num(m_num);
+		
 		int result = 0;
 		try {
 			System.out.println("dhController gameInsertResult() start..");
