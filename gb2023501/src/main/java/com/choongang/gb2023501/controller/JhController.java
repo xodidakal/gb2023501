@@ -166,7 +166,7 @@ public class JhController {
 				try {
 					String title = "한국바둑기원 회원가입 인증번호 입니다.";
 					String toEmail = (String) email;
-					String setFrom= "awg3200@gmail.com";
+					String setFrom= "alphago5012@gmail.com";
 					
 					//Mime 전자우편 Internet 표준 Format
 					MimeMessage message = mailSender.createMimeMessage();
