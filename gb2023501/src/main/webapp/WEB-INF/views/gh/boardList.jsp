@@ -173,8 +173,12 @@
 						 		</c:choose>
 					 		</td>
 							<td>
+								<!-- 상단 표시 -->
 								<c:if test="${Blist.b_flag eq '0'}"><img src="/assets/img/notice_icon.png" style="margin-bottom:4px"></c:if>
+								<!-- 댓글 표시 -->
+								<%-- <c:if test="${Blist.b_num eq Blist.b_ref_num}"><img src="/assets/img/re_icon.png" style="margin-bottom:4px"></c:if> --%>
 								${Blist.b_title} &nbsp;
+								<!-- 댓글 표시 -->
 								<c:if test="${Blist.b_category eq '1'}"><label style="color: orange;">[${Blist.comment_count}]</label></c:if>
 							</td>
 							<td>${Blist.m_name}</td>
@@ -201,7 +205,7 @@
 								<c:when test="${page.currentPage==i}"><li class="page-item active"></c:when>
 								<c:otherwise><li class="page-item"></c:otherwise>
 							</c:choose>
-					    	<li class="page-item"><a class="page-link" href="/customer/boardList?currentPage=${i}&b_category=${BoardCategory}&rowPage=${rowPage}">${i}</a></li>
+					    	<li class="page-item"><a class="page-link" href="/customer/boardList?currentPage=${i}&b_category=${BoardCategory}&rowPage=${rowPage}&search_type=${search_type}&search_keyword=${search_keyword}">${i}</a></li>
 					    </c:forEach>
 					 	<c:if test="${page.endPage < page.totalPage}">
 					 		<li class="page-item"><a class="page-link" href="/customer/boardList?currentPage=${page.startPage+page.pageBlock}&b_category=${BoardCategory}&rowPage=${rowPage}">다음</a></li>

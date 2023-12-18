@@ -14,6 +14,11 @@ public interface BoardService {
 	int       			updateBoardCnt(int b_num);
 	List<BoardComment> 	selectCommentList(int b_num);
 	int insertBoard(Board board);
+	int insertComment(BoardComment boardComment);
+	int deleteComment(BoardComment boardComment);
+	int deleteBoard(BoardComment boardComment);
+	int updateBoard(Board board);
+	int deleteFile(Board board);
 	
 //	int 				selectBdCommentListCnt(BoardComment boardComment);
 

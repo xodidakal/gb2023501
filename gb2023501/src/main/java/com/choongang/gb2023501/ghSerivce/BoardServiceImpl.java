@@ -66,7 +66,8 @@ public class BoardServiceImpl implements BoardService {
 
 		return list;
 	}
-
+	
+	// ori
 	@Override
 	public int insertBoard(Board board) {
 		System.out.println("BoardServiceImpl insertBoard Start...");
@@ -74,6 +75,73 @@ public class BoardServiceImpl implements BoardService {
 		
 		return result;
 	}
+	
+	@Override
+	public int insertComment(BoardComment boardComment) {
+		System.out.println("BoardServiceImpl insertComment Start...");
+		int result = boardDao.insertComment(boardComment);
+		
+		return result;
+	}
+
+	@Override
+	public int deleteComment(BoardComment boardComment) {
+		System.out.println("BoardServiceImpl deleteComment Start...");
+		int result = boardDao.deleteComment(boardComment);
+		
+		return result;
+	}
+
+	@Override
+	public int deleteBoard(BoardComment boardComment) {
+		System.out.println("BoardServiceImpl deleteBoard Start...");
+		
+		// 댓글 먼저 삭제
+		int resultComment = boardDao.deleteBoardComment(boardComment);
+		if(resultComment > 0)	{System.out.println("BoardServiceImpl deleteBoard resultComment 댓글삭제 성공->"+resultComment);}
+		
+		// 게시글 삭제
+		int resultBoard = boardDao.deleteBoard(boardComment);
+		if(resultBoard > 0 )	{System.out.println("BoardServiceImpl deleteBoard resultComment 원글삭제 성공->"+resultBoard);}
+		
+		return resultBoard;
+	}
+
+	@Override
+	public int updateBoard(Board board) {
+		System.out.println("BoardServiceImpl updateBoard Start...");
+		int result = boardDao.updateBoard(board);
+		
+		return result;
+	}
+
+	@Override
+	public int deleteFile(Board board) {
+		System.out.println("BoardServiceImpl deleteFile Start...");
+		int result = boardDao.deleteFile(board);
+		
+		return result;
+	}
+	
+	// ver2
+//	@Override
+//	public int insertBoard(Board board) {
+//		System.out.println("BoardServiceImpl insertBoard Start...");
+//		int result = 0;
+//		if(board.getB_ref_num() == "1") {
+//			System.out.println("BoardServiceImpl update 원글 b_ref_num");
+//			// 해당글의 B_ref_num만 업데이트
+//			result = boardDao.updateParentNum(board.getB_num());
+//			return result;
+//		} else {
+//			System.out.println("BoardServiceImpl 원글 등록");
+//			result = boardDao.insertBoard(board);			
+//		}
+//		
+//		return result;
+//	}
+	
+	
 
 //	@Override
 //	public int selectBdCommentListCnt(BoardComment boardComment) {
