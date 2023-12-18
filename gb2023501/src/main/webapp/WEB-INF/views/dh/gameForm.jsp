@@ -19,19 +19,23 @@
 		            <tr>
 						<th>게임명</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name=",g_Title" id="g_Title">
+		                    <input type="text" class="form-control" name="g_title" id="g_title">
 		            	</td>
 					</tr>
 					 <tr>
 						<th>학습난이도</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="emTitle" id="emTitle" >
+							<select name="g_step" id="g_step" class="form-control">
+								<option value="1">초급</option>
+								<option value="2">중급</option>
+								<option value="3">고급</option>
+							</select>
 		            	</td>
 					</tr>
 					 <tr>
 						<th>구독기간</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="g-period" id="g-period" >개월
+		                    <input type="text" class="form-control" name="g_period" id="g_period" >개월
 		            	</td>
 					</tr>
 					 <tr>
@@ -64,12 +68,12 @@
 		                   	<textarea class="form-control" placeholder="Leave a message here" name="g_content" id="g_content" style="height: 200px"></textarea>
 						</td>
 					</tr>
-	                <tr>
+	               <!--  <tr>
 	                	<th>썸네일</th>
 						<td colspan="3">
 		                    <input type="file" class="form-control" name="g_attach_name" id="g_attach_name" placeholder="Subject">
 		                </td>
-	                </tr>
+	                </tr> -->
 	                <tr>
 						<th>전시여부</th>
 						<td width="150px;">
