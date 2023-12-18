@@ -100,6 +100,14 @@ public class MemberServiceImpl implements MemberService {
 		return currentUser;
 	}
 
+	@Override
+	public boolean existsByMmId(String id) {
+		System.out.println("MemberServiceImpl existsByMmId Start...");
+		boolean existsByMmId = mr.existsByMmId(id);
+		
+		return existsByMmId;
+	}
+
 
 
 
