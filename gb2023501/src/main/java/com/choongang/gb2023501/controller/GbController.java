@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.choongang.gb2023501.domain.HwRecord;
+import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.gbService.GbLgJoinService;
 import com.choongang.gb2023501.gbService.HomeworkService;
 import com.choongang.gb2023501.gbService.JpaHomeworkService;
@@ -33,7 +35,7 @@ public class GbController {
 	private final MemberService ms;
 	private final JpaHomeworkService jms;
 	
-	// 숙제 생성 목록
+	// 숙제 생성 목록(MYBATIS/SELECT)
 	@RequestMapping("educator/homeworkForm")
 	public String selectHomeworkList(Homework homework, String currentPage, String result, Model model) {
 		System.out.println("GbController selectHomework start...");
@@ -69,7 +71,7 @@ public class GbController {
 		return "gb/homeworkForm";
 	}
 	
-	  // 숙제 생성 insert 또는 update
+	  // 숙제 생성 insert 또는 update(MYBATIS)
 	  @PostMapping("educator/homeworkInsertUdpate") 
 	  public String insertUpdateHomework(Homework homework) {
 		  System.out.println("GbController insertUpdateHomework start...");
@@ -91,7 +93,7 @@ public class GbController {
 		  return "redirect:homeworkForm?result="+result; 
 	  }
 	  
-	  // 숙제 전송 화면 이동
+	  // 숙제 전송 화면 이동(MYBATIS/SELECT)
 	  @RequestMapping("/educator/homeworkSend")
 	  public String selectHomeworkList(Homework homework, String currentPage, HwSend hwsend, String count, Model model) {
 		  System.out.println("GbController selectHomeworkList start...");
@@ -156,7 +158,7 @@ public class GbController {
 		  return "gb/homeworkSend";
 	  }
 	  
-	  // 학습자에게 숙제 전송여부 컬럼 추가하여 리스트 반환
+	  // 학습자에게 숙제 전송여부 컬럼 추가하여 리스트 반환 (MYBATIS/SELECT)
 	  @ResponseBody
 	  @RequestMapping("/educator/homeworkSendExist")
 	  public List<LgJoin> selectLgHwSendMemberList(int h_num, int lg_num) {
@@ -170,7 +172,7 @@ public class GbController {
 		  return hwSendMemberList;
 	  }
 	 
-	  // 숙제 전송하기
+	  // 숙제 전송하기(MYBATIS/INSERT)
 	  @PostMapping("/educator/homeworkSendAction")
 	  public String insertHwSendList(@RequestParam(value = "h_num") int hNum, 
 			  						 @RequestParam(value = "m_num") List<Integer> mNumList, Model model) {
@@ -189,26 +191,41 @@ public class GbController {
 		  return"redirect:homeworkSend?count="+count;
 	  }
 	  
-	// 내 숙제 목록으로 이동
+	// 내 숙제 목록으로 이동(JPA/SELECT)
 	@RequestMapping("/learning/myhomeworkList")
-	public String selectMyHomeworkList(Model model) {
+	public String selectMyHomeworkList(com.choongang.gb2023501.domain.HwSend hwsend, Model model) {
 		System.out.println("GbController selectMyHomeworkList start...");
 		// 학습자 번호를 담는다.
-		int m_num = ms.selectMmNumById();	
+		int m_num = ms.selectMmNumById();
+		Member member = new Member();
+		member.setMmNum(m_num);
+		hwsend.setMember(member);
+		
+		// 내 숙제 총 개수 가져오기 (countBy는 Long으로 리턴하기 때문에 리턴값은 Long 이여야 함)
+		Long myHomeworkCnt = jms.myHomeworkcountBy(hwsend);
 		
 		// 나의 숙제 목록 가져오기
-		List<HomeworkDTO> myHomeworkList = jms.selectMyHomeworkList(m_num);
+		List<com.choongang.gb2023501.domain.HwSend> myHomeworkList = jms.selectMyHomeworkList(m_num);
 		System.out.println("GbController selectMyHomeworkList myHomeworkList ->"+myHomeworkList.size());
 		
 		model.addAttribute("myHomeworkList", myHomeworkList);
 		model.addAttribute("startRow", 1);
+		model.addAttribute("myHomeworkCnt", myHomeworkCnt);
 		return "gb/myHomeworkList";
 	}
 	
 	// 내 숙제 제출화면으로 이동
 	@RequestMapping("/learning/myHomeworkDetail")
-	public String insertUpdateMyHomework(Model model) {
-		System.out.println("GbController insertUpdateMyHomework start...");
+	public String selectMyHomeworkDetail(int h_num, Model model) {
+		System.out.println("GbController selectMyHomeworkDetail start...");
+		// 학습자 번호를 담는다.
+		int m_num = ms.selectMmNumById();
+		
+		List<HwRecord> myHomeworkDetailList = jms.selectMyHomeworkDetail(m_num, h_num);
+		System.out.println("GbController selectMyHomeworkDetail myHomeworkDetailList -> "+myHomeworkDetailList.size());
+		
+		model.addAttribute("myHomeworkDetailList", myHomeworkDetailList);
+		model.addAttribute("mmNum",m_num);
 		
 		return "gb/myHomeworkDetail";
 	}

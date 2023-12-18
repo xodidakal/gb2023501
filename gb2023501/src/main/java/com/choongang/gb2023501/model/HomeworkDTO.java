@@ -3,6 +3,7 @@ package com.choongang.gb2023501.model;
 
 import java.sql.Date;
 
+import com.choongang.gb2023501.domain.HwSend;
 import com.choongang.gb2023501.domain.LearnGrp;
 
 import lombok.AllArgsConstructor;
@@ -15,9 +16,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HomeworkDTO {
-	private int hhNum;				// 숙제번호
-    private String hhTitle;			// 숙제명
-    private int hhLevel;			// 숙제 진도
-    private String hhDeadline;		// 제출기한
-    private String mmName;			// 교육자명
+	private HwSend hwsend;	// 배포된 숙제이력
+	private Long hrMaxLevel;	// 학습자의 현재 최고 레벨
 }
