@@ -50,6 +50,10 @@ public class YbRepositoryImpl implements YbRepository {
 			eduMaterials2.setEmCategory(eduMaterials.getEmCategory());
 			eduMaterials2.setEmDataAddr(eduMaterials.getEmDataAddr());
 			eduMaterials2.setEmPayment(eduMaterials.getEmPayment());
+			eduMaterials2.setEmAttachName(eduMaterials.getEmAttachName());
+			eduMaterials2.setEmAttachPath(eduMaterials.getEmAttachPath());
+			eduMaterials2.setEmDataAddr(eduMaterials.getEmDataAddr());
+			
 			
 			em.persist(eduMaterials2);
 			log.info("YbRepositoryImpl updateByEduMaterials eduMaterials2 -> " + eduMaterials2);
@@ -135,6 +139,7 @@ public class YbRepositoryImpl implements YbRepository {
 				   						 			   .getResultList();	
 		return findByGoOrderDateAtBetween;
 	}
+
 
 	
 }
