@@ -49,6 +49,15 @@ public interface YbRepository2 extends JpaRepository<GameOrder, Long> {
 	List<SalesInquiryDTO> findSalesInquiryDtoJPQL1(@Param("sDate") Date s_date, @Param("eDate") Date e_date);
 
 	List<GameOrder> findByGoOrderDate(Date orderDate);
+	
+	
+	@Query (
+			  "SELECT new com.choongang.gb2023501.model.SalesInquiryDTO(go.goOrderDate, count(go.game), sum(goPayment)) "
+			+ "FROM GameOrder go "
+			+ "WHERE go.goOrderDate BETWEEN :startDate and :endDate"		
+			)
+	
+	int findTotal(@Param("startDate") Date s_date, @Param("endDate") Date e_date);
 
 
 }

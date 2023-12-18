@@ -123,6 +123,18 @@ public class YbRepositoryImpl implements YbRepository {
 		
 		return selectLGpList;
 	}
+	
+	
+	@Override
+	public List<GameOrder> findByGoOrderDateAtBetween(Date s_date, Date e_date) {
+		System.out.println("YbRepositoryImpl findByGoOrderDateAtBetween start...");
+		List<GameOrder> findByGoOrderDateAtBetween = em.createQuery("select g from GameOrder g where goOrderDate "
+																  + "between :s_date and :e_date order by goOrderDate desc", GameOrder.class)
+													   .setParameter("s_date", s_date)
+													   .setParameter("e_date", e_date)
+				   						 			   .getResultList();	
+		return findByGoOrderDateAtBetween;
+	}
 
 	
 }

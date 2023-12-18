@@ -185,7 +185,7 @@ public class YbController {
 	// 학습자료 검색 리스트 jpa
 	@RequestMapping(value = "/operate/searchEduMaterials")
 	public String searchEduMaterials(String keyword, Model model, String type) {
-		
+		System.out.println("ybController operate/searchEduMaterials start...");
 		List<com.choongang.gb2023501.domain.EduMaterials> selectEduMaterialsList = null;
 		
 		System.out.println("type -> " + type);
@@ -199,7 +199,15 @@ public class YbController {
 		model.addAttribute("selectEduMaterialsList", selectEduMaterialsList);
 		return "yb/eduMaterialsList";
 	}
-	
+	// 학습자료 삭제
+	@RequestMapping(value = "/operate/deleteEduMaterials")
+	public String deleteEduMaterials(int emNum) {
+		System.out.println("ybController operate/deleteEduMaterials start...");
+		System.out.println("ybController operate/deleteEduMaterials emNum -> " + emNum);
+		js.deleteByEmNum(emNum);
+		
+		return "redirect:/operate/eduMaterialsList";
+	}
 	
 	
 	// 매출 조회 화면 jpa
@@ -216,6 +224,7 @@ public class YbController {
 		System.out.println("ybController /operate/selectDateList start...");
 		List<SalesInquiryDTO> selectSaleList= null;
 		List<SalesInquiryDTO> selectSaleList1 = null;
+		int selectTotal = 0;
 		Date s_date = null;
 		Date e_date = null;
 		
@@ -227,6 +236,7 @@ public class YbController {
 			s_date = java.sql.Date.valueOf(startDate);
 			e_date = java.sql.Date.valueOf(endDate);
 			
+			selectTotal = js.findTotal(s_date, e_date);
 			selectSaleList = js.findBySalesContaining(s_date, e_date);	//, pageable
 			System.out.println("ybController /operate/selectDateList selectSaleList -> " + selectSaleList);
 			//System.out.println(pageable.getPageSize());
@@ -235,9 +245,10 @@ public class YbController {
 			System.out.println(selectSaleList.get(0)); 
 			System.out.println(selectSaleList.get(1)); 
 			System.out.println(selectSaleList.get(2)); 
-			
+			String get = selectSaleList.get(0).toString();
 			log.info("selectSaleList -> " + selectSaleList.size());
-			
+			model.addAttribute("get", get);
+			model.addAttribute("selectTotal", selectTotal);
 			model.addAttribute("selectSaleList", selectSaleList);
 		}
 		// 월별 검색
@@ -265,29 +276,69 @@ public class YbController {
 		
 		return "yb/salesInquiryDetail";
 	}
+//	// 매출 상세 리스트 
+//	@RequestMapping(value = "/operate/searchSalesInquiryDetail")
+//	public String searchSalesInquiryDetail(@Param("go_order_date") String go_order_date, GameOrder gameOrder, Model model) throws ParseException {
+//		System.out.println("ybController /operate/searchSalesInquiryDetail go_order_date -> " + go_order_date);
+//		System.out.println("go_order_date -> " + go_order_date);
+//		
+//		
+//		String stringDate = go_order_date.substring(0,4) + "-" +go_order_date.substring(4,6) + "-" +go_order_date.substring(6,8);
+//		Date orderDate = java.sql.Date.valueOf(stringDate);
+//		
+//		
+//		
+//		System.out.println("orderDate -> " + orderDate);
+//		gameOrder.setGoOrderDate(orderDate);
+////		List<com.choongang.gb2023501.model.GameOrder> selectSalesDetailList = es.selectSalesDetailList(gameOrder);
+//		
+//		List<GameOrder> selectSaleList = js.getListAllGameOrder(orderDate);
+//		log.info("selectSaleList -> " + selectSaleList);
+//		
+//		selectSaleList.get(0);
+//		
+//		model.addAttribute("selectSaleList", selectSaleList);
+//		model.addAttribute("date", selectSaleList.get(0).getGoOrderDate());
+//		return "yb/searchSalesInquiryDetail";
+//	}
+	
 	// 매출 상세 리스트 
-	@RequestMapping(value = "/operate/searchSalesInquiryDetail")
-	public String searchSalesInquiryDetail(@Param("go_order_date") String go_order_date, GameOrder gameOrder, Model model) throws ParseException {
-		System.out.println("ybController /operate/searchSalesInquiryDetail go_order_date -> " + go_order_date);
-		System.out.println("go_order_date -> " + go_order_date);
-		String stringDate = go_order_date.substring(0,4) + "-" +go_order_date.substring(4,6) + "-" +go_order_date.substring(6,8);
-		Date orderDate = java.sql.Date.valueOf(stringDate);
-		
-		
-		
-		System.out.println("orderDate -> " + orderDate);
-		gameOrder.setGoOrderDate(orderDate);
-//		List<com.choongang.gb2023501.model.GameOrder> selectSalesDetailList = es.selectSalesDetailList(gameOrder);
-		
-		List<GameOrder> selectSaleList = js.getListAllGameOrder(orderDate);
-		log.info("selectSaleList -> " + selectSaleList);
-		
-		selectSaleList.get(0);
-		
-		model.addAttribute("selectSaleList", selectSaleList);
-		model.addAttribute("date", selectSaleList.get(0).getGoOrderDate());
-		return "yb/searchSalesInquiryDetail";
-	}
+	   @RequestMapping(value = "/operate/searchSalesInquiryDetail")
+	   public String searchSalesInquiryDetail(@Param("go_order_date") String go_order_date, GameOrder gameOrder, Model model) throws ParseException {
+	      System.out.println("ybController /operate/searchSalesInquiryDetail go_order_date -> " + go_order_date);
+	      System.out.println("go_order_date -> " + go_order_date);
+	      Date orderDate = null;
+
+	      List<GameOrder> selectSaleList = null;
+	      // 일별 상세 리스트
+	      if(go_order_date.length() == 8) {
+	         String stringDate = go_order_date.substring(0,4) + "-" +go_order_date.substring(4,6) + "-" +go_order_date.substring(6,8);
+	         orderDate = java.sql.Date.valueOf(stringDate);
+	         
+	         System.out.println("orderDate -> " + orderDate);
+	         gameOrder.setGoOrderDate(orderDate);
+
+	         selectSaleList = js.getListAllGameOrder(orderDate);
+	         log.info("selectSaleList -> " + selectSaleList);
+	      } else if(go_order_date.length() == 6){
+	         String stringDate = go_order_date.substring(0,4) + "-" +go_order_date.substring(4,6);
+	         String firstDay = getFirstDayOfMonth(stringDate);
+	         String lastDay = getLastDayOfMonth(stringDate);
+	         Date s_date = java.sql.Date.valueOf(firstDay);
+	         Date e_date = java.sql.Date.valueOf(lastDay);
+	         
+	         System.out.println("go_order_date.length() != 8 -- s_date -> " + s_date);
+	         System.out.println("go_order_date.length() != 8 -- e_date -> " + e_date);
+	         
+	         selectSaleList = js.getListAllGameOrder1(s_date, e_date);
+	         
+	      }
+	      selectSaleList.get(0);
+	      
+	      model.addAttribute("selectSaleList", selectSaleList);
+	      model.addAttribute("date", selectSaleList.get(0).getGoOrderDate());
+	      return "yb/searchSalesInquiryDetail";
+	   }
 	
 	//  해당 월의 첫 번째 날 (atDay(1)) 얻기
     public static String getFirstDayOfMonth(String dateString) {
@@ -316,9 +367,9 @@ public class YbController {
     	
     	System.out.println("ybController /learning/learnGrpJoin selectLGpList.size() -> " + selectLGpList.size());
     	List<LearnGrp> selectLgpListByTitle = es.selecLgpListByTitle(learnGrp);
-    	int selectLgpListByTitleCnt = es.selectLgpListByTitleCnt(lgTitle);
+//    	int selectLgpListByTitleCnt = es.selectLgpListByTitleCnt(lgTitle);
     	
-    	model.addAttribute("selectLgpListByTitleCnt", selectLgpListByTitleCnt);
+//    	model.addAttribute("selectLgpListByTitleCnt", selectLgpListByTitleCnt);
     	model.addAttribute("selectLgpListByTitle", selectLgpListByTitle);
     	model.addAttribute("selectLGpList", selectLGpList);	    	
     	return "yb/learnGrpJoinForm";

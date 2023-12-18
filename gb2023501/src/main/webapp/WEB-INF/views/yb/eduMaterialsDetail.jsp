@@ -18,7 +18,16 @@
 		width: 150px;
 	}
 </style>
-
+<script type="text/javascript">
+	function deleteEdu(emNum) {
+		 if (confirm("삭제하시겠습니까?") == true){  
+			 	location.href ="/operate/deleteEduMaterials?emNum="+emNum;
+	    	 } else {
+	    		    	return false;
+	    	 }
+		   	 return false;
+	}
+</script>
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->
@@ -162,7 +171,7 @@
 	                <tr>
 	                	<th>썸네일</th>
 						<td colspan="3">
-							<div class="d-grid gap-2 d-flex justify-content-center" >
+							<div class="d-grid gap-2 d-flex justify-content-center">
 								<label for="emAttachName"><img src="${eduMaterials.emAttachName }" alt="도서 썸네일" class="img-fluid" style="width: 5rem; height: 80px;"></label>
 								<input type="file" class="form-control" id="emAttachName" name="emAttachName" value="" style="visibility: hidden;" >
 			                </div>
@@ -171,7 +180,7 @@
                 </table>
                 <div class="d-grid gap-2 d-flex justify-content-center" >
 					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="수정">
-					<a href="/operate/eduMaterialsList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
+					<button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" onclick="deleteEdu(${eduMaterials.emNum })">삭제</button>
 					<a href="/operate/eduMaterialsList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
 				</div>
 				

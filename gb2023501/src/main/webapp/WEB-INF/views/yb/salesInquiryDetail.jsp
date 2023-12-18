@@ -6,6 +6,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">            
+	.center-text {
+	  text-align: center; /* 텍스트 가운데 정렬 */
+	  position: absolute;
+	  top: 55%;
+	  left: 55%;
+	  font-weight: bold;
+	  color:black;
+	  transform: translate(-50%, -50%); /* 가운데 정렬을 위한 변환 */
+	}
+</style>
 </head>
 <script>
     function toggleInput() {
@@ -78,6 +89,14 @@
 		</form>
 		<a href="#!"><button type="button" class="btn btn-light rounded py-2 px-2">그래프 보기</button></a>
 	    </div>
+<%-- 	    <c:if test="${selectSaleList.size() == 0 && selectSaleList1.size() == 0 }">			 --%>
+<!-- 	 		<div class="row" style="height: 100px"> -->
+<!-- 				<div class="center-text mt-14 md-14"> -->
+<!-- 					기간을 선택해주세요.<p><p> -->
+<!-- 				</div> -->
+<!-- 			</div>	 	 -->
+<%-- 		</c:if> --%>
+ 	<c:if test="${selectSaleList.size() != 0 || selectSaleList1.size() != 0 }">	
        	<table class="listTable" style="text-align: center;">
        		<thead>
 				<tr>
@@ -128,6 +147,7 @@
 				</c:if>
              </tbody>   
 		</table>
+	</c:if>
 	</div>
 </div>
 <%@ include file="../common/footerFo.jsp" %>

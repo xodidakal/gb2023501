@@ -109,8 +109,24 @@ public class JpaEduMaterialsService {
 		lgr.save(lgJoin);
 		
 	}
-	
 
+	
+	 //매출 월별 상세 조회 화면
+	  public List<GameOrder> getListAllGameOrder1(Date s_date, Date e_date) {
+	     log.info("YbJpaEduMaterialsService getListAllGameOrder1 start...");
+	     List<GameOrder>   getListAllGameOrder1 = yr.findByGoOrderDateAtBetween(s_date, e_date);
+	     
+	     return getListAllGameOrder1;
+	  }
+	public void deleteByEmNum(int emNum) {
+		System.out.println("YbJpaEduMaterialsService getListAllGameOrder1 start...");
+		er.deleteByEmNum(emNum);
+	}
+	public int findTotal(Date s_date, Date e_date) {
+		System.out.println("YbJpaEduMaterialsService findTotal start...");
+		int findTotal = yr2.findTotal(s_date, e_date);
+		return findTotal;
+	}
 
 
 
