@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.choongang.gb2023501.domain.LearnGrp;
 import com.choongang.gb2023501.model.EduMaterials;
+import com.choongang.gb2023501.model.Game;
 import com.choongang.gb2023501.model.GameOrder;
 import com.choongang.gb2023501.ybDao.EduMaterialsDao;
 
@@ -40,9 +41,9 @@ public class EduMaterialsServiceImpl implements EduMaterialsService {
 	}
 	// 학습그룹 검색 리스트 개수
 	@Override
-	public int selectLgpListByTitleCnt(String lgTitle) {
+	public int selectLgpListByTitleCnt(String lgTitle, int mmNum) {
 		System.out.println("YbController EduMaterialsServiceImpl selectLgpListByTitleCnt start...");
-		int selectEduMaterialsListCnt = ed.selectLgpListByTitleCnt(lgTitle);
+		int selectEduMaterialsListCnt = ed.selectLgpListByTitleCnt(lgTitle, mmNum);
 		return selectEduMaterialsListCnt;
 	}
 	@Override
@@ -55,6 +56,13 @@ public class EduMaterialsServiceImpl implements EduMaterialsService {
 		System.out.println("YbController EduMaterialsServiceImpl selectSalesDetailList start...");
 		int findTotal = ed.findTotal(s_date, e_date);
 		return findTotal;
+	}
+	// 학습 등록 시 게임 콘텐츠 선택
+	@Override
+	public List<Game> selectGameList(Game game) {
+		System.out.println("YbController EduMaterialsServiceImpl selectSalesDetailList start...");
+		List<Game> selectGameList = ed.selectGameList(game);
+		return selectGameList;
 	}
 
 

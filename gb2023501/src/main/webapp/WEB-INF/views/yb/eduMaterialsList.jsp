@@ -70,7 +70,16 @@
 				 	<tr>
 				 		<td>${StartRow + 1}</td>
 						<td style="width: 100px;" height="80px;">
-							<img src="${eduMaterialsList.emAttachName }" alt="도서 썸네일" class="img-fluid" style="width: 5rem; height: 80px;">
+						<div class="col-3 col-md-2">
+		                	<c:choose>
+	                           <c:when test="${fn:contains(eduMaterialsList.emAttachName, 'http')}">
+	                              <img src="${eduMaterialsList.emAttachName}" alt="Ecommerce"  width="75px" height="90px">
+	                           </c:when>
+	                           <c:otherwise>
+	                              <img src="${pageContext.request.contextPath}/upload/yb/${eduMaterialsList.emAttachName}" alt="Ecommerce"  width="75px" height="90px">
+	                           </c:otherwise>
+                        	</c:choose>
+		                </div>
 						</td>
 						<td>
 							<input type="hidden" value="${eduMaterialsList.emNum }" id="em_num" name="em_num">

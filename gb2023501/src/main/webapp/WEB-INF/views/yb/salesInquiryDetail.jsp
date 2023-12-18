@@ -62,13 +62,14 @@
 
 </script>
 <body>
-<div class="row g-0 justify-content-center">
 	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
 	
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">매출 조회</h2>
-	    	<span>기간 : <fmt:formatDate value="${s_date }" pattern="yyyy년MM월dd일"/> ~ <fmt:formatDate value="${e_date }" pattern="yyyy년MM월dd일"/></span></p>
+	         <c:if test="${not empty s_date }">
+	    	 	<span>기간 : <fmt:formatDate value="${s_date }" pattern="yyyy년MM월dd일"/> ~ <fmt:formatDate value="${e_date }" pattern="yyyy년MM월dd일"/></span></p>
+	         </c:if>
 	         <p style="margin-bottom: 35px;"><span style="margin-right: 20px;">총 ${selectSaleList.size() } 건</span>
 	         <span>총 매출액 : <fmt:formatNumber value="${selectTotal }" pattern="#,###" />원</span></p>
 	    </div>

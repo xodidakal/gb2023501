@@ -14,16 +14,19 @@
 			  <if test="lg_title != null and lg_title != '' and lg_title != 'reload'">
 			 and    lg.lg_title = #{lg_title} 			 
 			 </if>
+			 and    lj.lg_num NOT IN (SELECT lg_num
+                         FROM lg_join
+                         WHERE m_num = #{m_num})        
 			 group by g.g_attach_name, lg.lg_title, m.m_name, lg.lg_sdate, lg.lg_edate, lg.lg_to, lg.lg_num, g.g_title
 			 ORDER BY lg.lg_sdate
 		</select>
 		
 		
-		<select id="selectLgpListByTitleCnt" parameterType="String" resultType="int">
+		<select id="selectLgpListByTitleCnt" parameterType="map" resultType="int">
 			SELECT COUNT(*) 
 			FROM learn_grp 
 			WHERE sysdate BETWEEN 
-    		(SELECT MAX(ROUND((TO_DATE(lg_edate, 'YYYY-MM-DD') - TO_DATE(lg_sdate, 'YYYY-MM-DD')) / 2) + TO_DATE(lg_sdate, 'YYYY-MM-DD')) FROM learn_grp) AND lg_edate
+    		(SELECT MAX(ROUND((TO_DATE(lg_edate) - TO_DATE(lg_sdate)) / 2) + TO_DATE(lg_sdate)) FROM learn_grp) AND lg_edate
     		<if test="lg_title != null and lg_title != '' and lg_title != 'reload'">
 			and    lg_title = #{lg_title}
 			</if>

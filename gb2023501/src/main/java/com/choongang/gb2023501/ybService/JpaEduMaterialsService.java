@@ -1,6 +1,7 @@
 package com.choongang.gb2023501.ybService;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import com.choongang.gb2023501.domain.LgJoin;
 import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.model.SalesInquiryDTO;
 import com.choongang.gb2023501.ybRepository.EduRepository;
+import com.choongang.gb2023501.ybRepository.GameRepository;
 import com.choongang.gb2023501.ybRepository.LearnGrpRepository;
 import com.choongang.gb2023501.ybRepository.YbRepository;
 import com.choongang.gb2023501.ybRepository.YbRepository2;
@@ -35,6 +37,7 @@ public class JpaEduMaterialsService {
 	private final YbRepository2 yr2;
 	private final EduRepository er;
 	private final LearnGrpRepository lgr;
+	private final GameRepository gr;
 	
 	// 학습자료 상세조회
 	public Optional<EduMaterials> findByEduMaterials(int em_num) {
@@ -104,7 +107,10 @@ public class JpaEduMaterialsService {
 	}
 	// 
 	public void insertJoin(LgJoin lgJoin) {
+		System.out.println("YbJpaEduMaterialsService insertJoin start...");
 		log.info("YbJpaEduMaterialsService insertJoin start...");
+		Date LocalDateTime = null;
+		lgJoin.setLgjJoindate(LocalDateTime);
 		lgr.save(lgJoin);
 		
 	}
@@ -121,6 +127,7 @@ public class JpaEduMaterialsService {
 		System.out.println("YbJpaEduMaterialsService getListAllGameOrder1 start...");
 		er.deleteByEmNum(emNum);
 	}
+
 
 
 
