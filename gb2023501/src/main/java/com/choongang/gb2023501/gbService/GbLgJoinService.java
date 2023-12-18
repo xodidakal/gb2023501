@@ -10,6 +10,7 @@ import com.choongang.gb2023501.model.LgJoin;
 public interface GbLgJoinService {
 
 	List<LearnGrp> 	selectLgJoinList(Homework homework);
-	List<LgJoin> 	selectLgJoinMemberList(HwSend hwsend); 
+	List<LgJoin> 	selectLgJoinMemberList(HwSend hwsend);
+	List<LgJoin> 	selectLgHwSendMemberList(HwSend hwsend);
 
 }

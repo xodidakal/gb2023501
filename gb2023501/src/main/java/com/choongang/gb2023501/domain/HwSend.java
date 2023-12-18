@@ -9,6 +9,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -30,5 +31,21 @@ public class HwSend {
 	
 	@Column(name="hs_date")
 	private Date hsDate;		// 전송일자
+	
+	// 조회용
+	@Transient					// 테이블과 매핑시키지 않는 변수 및 메소드를 선언하는 어노테이션
+	private String hhTitle; 	// 숙제명
+	
+	@Transient
+	private String mmName;		// 교육자명
+	
+	@Transient
+	private int hhLevel;		// 숙제 최종 진도
+	
+	@Transient
+	private int hrLevel;		// 학습자 현재 레벨
+	
+	@Transient
+	private Date hhDeadline;	// 제출기한
 	
 }

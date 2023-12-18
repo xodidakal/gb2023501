@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.choongang.gb2023501.dhDao.GameOrderDao;
 import com.choongang.gb2023501.model.Game;
-import com.choongang.gb2023501.model.GameOrder;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,6 +45,51 @@ public class GameOrderServiceImpl implements GameOrderService {
 		System.out.println("GameOrderServiceImpl totalSearchGameOrder2 Start...");
 		int totalSearchGameOrder = god.totalSearchGameOrder2(game);
 		return totalSearchGameOrder;
+	}
+
+	@Override
+	public List<Game> listGame(Game game) {
+		System.out.println("GameOrderServiceImpl listGame Start...");
+		List<Game> gameList = god.listGame(game);
+		System.out.println("GameOrderServiceImpl listGame list.size->"+gameList.size());
+		
+		return gameList;
+	}
+
+	@Override
+	public int totalSearchGame(Game game) {
+		System.out.println("GameOrderServiceImpl totalSearchGame Start...");
+		int totalSearchGame = god.totalSearchGame(game);
+		return totalSearchGame;
+	}
+
+	@Override
+	public int insertGame(Game game) {
+		int result = 0;
+		result = god.insertGame(game);
+		
+		return result;
+	}
+
+	@Override
+	public Game selectGame(int g_num, int m_num) {
+		Game game = god.selectGame(g_num, m_num);
+		return game;
+	}
+
+	@Override
+	public int updateGame(Game game) {
+		int result = 0;
+		result = god.updateGame(game);
+		return result;
+	}
+
+	@Override
+	public int insertGameOrder(Game game) {
+		int result = 0;
+		result = god.insertGameOrder(game);
+		
+		return result;
 	}
 
 }

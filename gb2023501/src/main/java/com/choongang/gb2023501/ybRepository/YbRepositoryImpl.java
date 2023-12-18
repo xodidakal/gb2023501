@@ -50,6 +50,10 @@ public class YbRepositoryImpl implements YbRepository {
 			eduMaterials2.setEmCategory(eduMaterials.getEmCategory());
 			eduMaterials2.setEmDataAddr(eduMaterials.getEmDataAddr());
 			eduMaterials2.setEmPayment(eduMaterials.getEmPayment());
+			eduMaterials2.setEmAttachName(eduMaterials.getEmAttachName());
+			eduMaterials2.setEmAttachPath(eduMaterials.getEmAttachPath());
+			eduMaterials2.setEmDataAddr(eduMaterials.getEmDataAddr());
+			
 			
 			em.persist(eduMaterials2);
 			log.info("YbRepositoryImpl updateByEduMaterials eduMaterials2 -> " + eduMaterials2);
@@ -123,6 +127,19 @@ public class YbRepositoryImpl implements YbRepository {
 		
 		return selectLGpList;
 	}
+	
+	
+	@Override
+	public List<GameOrder> findByGoOrderDateAtBetween(Date s_date, Date e_date) {
+		System.out.println("YbRepositoryImpl findByGoOrderDateAtBetween start...");
+		List<GameOrder> findByGoOrderDateAtBetween = em.createQuery("select g from GameOrder g where goOrderDate "
+																  + "between :s_date and :e_date order by goOrderDate desc", GameOrder.class)
+													   .setParameter("s_date", s_date)
+													   .setParameter("e_date", e_date)
+				   						 			   .getResultList();	
+		return findByGoOrderDateAtBetween;
+	}
+
 
 	
 }

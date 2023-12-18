@@ -35,5 +35,14 @@ public class GbLgJoinServiceImpl implements GbLgJoinService {
 		
 		return lgJoinMemberList;
 	}
+	
+	@Override
+	public List<LgJoin> selectLgHwSendMemberList(HwSend hwsend) {
+		System.out.println("GbLgjoinServiceImpl insertHwSend start...");
+		
+		List<LgJoin> hwSendMemberList = gljd.selectLgHwSendMemberList(hwsend);
+		
+		return hwSendMemberList;
+	}
 
 }

@@ -13,6 +13,7 @@
 		]]>
 	</select>
 	
+	<!-- var1. -->
 	<select id="mkhSelectBoardList" parameterType="board" resultType="board">			
 		<![CDATA[
 			SELECT *
@@ -31,12 +32,38 @@
 				       WHERE 	m.m_num = b.m_num
 				       AND 	 	b.b_category = #{b_category}
 				       AND		b.b_regi_date < TRUNC(sysdate) + 1
-				       ORDER BY b.b_flag asc
 			    ) a
+			    ORDER BY a.b_flag ASC, a.b_ref_num, a.b_regi_date asc
 		    )
 		    WHERE rn BETWEEN #{start} AND #{end}
 		]]>
 	</select>
+	
+	<!-- var2. -->
+	<!-- <select id="mkhSelectBoardList" parameterType="board" resultType="board">			
+		<![CDATA[
+			SELECT *
+		    FROM
+		    (
+		        SELECT rownum rn, a.*
+			    FROM
+			    (
+				       SELECT 	b.*, m.m_name,
+					       		(
+					       		 SELECT count(*)
+					       		 FROM   board_comment
+					       		 WHERE  b_num = b.b_num
+					       		 ) comment_count
+				       FROM  	board b, member m
+				       WHERE 	m.m_num = b.m_num
+				       AND 	 	b.b_category = #{b_category}
+				       AND		b.b_regi_date < TRUNC(sysdate) + 1
+				       ORDER BY b.b_flag asc, b.b_ref_num desc, b.b_ref_indent asc
+			    ) a
+		    )
+		    WHERE rn BETWEEN #{start} AND #{end}
+		]]>
+	</select> -->
 	
 	<select id="mkhSelectBoard" parameterType="int" resultType="board">
 		SELECT b.*, m.*
@@ -67,10 +94,76 @@
 		VALUES 	(seq_board_b_num.nextval, #{b_category}, #{b_notie_type}, 	#{b_flag},	1,			#{b_title}, #{b_content}, 	#{b_regi_date}, 	#{b_modi_date, jdbcType = DATE}, 		0	, #{b_attach_name}, #{b_attach_path}, #{b_ref_num})
 	</insert> -->
 	
+	<!-- ver1 -->
 	<insert id="mkhInsertBoard" parameterType="board">
 		INSERT INTO board
-		VALUES 	(board_seq.nextval, #{b_category}, #{b_notie_type}, 	#{b_flag},	1,			#{b_title}, #{b_content}, 	#{b_regi_date}, 	#{b_modi_date, jdbcType = DATE}, 		0	, #{b_attach_name}, #{b_attach_path}, board_seq.nextval)
+		VALUES (
+				board_seq.nextval, 
+				#{b_category}, 
+				#{b_notie_type}, 	
+				#{b_flag},	
+				#{m_num},			
+				#{b_title}, 
+				#{b_content}, 	
+				#{b_regi_date}, 	
+				#{b_modi_date, jdbcType = DATE}, 		
+				0, 
+				#{b_attach_name}, 
+				#{b_attach_path},
+				<choose>
+					<!-- 새글작성 -->
+					<when test="b_ref_num == 1">
+						board_seq.nextval
+					</when>
+					<!-- 답글작성 -->
+					<otherwise>
+						#{b_ref_num}
+					</otherwise>
+				</choose>
+				)
 	</insert>
+	
+	<!-- ver2 -->
+	<!-- <insert id="mkhInsertBoard" parameterType="board">
+		INSERT INTO board
+		VALUES (
+				board_seq.nextval, 
+				#{b_category}, 
+				#{b_notie_type}, 	
+				#{b_flag},	
+				1,			
+				#{b_title}, 
+				#{b_content}, 	
+				#{b_regi_date}, 	
+				#{b_modi_date, jdbcType = DATE}, 		
+				0, 
+				#{b_attach_name}, 
+				#{b_attach_path},
+				<choose>
+					<when test="b_ref_num == 1">
+						board_seq.nextval
+					</when>
+					<otherwise>
+						null
+					</otherwise>
+				</choose>
+				,0
+				)
+	</insert> -->
+	
+	<!-- <insert id="mkhInsertBoard" parameterType="board">
+		INSERT INTO board
+		VALUES 	(
+				<c:choose>
+					<c:when test="b_num == null">
+						board_seq.nextval
+					</c:when>
+					<otherwise>
+						board_seq.nextval
+					</otherwise>
+				</c:choose>
+				, #{b_category}, #{b_notie_type}, 	#{b_flag},	1,			#{b_title}, #{b_content}, 	#{b_regi_date}, 	#{b_modi_date, jdbcType = DATE}, 		0	, #{b_attach_name}, #{b_attach_path}, #{b_ref_num})
+	</insert> -->
 	
 	<!-- <select id="mkhSearchBoardList" parameterType="board" resultType="board">
 		<![CDATA[
@@ -132,11 +225,71 @@
 		        <if test="search_type == 's_writer'">
 		            m.m_name LIKE '%' || #{search_keyword} || '%'
 		        </if>
-		        ORDER BY b.b_flag asc
+		        ORDER BY b.b_flag asc, b.b_regi_date desc
 		    ) a
 		)
 		WHERE rn BETWEEN #{start} AND #{end}
 	</select>
 	
+	<!-- <update id="mkhUpdateParentNum" parameterType="board">
+		UPDATE board
+		SET	   b_ref_num
+		WHERE  b_num
+	</update> -->
+	
+	<delete id="mkhDeleteBoard" parameterType="boardComment">
+		DELETE board
+		WHERE  b_num = #{b_num}
+	</delete>
+	
+	<update id="mkhUpdateBoard" parameterType="board">
+		UPDATE board
+		SET	   
+			   b_category = #{b_category},
+			   b_notie_type = #{b_notie_type},
+			   b_flag = #{b_flag},
+			   b_title = #{b_title},
+			   b_content = #{b_content},
+			   b_regi_date = #{b_regi_date},
+			   b_modi_date = sysdate,
+			   b_attach_name = #{b_attach_name},
+			   b_attach_path = #{b_attach_path}
+		WHERE  b_num = #{b_num}
+	</update>
+	
+	<delete id="mkhDeleteFile" parameterType="board">
+		UPDATE board
+		SET	   
+			   b_attach_name = #{b_attach_name, jdbcType = VARCHAR},
+			   b_attach_path = #{b_attach_path, jdbcType = VARCHAR}
+		WHERE  b_num = #{b_num}
+	</delete>
+	
+	
+	<!-- board_comment에 넣어야함 -->
+	<insert id="mkhInsertComment" parameterType="boardComment">
+		INSERT INTO board_comment
+		VALUES (
+				NVL((SELECT MAX(bc_num)
+					 FROM   board_comment
+					 WHERE  b_num=#{b_num})+1, 1),
+				#{b_num}, 
+				#{m_num}, 
+				sysdate, 
+				#{bc_modi_date, jdbcType = DATE}, 
+				#{bc_content}
+				)
+	</insert>
+	
+	<delete id="mkhDeleteComment" parameterType="boardComment">
+		DELETE board_comment
+		WHERE  b_num = #{b_num}
+		AND	   bc_num = #{bc_num}
+	</delete>
+	
+	<delete id="mkhDeleteBoardComment" parameterType="boardComment">
+		DELETE board_comment
+		WHERE  b_num = #{b_num}
+	</delete>
 
 </mapper>

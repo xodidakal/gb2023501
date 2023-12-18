@@ -11,5 +11,6 @@ public interface GbLgJoinDao {
 
 	List<LearnGrp> 	selectLgJoinList(Homework homework);
 	List<LgJoin> 	selectLgJoinMemberList(HwSend hwsend);
+	List<LgJoin>    selectLgHwSendMemberList(HwSend hwsend); 
 
 }

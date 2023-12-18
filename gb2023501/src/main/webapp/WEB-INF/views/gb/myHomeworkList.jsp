@@ -29,9 +29,8 @@
 			</select>
 			<!-- 카테고리 검색 -->
 			<select id="search_type" class="w-17 rounded" style="border-color: #ced4da">
-				<option value="title">게임콘텐츠</option>
+				<option value="title">숙제명</option>
 				<option value="writer">교육자</option>
-				<option value="writer">숙제명</option>
 			</select>&nbsp;&nbsp;
             <input id = "search_keyword" class="form-control rounded" type="search" placeholder="내용을 입력해주세요" style="width: 160px;">
           	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
@@ -43,37 +42,27 @@
        		<thead>
 				<tr>
 					<th>No.</th>
-					<th>게임콘텐츠</th>
+					<th style="width:40%">숙제명</th>
 					<th>교육자</th>
-					<th>숙제명</th>
 					<th>진도</th>
 					<th>제출기한</th>	
 					<th width="100px;">상세</th>				
 				</tr>
 			</thead>
 			 <tbody>
-<%-- 					 <c:forEach var="" items=""> --%>
+			 <c:set var="startRow" value="${startRow }"></c:set>
+			 <c:forEach var="myHomework" items="${myHomeworkList }">
+			 	
 			 	<tr>
-			 		<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td>5</td>
-					<td>6</td>
+			 		<td>${startRow}</td>
+					<td>${myHomework.hhTitle }</td>
+					<td>${myHomework.mmName }</td>
+					<td>${myHomework.hhLevel }</td>
+					<td>${myHomework.hhDeadline }</td>
 					<td width="100px;"><a href="/learning/myHomeworkDetail"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
 				</tr>
-				
-				<tr>
-			 		<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td>5</td>
-					<td>6</td>
-					<td width="100px;"><a href="/learning/myHomeworkDetail"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
-				</tr>
-				
-<%-- 					 </c:forEach> --%>
+				<c:set var="startRow" value="${startRow + 1 }"></c:set>				
+			 </c:forEach>
 				
                 </tbody>   
               </table>

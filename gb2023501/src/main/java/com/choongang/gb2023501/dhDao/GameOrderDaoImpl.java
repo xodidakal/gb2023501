@@ -68,4 +68,77 @@ public class GameOrderDaoImpl implements GameOrderDao {
 		return totalSearchGameOrder;
 	}
 
+	@Override
+	public List<Game> listGame(Game game) {
+		System.out.println("GameOrderDaoImpl listGame start...");
+		List<Game> gameList = null;
+		
+		try {
+			gameList = session.selectList("dhGameList" , game);
+			System.out.println("GameOrderDaoImpl listGame gameList->"+gameList.size());
+		} catch (Exception e) {
+			System.out.println("GameOrderDaoImpl listGame Exception->"+e.getMessage());
+		}
+		return gameList;
+	}
+
+	@Override
+	public int totalSearchGame(Game game) {
+		int totalSearchGame = 0;
+		try {
+			totalSearchGame = session.selectOne("dhGameSearchTotal",game);
+			System.out.println("GameOrderDaoImpl totalSearchGame()->"+totalSearchGame);
+		} catch (Exception e) {
+			System.out.println("GameOrderDaoImpl totalSearchGame->"+e.getMessage());
+		}
+		return totalSearchGame;
+	}
+
+	@Override
+	public int insertGame(Game game) {
+		int result = 0;
+		try {
+			result = session.insert("dhGameInsert", game);
+		} catch (Exception e) {
+			System.out.println("GameOrderDaoImpl insertGame->"+e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public Game selectGame(int g_num, int m_num) {
+		Game gameselect = new Game();
+		Game game = new Game();
+		game.setG_num(g_num);
+		game.setM_num(m_num);
+		try {
+			gameselect = session.selectOne("dhGameSelect", game);
+		}catch (Exception e) {
+			System.out.println("GameOrderDaoImpl selectGame->"+e.getMessage());
+		}
+		return gameselect;
+	}
+
+	@Override
+	public int updateGame(Game game) {
+		int result = 0;
+		try {
+			result = session.update("dhGameUpdate",game);
+		} catch (Exception e) {
+			System.out.println("GameOrderDaoImpl  updateGame->"+e.getMessage());
+		}
+		return result;
+		}
+
+	@Override
+	public int insertGameOrder(Game game) {
+		int result = 0;
+		try {
+			result = session.insert("dhGameOrderInsert", game);
+		} catch (Exception e) {
+			System.out.println("GameOrderDaoImpl insertGameOrder->"+e.getMessage());
+		}
+		return result;
+	}
+
 }

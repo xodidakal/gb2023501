@@ -18,7 +18,16 @@
 		width: 150px;
 	}
 </style>
-
+<script type="text/javascript">
+	function deleteEdu(emNum) {
+		 if (confirm("삭제하시겠습니까?") == true){  
+			 	location.href ="/operate/deleteEduMaterials?emNum="+emNum;
+	    	 } else {
+	    		    	return false;
+	    	 }
+		   	 return false;
+	}
+</script>
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->
@@ -27,7 +36,7 @@
 <!--     </div> -->
 <div class="row g-0 justify-content-center">
 	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
-		<form action="/operate/updateEduMaterials" method="post">
+		<form action="/operate/updateEduMaterials" method="post" enctype="multipart/form-data">
 			<input type="hidden" value="${eduMaterials.emNum }" name="em_num" id="em_num">
 <%-- 			<input type="text" value="${m_num }" name="mNum" id="mNum"> --%>
 <%-- 			<input type="text" value="${eduMaterials.ggNum }" name="ggNum" id="ggNum"> --%>
@@ -39,6 +48,10 @@
 	        	<small>작성일 : <fmt:formatDate value="${eduMaterials.emRegiDate }" pattern="yyyy년MM월dd일"/></small>			                  
 <%-- 	        	<input type="hidden" value="${eduMaterials.emRegiDate }" name="emRegiDate" id="emRegiDate"> --%>
 	        	<table id="table" style="margin-top: 0px;">
+					<tr>
+						<th>게임 콘텐츠</th>
+						<td>${eduMaterials.gNum }</td>
+					</tr>
 					<tr>
 						<th>자료구분</th>
 						<c:choose>
@@ -90,17 +103,17 @@
 				                    <label>동영상</label>
 				                </td>
 				                <td width="150px;">   
-				                    <input class="form-check-input" type="radio" name="em_type" value="2" id="em_typeVideo" checked="checked">
+				                    <input class="form-check-input" type="radio" name="emType" value="2" id="em_typeVideo" checked="checked">
 				                    <label>교재</label>
 								</td>
 								<td width="150px;">   
-				                    <input class="form-check-input" type="radio" name="em_type" value="3" id="em_typeSite" >
+				                    <input class="form-check-input" type="radio" name="emType" value="3" id="em_typeSite" >
 				                    <label>웹사이트</label>
 								</td>
 							</c:when>
 							<c:otherwise>
 								<td width="150px;">
-				                    <input class="form-check-input" type="radio" name="em_type" value="1" id="em_typeTutorial">
+				                    <input class="form-check-input" type="radio" name="emType" value="1" id="em_typeTutorial">
 				                    <label>동영상</label>
 				                </td>
 				                <td width="150px;">   
@@ -162,16 +175,25 @@
 	                <tr>
 	                	<th>썸네일</th>
 						<td colspan="3">
-							<div class="d-grid gap-2 d-flex justify-content-center" >
-								<label for="emAttachName"><img src="${eduMaterials.emAttachName }" alt="도서 썸네일" class="img-fluid" style="width: 5rem; height: 80px;"></label>
-								<input type="file" class="form-control" id="emAttachName" name="emAttachName" value="" style="visibility: hidden;" >
+							<div class="d-grid gap-2 d-flex justify-content-center">
+								<label for="file1">
+								<c:choose>
+		                            <c:when test="${fn:contains(eduMaterials.emAttachName, 'http')}">
+		                            	<img src="${eduMaterials.emAttachName}" alt="Ecommerce"  width="75px" height="90px">
+	                           		</c:when>
+	                            	<c:otherwise>
+	                              		<img src="${pageContext.request.contextPath}/upload/yb/${eduMaterials.emAttachName}" alt="Ecommerce"  width="75px" height="90px">
+	                            	</c:otherwise>
+                        	    </c:choose>
+                        	</label>
+								<input type="file" class="form-control" id="file1" name="file1" value="" style="visibility: hidden;" >
 			                </div>
 		                </td>
 	                </tr>   
                 </table>
                 <div class="d-grid gap-2 d-flex justify-content-center" >
 					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="수정">
-					<a href="/operate/eduMaterialsList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
+					<button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" onclick="deleteEdu(${eduMaterials.emNum })">삭제</button>
 					<a href="/operate/eduMaterialsList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
 				</div>
 				

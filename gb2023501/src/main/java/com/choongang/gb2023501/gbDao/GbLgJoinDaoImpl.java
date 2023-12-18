@@ -46,5 +46,20 @@ public class GbLgJoinDaoImpl implements GbLgJoinDao {
 		
 		return lgJoinMemberList;
 	}
+	
+	@Override
+	public List<LgJoin> selectLgHwSendMemberList(HwSend hwsend) {
+		System.out.println("GbLgJoinDaoImpl selectLgHwSendMemberList start...");
+		List<LgJoin> hwSendMemberList = null;
+		
+		try {
+			hwSendMemberList = session.selectList("gbSelectLgHwSendMemberList", hwsend);
+			System.out.println("GbLgJoinDaoImpl selectLgHwSendMemberList hwSendMemberList -> "+hwSendMemberList.size());
+		} catch (Exception e) {
+			System.out.println("GbLgJoinDaoImpl selectLgHwSendMemberList Exception->"+e.getMessage());
+		}
+		
+		return hwSendMemberList;
+	}
 
 }

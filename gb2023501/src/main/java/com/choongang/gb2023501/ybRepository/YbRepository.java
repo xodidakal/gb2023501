@@ -31,6 +31,9 @@ public interface YbRepository {
 
 	List<LearnGrp> 				selectLGpList();
 
+	List<GameOrder> 			findByGoOrderDateAtBetween(Date s_date, Date e_date);
+
+
 	
 	
 }
