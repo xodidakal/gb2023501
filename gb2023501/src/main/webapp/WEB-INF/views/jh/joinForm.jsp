@@ -14,23 +14,29 @@
 		toggleFields();
 		function toggleFields(){
 			// 각 입력 필드에 대한 jQuery 객체 가져오기
-			var email = $('#email').val();
-			var phone = $('#phone').val();
-			var emailTr = $('#emailTr');
-			var phoneTr = $('#phoneTr');
+			var email 		 = $('#email').val();
+			var phone 		 = $('#phone').val();
+			var emailTr 	 = $('#emailTr');
+			var phoneTr 	 = $('#phoneTr');
 			var emailInputTr = $('#emailInputTr');
             var phoneInputTr = $('#phoneInputTr');
+            var emailInput	 = $('#emailInput');
+            var phoneInput	 = $('#phoneInput');
             
 			if(email){
 				emailTr.show();
 				phoneTr.hide();
 				phoneInputTr.show();
 				emailInputTr.hide();
+				emailInput.prop('required', false);
+				phoneInput.prop('required', true);
 			} else{
 				phoneTr.show();
 				emailTr.hide();
 				emailInputTr.show();
 				phoneInputTr.hide();
+				emailInput.prop('required', true);
+				phoneInput.prop('required', false);
 				
 			}
 		}
@@ -141,8 +147,9 @@
         	}
         });
         
-	});
+
 	
+	});	
 	
 	function duplicateChk(){
 		var pId = $('#mmId').val();
@@ -166,9 +173,33 @@
 		
 	}
 	
+	
+	function isFormValid() {
+	    var isValid = true;
+
+	    // 각 필수 필드 확인
+	    $("#joinForm [required]").each(function () {
+	        if (!$(this).val()) {
+	            isValid = false;
+	            // 검증 오류 처리 (예: 메시지 표시)
+	            alert("모든 필수 항목을 작성하세요.");
+	            return false; // 루프를 일찍 종료
+	        }
+	    });
+
+	    return isValid;
+	}
+
+
+	 
 	function joinChk(){
 		var formData = $("#joinForm").serialize();
 		//alert("formData -> " + formData);
+		
+		 // 폼 제출 전에 유효성 검사 수행
+            if (!isFormValid()) {
+                return; // 필수 항목이 비어있으면 폼 제출 중단
+            }
 		
 		// 아이디 중복 확인이 이루어졌는지 확인
 	    var idValidationMessage = $('#idValidationMessage').text();
@@ -199,6 +230,7 @@
 		});
 		
 	}
+
 </script>
 </head>
 <body>
@@ -234,7 +266,7 @@
 		                    <input type="text" class="form-control" id="mmId" name="mmId" required>
 						</td>
 						<td>
-		            		<input class="btn rounded py-2 px-3 mx-4" type="button" style="background: #263d94; color: white;" id="duplicateChkBtn" value="중복확인" onclick="duplicateChk()" disabled required>
+		            		<input class="btn rounded py-2 px-3 mx-4" type="button" style="background: #263d94; color: white;" id="duplicateChkBtn" value="중복확인" onclick="duplicateChk()" disabled >
 		            	</td>
 					</tr>
 					<tr style="height: 5px;" id="idValidationMessageTr">
@@ -282,13 +314,13 @@
 		            <tr id="emailInputTr">
 						<th>이메일 주소</th>
 						<td colspan="3">
-		                    <input type="email" class="form-control" id="emailInput" name="email" required>
+		                    <input type="email" class="form-control" id="emailInput" name="email">
 		            	</td>
 					</tr>
 		            <tr id="phoneInputTr">
 						<th>휴대폰 번호</th>
 						<td colspan="3">
-		                    <input type="tel" class="form-control" id="phoneInput" name="phone" placeholder="(-)없이 입력하세요"  maxlength="11" required>
+		                    <input type="tel" class="form-control" id="phoneInput" name="phone" placeholder="(-)없이 입력하세요"  maxlength="11">
 		            	</td>
 		            </tr>
 		            <tr style="height: 5px;" id="phoneValidationMessageTr">
