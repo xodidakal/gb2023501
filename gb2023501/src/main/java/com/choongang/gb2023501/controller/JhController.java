@@ -257,6 +257,33 @@ public class JhController {
 		return modelAndView;
 	}
 	
+	//아이디 중복체크
+	@ResponseBody
+	@PostMapping(value = "info/idDuplicateCheck")
+	public String idDuplicateCheck(String id) {
+		System.out.println("JhController idDuplicateCheck Start...");
+		System.out.println("JhController idDuplicateCheck id -> "+id);
+		
+		boolean existsByMmId = ms.existsByMmId(id);
+		
+		//중복아이디면 1, 아니면 0
+		//ajax 결과는 boolean을 받지 못하기 때문
+		String result = existsByMmId ? "1" : "0";
+//		String result = "2";
+		return result;
+	}
+	
+	@ResponseBody
+	@PostMapping(value = "info/join")
+	public String join() {
+		System.out.println("JhController join Start...");
+		
+		String result = null;
+		return result;
+	}
+	
+	
+	
 	//회원 목록 관리 페이지
 	@RequestMapping(value = "operate/memberList")
 	public String memberList() {

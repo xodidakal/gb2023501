@@ -36,7 +36,7 @@
 <!--     </div> -->
 <div class="row g-0 justify-content-center">
 	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
-		<form action="/operate/updateEduMaterials" method="post">
+		<form action="/operate/updateEduMaterials" method="post" enctype="multipart/form-data">
 			<input type="hidden" value="${eduMaterials.emNum }" name="em_num" id="em_num">
 <%-- 			<input type="text" value="${m_num }" name="mNum" id="mNum"> --%>
 <%-- 			<input type="text" value="${eduMaterials.ggNum }" name="ggNum" id="ggNum"> --%>
@@ -48,6 +48,10 @@
 	        	<small>작성일 : <fmt:formatDate value="${eduMaterials.emRegiDate }" pattern="yyyy년MM월dd일"/></small>			                  
 <%-- 	        	<input type="hidden" value="${eduMaterials.emRegiDate }" name="emRegiDate" id="emRegiDate"> --%>
 	        	<table id="table" style="margin-top: 0px;">
+					<tr>
+						<th>게임 콘텐츠</th>
+						<td>${eduMaterials.gNum }</td>
+					</tr>
 					<tr>
 						<th>자료구분</th>
 						<c:choose>
@@ -99,17 +103,17 @@
 				                    <label>동영상</label>
 				                </td>
 				                <td width="150px;">   
-				                    <input class="form-check-input" type="radio" name="em_type" value="2" id="em_typeVideo" checked="checked">
+				                    <input class="form-check-input" type="radio" name="emType" value="2" id="em_typeVideo" checked="checked">
 				                    <label>교재</label>
 								</td>
 								<td width="150px;">   
-				                    <input class="form-check-input" type="radio" name="em_type" value="3" id="em_typeSite" >
+				                    <input class="form-check-input" type="radio" name="emType" value="3" id="em_typeSite" >
 				                    <label>웹사이트</label>
 								</td>
 							</c:when>
 							<c:otherwise>
 								<td width="150px;">
-				                    <input class="form-check-input" type="radio" name="em_type" value="1" id="em_typeTutorial">
+				                    <input class="form-check-input" type="radio" name="emType" value="1" id="em_typeTutorial">
 				                    <label>동영상</label>
 				                </td>
 				                <td width="150px;">   
@@ -172,8 +176,17 @@
 	                	<th>썸네일</th>
 						<td colspan="3">
 							<div class="d-grid gap-2 d-flex justify-content-center">
-								<label for="emAttachName"><img src="${eduMaterials.emAttachName }" alt="도서 썸네일" class="img-fluid" style="width: 5rem; height: 80px;"></label>
-								<input type="file" class="form-control" id="emAttachName" name="emAttachName" value="" style="visibility: hidden;" >
+								<label for="file1">
+								<c:choose>
+		                            <c:when test="${fn:contains(eduMaterials.emAttachName, 'http')}">
+		                            	<img src="${eduMaterials.emAttachName}" alt="Ecommerce"  width="75px" height="90px">
+	                           		</c:when>
+	                            	<c:otherwise>
+	                              		<img src="${pageContext.request.contextPath}/upload/yb/${eduMaterials.emAttachName}" alt="Ecommerce"  width="75px" height="90px">
+	                            	</c:otherwise>
+                        	    </c:choose>
+                        	</label>
+								<input type="file" class="form-control" id="file1" name="file1" value="" style="visibility: hidden;" >
 			                </div>
 		                </td>
 	                </tr>   

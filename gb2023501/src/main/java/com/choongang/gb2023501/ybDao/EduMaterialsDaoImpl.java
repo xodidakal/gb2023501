@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.choongang.gb2023501.model.LearnGrp;
 import com.choongang.gb2023501.model.EduMaterials;
+import com.choongang.gb2023501.model.Game;
 
 import lombok.RequiredArgsConstructor;
 
@@ -59,10 +60,13 @@ public class EduMaterialsDaoImpl implements EduMaterialsDao {
 	}
 	// 학습그룹 검색 리스트 개수
 	@Override
-	public int selectLgpListByTitleCnt(String lgTitle) {
+	public int selectLgpListByTitleCnt(String lgTitle, int mmNum) {
 		System.out.println("YbController EduMaterialsDaoImpl selectLgpListByTitleCnt start...");
 		int selectLgpListByTitleCnt = 0;
-		try {
+		HashMap<String, Object> setAbout = new HashMap<>();
+		try {			
+			setAbout.put("lgTitle", lgTitle);
+			setAbout.put("mmNum", mmNum);
 			selectLgpListByTitleCnt = session.selectOne("selectLgpListByTitleCnt", lgTitle);
 		} catch (Exception e) {
 			System.out.println("YbController EduMaterialsDaoImpl selectLgpListByTitleCnt Exception -> " + e.getMessage());
@@ -88,5 +92,17 @@ public class EduMaterialsDaoImpl implements EduMaterialsDao {
 			System.out.println("YbController EduMaterialsDaoImpl findTotal Exception -> " + e.getMessage());
 		} 
 		return findTotal;
+	}
+	// 학습 자료 선택 시 게임 콘텐츠 선택
+	@Override
+	public List<Game> selectGameList(Game game) {
+		System.out.println("YbController EduMaterialsDaoImpl selectGameList start...");
+		List<Game> selectGameList = null;
+		try {
+			selectGameList = session.selectList("selectGameList", game);
+		} catch (Exception e) {
+			System.out.println("YbController EduMaterialsDaoImpl selectGameList Exception -> " + e.getMessage());
+		}
+		return selectGameList;
 	}
 }

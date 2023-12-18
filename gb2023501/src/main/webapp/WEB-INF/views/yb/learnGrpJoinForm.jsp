@@ -109,7 +109,6 @@ function signUp() {
 		            </div>
 				</div>
 	    	</div>
-	 	<c:if test="${selectLgpListByTitleCnt != 0 }">
        	<table class="listTable">
        		<thead>
 				<tr>
@@ -140,7 +139,6 @@ function signUp() {
 				
                 </tbody>   
               </table>
-             </c:if>
 	</div>
 </div>
 </main>

@@ -25,4 +25,9 @@
 			FROM Game_order 
 			WHERE go_order_date BETWEEN #{s_date} and #{e_date}
 		</select>
+		
+		<select id="selectGameList" resultType="Game">
+			SELECT *
+			FROM   GAME
+		</select>
 	</mapper>

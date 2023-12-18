@@ -39,7 +39,6 @@
             <input id="keyword" name="keyword" class="form-control rounded" placeholder="검색어를 입력하세요." type="text" style="width: 160px;">
           	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
          		<a onclick="myGameOrderList()"><i class="bi bi-search mt-2"></i></a>
-          	
           	</div>	
 	    </div>
 	    <!-- 내 구독목록 -->
