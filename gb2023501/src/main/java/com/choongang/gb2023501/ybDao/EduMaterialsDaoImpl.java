@@ -1,6 +1,8 @@
 package com.choongang.gb2023501.ybDao;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -43,6 +45,7 @@ public class EduMaterialsDaoImpl implements EduMaterialsDao {
 		}
 		return selectEduMaterialsListCnt;
 	}
+	// 학습 그룹 검색 리스트
 	@Override
 	public List<com.choongang.gb2023501.domain.LearnGrp> selectLgpListByTitle(LearnGrp learnGrp) {
 		System.out.println("YbController EduMaterialsDaoImpl selectLgpListByTitle start...");
@@ -54,6 +57,7 @@ public class EduMaterialsDaoImpl implements EduMaterialsDao {
 		}
 		return selectLgpListByTitle;
 	}
+	// 학습그룹 검색 리스트 개수
 	@Override
 	public int selectLgpListByTitleCnt(String lgTitle) {
 		System.out.println("YbController EduMaterialsDaoImpl selectLgpListByTitleCnt start...");
@@ -64,5 +68,25 @@ public class EduMaterialsDaoImpl implements EduMaterialsDao {
 			System.out.println("YbController EduMaterialsDaoImpl selectLgpListByTitleCnt Exception -> " + e.getMessage());
 		}
 		return selectLgpListByTitleCnt;
+	}
+	// 매출 검색 총 액
+	@Override
+	public int findTotal(Date s_date, Date e_date) {
+		
+		System.out.println("YbController EduMaterialsDaoImpl findTotal start...");
+		int findTotal = 0;
+		
+		try {
+			System.out.println("YbController EduMaterialsDaoImpl findTotal s_date -> " + s_date);
+			System.out.println("YbController EduMaterialsDaoImpl findTotal e_date -> " + e_date);
+			
+			HashMap<String, Object> findSaleTotal = new HashMap<>();
+			findSaleTotal.put("s_date", s_date);
+			findSaleTotal.put("e_date", e_date);
+			findTotal = session.selectOne("findSaleTotal", findSaleTotal);
+		} catch (Exception e) {
+			System.out.println("YbController EduMaterialsDaoImpl findTotal Exception -> " + e.getMessage());
+		} 
+		return findTotal;
 	}
 }

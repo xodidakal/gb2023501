@@ -1,5 +1,6 @@
 package com.choongang.gb2023501.ybService;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -48,6 +49,12 @@ public class EduMaterialsServiceImpl implements EduMaterialsService {
 	public List<GameOrder> selectSalesDetailList(GameOrder gameOrder) {
 		System.out.println("YbController EduMaterialsServiceImpl selectSalesDetailList start...");
 		return null;
+	}
+	@Override
+	public int findTotal(Date s_date, Date e_date) {
+		System.out.println("YbController EduMaterialsServiceImpl selectSalesDetailList start...");
+		int findTotal = ed.findTotal(s_date, e_date);
+		return findTotal;
 	}
 
 

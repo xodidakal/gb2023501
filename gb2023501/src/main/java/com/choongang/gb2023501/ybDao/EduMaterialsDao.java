@@ -1,5 +1,6 @@
 package com.choongang.gb2023501.ybDao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.choongang.gb2023501.domain.LearnGrp;
@@ -14,5 +15,7 @@ public interface EduMaterialsDao {
 	List<LearnGrp> 				selectLgpListByTitle(com.choongang.gb2023501.model.LearnGrp learnGrp);
 
 	int 						selectLgpListByTitleCnt(String lgTitle);
+
+	int							findTotal(Date s_date, Date e_date);
 
 }

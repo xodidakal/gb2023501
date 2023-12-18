@@ -4,31 +4,26 @@
 
 	<mapper namespace="com.choongang.gb2023501.LearnGrpsMapper">
 		<select id="selectLgpListByTitle" parameterType="LearnGrp" resultType="LearnGrp">			
-			 SELECT g.g_attach_name, lg.lg_title, m.m_name, lg.lg_sdate, lg.lg_edate, lg.lg_to, lg.lg_num, (lg.lg_to - (count(lj.lgj_approval))) remainningTo
+			 SELECT g.g_attach_name, lg.lg_title, m.m_name, lg.lg_sdate, lg.lg_edate, lg.lg_to, lg.lg_num, g.g_title, (lg.lg_to - (count(lj.lgj_approval))) remainningTo
+<!-- 			 SELECT g.g_attach_name, lg.lg_title, m.m_name, lg.lg_sdate, lg.lg_edate, lg.lg_to, (lg.lg_to - (count(lj.lgj_approval))) remainningTo -->
 			 From   game g, learn_grp lg, member m, lg_join lj
 			 where  lg.g_num = g.g_num 
 			 and    lg.m_num = m.m_num 
 			 and    lg.lg_num = lj.lg_num
-			 and   TO_CHAR(SYSDATE, 'YYYY-MM') BETWEEN
-			        (SELECT TO_CHAR(ROUND((TO_DATE(lg_edate, 'YYYY-MM') - TO_DATE(lg_sdate, 'YYYY-MM')) / 2) + TO_DATE(lg_sdate, 'YYYY-MM'), 'YYYY-MM')
-			         FROM learn_grp lg_inner
-			         WHERE lg_inner.lg_num = lj.lg_num) AND TO_CHAR(TO_DATE(lg.lg_edate, 'YYYY-MM'), 'YYYY-MM')
-			 <if test="lg_title != null and lg_title != '' and lg_title != 'reload'">
+			and    sysdate between (select ROUND((to_date(lg_edate) - TO_DATE(lg_sdate))/2) +TO_DATE(lg_sdate) From learn_grp lg where lg.lg_num = lj.lg_num) and lg.lg_edate
+			  <if test="lg_title != null and lg_title != '' and lg_title != 'reload'">
 			 and    lg.lg_title = #{lg_title} 			 
 			 </if>
-			 group by g.g_attach_name, lg.lg_title, m.m_name, lg.lg_sdate, lg.lg_edate, lg.lg_to, lg.lg_num
-			 ORDER BY TO_DATE(lg.lg_sdate, 'YYYY-MM')
+			 group by g.g_attach_name, lg.lg_title, m.m_name, lg.lg_sdate, lg.lg_edate, lg.lg_to, lg.lg_num, g.g_title
+			 ORDER BY lg.lg_sdate
 		</select>
 		
 		
 		<select id="selectLgpListByTitleCnt" parameterType="String" resultType="int">
-            SELECT COUNT(*) 
+			SELECT COUNT(*) 
 			FROM learn_grp 
-			WHERE TO_CHAR(SYSDATE, 'YYYY-MM') BETWEEN
-			    (SELECT TO_CHAR(ROUND((TO_DATE(lg_edate, 'YYYY-MM') - TO_DATE(lg_sdate, 'YYYY-MM')) / 2) + TO_DATE(lg_sdate, 'YYYY-MM'), 'YYYY-MM') 
-			     FROM learn_grp lg
-			     WHERE lg.lg_num = learn_grp.lg_num) 
-			AND lg_edate
+			WHERE sysdate BETWEEN 
+    		(SELECT MAX(ROUND((TO_DATE(lg_edate, 'YYYY-MM-DD') - TO_DATE(lg_sdate, 'YYYY-MM-DD')) / 2) + TO_DATE(lg_sdate, 'YYYY-MM-DD')) FROM learn_grp) AND lg_edate
     		<if test="lg_title != null and lg_title != '' and lg_title != 'reload'">
 			and    lg_title = #{lg_title}
 			</if>

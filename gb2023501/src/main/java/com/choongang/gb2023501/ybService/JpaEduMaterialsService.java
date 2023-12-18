@@ -17,7 +17,6 @@ import com.choongang.gb2023501.domain.GameOrder;
 import com.choongang.gb2023501.domain.LearnGrp;
 import com.choongang.gb2023501.domain.LgJoin;
 import com.choongang.gb2023501.domain.Member;
-import com.choongang.gb2023501.model.MonthSalesDTO;
 import com.choongang.gb2023501.model.SalesInquiryDTO;
 import com.choongang.gb2023501.ybRepository.EduRepository;
 import com.choongang.gb2023501.ybRepository.LearnGrpRepository;
@@ -121,11 +120,6 @@ public class JpaEduMaterialsService {
 	public void deleteByEmNum(int emNum) {
 		System.out.println("YbJpaEduMaterialsService getListAllGameOrder1 start...");
 		er.deleteByEmNum(emNum);
-	}
-	public int findTotal(Date s_date, Date e_date) {
-		System.out.println("YbJpaEduMaterialsService findTotal start...");
-		int findTotal = yr2.findTotal(s_date, e_date);
-		return findTotal;
 	}
 
 

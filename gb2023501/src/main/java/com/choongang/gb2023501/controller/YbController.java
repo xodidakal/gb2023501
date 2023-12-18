@@ -28,7 +28,6 @@ import com.choongang.gb2023501.domain.LgJoin;
 import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.jhService.MemberService;
 import com.choongang.gb2023501.model.EduMaterials;
-import com.choongang.gb2023501.model.MonthSalesDTO;
 import com.choongang.gb2023501.model.SalesInquiryDTO;
 import com.choongang.gb2023501.ybService.EduMaterialsService;
 import com.choongang.gb2023501.ybService.JpaEduMaterialsService;
@@ -172,7 +171,6 @@ public class YbController {
 	@RequestMapping(value = "/operate/eduMaterialsList")
 	public String JpaEduResourceList(EduMaterials eduMaterials, Model model) {
 		log.info("ybController operate/eduMaterialsList start...");
-		Date emRegidate = eduMaterials.getEm_regi_date();
 		
 		// 학습자료 리스트
 		List<com.choongang.gb2023501.domain.EduMaterials> selectEduMaterialsList = js.getListAllEduMaterials();
@@ -223,7 +221,6 @@ public class YbController {
 								 SalesInquiryDTO salesInquiryDTO)  throws ParseException {
 		System.out.println("ybController /operate/selectDateList start...");
 		List<SalesInquiryDTO> selectSaleList= null;
-		List<SalesInquiryDTO> selectSaleList1 = null;
 		int selectTotal = 0;
 		Date s_date = null;
 		Date e_date = null;
@@ -236,26 +233,23 @@ public class YbController {
 			s_date = java.sql.Date.valueOf(startDate);
 			e_date = java.sql.Date.valueOf(endDate);
 			
-			selectTotal = js.findTotal(s_date, e_date);
+			selectTotal = es.findTotal(s_date, e_date);
 			selectSaleList = js.findBySalesContaining(s_date, e_date);	//, pageable
 			System.out.println("ybController /operate/selectDateList selectSaleList -> " + selectSaleList);
-			//System.out.println(pageable.getPageSize());
-			//System.out.println(pageable.getPageNumber());
-			
-			System.out.println(selectSaleList.get(0)); 
-			System.out.println(selectSaleList.get(1)); 
-			System.out.println(selectSaleList.get(2)); 
-			String get = selectSaleList.get(0).toString();
+
 			log.info("selectSaleList -> " + selectSaleList.size());
-			model.addAttribute("get", get);
+
 			model.addAttribute("selectTotal", selectTotal);
 			model.addAttribute("selectSaleList", selectSaleList);
+			model.addAttribute("s_date", s_date);
+	        model.addAttribute("e_date", e_date);
 		}
 		// 월별 검색
 		else if(selectDate.equals("month")) {
 
 			System.out.println("ybController /operate/selectDateList smonth -> " + sMonth);
 			System.out.println("ybController /operate/selectDateList emonth -> " + eMonth);
+			
 			// 해당 월 1일 구하기
 			String firstDay = getFirstDayOfMonth(sMonth);
 	        // 해당 월 마지막 날 구하기
@@ -266,9 +260,12 @@ public class YbController {
 	        System.out.println("ybController /operate/selectDateList firstDay -> " + s_date);
 	        System.out.println("ybController /operate/selectDateList lastDay -> " + e_date);
 			/* month = java.sql.Date.valueOf(sMonth); */
-	        
+	        selectTotal = es.findTotal(s_date, e_date);
 	        selectSaleList = js.selectSaleList(s_date, e_date);
-	        
+	        log.info("selectSaleList -> " + selectSaleList.size());
+	        model.addAttribute("s_date", s_date);
+	        model.addAttribute("e_date", e_date);	      
+	        model.addAttribute("selectTotal", selectTotal);
 	        model.addAttribute("selectSaleList1", selectSaleList);
 		}
 
@@ -367,9 +364,9 @@ public class YbController {
     	
     	System.out.println("ybController /learning/learnGrpJoin selectLGpList.size() -> " + selectLGpList.size());
     	List<LearnGrp> selectLgpListByTitle = es.selecLgpListByTitle(learnGrp);
-//    	int selectLgpListByTitleCnt = es.selectLgpListByTitleCnt(lgTitle);
+    	int selectLgpListByTitleCnt = es.selectLgpListByTitleCnt(lgTitle);
     	
-//    	model.addAttribute("selectLgpListByTitleCnt", selectLgpListByTitleCnt);
+    	model.addAttribute("selectLgpListByTitleCnt", selectLgpListByTitleCnt);
     	model.addAttribute("selectLgpListByTitle", selectLgpListByTitle);
     	model.addAttribute("selectLGpList", selectLGpList);	    	
     	return "yb/learnGrpJoinForm";

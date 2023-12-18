@@ -136,5 +136,6 @@ public class YbRepositoryImpl implements YbRepository {
 		return findByGoOrderDateAtBetween;
 	}
 
+
 	
 }

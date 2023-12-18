@@ -1,5 +1,6 @@
 package com.choongang.gb2023501.ybService;
 
+import java.util.Date;
 import java.util.List;
 
 import com.choongang.gb2023501.domain.LearnGrp;
@@ -17,6 +18,8 @@ public interface EduMaterialsService {
 	int 						selectLgpListByTitleCnt(String lgTitle);
 
 	List<GameOrder> 			selectSalesDetailList(GameOrder gameOrder);
+
+	int 						findTotal(Date s_date, Date e_date);
 
 
 }
