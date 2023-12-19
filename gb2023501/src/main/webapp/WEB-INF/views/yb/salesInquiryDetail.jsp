@@ -59,7 +59,17 @@
         
         window.open(url, name, 'width='+popupW+',height='+popupH+',left='+left+',top='+top);
 	}
-
+	function saleInquiryChart(sDate, eDate) {
+		var popupW = 1000;
+		var popupH = 500;
+		var left = Math.ceil((window.screen.width - popupW)/2);
+		var top = Math.ceil((window.screen.height - popupH)/2);
+	
+		var url = "/operate/saleInquiryChart?sDate="+sDate +"&eDate="+eDate;
+        var name = "saleInquiryChart";
+        
+        window.open(url, name, 'width='+popupW+',height='+popupH+',left='+left+',top='+top);
+	}
 </script>
 <body>
 	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
@@ -89,7 +99,8 @@
 				<input class="form-control" type="month" id="eMonth" name="eMonth" style="width: 130px; display: none;">
 				
 				<button type="submit" class="btn btn-light rounded py-2 px-2">검색</button>
-				<a href="#!"><button type="button" class="btn btn-light rounded py-2 px-2" style="margin-left: 660px;">그래프 보기</button></a>
+				<button type="button" class="btn btn-light rounded py-2 px-2" style="margin-left: 660px;" 
+						onclick="saleInquiryChart(<fmt:formatDate value="${s_date }" pattern="yyyyMMdd"/>, <fmt:formatDate value="${e_date }" pattern="yyyyMMdd"/>)">그래프 보기</button>
 			</div>
 		</form>
 		
@@ -153,7 +164,6 @@
              </tbody>   
 		</table>
 	</c:if>
-	</div>
 </div>
 <%@ include file="../common/footerFo.jsp" %>
 </body>

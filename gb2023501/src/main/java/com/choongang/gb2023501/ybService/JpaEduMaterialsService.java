@@ -109,8 +109,8 @@ public class JpaEduMaterialsService {
 	public void insertJoin(LgJoin lgJoin) {
 		System.out.println("YbJpaEduMaterialsService insertJoin start...");
 		log.info("YbJpaEduMaterialsService insertJoin start...");
-		Date LocalDateTime = null;
-		lgJoin.setLgjJoindate(LocalDateTime);
+//		Date LocalDateTime = null;
+//		lgJoin.setLgjJoindate(LocalDateTime);
 		lgr.save(lgJoin);
 		
 	}
