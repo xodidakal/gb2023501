@@ -50,7 +50,7 @@
 
 
 //인증 수단 선택하기
- function updateVerificationInput() {
+ function toggleFields() {
 	    var phoneRadio = document.getElementById("phone");
 	    var emailRadio = document.getElementById("email");
 	    var verificationInput = document.getElementById("verificationInput");
@@ -157,7 +157,9 @@
                             
                          } else{
                         	 alert("메일전송에 실패했습니다.");
-                        	 
+             		        //radio 버튼과 verificationInput을 원상태로 변경
+                             $("input[name='verification']").prop("disabled", false);
+                             $("#verificationInput").prop("disabled", false);
                          }
                      },
                      error: function (error) {
@@ -173,17 +175,17 @@
         alert("pVerificationNum : " + pVerificationNum);
         
         $.ajax({
-        	url : "/info/varification",
-        	type : "POST",
-        	data : {verificationNum : pVerificationNum},
-        	dataType:'text',
-        	success:function(data){
-        		alert("result -> " + data);
-        		if(data === "1"){
-        			 location.href="/info/joinForm";
-        		} else {
-        			alert("인증번호가 맞지 않습니다. 다시 입력해 주세요!");
-        		}
+        	url 	 : "/info/varification",
+        	type 	 : "POST",
+        	data 	 : {verificationNum : pVerificationNum},
+        	dataType : "text",
+        	success  : function(data){
+			        		alert("result -> " + data);
+			        		if(data === "1"){
+			        			 location.href="/info/joinForm";
+			        		} else {
+			        			alert("인증번호가 맞지 않습니다. 다시 입력해 주세요!");
+			        		}
         	}
         });
 		
@@ -271,11 +273,11 @@
                                     <tr>
                                         <th>인증수단</th>
                                         <td width="150px;">
-                                            <input class="form-check-input" type="radio" name="verification" id="phone" checked onclick="updateVerificationInput()">
+                                            <input class="form-check-input" type="radio" name="verification" id="phone" checked onclick="toggleFields()">
                                             <label>휴대폰</label>
                                         </td>
                                         <td width="150px">   
-                                            <input class="form-check-input" type="radio" name="verification" id="email" onclick="updateVerificationInput()">
+                                            <input class="form-check-input" type="radio" name="verification" id="email" onclick="toggleFields()">
                                             <label>이메일</label>
                                         </td>
                                     </tr>

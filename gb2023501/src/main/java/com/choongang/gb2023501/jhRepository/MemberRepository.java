@@ -18,7 +18,8 @@ import com.choongang.gb2023501.domain.Member;
 	//이메일과 이름으로 기존 사용자인지 찾기
 	Optional<Member> findBymmNameAndEmail(String name, String email);
 
-	
+	// 입력한 ID와 같은 아이디가 있는지 확인
+    boolean existsByMmId(String mmId);
 	
 
 	//public Member findByUsername(String username); 

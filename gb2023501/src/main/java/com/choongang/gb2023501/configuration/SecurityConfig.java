@@ -58,8 +58,8 @@ public class SecurityConfig {
 		
 		http.authorizeHttpRequests((requests) -> requests
 				//접근 제한 권한 설정은 마지막에
-				.antMatchers("/learning/**").hasAnyRole("STUDENT", "EDUCATOR", "ADMIN")
-				.antMatchers("/educator/**").hasAnyRole( "EDUCATOR", "ADMIN")
+				//.antMatchers("/learning/**").hasAnyRole("STUDENT", "EDUCATOR", "ADMIN")
+				//.antMatchers("/educator/**").hasAnyRole( "EDUCATOR", "ADMIN")
 
 				
 				
