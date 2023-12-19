@@ -113,6 +113,8 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member join(@Valid Member member) {
 		System.out.println("MemberServiceImpl join Start...");
+		//.save() : 엔티티를 영속화(추가)하거나 업데이트하는 데 사용
+		//Spring Data JPA가 자동으로 영속화 여부 확인 후 영속화 x면(식별자가 없는 경우) insert, o면 update 따라서 persist따로 안 써도 됨
 		Member savedMember = mr.save(member);
 		//String result = savedMember.getMmId(); // 예시로 mmId 필드를 반환하도록 함
 		System.out.println("result -> " + savedMember);
