@@ -2,6 +2,8 @@ package com.choongang.gb2023501.jhService;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -106,6 +108,15 @@ public class MemberServiceImpl implements MemberService {
 		boolean existsByMmId = mr.existsByMmId(id);
 		
 		return existsByMmId;
+	}
+
+	@Override
+	public Member join(@Valid Member member) {
+		System.out.println("MemberServiceImpl join Start...");
+		Member savedMember = mr.save(member);
+		//String result = savedMember.getMmId(); // 예시로 mmId 필드를 반환하도록 함
+		System.out.println("result -> " + savedMember);
+		return savedMember;
 	}
 
 

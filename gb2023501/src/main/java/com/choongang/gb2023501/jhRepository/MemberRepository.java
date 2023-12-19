@@ -7,6 +7,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.choongang.gb2023501.domain.Member;
 
+	//MemberRepository구현하는 클래스 안만든 이유 : Spring Data JPA가 해당 인터페이스를 분석하여 실행 시간에 관련된 구현체를 동적으로 생성하기 때문
+	//개발자가 Repository 구현체를 별도로 작성하지 않아도 인터페이스만으로도 기본적인 CRUD 작업 및 특정한 쿼리 메소드들을 자동으로 생성하는 것이 Spring Data JPA의 목적
+	//따라서 JpaRepository를 상속받은 인터페이스의 메소드 네이밍 규칙에 따라 조건에 맞는 JPQL 쿼리 자동 생성 및 실행
 	public interface MemberRepository extends JpaRepository<Member, Integer>{
 
 	//로그인된 아이디로 회원 정보 가져오기
