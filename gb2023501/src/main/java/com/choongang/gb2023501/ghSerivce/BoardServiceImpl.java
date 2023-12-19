@@ -122,6 +122,14 @@ public class BoardServiceImpl implements BoardService {
 		
 		return result;
 	}
+
+	@Override
+	public Board selectOriBoard(int b_num) {
+		System.out.println("BoardServiceImpl selectOriBoard Start...");
+		Board board = boardDao.selectOriBoard(b_num);
+		
+		return board;
+	}
 	
 	// ver2
 //	@Override

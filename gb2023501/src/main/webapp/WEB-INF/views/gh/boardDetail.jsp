@@ -58,7 +58,7 @@
 		}); */
 	});
 	
-	// 	댓글 등록
+	// 댓글 등록
 	function insertComment() {
 		
 		var params = {};
@@ -124,7 +124,7 @@
 			$(comments).each(function(index, comment) {
 				var list = '<table id=formTable>';
 				list += '<tr>';
-				list += '<th></th>';
+				list += '<th style="width: 200px;"></th>';
 				list += '<td width="410px;">';
 				list += '<label style="font-size: small;">작성자 : '+ comment.m_name +'&nbsp;&nbsp;&nbsp; '+ formatDate(comment.bc_regi_date) +' </label><p>';
 				list += '<label style="font-size: medium;">'+ comment.bc_content
@@ -186,6 +186,44 @@
         }
     }
 	
+	// 업로드 파일 삭제
+	function deleteFile(b_num) {
+		
+		if (!confirm("정말 삭제 하시겠습니까?")) {
+		//	alert("아니오 클릭");
+        } else {
+		//  alert("네 클릭");
+        	var params = {};
+    		params.b_num = document.getElementById('b_num').value;
+    		
+    		$('#idAttachFile').hide();
+    		$('#idAttachInput').show();
+    		
+    		$.ajax({
+    			url			: 'deleteFile',
+    			type		: 'POST',
+    			contentType : 'application/json; charset:utf-8',
+    			data		: JSON.stringify(params),
+    			dataType	: 'text',
+    			success		: function(data) {
+    				if(data = "success") {
+    					alert("업로드 파일 삭제");
+    				} else {
+    					alert("삭제 실패");
+    				}
+    			},
+    			error : function(XHR, textStatus, errorThrown) {
+    				// http 오류 번호를 반환하며 케이스별 오류 메시지 판정에 사용하면 유용
+    				console.log( XHR.status );
+    				// url의 full response를 반환하기 때문에 ajax 오류 디버깅 시에 상당한 도움
+    				alert( jqXHR.responseText );
+    			}
+    		});
+        }
+		
+		
+	}
+	
 </script>
 
 <!-- JS END -->
@@ -205,75 +243,73 @@
 			 	<c:when test="${BdDetail.b_category == 2}"><h2 class="display-7 mb-4">Q&A</h2></c:when>
 	 			<c:otherwise><h2 class="display-7 mb-4">FAQ</h2></c:otherwise>
 			</c:choose>
-	        
-	        <hr class="my-3">
-	        	
-	        	<table class="formTable">
-					<tr>
-						<th>게시 구분</th>
-						<td width="150px;">
-							<c:choose>
-							 	<c:when test="${BdDetail.b_category == 1}"><label style="margin-right: 110px;">공지사항</label></c:when>
-							 	<c:when test="${BdDetail.b_category == 2}"><label style="margin-right: 110px;">Q&A</label></c:when>
-					 			<c:otherwise><label style="margin-right: 110px;">FAQ</label></c:otherwise>
-							</c:choose>
-						</td>
-						
-						<th>게시 분류</th>
-						<td width="150px;">
-							<c:choose>
-					 			<c:when test="${BdDetail.b_notie_type == 1}"><label style="margin-right: 110px;">공통</label></c:when>
-					 			<c:when test="${BdDetail.b_notie_type == 2}"><label style="margin-right: 110px;">이벤트</label></c:when>
-					 			<c:when test="${BdDetail.b_notie_type == 3}"><label style="margin-right: 110px;">업데이트</label></c:when>
-					 			<c:otherwise>규정 및 정책</c:otherwise>
-					 		</c:choose>
-						</td>
-					</tr>
-					<tr>
-						<th>제목</th>
-						<td colspan="3">
-							<label>${BdDetail.b_title}</label>
-						</td>
-					</tr>
-					<tr>
-						<th>게시 일자</th>
-						<td width="150px;">
-							<label>
-								<fmt:formatDate value="${BdDetail.b_regi_date}" type="date" pattern="yyyy-MM-dd"/>
-							</label>
-						</td>
-					</tr>
-					<tr></tr>
-					<tr>
-						<th>내용</th>
-						<td colspan="3">
-							<label>${BdDetail.b_content}</label>
-						</td>
-					</tr>
-					<tr></tr>
-	                <tr>
-	                	<th>첨부파일</th>
-		                <%-- <c:if test="${BdDetail.b_attach_path ne null}">
-		                	<td colspan="3">
-		                		<label><a href="javascript:popup('/upload/${BdDetail.b_attach_path}',800,600)">${BdDetail.b_attach_name}</a></label>
-			                </td>
-						</c:if> --%>
-						<td colspan="3">
-	                		<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="test">${BdDetail.b_attach_name}</a></label>
-		                </td>
-	                </tr>
-                </table>
-                <!-- 공지사항이면 댓글화면 -->
+			
+				<!-- 공지사항이면 원글 + 댓글 -->
                	<c:if test="${BdDetail.b_category eq '1'}">
-               		<!-- 댓글 등록 -->
+               		<!-- 원글 -->
+               		<hr class="my-3">
+	        		
+		        	<table class="formTable">
+						<tr>
+							<th>게시 구분</th>
+							<td width="150px;">
+								<c:choose>
+								 	<c:when test="${BdDetail.b_category == 1}"><label style="margin-right: 110px;">공지사항</label></c:when>
+								 	<c:when test="${BdDetail.b_category == 2}"><label style="margin-right: 110px;">Q&A</label></c:when>
+						 			<c:otherwise><label style="margin-right: 110px;">FAQ</label></c:otherwise>
+								</c:choose>
+							</td>
+							
+							<th>게시 분류</th>
+							<td width="150px;">
+								<c:choose>
+						 			<c:when test="${BdDetail.b_notie_type == 1}"><label style="margin-right: 110px;">공통</label></c:when>
+						 			<c:when test="${BdDetail.b_notie_type == 2}"><label style="margin-right: 110px;">이벤트</label></c:when>
+						 			<c:when test="${BdDetail.b_notie_type == 3}"><label style="margin-right: 110px;">업데이트</label></c:when>
+						 			<c:otherwise>규정 및 정책</c:otherwise>
+						 		</c:choose>
+							</td>
+						</tr>
+						<tr>
+							<th>제목</th>
+							<td colspan="3">
+								<label>${BdDetail.b_title}</label>
+							</td>
+						</tr>
+						<tr>
+							<th>게시 일자</th>
+							<td width="150px;">
+								<label>
+									<fmt:formatDate value="${BdDetail.b_regi_date}" type="date" pattern="yyyy-MM-dd"/>
+								</label>
+							</td>
+						</tr>
+						<tr></tr>
+						<tr>
+							<th>내용</th>
+							<td colspan="3">
+								<label>${BdDetail.b_content}</label>
+							</td>
+						</tr>
+						<tr></tr>
+		                <tr>
+		                	<th>첨부파일</th>
+							<td colspan="3">
+		                		<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="test">${BdDetail.b_attach_name}</a></label>
+			                </td>
+		                </tr>
+	                </table>
+	                
+	                <!-- 댓글 등록 -->
 	                <hr>
-	                <table id=formTable>
+	                <table id=formCommentTable>
 	                	<tr>
-							<th>댓글</th>
-							<td width="410px;">
+							<th style="width: 200px;">댓글</th>
+							<td colspan="3">
 			                   	<textarea class="form-control" placeholder="Leave a message here" id="bc_content" name="bc_content" style="height: 100px"></textarea>
 							</td>
 						</tr>
+						<c:if test="${not empty member.category}">
 						<tr>
 							<td colspan="3">
 								<div class="d-grid gap-2 d-md-flex justify-content-right" >
@@ -281,6 +317,7 @@
 								</div>
 							</td>
 						</tr>
+						</c:if>
 	                </table>
 	                
 	                <!-- 댓글 화면 -->
@@ -291,18 +328,176 @@
                 	<c:forEach var="cList" items="${commentList}">
 		                		<input type=hidden value="${cList.bc_num}">
                 	</c:forEach>
-               	</c:if>
-                	
-                	<%-- <c:when test="${BdDetail.b_ref_num eq BdDetail.b_num}"></c:when> --%>
-                	
-                	
-                
-               	<!-- Q&A와 FAQ이면서 운영자이고 [답변]이 포함 되어있지 않으면 답변 가능 -->
-               	<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and member.category eq 4 and not BdDetail.b_title.contains('[답변]')}">
+	                
+				</c:if>
+				
+				<!-- Q&A + FAQ -->
+				
+				<!-- Q&A와 FAQ이면서 회원이면 원글만 보기 -->
+				<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and member.category eq '1' or '2' or '3'}">
+               		<!-- 원글 -->
+               		<hr class="my-3">
+	        		
+		        	<table class="formTable">
+						<tr>
+							<th>게시 구분</th>
+							<td width="150px;">
+								<c:choose>
+								 	<c:when test="${BdDetail.b_category == 1}"><label style="margin-right: 110px;">공지사항</label></c:when>
+								 	<c:when test="${BdDetail.b_category == 2}"><label style="margin-right: 110px;">Q&A</label></c:when>
+						 			<c:otherwise><label style="margin-right: 110px;">FAQ</label></c:otherwise>
+								</c:choose>
+							</td>
+							
+							<th>게시 분류</th>
+							<td width="150px;">
+								<c:choose>
+						 			<c:when test="${BdDetail.b_notie_type == 1}"><label style="margin-right: 110px;">공통</label></c:when>
+						 			<c:when test="${BdDetail.b_notie_type == 2}"><label style="margin-right: 110px;">이벤트</label></c:when>
+						 			<c:when test="${BdDetail.b_notie_type == 3}"><label style="margin-right: 110px;">업데이트</label></c:when>
+						 			<c:otherwise>규정 및 정책</c:otherwise>
+						 		</c:choose>
+							</td>
+						</tr>
+						<tr>
+							<th>제목</th>
+							<td colspan="3">
+								<label>${BdDetail.b_title}</label>
+							</td>
+						</tr>
+						<tr>
+							<th>게시 일자</th>
+							<td width="150px;">
+								<label>
+									<fmt:formatDate value="${BdDetail.b_regi_date}" type="date" pattern="yyyy-MM-dd"/>
+								</label>
+							</td>
+						</tr>
+						<tr></tr>
+						<tr>
+							<th>내용</th>
+							<td colspan="3">
+								<label>${BdDetail.b_content}</label>
+							</td>
+						</tr>
+						<tr></tr>
+		                <tr>
+		                	<th>첨부파일</th>
+							<td colspan="3">
+		                		<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="test">${BdDetail.b_attach_name}</a></label>
+			                </td>
+		                </tr>
+	                </table>
+	            </c:if>
+	            
+               	<!-- Q&A와 FAQ이면서 회원이고 [답변]이면 원글+답글 조회 -->
+               	<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and (member.category eq '1' or '2' or '3') and BdDetail.b_title.contains('[답변]')}">
+               		
+	                <!-- 답글 조회 -->
                		<hr>
 	                
-	                <h4 class="display-7 mb-4">답변 작성</h4>
+	                <h4 class="display-7 mb-4">답변 조회</h4>
 	                
+	                <table id="formTable">
+						<tr>	
+							<th>작성일</th>
+							<td width="410px;">
+								<fmt:formatDate value="${BdDetail.b_regi_date}" type="date" pattern="yyyy-MM-dd"/>
+							</td>
+						</tr>
+	                	<tr>
+							<th>제목</th>
+							<td colspan="3">
+			                    <label>${BdDetail.b_title}</label>
+			            	</td>
+						</tr>
+						<tr></tr>
+						<tr>
+							<th>내용</th>
+							<td colspan="3">
+								<label>${BdDetail.b_content}</label>
+							</td>
+						</tr>
+						<tr></tr>
+						<tr>
+		                	<th>첨부파일</th>
+		                	
+			                <td colspan="3">
+	                		<div id="idAttachFile">
+								<c:if test="${BdDetail.b_attach_path ne null}">
+	                				<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="test">${BdDetail.b_attach_name}</a></label>
+								</c:if>	
+							</div>
+		                </td>
+			                
+		                </tr>
+	                </table>
+               	</c:if>
+				
+               	<!-- Q&A와 FAQ이면서 운영자이고 원글이면 답변 가능 -->
+               	<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and member.category eq 4 and not BdDetail.b_title.contains('[답변]')}">
+               		<!-- 원글 -->
+               		<hr class="my-3">
+	        		
+		        	<table class="formTable">
+						<tr>
+							<th>게시 구분</th>
+							<td width="150px;">
+								<c:choose>
+								 	<c:when test="${BdDetail.b_category == 1}"><label style="margin-right: 110px;">공지사항</label></c:when>
+								 	<c:when test="${BdDetail.b_category == 2}"><label style="margin-right: 110px;">Q&A</label></c:when>
+						 			<c:otherwise><label style="margin-right: 110px;">FAQ</label></c:otherwise>
+								</c:choose>
+							</td>
+							
+							<th>게시 분류</th>
+							<td width="150px;">
+								<c:choose>
+						 			<c:when test="${BdDetail.b_notie_type == 1}"><label style="margin-right: 110px;">공통</label></c:when>
+						 			<c:when test="${BdDetail.b_notie_type == 2}"><label style="margin-right: 110px;">이벤트</label></c:when>
+						 			<c:when test="${BdDetail.b_notie_type == 3}"><label style="margin-right: 110px;">업데이트</label></c:when>
+						 			<c:otherwise>규정 및 정책</c:otherwise>
+						 		</c:choose>
+							</td>
+						</tr>
+						<tr>
+							<th>제목</th>
+							<td colspan="3">
+								<label>${BdDetail.b_title}</label>
+							</td>
+						</tr>
+						<tr>
+							<th>게시 일자</th>
+							<td width="150px;">
+								<label>
+									<fmt:formatDate value="${BdDetail.b_regi_date}" type="date" pattern="yyyy-MM-dd"/>
+								</label>
+							</td>
+						</tr>
+						<tr></tr>
+						<tr>
+							<th>내용</th>
+							<td colspan="3">
+								<label>${BdDetail.b_content}</label>
+							</td>
+						</tr>
+						<tr></tr>
+		                <tr>
+		                	<th>첨부파일</th>
+			                <%-- <c:if test="${BdDetail.b_attach_path ne null}">
+			                	<td colspan="3">
+			                		<label><a href="javascript:popup('/upload/${BdDetail.b_attach_path}',800,600)">${BdDetail.b_attach_name}</a></label>
+				                </td>
+							</c:if> --%>
+							<td colspan="3">
+		                		<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="test">${BdDetail.b_attach_name}</a></label>
+			                </td>
+		                </tr>
+	                </table>
+	                
+	                <!-- 답변 -->
+               		<hr>
+	                <h4 class="display-7 mb-4">답변 작성</h4>
 	                <table id="formTable">
 	                	<tr>
 	                		<td>
@@ -323,7 +518,7 @@
 	                	<tr>
 							<th>제목</th>
 							<td colspan="3">
-			                    <input type="text" class="form-control" id="subject" placeholder="Subject" value="[답변] " name="b_title">
+			                    <input type="text" class="form-control" id="subject" placeholder="Subject" value="[답변] " name="b_title" required="required">
 			            	</td>
 						</tr>
 						<tr></tr>
@@ -343,8 +538,66 @@
 		                </tr>
 	                </table>
                	</c:if>
-                	<!-- Q&A와 FAQ이면서 운영자이고 [답변]이 포함 되어있으면 답변 수정 가능 -->
+               	
+                <!-- Q&A와 FAQ이면서 운영자이고 [답변]이 포함 되어있으면 답변 수정 가능 -->
                	<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and member.category eq 4 and BdDetail.b_title.contains('[답변]')}">
+               		
+               		<!-- 원글 -->
+               		<hr class="my-3">
+	        		
+		        	<table class="formTable">
+						<tr>
+							<th>게시 구분</th>
+							<td width="150px;">
+								<c:choose>
+								 	<c:when test="${BdOriDetail.b_category == 1}"><label style="margin-right: 110px;">공지사항</label></c:when>
+								 	<c:when test="${BdOriDetail.b_category == 2}"><label style="margin-right: 110px;">Q&A</label></c:when>
+						 			<c:otherwise><label style="margin-right: 110px;">FAQ</label></c:otherwise>
+								</c:choose>
+							</td>
+							
+							<th>게시 분류</th>
+							<td width="150px;">
+								<c:choose>
+						 			<c:when test="${BdOriDetail.b_notie_type == 1}"><label style="margin-right: 110px;">공통</label></c:when>
+						 			<c:when test="${BdOriDetail.b_notie_type == 2}"><label style="margin-right: 110px;">이벤트</label></c:when>
+						 			<c:when test="${BdOriDetail.b_notie_type == 3}"><label style="margin-right: 110px;">업데이트</label></c:when>
+						 			<c:otherwise>규정 및 정책</c:otherwise>
+						 		</c:choose>
+							</td>
+						</tr>
+						<tr>
+							<th>제목</th>
+							<td colspan="3">
+								<label>${BdOriDetail.b_title}</label>
+							</td>
+						</tr>
+						<tr>
+							<th>게시 일자</th>
+							<td width="150px;">
+								<label>
+									<fmt:formatDate value="${BdOriDetail.b_regi_date}" type="date" pattern="yyyy-MM-dd"/>
+								</label>
+							</td>
+						</tr>
+						<tr></tr>
+						<tr>
+							<th>내용</th>
+							<td colspan="3">
+								<label>${BdOriDetail.b_content}</label>
+							</td>
+						</tr>
+						<tr></tr>
+		                <tr>
+		                	<th>첨부파일</th>
+							<td colspan="3">
+								<label style="font-size: medium;">파일 1개당 최대 첨부 용량 30MB</label>
+		                		<label><a href="/upload/gh/${BdOriDetail.b_attach_name}" download="test">${BdOriDetail.b_attach_name}</a></label>
+			                </td>
+		                </tr>
+	                </table>
+               		
+	                <!-- 답글 수정 -->
                		<hr>
 	                
 	                <h4 class="display-7 mb-4">답변 수정</h4>
@@ -357,7 +610,6 @@
 	                			<input type="hidden" name="b_notie_type" 	value="${BdDetail.b_notie_type}">
 	                			<input type="hidden" name="b_flag" 			value="1">
 	                			<input type="hidden" name="b_ref_num" 		value="${BdDetail.b_num}">
-	                			
 	                		</td>
 	                	</tr>
 						<tr>	
@@ -369,49 +621,44 @@
 	                	<tr>
 							<th>제목</th>
 							<td colspan="3">
-			                    <input type="text" class="form-control" id="subject" placeholder="Subject" value="[답변] " name="b_title">
+			                    <input type="text" class="form-control" id="subject" placeholder="Subject" value="${BdDetail.b_title}" name="b_title" required="required">
 			            	</td>
 						</tr>
 						<tr></tr>
 						<tr>
 							<th>내용</th>
 							<td colspan="3">
-			                   	<textarea class="form-control" placeholder="Leave a message here" id="message" name="b_content" style="height: 200px"></textarea>    
+			                   	<textarea class="form-control" placeholder="Leave a message here" id="message" name="b_content" style="height: 200px">${BdDetail.b_content}</textarea>    
 							</td>
 						</tr>
 						<tr></tr>
 						<tr>
 		                	<th>첨부파일</th>
-		                	<td colspan="3">
-		                		<label style="font-size: medium;">파일 1개당 최대 첨부 용량 30MB</label>
-			                    <input type="file" name="file1" class="form-control" id="subject" placeholder="Subject">
-			                </td>
+		                	
+			                <td colspan="3">
+		                	<input type="hidden" name="b_attach_name" value="${BdDetail.b_attach_name}">
+							<input type="hidden" name="b_attach_path" value="${BdDetail.b_attach_path}">
+							
+	                		<div id="idAttachFile">
+								<c:if test="${BdDetail.b_attach_path ne null}">
+	                				<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="test">${BdDetail.b_attach_name}</a></label>
+									&nbsp;&nbsp;<input type="button" onclick="deleteFile()" style="border-color:white; border:none; color: orange;" value="x">
+								</c:if>	
+							</div>												
+																												
+							<div id="idAttachInput" <c:if test="${BdDetail.b_attach_path ne null}">style="display:none;"</c:if> >
+								<label style="font-size: medium;">파일 1개당 최대 첨부 용량 30MB</label>
+								<input type="file" class="form-control form-control-sm" name="file1">
+							</div>
+		                
+		                </td>
+			                
 		                </tr>
 	                </table>
                	</c:if>
-                
-				<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and member.category eq 4 and not BdDetail.b_title.contains('[답변]')}">
-	                	
-                </c:if>
+               	         	
                 
                 <!-- 수정, 삭제, 목록 버튼 -->
-                <%-- <div class="d-grid gap-2 d-md-flex justify-content-center" >
-					<a href="boardList?b_category=${BdDetail.b_category}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
-					<!-- 운영자만 삭제, 수정버튼 o -->
-					<c:if test="${BdDetail.m_category eq '4'}">
-						<a href="boardList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
-						<a href="/customer/boardUpdate?b_num=${BdDetail.b_num}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">수정</button></a>					
-					</c:if>
-					<!-- Q&A면 모든회원 삭제, 수정버튼 o -->
-					<c:choose>
-						<c:when test="${BdDetail.b_category == 2}">
-							<a href="/customer/boardDelete?b_num=${BdDetail.b_num}&b_category=${BdDetail.b_category}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
-							<a href="/customer/boardUpdate?b_num=${BdDetail.b_num}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">수정</button></a>
-						</c:when>
-					</c:choose>
-                	<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="작성">
-				</div> --%>
-				
 				<div class="d-grid gap-2 d-md-flex justify-content-center" >
 					<a href="boardList?b_category=${BdDetail.b_category}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
 					<!-- 회원정보가 같거나 운영자면 버튼 노출 -->

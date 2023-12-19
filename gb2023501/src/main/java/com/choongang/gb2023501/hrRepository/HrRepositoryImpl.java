@@ -22,7 +22,7 @@ public class HrRepositoryImpl implements HrRepository {
 	// 교육자마당 > 내학습그룹 (SELECT / JPA)
 	// 교육자마당 > 학습그룹 상세 (SELECT / JPA) - 학습그룹 정보
 	@Override
-	public List<LearnGrpDTO> learnGroupList(int lg_num, String sort, String type, String keyword) {
+	public List<LearnGrpDTO> learnGroupList(int mNum, int lg_num, String sort, String type, String keyword) {
 		System.out.println("HrRepositoryImpl learnGroupList() start..");
 		
 ////	기본값 조회
@@ -86,7 +86,8 @@ public class HrRepositoryImpl implements HrRepository {
 																							     "AND    lj2.lgjApproval = 1) as mmNumCnt) " +
 								 "FROM LearnGrp learnGrp " +
 								 "LEFT JOIN learnGrp.lgJoin lj ";
-			String queryWhere = "";
+			String queryWhere1 = "WHERE learnGrp.member.mmNum = "+mNum;
+			String queryWhere2 = "";
 			String queryGroupBy = "GROUP BY learnGrp ";
 			String queryOrderBy = "";
 
@@ -113,7 +114,7 @@ public class HrRepositoryImpl implements HrRepository {
 			// 검색어 : X
 			if(keyword == null || type == null) {
 				System.out.println("검색어 : X");
-				queryWhere = "";
+				queryWhere2 = "";
 				
 			// 검색어 : O
 			} else {
@@ -122,17 +123,17 @@ public class HrRepositoryImpl implements HrRepository {
 				// 검색유형 : 학습그룹명
 				if(type.equals("typeLgTitle")) {
 					System.out.println("검색유형 : 학습그룹명");
-					queryWhere = "WHERE learnGrp.lgTitle LIKE '%"+keyword+"%' ";
+					queryWhere2 = "WHERE learnGrp.lgTitle LIKE '%"+keyword+"%' ";
 					
 				// 검색유형 : 게임콘텐츠명
 				} else if(type.equals("typeGgTitle")) {
 					System.out.println("검색유형 : 게임콘텐츠명");
-					queryWhere = "WHERE learnGrp.game.ggTitle LIKE '%"+keyword+"%' ";
+					queryWhere2 = "WHERE learnGrp.game.ggTitle LIKE '%"+keyword+"%' ";
 				}
 			}
 
 			// QUERY 통합
-			String query = queryCommon + queryWhere + queryGroupBy + queryOrderBy;
+			String query = queryCommon + queryWhere1 + queryWhere2 + queryGroupBy + queryOrderBy;
 			System.out.println("HrRepositoryImpl learnGroupList() query -> "+query);
 						
 			learnGrps = em.createQuery(query, LearnGrpDTO.class)
