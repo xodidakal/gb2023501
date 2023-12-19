@@ -30,4 +30,8 @@
 			SELECT *
 			FROM   GAME
 		</select>
+		
+		<insert id="ybInsertLgJoin" parameterType="map">
+			INSERT INTO lg_join (lg_num, m_num, lgj_joinDate, lgj_approval) values (#{lg_num}, #{m_num}, sysdate, 0)
+		</insert>
 	</mapper>

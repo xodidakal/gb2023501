@@ -69,6 +69,10 @@ public class GhController {
 		System.out.println("search_keyword->"+search_keyword);
 		System.out.println("rowPage->"+rowPage);
 		
+		// 회원정보
+		Member member = aboutMember();
+		model.addAttribute("member", member);
+		
 		// 게시물 count
 		int bdCount = boardService.selectBoardListCnt(b_category);
 		System.out.println("GhController selectBoardListCnt bdCount->"+bdCount);
@@ -124,6 +128,12 @@ public class GhController {
 		Board BdDetail = boardService.selectBoard(b_num);
 		// -----------------------------------------------------
 		model.addAttribute("BdDetail",BdDetail);
+		
+		// 답글 눌렀을 때 원글 게시물 상세(board 모든정보)
+		// -----------------------------------------------------
+		Board BdOriDetail = boardService.selectOriBoard(b_num);
+		// -----------------------------------------------------
+		model.addAttribute("BdOriDetail",BdOriDetail);
 		
 		// 조회수 증가
 		// -----------------------------------------------------

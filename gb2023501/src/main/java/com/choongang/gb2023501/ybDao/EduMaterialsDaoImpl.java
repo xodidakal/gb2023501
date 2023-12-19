@@ -105,4 +105,18 @@ public class EduMaterialsDaoImpl implements EduMaterialsDao {
 		}
 		return selectGameList;
 	}
+	@Override
+	public int insertLgJoin(int lg_num, int m_num) {
+		System.out.println("YbController EduMaterialsDaoImpl insertLgJoin start...");
+		int insertLgJoin = 0;
+		try {
+			HashMap<String, Object> setLgJoin = new HashMap<>();
+			setLgJoin.put("lg_num", lg_num);
+			setLgJoin.put("m_num", m_num);
+			insertLgJoin = session.insert("ybInsertLgJoin", setLgJoin);
+		} catch (Exception e) {
+			System.out.println("YbController EduMaterialsDaoImpl insertLgJoin Exception -> " + e.getMessage());
+		}
+		return insertLgJoin;
+	}
 }

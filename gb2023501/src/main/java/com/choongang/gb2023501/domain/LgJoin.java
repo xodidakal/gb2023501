@@ -11,7 +11,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import lombok.Data;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Data
 @IdClass(LgJoinPK.class)

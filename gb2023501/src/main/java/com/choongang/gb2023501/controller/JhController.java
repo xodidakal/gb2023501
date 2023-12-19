@@ -8,6 +8,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -273,12 +274,21 @@ public class JhController {
 		return result;
 	}
 	
+	//회원가입
 	@ResponseBody
 	@PostMapping(value = "info/join")
-	public String join() {
+	public String join( @Valid Member member) {
 		System.out.println("JhController join Start...");
-		
+		System.out.println("memeber -> " + member);
+		Member savedMember = null;
+		savedMember =  ms.join(member);
 		String result = null;
+		
+		if(savedMember != null) {
+			result = "1";
+		} else 
+		result = "0";
+		
 		return result;
 	}
 	

@@ -24,5 +24,7 @@ public interface EduMaterialsService {
 
 	List<Game> 					selectGameList(Game game);
 
+	int 						insertLgJoin(int lg_num, int m_num);
+
 
 }
