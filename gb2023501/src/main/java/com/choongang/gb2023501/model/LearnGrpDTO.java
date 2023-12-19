@@ -1,3 +1,4 @@
+// 희라
 package com.choongang.gb2023501.model;
 
 import com.choongang.gb2023501.domain.LearnGrp;

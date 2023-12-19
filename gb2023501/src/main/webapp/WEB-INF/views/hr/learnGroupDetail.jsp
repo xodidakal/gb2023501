@@ -59,7 +59,7 @@
 			<div style="margin-bottom: 15px; float: right;">
 <!-- 			<div class="d-flex align-items-center justify-content-end"> -->
           		<div>
-	          		<a href="boardForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="가입 신청 확인"></a>
+	          		<a href="/educator/learnGroupJoinList?lg_num=${lg_num }"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="가입 신청 확인"></a>
             	</div>
             </div>
 		</div>

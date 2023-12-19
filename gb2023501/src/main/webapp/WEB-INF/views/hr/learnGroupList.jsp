@@ -97,7 +97,7 @@
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">내 학습 그룹</h2>
-	         <p style="margin-bottom: 35px;">총 N건${keyword }</p>
+	         <p style="margin-bottom: 35px;">총 N건</p>
 	    </div>
 
 		<form action="/educator/learnGroupList">
@@ -114,7 +114,7 @@
 					<option value="typeLgTitle">학습그룹명</option>
 					<option value="typeGgTitle">게임콘텐츠명</option>
 				</select>&nbsp;&nbsp;
-	            <input id = "keyword" name="keyword" class="form-control rounded" type="search" placeholder="내용을 입력해주세요." style="width: 160px;">
+	            <input id="keyword" name="keyword" class="form-control rounded" type="search" placeholder="내용을 입력해주세요." style="width: 160px;">
 	          	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
 	         		<button class="btn bi bi-search rounded"></button>
 	          	</div>
