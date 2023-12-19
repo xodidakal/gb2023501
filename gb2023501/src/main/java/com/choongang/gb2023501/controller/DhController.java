@@ -2,11 +2,14 @@ package com.choongang.gb2023501.controller;
 
 import java.util.List;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.choongang.gb2023501.dhService.GameOrderService;
+import com.choongang.gb2023501.dhutils.FileUploadDeleteUtil;
 import com.choongang.gb2023501.gbService.Paging;
 import com.choongang.gb2023501.jhService.MemberService;
 import com.choongang.gb2023501.model.Game;
@@ -19,6 +22,7 @@ public class DhController {
 	
 	private final GameOrderService gos;
 	private final MemberService ms;
+	
 	
 	// 게임 콘텐츠 목록 조회
 	@RequestMapping(value = "subscribe/gameOrderList")
@@ -139,15 +143,36 @@ public class DhController {
 	}
 	// 게임콘텐츠 등록
 	@RequestMapping(value = "operate/gameInsertResult")
-	public String gameInsertResult(Game game, Model model) {
+	public String gameInsertResult(Game game, MultipartFile file, Model model) {
 		int m_num = ms.selectMmNumById();
 		game.setM_num(m_num);
 		
+		String pathDB = null;
+		String fileName = null;
+		
+		FileUploadDeleteUtil fileUpload = new FileUploadDeleteUtil();
+		
+		try {
+			System.out.println("gameupload File Start!!");
+			String[] uploadResult = fileUpload.uploadFile(file);
+			fileName = uploadResult[0];
+			pathDB = uploadResult[1];
+			System.out.println("gameupload fileName : {}"+ fileName);
+			System.out.println("gameupload pathDB : {}"+ pathDB);
+
+		} catch (Exception e) {
+			System.out.println("gameupload File upload error : {}" + e.getMessage());
+		} finally {
+			System.out.println("gameupload integratedboardInsert File End..");
+		}
+		
+		game.setG_attach_name(pathDB+fileName);
+		
 		int result = 0;
+		
 		try {
 			System.out.println("dhController gameInsertResult() start..");
 			result = gos.insertGame(game);
-			
 		} catch (Exception e) {
 			System.out.println("dhController gameInsertResult() ->"+e.getMessage());
 		} finally {
@@ -188,7 +213,28 @@ public class DhController {
 	}
 	
 	@RequestMapping(value = "operate/gameUpdateResult")
-	public String gameUpdateResult(Game game, Model model) {
+	public String gameUpdateResult(Game game,int g_num, MultipartFile file, Model model) {
+		String pathDB = null;
+		String fileName = null;
+		
+		FileUploadDeleteUtil fileUpload = new FileUploadDeleteUtil();
+			
+		try {
+			System.out.println("gameupload File Start!!");
+			String[] uploadResult = fileUpload.uploadFile(file);
+			fileName = uploadResult[0];
+			pathDB = uploadResult[1];
+			System.out.println("gameupload fileName : {}"+ fileName);
+			System.out.println("gameupload pathDB : {}"+ pathDB);
+
+			} catch (Exception e) {
+				System.out.println("gameupload File upload error : {}" + e.getMessage());
+			} finally {
+				System.out.println("gameupload integratedboardInsert File End..");
+			}
+		
+			game.setG_attach_name(pathDB+fileName);
+			
 		int result = 0;
 		try {
 			System.out.println("dhController gameUpdateResult() start..");

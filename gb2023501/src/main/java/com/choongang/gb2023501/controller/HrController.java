@@ -37,7 +37,10 @@ public class HrController {
 	public String learnGroupList(Model model, String sort, String type, String keyword) {
 		System.out.println("HrController learnGroupList() start..");
 		
-		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(0, sort, type, keyword);
+		// 로그인한 회원의 회원번호 도출
+		int mNum = memberService.selectMmNumById();
+
+		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(mNum, 0, sort, type, keyword);
 		model.addAttribute("learnGrps", learnGrps);
 		model.addAttribute("type", type);
 		model.addAttribute("keyword", keyword);
@@ -68,9 +71,12 @@ public class HrController {
 		
 		System.out.println("HrController learnGroupDetail() lg_num -> "+lg_num);
 
+		// 로그인한 회원의 회원번호 도출
+		int mNum = memberService.selectMmNumById();
+
 		// 학습그룹 기본 정보
 		// 기존 method 활용하여 List<Game>(multi row)으로 받은 후 Game(single row)으로 분리
-		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(lg_num, "", "", "");
+		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(mNum, lg_num, "", "", "");
 		System.out.println("HrController learnGroupList() learnGrps.size() -> "+learnGrps.size());
 		
 		LearnGrpDTO learnGrpDTO = learnGrps.get(0);
@@ -203,12 +209,15 @@ public class HrController {
 	public String learnGroupJoinList(Model model, int lg_num) {
 		System.out.println("HrController learnGroupJoinList() start..");
 		
-		System.out.println("HrController learnGroupDetail() lg_num -> "+lg_num);
+		System.out.println("HrController learnGroupJoinList() lg_num -> "+lg_num);
+
+		// 로그인한 회원의 회원번호 도출
+		int mNum = memberService.selectMmNumById();
 
 		// 학습그룹 기본 정보
 		// 기존 method 활용하여 List<Game>(multi row)으로 받은 후 Game(single row)으로 분리
-		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(lg_num, "", "", "");
-		System.out.println("HrController learnGroupList() learnGrps.size() -> "+learnGrps.size());
+		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(mNum, lg_num, "", "", "");
+		System.out.println("HrController learnGroupJoinList() learnGrps.size() -> "+learnGrps.size());
 		
 		LearnGrpDTO learnGrpDTO = learnGrps.get(0);
 		
@@ -217,7 +226,7 @@ public class HrController {
 		
 		// 신청자 명단
 		List<MemberDTO> members = lgService.joiningMemberList(lg_num);
-		System.out.println("HrController learnGroupList() members.size() -> "+members.size());
+		System.out.println("HrController learnGroupJoinList() members.size() -> "+members.size());
 		
 		// 휴대전화 하이픈 추가
 		for(MemberDTO member : members) {
