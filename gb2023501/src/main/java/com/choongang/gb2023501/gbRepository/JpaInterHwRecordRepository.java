@@ -9,6 +9,6 @@ import com.choongang.gb2023501.domain.HwRecordPk;
 
 public interface JpaInterHwRecordRepository extends JpaRepository<HwRecord, HwRecordPk> {
 
-	List<HwRecord> findByHomeworkHhNumAndMemberMmNum(int h_num, int m_num);
+	List<HwRecord> findByHomeworkHhNumAndMemberMmNumOrderByHrLevelAsc(int h_num, int m_num);
 
 }

@@ -1,18 +1,11 @@
 package com.choongang.gb2023501.gbRepository;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.choongang.gb2023501.domain.HwSend;
-import com.choongang.gb2023501.domain.HwSendPk;
+import com.choongang.gb2023501.domain.Homework;
 
-//																 domain	, domain의 키값		
-public interface JpaInterHomeworkRepository extends JpaRepository<HwSend, HwSendPk> {
+public interface JpaInterHomeworkRepository extends JpaRepository<Homework, Integer> {
+
+	Homework findByHhNum(int h_num);
 	
-	// 숙제 배포 이력에 있는 내 숙제 가져오기
-	// List<HwSend> findByMemberMmNum(int m_num);
-	
-	// 내 숙제 총 개수
-	Long countByMemberMmNum(int m_num);
 }

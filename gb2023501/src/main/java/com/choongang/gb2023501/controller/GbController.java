@@ -221,12 +221,31 @@ public class GbController {
 		// 학습자 번호를 담는다.
 		int m_num = ms.selectMmNumById();
 		
+		// 제출한 숙제 현황 리스트
 		List<HwRecord> myHomeworkDetailList = jms.selectMyHomeworkDetail(m_num, h_num);
 		System.out.println("GbController selectMyHomeworkDetail myHomeworkDetailList -> "+myHomeworkDetailList.size());
 		
+		// 클릭한 숙제의 정보
+		com.choongang.gb2023501.domain.Homework myHomework = jms.selectMyHomework(h_num);
+		
 		model.addAttribute("myHomeworkDetailList", myHomeworkDetailList);
+		model.addAttribute("myHomework", myHomework);
 		model.addAttribute("mmNum",m_num);
 		
 		return "gb/myHomeworkDetail";
+	}
+	
+	@PostMapping("/learning/myHomeworkSubmitAction")
+	public String insertUpdateMyHomework(@RequestParam List<HwRecord> hwrecord) {
+		System.out.println("GbController insertUpdateMyHomework start...");
+		// 학습자 번호 담기
+		int m_num = ms.selectMmNumById();
+		
+		for(HwRecord hwrecord1 : hwrecord) {
+			System.out.println("hwrecord1 ->"+hwrecord1);
+		}
+		
+		
+		return "redirect:myhomeworkList";
 	}
 }
