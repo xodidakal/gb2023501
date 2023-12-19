@@ -15,6 +15,14 @@ public interface BoardDao {
 	List<BoardComment> 	selectCommentList(int b_num);
 	int insertBoard(Board board);
 	List<Board> searchBoardList(Board board);
+	int updateParentNum(int b_num);
+	int insertComment(BoardComment boardComment);
+	int deleteComment(BoardComment boardComment);
+	int deleteBoard(BoardComment boardComment);
+	int updateBoard(Board board);
+	int deleteFile(Board board);
+	int deleteBoardComment(BoardComment boardComment);
+	Board selectOriBoard(int b_num);
 	
 //	int 				selectBdCommentListCnt(BoardComment boardComment);
 

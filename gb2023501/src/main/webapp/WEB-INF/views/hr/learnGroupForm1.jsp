@@ -6,6 +6,37 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+	// 잔여 기간 및 인원 소진 건 disable
+	$(function(){
+		$('input[name="g_num"]').each(function(){			
+			// index 정의
+			var index = $(this).attr('id');
+			
+			if($('#remainingPeriod'+index).val() <= 0 || $('#remainingTo'+index).val() <= 0){
+				$(this).prop('disabled', true);
+			}
+		})
+	})
+	
+	// 정렬기준 변경
+		function changeSort() {
+		var sort = $('#sort').val();
+		var type;
+		var keyword;
+		
+		if('${keyword}' != null){
+			var keyword = '${keyword}';
+			var type    = '${type}';
+		} else {
+			var keyword = $('#keyword').val();
+			var type    = $('#type').val();
+		}
+		
+		location.href = "/educator/learnGroupForm1?sort="+sort+"&type="+type+"&keyword="+keyword;
+	}
+
+</script>
 </head>
 <body>
 <div class="row g-0 justify-content-center">
@@ -14,25 +45,36 @@
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">학습 그룹 등록</h2>
 	         <h5 style="margin-top: 35px;margin-bottom: 35px;">콘텐츠 선택</h5>
+	         <c:if test="${keyword ne null}">
+		         <h6 style="margin-top: 35px;margin-bottom: 35px;">
+		         	'
+		         	<c:choose>
+		         		<c:when test="${type eq 'typeGgTitle'}">게임콘텐츠명</c:when>
+		         	</c:choose>
+		         	 : ${keyword }' 검색 결과
+		         </h6>
+	         </c:if>
 	    </div>
 
-		<div class="input-group col-md-5 mb-3"> 
-			<!-- 카테고리 분류 -->
-			<select id="search_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
-				<option value="title">게임콘텐츠명순</option>
-				<option value="writer">참여인원순</option>
-				<option value="writer">구독만료임박순</option>
-			</select>
-			<!-- 카테고리 검색 -->
-			<select id="search_type" class="w-17 rounded" style="border-color: #ced4da">
-				<option value="gameTitle">게임콘텐츠명</option>
-				<option value="add1">패키지 내용</option>
-			</select>&nbsp;&nbsp;
-            <input id = "search_keyword" class="form-control rounded" type="search" placeholder="내용을 입력해주세요." style="width: 160px;">
-          	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
-         		<a href="#!"><i class="bi bi-search mt-2"></i></a>
-          	</div>
-	    </div>
+		<form action="/educator/learnGroupForm1">
+			<div class="input-group col-md-5 mb-3"> 
+				<!-- 카테고리 분류 -->
+				<select id="sort" name="sort" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da"
+						onchange="changeSort()">
+					<option value="sortGgTitle">게임콘텐츠명순</option>
+					<option value="remainingPeriod">잔여기간순</option>
+					<option value="remainingTo">잔여인원순</option>
+				</select>
+				<!-- 카테고리 검색 -->
+				<select id="type" name="type" class="w-17 rounded" style="border-color: #ced4da">
+					<option value="typeGgTitle">게임콘텐츠명</option>
+				</select>&nbsp;&nbsp;
+	            <input id="keyword" name="keyword" class="form-control rounded" type="search" placeholder="내용을 입력해주세요." style="width: 160px;">
+	          	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
+	         		<button class="btn bi bi-search rounded"></button>
+	          	</div>
+		    </div>
+	    </form>
 	    
 	    <form action="/educator/learnGroupForm2">
 	       	<table class="listTable">
@@ -47,12 +89,16 @@
 					</tr>
 				</thead>
 				<tbody>
-				 	<c:forEach var="gameList" items="${gameList }">
+				 	<c:forEach var="gameList" items="${gameList }"  varStatus="status">
 					 	<tr>
-					 		<td><input class="form-check-input" type="radio" name="g_num" id="flexRadioDefault1" value="${gameList.g_num }"></td>
+					 		<td>
+					 			<input class="form-check-input" type="radio" name="g_num" id="${status.index }" value="${gameList.g_num }" required>
+					 			<input type="hidden" id="remainingPeriod${status.index }" value="${gameList.remainingPeriod}" >
+					 			<input type="hidden" id="remainingTo${status.index }" value="${gameList.remainingTo}" >
+					 		</td>
 							<td>${gameList.g_title}</td>
 							<td>${gameList.g_period}개월</td>
-							<td>${gameList.remainingPeriod}일</td>
+							<td>${gameList.remainingPeriod}개월</td>
 							<td>${gameList.g_to}명</td>
 							<td>${gameList.remainingTo}명</td>
 						</tr>

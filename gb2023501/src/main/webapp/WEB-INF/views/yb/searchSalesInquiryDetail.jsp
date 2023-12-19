@@ -18,19 +18,20 @@
 	}
 	
 .top {
-             position: relative;
-             display: flex; 
-             justify-content: space-between;
-             padding: 0.5rem 1.4rem;
-             background-color: #263d94;
-             vertical-align: middle;
-         }
+         position: relative;
+         display: flex; 
+         justify-content: space-between;
+         padding: 0.5rem 1.4rem;
+         background-color: #263d94;
+         vertical-align: middle;
+     }
              
  h1.infoTit {
              margin-top : 10px;
                 font-size: 20px; 
                 color:#ffffff;
             }
+
 </style>
 </head>
 <body>
@@ -62,7 +63,7 @@
 			 <tbody>
 				<c:forEach var="selectSaleList" items="${selectSaleList }">
 				 	<tr>
-				 		<td>${startRow + 1}</td>						
+				 		<td>${StartRow + 1}</td>						
 						<td>${selectSaleList.member.mmName }</td>
 						<td>${selectSaleList.game.ggTitle }</td>
 						<td>

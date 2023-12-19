@@ -18,4 +18,20 @@
 		<select id="ybEduListCnt" parameterType="EduMaterials" resultType="int">
 			SELECT count(*) FROM Edu_Materials
 		</select>
+		
+		<select id="findSaleTotal" parameterType="map" resultType="int">
+			SELECT 
+			sum(go_payment)
+			FROM Game_order 
+			WHERE go_order_date BETWEEN #{s_date} and #{e_date}
+		</select>
+		
+		<select id="selectGameList" resultType="Game">
+			SELECT *
+			FROM   GAME
+		</select>
+		
+		<insert id="ybInsertLgJoin" parameterType="map">
+			INSERT INTO lg_join (lg_num, m_num, lgj_joinDate, lgj_approval) values (#{lg_num}, #{m_num}, sysdate, 0)
+		</insert>
 	</mapper>

@@ -6,6 +6,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">            
+	.center-text {
+	  text-align: center; /* 텍스트 가운데 정렬 */
+	  position: absolute;
+	  top: 55%;
+	  left: 55%;
+	  font-weight: bold;
+	  color:black;
+	  transform: translate(-50%, -50%); /* 가운데 정렬을 위한 변환 */
+	}
+</style>
 </head>
 <script>
     function toggleInput() {
@@ -38,7 +49,6 @@
         }
     }
     function searchSalesInquiryDetail(go_order_date) {
-    	alert(go_order_date)
 		var popupW = 1000;
 		var popupH = 500;
 		var left = Math.ceil((window.screen.width - popupW)/2);
@@ -49,16 +59,32 @@
         
         window.open(url, name, 'width='+popupW+',height='+popupH+',left='+left+',top='+top);
 	}
-
+	function saleInquiryChart(sDate, eDate, date) {
+		alert(selectDate);
+		var popupW = 1000;
+		var popupH = 500;
+		var left = Math.ceil((window.screen.width - popupW)/2);
+		var top = Math.ceil((window.screen.height - popupH)/2);
+	
+		var url = "/operate/saleInquiryChart?sDate="+sDate +"&eDate="+eDate+"&date="+date;
+        var name = "saleInquiryChart";
+        
+        window.open(url, name, 'width='+popupW+',height='+popupH+',left='+left+',top='+top);
+	}
 </script>
 <body>
-<div class="row g-0 justify-content-center">
 	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
+	
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">매출 조회</h2>
-	         <p style="margin-bottom: 35px;"><span style="margin-right: 20px;">총 ${selectSaleList.size() } 건</span><span>총 매출액 : </span></p>
+	         <c:if test="${not empty s_date }">
+	    	 	<span>기간 : <fmt:formatDate value="${s_date }" pattern="yyyy년MM월dd일"/> ~ <fmt:formatDate value="${e_date }" pattern="yyyy년MM월dd일"/></span></p>
+	         </c:if>
+	         <p style="margin-bottom: 35px;"><span style="margin-right: 20px;">총 ${selectSaleList.size() } 건</span>
+	         <span>총 매출액 : <fmt:formatNumber value="${selectTotal }" pattern="#,###" />원</span></p>
 	    </div>
+	   
 	    <div class="mb-1">
 	    <form action="/operate/searchSalesInquiry" method="post" role="search"> 
          	<div style="display: flex; ">
@@ -74,10 +100,22 @@
 				<input class="form-control" type="month" id="eMonth" name="eMonth" style="width: 130px; display: none;">
 				
 				<button type="submit" class="btn btn-light rounded py-2 px-2">검색</button>
+				<button type="button" class="btn btn-light rounded py-2 px-2" style="margin-left: 660px;" 
+						onclick="saleInquiryChart(<fmt:formatDate value="${s_date }" pattern="yyyyMMdd"/>, <fmt:formatDate value="${e_date }" pattern="yyyyMMdd"/>, ${selectDate })">그래프 보기</button>
+						<input type="text" value="${selectDate }" name="selectDate" id="selectDate">
+						
 			</div>
 		</form>
-		<a href="#!"><button type="button" class="btn btn-light rounded py-2 px-2">그래프 보기</button></a>
+		
 	    </div>
+<%-- 	    <c:if test="${selectSaleList.size() == 0 && selectSaleList1.size() == 0 }">			 --%>
+<!-- 	 		<div class="row" style="height: 100px"> -->
+<!-- 				<div class="center-text mt-14 md-14"> -->
+<!-- 					기간을 선택해주세요.<p><p> -->
+<!-- 				</div> -->
+<!-- 			</div>	 	 -->
+<%-- 		</c:if> --%>
+ 	<c:if test="${selectSaleList.size() != 0 || selectSaleList1.size() != 0 }">	
        	<table class="listTable" style="text-align: center;">
        		<thead>
 				<tr>
@@ -128,7 +166,7 @@
 				</c:if>
              </tbody>   
 		</table>
-	</div>
+	</c:if>
 </div>
 <%@ include file="../common/footerFo.jsp" %>
 </body>

@@ -10,7 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -42,6 +48,7 @@ public class Member {
 	
 	
 	//아이디
+	@NotNull
 	@Column(name = "m_id")
 	private String mmId;			
 	
@@ -62,6 +69,7 @@ public class Member {
 	
 	
 	//휴대폰 번호
+	@Pattern(regexp = "\\d{11}", message = "Phone number must be 11 digits") //11자리의 숫자인지 검증
 	@Column(name = "m_phone")
 	private String phone;		
 	
@@ -82,6 +90,7 @@ public class Member {
 	
 	
 	//이메일
+	//@Email
 	@Column(name = "m_email")
 	private String email;		
 	
@@ -104,7 +113,7 @@ public class Member {
 	//BUT 둘이 다른 것이 아니라  Spring Data JPA는 Hibernate를 포함한 여러 JPA(Java Persistence API) 구현체와 통합되는 Spring의 일종의 프로젝트
 	//둘 다 사용하려면 , 프로젝트의 의존성 관리 도구(예: Maven, Gradle)를 통해 Spring Data JPA와 JPA 구현체(Hibernate 등)를 추가해야 함
 	//여기선 gradle에 spring-boot-starter-data-jpa를 추가해서 사용중
-	@CreatedDate
+	@CreationTimestamp
 	@Column(name = "m_regi_date")
 	private Date regiDate;		
 	
@@ -113,7 +122,7 @@ public class Member {
 	//엔티티의 마지막 수정 일자를 자동으로 관리하기 위해 사용
 	//엔티티의 특정 필드에 마지막으로 수정된 일자가 자동으로 업데이트되게 할 수 있음
 	//@Entity + LocalDateTime나 Date 타입이어야함
-	@LastModifiedDate
+	@UpdateTimestamp
 	@Column(name = "m_modi_date")
 	private Date modiDate;		
 	
@@ -133,7 +142,7 @@ public class Member {
 	private int deleStatus;	
 	
 	
-	// 권한
+	// 권한 (조회용)
     @Transient // 데이터베이스에 저장하지 않음
     private Role role;  
 

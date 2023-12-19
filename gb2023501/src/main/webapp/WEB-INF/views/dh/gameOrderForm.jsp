@@ -16,75 +16,63 @@
 	        <h2 class="display-7 mb-4">게임 콘텐츠 구독신청</h2>
 	        <hr class="my-3">
 	        	<table class="formTable">
-		            <tr>
-						<th>게임명</th>
+		            <tr bgcolor="#EAEAEA">
+						<th>주문하실 상품</th>
+						<td colspan="3"></td>
+					</tr>
+					<tr>	
+						<th>구매 상품명</th>
 						<td colspan="3">
 		                    <input type="text" class="form-control" name=",g_Title" id="g_Title">
 		            	</td>
 					</tr>
+					<tr bgcolor="#EAEAEA">
+						<th>구매자 정보</th>
+						<td colspan="3"></td>
+					</tr>
 					 <tr>
-						<th>학습난이도</th>
+						<th>구매자명</th>
 						<td colspan="3">
 		                    <input type="text" class="form-control" name="emTitle" id="emTitle" >
 		            	</td>
 					</tr>
-					 <tr>
-						<th>구독기간</th>
-						<td colspan="3">
-		                    <input type="text" class="form-control" name="g-period" id="g-period" >개월
-		            	</td>
-					</tr>
-					 <tr>
-						<th>구독가능인원</th>
-						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_to" id="g_to" >
-		            	</td>
-					</tr>
-					 <tr>
-						<th>정가</th>
-						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_price" id="g_price" >
-		            	</td>
-					</tr>
-					 <tr>
-						<th>할인율</th>
-						<td colspan="3">
-		                    <input type="text" class="form-control" name="discount" id="discount" >
-		            	</td>
-					</tr>
-					 <tr>
-						<th>판매가</th>
-						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_sell_price" id="g_sell_price">
-		            	</td>
-					</tr>
 					<tr>
-						<th>상품소개</th>
+						<th>연락처</th>
 						<td colspan="3">
-		                   	<textarea class="form-control" placeholder="Leave a message here" name="g_content" id="g_content" style="height: 200px"></textarea>
-						</td>
+		                    <input type="text" class="form-control" name="emTitle" id="emTitle" >
+		            	</td>
+					</tr>
+					<tr bgcolor="#EAEAEA">
+						<th>주문합계</th>
+						<td colspan="3"></td>
+					</tr>
+					<tr bgcolor="#EAEAEA">
+						<th>결제방법 선택</th>
+						<td colspan="3"></td>
 					</tr>
 	                <tr>
-	                	<th>썸네일</th>
-						<td colspan="3">
-		                    <input type="file" class="form-control" name="g_attach_name" id="g_attach_name" placeholder="Subject">
-		                </td>
-	                </tr>
-	                <tr>
-						<th>전시여부</th>
 						<td width="150px;">
-		                    <input class="form-check-input" type="radio" name="g_dele_status" id="g_dele_status" value="0">
-		                    <label>전시</label>
+		                    <input class="form-check-input" type="radio" name="g_dele_status" id="g_dele_status" value="1">
+		                    <label>무통장입금</label>
 		                </td>
 		                <td width="150px;">
-		                    <input class="form-check-input" type="radio" name="g_dele_status" id="g_dele_status" value="1">
-		                    <label>미전시</label>
+		                    <input class="form-check-input" type="radio" name="g_dele_status" id="g_dele_status" value="2">
+		                    <label>계좌이체</label>
 						</td>
-						<td></td>
+						<td width="150px;">
+		                    <input class="form-check-input" type="radio" name="g_dele_status" id="g_dele_status" value="3">
+		                    <label>카카오페이</label>
+						</td>
+					</tr>
+					<tr>	
+						<th>입금자명</th>
+						<td colspan="3">
+		                    <input type="text" class="form-control" name=",g_Title" id="g_Title">
+		            	</td>
 					</tr>    
                 </table>
                 <div class="d-grid gap-2 d-md-flex justify-content-center" >
-					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="등록하기">
+					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="결제하기">
 				</div>
                 
 			</div>
