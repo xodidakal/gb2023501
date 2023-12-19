@@ -21,4 +21,6 @@ public interface EduMaterialsDao {
 
 	List<Game> 					selectGameList(Game game);
 
+	int 						insertLgJoin(int lg_num, int m_num);
+
 }

@@ -5,16 +5,33 @@
 <mapper namespace="com.choongang.gb2023501.LearnGrp"> 
 
 	<!-- 교육자마당 > 학습그룹 등록 - 화면 (SELECT / MyBatis) -->
-	<select id="hrSelectGameList" resultType="Game" parameterType="int">
-		SELECT   g.g_num, g.g_title, g.g_period, g.g_to, (g.g_to - SUM(lg.lg_to)) remainingTo
+	<select id="hrSelectGameList" resultType="Game" parameterType="SearchDTO">
+		SELECT   g.g_num, g.g_title, g.g_period, (g.g_period - SUM(MONTHS_BETWEEN(TO_DATE(lg.lg_edate), TO_DATE(lg.lg_sdate)))) remainingPeriod,
+				 g.g_to, (g.g_to - SUM(lg.lg_to)) remainingTo
 		FROM     game g, game_order go, learn_grp lg
 		WHERE    g.g_num = go.g_num 
 		AND      g.g_num = lg.g_num
-		AND      go.m_num = 3
-		<if test="g_num != 0">
-		AND      g.g_num = #{g_num}
+		AND      go.m_num = #{mNum}
+		<if test="num != 0">
+		AND      g.g_num = #{num}
 		</if>
-		GROUP by g.g_num, g.g_title, g.g_period, g.g_to
+		<if test="keyword != null and keyword neq ''">
+			<if test="'typeGgTitle'.equals(type)">
+			AND      g.g_title LIKE '%' || #{keyword} || '%'
+			</if>
+		</if>
+		GROUP BY g.g_num, g.g_title, g.g_period, g.g_to
+		<choose>
+			<when test="sort eq null or 'sortGgTitle'.equals(sort)">
+			ORDER BY g.g_title
+			</when>
+			<when test="'remainingPeriod'.equals(sort)">
+			ORDER BY remainingTo
+			</when>
+			<when test="'remainingTo'.equals(sort)">
+			ORDER BY remainingTo
+			</when>
+		</choose>
 	</select>
 
 </mapper>

@@ -10,9 +10,17 @@
 	
 </style>
 <script type="text/javascript">
-	function detailForm(em_num) {
-		alert(em_num);
-		location.href = "/operate/eduMaterialsDetail?em_num="+em_num;
+	function detailForm(em_num, ggNum) {
+		if(ggNum == null) {
+			ggNum = 0;
+			alert(em_num);
+			alert(ggNum);
+			location.href = "/operate/eduMaterialsDetail?em_num="+em_num+"&ggNum="+ggNum;
+		} else {
+			alert(em_num);
+			location.href = "/operate/eduMaterialsDetail?em_num="+em_num+"&ggNum="+ggNum;
+		}
+		
 	}
 </script>
 </head>
@@ -51,6 +59,7 @@
 			</div>
 	    </div>
 	    </form>
+<!-- 	    <form action="/operate/eduMaterialsDetail"> -->
         	<table class="listTable" style="text-align: center;">
         		<thead>
 					<tr>
@@ -64,7 +73,7 @@
 						<th width="100px;"></th>				
 					</tr>
 				</thead>
-				
+			
 				<tbody>
 				 <c:forEach var="eduMaterialsList" items="${selectEduMaterialsList }">
 				 	<tr>
@@ -83,6 +92,7 @@
 						</td>
 						<td>
 							<input type="hidden" value="${eduMaterialsList.emNum }" id="em_num" name="em_num">
+							<input type="hidden" value="${eduMaterialsList.ggNum }" id="ggNum" name="ggNum">
 							${eduMaterialsList.emTitle }</td>
 						<td>
 							<c:if test="${eduMaterialsList.emCategory  == 1}">튜토리얼</c:if>
@@ -99,13 +109,14 @@
 							<c:if test="${eduMaterialsList.emPayment == 2}">유료</c:if>
 							
 						</td>
-						<td width="100px;"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" onclick="detailForm(${eduMaterialsList.emNum })">상세</button></td>
+						<td width="100px;"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" onclick="detailForm(${eduMaterialsList.emNum }, ${eduMaterialsList.ggNum })">상세</button></td>
 					</tr>
 					<c:set var="StartRow" value="${StartRow +1}"/>
 					 </c:forEach>
   				   </tbody>
+  				 
                </table>
-             		
+<!--              </form> -->
              <div class="row mt-8" style="width:100%;">
  					<div class="d-flex justify-content-center" style="margin-top:12px">
 		                <nav aria-label="Page navigation example">

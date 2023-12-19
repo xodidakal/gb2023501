@@ -7,6 +7,7 @@ import com.choongang.gb2023501.domain.LearnGrp;
 import com.choongang.gb2023501.hrDao.LearnGrpDao;
 import com.choongang.gb2023501.hrRepository.HrRepository;
 import com.choongang.gb2023501.model.Game;
+import com.choongang.gb2023501.model.SearchDTO;
 import com.choongang.gb2023501.model.LearnGrpDTO;
 import com.choongang.gb2023501.model.MemberDTO;
 
@@ -48,10 +49,10 @@ public class LearnGrpServiceImpl implements LearnGrpService {
 		
 	// 교육자마당 > 학습그룹 등록 - 화면 (SELECT / MyBatis)
 	@Override
-	public List<Game> learnGroupForm(int g_num) {
+	public List<Game> learnGroupForm(SearchDTO searchDTO) {
 		System.out.println("LearnGrpServiceImpl learnGroupForm() start..");
 		
-		List<Game> gameList = lgDao.learnGroupForm(g_num);
+		List<Game> gameList = lgDao.learnGroupForm(searchDTO);
 		System.out.println("LearnGrpServiceImpl learnGroupForm() gameList.size() -> "+ gameList.size());		
 		
 		System.out.println("LearnGrpServiceImpl learnGroupForm() end..");		
@@ -75,11 +76,22 @@ public class LearnGrpServiceImpl implements LearnGrpService {
 		System.out.println("LearnGrpServiceImpl joinedMemberList() start..");
 		
 		List<MemberDTO> members = hrRepository.joinedMemberList(lg_num);
-		System.out.println("LearnGrpServiceImpl learnGroupList() members.size() -> "+members.size());
+		System.out.println("LearnGrpServiceImpl joinedMemberList() members.size() -> "+members.size());
 		
 		System.out.println("LearnGrpServiceImpl joinedMemberList() end..");
 		return members;
 	}
 
+	// 교육자마당 > 학습그룹 가입 승인 - 화면 (SELECT / JPA) - 신청자 명단
+	@Override
+	public List<MemberDTO> joiningMemberList(int lg_num) {
+		System.out.println("LearnGrpServiceImpl joiningMemberList() start..");
+		
+		List<MemberDTO> members = hrRepository.joiningMemberList(lg_num);
+		System.out.println("LearnGrpServiceImpl joiningMemberList() members.size() -> "+members.size());
+		
+		System.out.println("LearnGrpServiceImpl joiningMemberList() end..");
+		return members;
+	}
 
 }
