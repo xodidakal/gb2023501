@@ -1,6 +1,8 @@
 package com.choongang.gb2023501.domain;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -32,20 +35,17 @@ public class HwSend {
 	@Column(name="hs_date")
 	private Date hsDate;		// 전송일자
 	
-	// 조회용
+	// 조회용	
+	//@OneToMany(mappedBy = "hwsend")					// 1숙제배포 : N숙제학습
+	//private List<HwRecord> hwrecord = new ArrayList<HwRecord>();	// 학습자 학습 현황 domain
+
+	// 조회용	
 	@Transient					// 테이블과 매핑시키지 않는 변수 및 메소드를 선언하는 어노테이션
-	private String hhTitle; 	// 숙제명
+	private int searchType;		// 검색조건
 	
 	@Transient
-	private String mmName;		// 교육자명
+	private String searchKeyword;	// 검색어
 	
-	@Transient
-	private int hhLevel;		// 숙제 최종 진도
-	
-	@Transient
-	private int hrLevel;		// 학습자 현재 레벨
-	
-	@Transient
-	private Date hhDeadline;	// 제출기한
-	
+	@Transient	
+	private int hrMaxLevel;		// 학습자의 현재 최고 레벨
 }
