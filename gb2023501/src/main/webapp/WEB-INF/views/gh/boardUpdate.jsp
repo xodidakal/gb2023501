@@ -159,9 +159,16 @@
 						<th>게시 구분</th>
 							<td width="150px;">
 			                    <select id="b_category" name="b_category" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
-								 	<option value="1" <c:if test="${BdDetail.b_category == 1}">selected</c:if>>공지사항</option>
-								 	<option value="2" <c:if test="${BdDetail.b_category == 2}">selected</c:if>>Q&A</option>
-								 	<option value="3" <c:if test="${BdDetail.b_category == 3}">selected</c:if>>FAQ</option>
+			                    	<c:choose>
+			                    		<c:when test="${member.category eq 4}">
+			                    			<option value="1">공지사항</option>
+											<option value="2">Q&A</option>
+											<option value="3">FAQ</option>
+			                    		</c:when>
+			                    		<c:otherwise>
+			                    			<option value="2">Q&A</option>
+			                    		</c:otherwise>
+			                    	</c:choose>
 								</select>
 							</td>
 							
@@ -185,7 +192,7 @@
 					<tr>
 						<th>제목</th>
 						<td colspan="3">
-							<input type="text" class="form-control" name="b_title" placeholder="Subject" value="${BdDetail.b_title}">
+							<input type="text" class="form-control" name="b_title" placeholder="Subject" value="${BdDetail.b_title}" required="required">
 						</td>
 					</tr>
 					<tr>

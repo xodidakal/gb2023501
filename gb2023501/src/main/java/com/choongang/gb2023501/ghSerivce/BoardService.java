@@ -19,6 +19,7 @@ public interface BoardService {
 	int deleteBoard(BoardComment boardComment);
 	int updateBoard(Board board);
 	int deleteFile(Board board);
+	Board selectOriBoard(int b_num);
 	
 //	int 				selectBdCommentListCnt(BoardComment boardComment);
 

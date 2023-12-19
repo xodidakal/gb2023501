@@ -142,7 +142,14 @@
 			<div class="col">
 			<div class="d-flex align-items-center justify-content-end">
           		<div style="width: 65px;">
-	          		<a href="/customer/boardForm?b_category=${BoardCategory}"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="작성"></a>
+          			<!-- Q&A, FAQ이면서 회원이면 글 작성 -->
+          			<c:if test="${(BoardCategory eq '2' or BoardCategory eq '3') and not empty member.category}">
+          				<a href="/customer/boardForm?b_category=${BoardCategory}"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="작성"></a>
+          			</c:if>
+          			<!-- 공지사항이면서 운영자면 글 작성 -->
+          			<c:if test="${(BoardCategory eq '1') and member.category eq '4'}">
+          				<a href="/customer/boardForm?b_category=${BoardCategory}"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="작성"></a>
+          			</c:if>
             	</div>
             </div>
 			</div>
@@ -215,16 +222,6 @@
 				</div>
 			</div>
               
-              	<%-- <c:if test="${page.startPage > page.pageBlock }">
-					<a href="/customer/boardList?currentPage=${page.startPage-page.pageBlock}&b_category=${BoardCategory}">[이전]</a>
-				</c:if>
-				<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
-					<a href="/customer/boardList?currentPage=${i}&b_category=${BoardCategory}">[${i}]</a>
-				</c:forEach>
-				<c:if test="${page.endPage > page.totalPage }">
-					<a href="/customer/boardList?currentPage=${page.startPage+page.pageBlock}&b_category=${BoardCategory}">[다음]</a>
-				</c:if> --%>
-				
 			</div>
 	</div>
 <%@ include file="../common/footerFo.jsp" %>

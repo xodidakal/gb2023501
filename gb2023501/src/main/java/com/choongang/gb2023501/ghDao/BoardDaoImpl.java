@@ -198,6 +198,18 @@ public class BoardDaoImpl implements BoardDao {
 		
 		return result;
 	}
+
+	@Override
+	public Board selectOriBoard(int b_num) {
+		System.out.println("BoardDaoImpl selectOriBoard start...");
+		Board board = null;
+		try {
+			board = sqlSession.selectOne("mkhSelectOriBoard", b_num);
+		} catch (Exception e) {
+			System.out.println("BoardDaoImpl selectOriBoard Exception->"+e.getMessage());
+		}
+		return board;
+	}
 	
 
 //	@Override
