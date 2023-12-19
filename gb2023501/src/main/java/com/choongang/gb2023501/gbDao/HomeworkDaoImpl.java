@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.choongang.gb2023501.model.Homework;
+import com.choongang.gb2023501.model.HwRecord;
 import com.choongang.gb2023501.model.HwSend;
 import com.choongang.gb2023501.model.LgJoin;
 
@@ -84,6 +85,21 @@ public class HomeworkDaoImpl implements HomeworkDao {
 		}
 		
 		return count;
+	}
+
+	@Override
+	public int insertUpdateMyHomework(HwRecord hwrecord) {
+		System.out.println("HomeworkDaoImpl insertUpdateMyHomework start...");
+		int result = 0;
+		
+		try {
+			result = session.insert("gbInsertUpdateMyHomework", hwrecord);
+			System.out.println("HomeworkDaoImpl insertUpdateMyHomework result ->"+result);
+		} catch (Exception e) {
+			System.out.println("HomeworkDaoImpl insertUpdateMyHomework Exception->"+e.getMessage());
+		}
+		
+		return result;
 	}
 
 }

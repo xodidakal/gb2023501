@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.choongang.gb2023501.gbDao.HomeworkDao;
 import com.choongang.gb2023501.model.Homework;
+import com.choongang.gb2023501.model.HwRecord;
 import com.choongang.gb2023501.model.HwSend;
 import com.choongang.gb2023501.model.LgJoin;
 
@@ -66,6 +67,18 @@ public class HomeworkServiceImpl implements HomeworkService {
 		System.out.println("HomeworkServiceImpl insertHwSend result -> "+count);
 		
 		return count;
+	}
+
+	// 내 숙제 제출하기
+	@Override
+	public int insertUpdateMyHomework(HwRecord hwrecord) {
+		System.out.println("HomeworkServiceImpl insertUpdateMyHomework start...");
+		
+		int result = hd.insertUpdateMyHomework(hwrecord);
+		System.out.println("HomeworkServiceImpl insertUpdateMyHomework result ->"+result);
+		
+		
+		return result;
 	}
 
 }

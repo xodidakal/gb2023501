@@ -13,6 +13,7 @@
 	th{
 		border : 1px solid #959595;
 		background-color: #EEEEEE;
+		text-align: center;
 	}
 	td{
 		padding-left: 13px;
@@ -20,10 +21,14 @@
 	#borderRight{
 		border-right: 1px solid #959595;
 	}
+	#borderLeft{
+		border-left: 1px solid #959595;
+	}
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript">
 	$(function(){
+		
 		// 전체 선택 클릭 시 발생 이벤트
 		$("#checkAll").click(function() {
 			if($("#checkAll").is(":checked")){
@@ -44,60 +49,23 @@
 		      $("#checkAll").prop("checked", true);
 		    }
 		  });
+		
+		var result = '${result}';
+		if(result > 0){
+			alert("숙제가 정상적으로 제출되었습니다.");
+		}
 	});
 	
-	function myHomeworkSubmit() {
-		alert("myHomeworkSubmit Run...")
-		let myHomeworkList = [];
-	 //   const inputs = document.querySelectorAll('input[name="h_num1"], input[name="m_num"],input[name="hr_level"],textarea[name="hr_content"],textarea[name="hr_question"]' );
-	    const inputs = document.querySelectorAll('input[name="h_num1"], input[name="m_num"],input[name="hr_level3"]');
-	    
- 	    alert("inputs.length -> "+inputs.length);
- 	    for (let i = 0; i < inputs.length; i += 3) {
- 		    const h_num = inputs[i+1].value;
- 		    const m_num = inputs[i+2].value;
- 		    const hr_level = inputs[i+3].value;
- 		    alert("h_num ->"+h_num+"| hr_level ->"+hr_level);
- /* 		   	const hr_content = inputs[i+4].value;
- 		    alert("m_num ->"+m_num+"| hr_content ->"+hr_content);
-		  	const hr_question = inputs[i+5].value;
-		    alert("hr_question ->"+hr_question);
- */
-		  	// 불러온 값들을 JSON 객체 형태로 만든다.
- 	/*     	const myHomeworkItem = { 
- 		    		        "h_num":h_num
- 		    		      , "m_num":m_num
- 		    		      , "hr_level":hr_level 
- 		    		      , "hr_content":hr_content 
- 		    		      , "hr_question":hr_question 
- 		    		    };
- */	 		// alert("h_num->"+h_num+"/"+i);
-	 		// JSON 객체를 배열 안에 넣어둔다.
-//	 		myHomeworkList.push(myHomeworkItem);
-  		}
- 	   // alert("h_num->"+h_num);
-	
-		//완성된 dataList를 확인한다.
-		//console.log(empList);
-		//dataList를 문자열로 바꾼 결과를 확인한다.
-		/* console.log(JSON.stringify(empList));
-		alert("JSON.stringify(empList)->"+JSON.stringify(empList));
-	
-		if (empList.length > 0) {
-				   
-			$.ajax({
-		          url: 'empListUpdate'
-		        , contentType: 'application/json'
-		        , data: JSON.stringify(empList) //JSON 객체를 불러와서 stringify() 함수 안에 배열
-		        , method: 'POST'
-				, dataType:'text'
-		        , success: function(result) {
-		            console.log(result);
-		        }
-		    }); 
-		   
-		} */
+	function myHomeworkSubmit(pIndex){
+		var h_num = $('#h_num'+pIndex).val();
+		var hr_level = $('#hr_level'+pIndex).val();
+		var hr_content = $('#hr_content'+pIndex).val();
+		var hr_question = $('#hr_question'+pIndex).val();
+
+		
+		location.href = "/learning/myHomeworkSubmitAction?h_num="+h_num+"&hr_level="+hr_level+"&hr_content="+hr_content+"&hr_question="+hr_question;
 	}
+
 </script>
 </head>
 <body>
@@ -112,12 +80,12 @@
         <hr class="my-3">
         	<table class="formTable" style="border:1px;solid;#959595;">
 				<thead>
-					<tr>
-						<th style="width:5%; text-align: center;">
-							<input class="form-check-input" type="checkbox" name="em_type" id="checkAll">
-						</th>
+					<tr>	
 						<th style="width:45%; text-align: center;">숙제 내용</th>	
 						<th style="text-align: center;">제출 내용</th>		
+						<th style="width:10%; text-align: center;">
+							<input class="form-check-input" type="checkbox" name="em_type" id="checkAll">
+						</th>
 					</tr>
 				</thead>
 				<c:choose>
@@ -130,22 +98,22 @@
 								<c:if test="${myHomeworkDetail.hrLevel eq totalRow }">
 									<tbody>
 										<tr>
-											<td id="borderRight" rowspan="5">
-												<input type="hidden" name="m_num" value="${mmNum }">
-												<input type="hidden" name="h_num1" value="${myHomeworkDetail.homework.hhNum }">
-							                    <input type="hidden" name="hr_level3" value="${myHomeworkDetail.hrLevel }">
-							                    <input class="form-check-input" type="checkbox" name="h_num" value="${myHomeworkDetail.homework.hhNum }" id="flexRadioDefault1" >
-							                </td>
 							                <td id="borderRight">숙제명 : ${myHomeworkDetail.homework.hhTitle }</td>
 							                <td>
-							                	내 진도 : 
+							                	내 진도 : <input type="hidden" id="hr_level${totalRow}" name="hr_level" value="${myHomeworkDetail.hrLevel }">
 							                	${myHomeworkDetail.hrLevel } 레벨
+							                </td>
+							                <td id="borderLeft" rowspan="5">
+												<input type="hidden" id="h_num${totalRow}" name="h_num1" value="${myHomeworkDetail.homework.hhNum }">
+							                    <input class="btn rounded py-2 px-3" type="button" onclick="myHomeworkSubmit(${totalRow})" style="background: #263d94; color: white;" value="수정 ">
+							                   <%--  <input class="form-check-input" type="checkbox" name="h_num" value="${myHomeworkDetail.homework.hhNum }" id="flexRadioDefault1" > --%>
+							                </td>
 										</tr>
 							            <tr>
 											<td id="borderRight">교육자 : ${myHomeworkDetail.homework.member.mmName }</td>
 											<td rowspan="2"> 
 												금번학습내용 :<br>
-												<textarea rows="5" cols="45" name="hr_content">${myHomeworkDetail.hrContent }</textarea> 
+												<textarea rows="5" cols="45" id="hr_content${totalRow}" name="hr_content">${myHomeworkDetail.hrContent }</textarea> 
 							            	</td>
 										</tr>
 										<tr>
@@ -154,7 +122,7 @@
 										<tr>
 											<td id="borderRight">숙제 진도 : ${myHomeworkDetail.homework.hhLevel}</td>
 											<td rowspan="2">
-												추가질의내용 : <br><textarea rows="3" cols="45" name="hr_question" >${myHomeworkDetail.hrQuestion }</textarea>
+												추가질의내용 : <br><textarea rows="3" cols="45" id="hr_question${totalRow}" name="hr_question" >${myHomeworkDetail.hrQuestion }</textarea>
 											</td>
 										</tr>
 										<tr>
@@ -169,22 +137,21 @@
 							<c:if test="${homeworkChK eq '0' }">
 								<tbody>
 								<tr>
-									<td id="borderRight" rowspan="5">
-										<input type="hidden" name="m_num" value="${mmNum }">
-										<input type="hidden" name="h_num1" value="${myHomework.hhNum }">
-					                    <input class="form-check-input" type="checkbox" name="h_num" value="${myHomework.hhNum }" id="flexRadioDefault1" >
-					                </td>
 					                <td id="borderRight">숙제명 : ${myHomework.hhTitle }</td>
 					                <td>
 					                	내 진도 : 
-					                	<input type="hidden" name="hr_level" value="${totalRow }">${totalRow } 레벨
+					                	<input type="hidden" id="hr_level${totalRow}" name="hr_level" value="${totalRow }">${totalRow } 레벨
+					                </td>
+					                <td id="borderLeft" rowspan="5">
+										<input type="hidden" id="h_num${totalRow}" name="h_num" value="${myHomework.hhNum }">
+					                    <input class="btn rounded py-2 px-3" type="button" onclick="myHomeworkSubmit(${totalRow})" style="background: #263d94; color: white;" value="제출 ">
 					                </td>
 								</tr>
 					            <tr>
 									<td id="borderRight">교육자 : ${myHomework.member.mmName }</td>
 									<td rowspan="2"> 
 										금번학습내용 :<br>
-										<textarea rows="5" cols="45" name="hr_content"></textarea> 
+										<textarea rows="5" id="hr_content${totalRow}" cols="45" name="hr_content"></textarea> 
 					            	</td>
 								</tr>
 								<tr>
@@ -193,7 +160,7 @@
 								<tr>
 									<td id="borderRight">숙제 진도 : ${myHomework.hhLevel}</td>
 									<td rowspan="2">
-										추가질의내용 : <br><textarea rows="3" cols="45" name="hr_question"></textarea>
+										추가질의내용 : <br><textarea rows="3" cols="45" id="hr_question${totalRow}" name="hr_question"></textarea>
 									</td>
 								</tr>
 								<tr>
@@ -207,22 +174,21 @@
 						<c:forEach var="totalRow" begin= "1" end="${myHomework.hhLevel}" >
 							<tbody>
 								<tr>
-									<td id="borderRight" rowspan="5">
-										<input type="hidden" name="m_num" value="${mmNum }">
-										<input type="hidden" name="h_num1" value="${myHomework.hhNum }">
-					                    <input class="form-check-input" type="checkbox" name="h_num" value=0 id="flexRadioDefault1" >
-					                </td>
 					                <td id="borderRight">숙제명 : ${myHomework.hhTitle }</td>
 					                <td>
 					                	내 진도 : 
-					                	<input type="hidden" name="hr_level" value="${totalRow }">${totalRow } 레벨
+					                	<input type="hidden" id="hr_level${totalRow}" name="hr_level" value="${totalRow }">${totalRow } 레벨
+					                </td>
+					                <td id="borderLeft" rowspan="5">
+										<input type="hidden" id="h_num${totalRow}" name="h_num1" value="${myHomework.hhNum }">
+					                    <input class="btn rounded py-2 px-3" type="button" onclick="myHomeworkSubmit(${totalRow})" style="background: #263d94; color: white;" value="제출 ">
 					                </td>
 								</tr>
 					            <tr>
 									<td id="borderRight">교육자 : ${myHomework.member.mmName }</td>
 									<td rowspan="2"> 
 										금번학습내용 :<br>
-										<textarea rows="5" cols="45" name="hr_content"></textarea> 
+										<textarea rows="5" cols="45" id="hr_content${totalRow}" name="hr_content"></textarea> 
 					            	</td>
 								</tr>
 								<tr>
@@ -231,7 +197,7 @@
 								<tr>
 									<td id="borderRight">숙제 진도 : ${myHomework.hhLevel}</td>
 									<td rowspan="2">
-										추가질의내용 : <br><textarea rows="3" cols="45" name="hr_question"></textarea>
+										추가질의내용 : <br><textarea id="hr_question${totalRow}" rows="3" cols="45" name="hr_question"></textarea>
 									</td>
 								</tr>
 								<tr>

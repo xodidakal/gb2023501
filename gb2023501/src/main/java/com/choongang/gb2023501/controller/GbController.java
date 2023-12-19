@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -216,10 +217,15 @@ public class GbController {
 	
 	// 내 숙제 제출화면으로 이동
 	@RequestMapping("/learning/myHomeworkDetail")
-	public String selectMyHomeworkDetail(int h_num, Model model) {
+	public String selectMyHomeworkDetail(int h_num, String result, Model model) {
 		System.out.println("GbController selectMyHomeworkDetail start...");
 		// 학습자 번호를 담는다.
 		int m_num = ms.selectMmNumById();
+		
+		int result1 = 0;
+		if(result != null) {
+			result1 = Integer.parseInt(result);
+		}
 		
 		// 제출한 숙제 현황 리스트
 		List<HwRecord> myHomeworkDetailList = jms.selectMyHomeworkDetail(m_num, h_num);
@@ -231,21 +237,23 @@ public class GbController {
 		model.addAttribute("myHomeworkDetailList", myHomeworkDetailList);
 		model.addAttribute("myHomework", myHomework);
 		model.addAttribute("mmNum",m_num);
+		model.addAttribute("result",result1);
 		
 		return "gb/myHomeworkDetail";
 	}
 	
-	@PostMapping("/learning/myHomeworkSubmitAction")
-	public String insertUpdateMyHomework(@RequestParam List<HwRecord> hwrecord) {
+	// 내 숙제 제출
+	@GetMapping("/learning/myHomeworkSubmitAction")
+	public String insertUpdateMyHomework(com.choongang.gb2023501.model.HwRecord hwrecord) {
 		System.out.println("GbController insertUpdateMyHomework start...");
 		// 학습자 번호 담기
 		int m_num = ms.selectMmNumById();
+		hwrecord.setM_num(m_num);
 		
-		for(HwRecord hwrecord1 : hwrecord) {
-			System.out.println("hwrecord1 ->"+hwrecord1);
-		}
+		String result = String.valueOf(hs.insertUpdateMyHomework(hwrecord));
+		System.out.println("GbController insertUpdateMyHomework result ->"+result);
+		int h_num = hwrecord.getH_num();
 		
-		
-		return "redirect:myhomeworkList";
+		return "redirect:myHomeworkDetail?h_num="+h_num+"&result="+result;
 	}
 }
