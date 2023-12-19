@@ -30,6 +30,8 @@
 				emailInputTr.hide();
 				emailInput.prop('required', false);
 				phoneInput.prop('required', true);
+				emailInput.removeAttr('name');
+				$('#phone').removeAttr('name');
 			} else{
 				phoneTr.show();
 				emailTr.hide();
@@ -37,7 +39,8 @@
 				phoneInputTr.hide();
 				emailInput.prop('required', true);
 				phoneInput.prop('required', false);
-				
+				phoneInput.removeAttr('name');
+				$('#email').removeAttr('name');
 			}
 		}
 		
@@ -153,7 +156,7 @@
 	
 	function duplicateChk(){
 		var pId = $('#mmId').val();
-		alert("pId -> " + pId);
+		//alert("pId -> " + pId);
 		
 		$.ajax({
 			url	 	 : "/info/idDuplicateCheck",
@@ -161,7 +164,7 @@
 			data 	 : {id : pId},
 			dataType : "text",
 			success	 : function(data){
-							alert("result -> " + data);
+							//alert("result -> " + data);
 							if(data ==="1"){
 								$('#idValidationMessage').text('사용불가능한 아이디입니다.').css('color', 'red');
 							} else{
@@ -193,7 +196,6 @@
 
 	 
 	function joinChk(){
-		var formData = $("#joinForm").serialize();
 		//alert("formData -> " + formData);
 		
 		 // 폼 제출 전에 유효성 검사 수행
@@ -211,11 +213,14 @@
 	        return;
 	    }
 	    
+		var formData = $("#joinForm").serialize();
 	    
 		$.ajax({
 			url		 : '/info/join',
 			type	 : 'POST',
 			data	 : formData,
+			contentType: 'application/x-www-form-urlencoded', // 기본 폼 데이터 형식
+			async: false, // 동기적으로 처리
 			dataType : 'text',
 			success	 : function(data){
 						alert("result -> " + data);
@@ -245,7 +250,7 @@
 		            <tr>
 						<th>이름</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" id="mmName" name="mmName" value="${name }" readonly="readonly">
+		                    <input type="text" class="form-control" id="mmName" name="mmName" value="${name }" readonly="readonly" required>
 		            	</td>
 					</tr>
 		            <tr id="phoneTr">
@@ -283,7 +288,7 @@
 		            	</td>
 						<th style="padding-left: 40px;" >비밀번호 확인</th>
 						<td  width="150px;">
-		                    <input type="password" class="form-control" id="mmPswdConfirm" name="mmPswd" minlength="8" maxlength="10" required>
+		                    <input type="password" class="form-control" id="mmPswdConfirm" minlength="8" maxlength="10" required>
 		            	</td>
 		            </tr>
 		            <tr style="height: 5px;" id="pswdValidationMessageTr">
@@ -302,19 +307,25 @@
 		            	<th style="padding-left: 40px;">성별</th>
                         <td width="150px">
 					        <div class="form-check form-check-inline">
-					            <input class="form-check-input" type="radio" name="gender" id="genderWoman" checked>
+					            <input class="form-check-input" type="radio" name="gender" id="genderWoman" value="1" checked>
 					            <label class="form-check-label" for="genderWoman">남자</label>
 					        </div>
 					        <div class="form-check form-check-inline mx-4">
-					            <input class="form-check-input" type="radio" name="gender" id="genderMan">
+					            <input class="form-check-input" type="radio" name="gender" value="2" id="genderMan">
 					            <label class="form-check-label" for="genderMan">여자</label>
 					        </div>
 					    </td>
 					</tr>
 		            <tr id="emailInputTr">
-						<th>이메일 주소</th>
+						<th>이메일</th>
 						<td colspan="3">
 		                    <input type="email" class="form-control" id="emailInput" name="email">
+		            	</td>
+					</tr>
+		            <tr>
+						<th>주소</th>
+						<td colspan="3">
+		                    <input type="text" class="form-control" id="address" name="address">
 		            	</td>
 					</tr>
 		            <tr id="phoneInputTr">
