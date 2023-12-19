@@ -52,7 +52,7 @@
 					 		<td><input class="form-check-input" type="radio" name="g_num" id="flexRadioDefault1" value="${gameList.g_num }"></td>
 							<td>${gameList.g_title}</td>
 							<td>${gameList.g_period}개월</td>
-							<td>${gameList.remainingPeriod}일</td>
+							<td>${gameList.remainingPeriod}개월</td>
 							<td>${gameList.g_to}명</td>
 							<td>${gameList.remainingTo}명</td>
 						</tr>

@@ -127,7 +127,7 @@ public class HrRepositoryImpl implements HrRepository {
 				// 검색유형 : 게임콘텐츠명
 				} else if(type.equals("typeGgTitle")) {
 					System.out.println("검색유형 : 게임콘텐츠명");
-					queryWhere = "WHERE learnGrp.game.ggTitle = '%"+keyword+"%' ";
+					queryWhere = "WHERE learnGrp.game.ggTitle LIKE '%"+keyword+"%' ";
 				}
 			}
 
@@ -167,6 +167,20 @@ public class HrRepositoryImpl implements HrRepository {
 		
 		System.out.println("HrRepositoryImpl learnGroupList() end..");
 		return learnGrps;
+	}
+	
+	// 교육자마당 > 내학습그룹 (DELETE / JPA)
+	@Override
+	public void learnGroupListDelete(int lg_num) {
+		System.out.println("HrRepositoryImpl learnGroupListDelete() start..");
+		
+		em.createQuery("DELETE FROM LearnGrp lg " + 
+					   "WHERE lg.lgNum = :lgNum "
+					   )
+		  .setParameter("lgNum", lg_num)
+		  .executeUpdate();
+		
+		System.out.println("HrRepositoryImpl learnGroupListDelete() end..");
 	}
 
 	// 교육자마당 > 학습그룹 등록 - 실행 (INSERT / JPA)
@@ -209,5 +223,6 @@ public class HrRepositoryImpl implements HrRepository {
 		System.out.println("HrRepositoryImpl joinedMemberList() end..");
 		return members;
 	}
+
 	
 }

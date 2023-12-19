@@ -66,13 +66,14 @@
 	        $('input[name=b_regi_date]').val(selectedDateInput.value);
 	    });
 	 	
+	 	// 등록 즉시 게시에 오늘날짜 입력
 	    function getTodayDate() {
 	        var today = new Date();
 	        var year = today.getFullYear();
 	        var month = today.getMonth() + 1; // 월은 0부터 시작하므로 +1
 	        var day = today.getDate();
 
-	        // 날짜를 'YYYY-MM-DD' 형식으로 반환
+	        // 날짜를 'YYYY-MM-DD'
 	        return year + '-' + (month < 10 ? '0' : '') + month + '-' + (day < 10 ? '0' : '') + day;
 	    }
 	});
@@ -115,7 +116,7 @@
 			error : function(XHR, textStatus, errorThrown) {
 				// http 오류 번호를 반환하며 케이스별 오류 메시지 판정에 사용하면 유용
 				console.log( XHR.status );
-				// url의 full response를 반환하기 때문에 ajax 오류 디버깅 시에 상당한 도움
+				// url의 full response를 반환하기 때문에ajax 오류 디버깅 시에 상당한 도움
 				alert( jqXHR.responseText );
 			}
 		});
@@ -142,10 +143,18 @@
 					<tr>
 						<th>게시 구분</th>
 							<td width="150px;">
+								<input type="hidden" name="m_num" value="${member.mmNum}">		                			
 			                    <select id="b_category" name="b_category" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
-			                    	<option value="1">공지사항</option>
-									<option value="2">Q&A</option>
-									<option value="3">FAQ</option>
+			                    	<c:choose>
+			                    		<c:when test="${member.category eq 4}">
+			                    			<option value="1">공지사항</option>
+											<option value="2">Q&A</option>
+											<option value="3">FAQ</option>
+			                    		</c:when>
+			                    		<c:otherwise>
+			                    			<option value="2">Q&A</option>
+			                    		</c:otherwise>
+			                    	</c:choose>
 								</select>
 			                </td>
 						<th>게시 분류</th>
@@ -168,6 +177,7 @@
 		            <tr>
 						<th>제목</th>
 						<td colspan="3">
+		                	<input type="hidden" name="b_ref_num" 	value="1">
 		                    <input type="text" class="form-control" id="b_title" name="b_title" placeholder="Subject" required="required">
 <!-- 		                    <label for="subject">자료명</label> -->
 		            	</td>
@@ -206,7 +216,7 @@
                 <div class="d-grid gap-2 d-md-flex justify-content-center" >
 					<a href="/customer/boardList?b_category=${BoardCategory}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
 					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="등록">
-					<input type="button" onclick="button_test()" value="테스트">
+					<!-- <input type="button" onclick="button_test()" value="테스트"> -->
 				</div>
                 
 			</div>

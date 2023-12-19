@@ -2,8 +2,13 @@ package com.choongang.gb2023501.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,17 +16,22 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.ghSerivce.BoardService;
 import com.choongang.gb2023501.ghSerivce.Paging;
+import com.choongang.gb2023501.jhRepository.MemberRepository;
+import com.choongang.gb2023501.jhService.MemberService;
 import com.choongang.gb2023501.model.Board;
 import com.choongang.gb2023501.model.BoardComment;
-import com.choongang.gb2023501.model.Member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +42,18 @@ import lombok.extern.slf4j.Slf4j;
 public class GhController {
 	
 	private final BoardService boardService;
+	private final MemberService ms;
+	
+	public Member aboutMember() {
+		Optional<Member> memberOptional = ms.selectUserById();
+		Member member = null;
+		if(memberOptional.isPresent()) {
+			member = memberOptional.get();
+			System.out.println("로그인 회원 정보 -> " + member);
+			System.out.println("member name -> " + member.getMmName());
+		}
+		return member;
+	}
 	
 	/* 게시판 리스트 */
 	@RequestMapping(value = "customer/boardList")
@@ -50,13 +72,6 @@ public class GhController {
 		// 게시물 count
 		int bdCount = boardService.selectBoardListCnt(b_category);
 		System.out.println("GhController selectBoardListCnt bdCount->"+bdCount);
-		
-		// 페이징 작업
-//		Paging page = new Paging(bdCount, currentPage);
-//		board.setStart(page.getStart());
-//		board.setEnd(page.getEnd());
-//		model.addAttribute("page", page);
-
 		// 페이징 작업
 		// bdCount를 list.size로 바꿀방법?
 		Paging page = new Paging(bdCount, currentPage, rowPage);
@@ -100,11 +115,15 @@ public class GhController {
 		System.out.println("GhController boardDetail Start...");
 		System.out.println("board.getB_num()->"+b_num);
 		
-		// 게시물 상세
+		// 회원정보
+		Member member = aboutMember();
+		model.addAttribute("member", member);
+		
+		// 게시물 상세(board, memeber 모든정보)
 		// -----------------------------------------------------
-		Board boardDetail = boardService.selectBoard(b_num);
+		Board BdDetail = boardService.selectBoard(b_num);
 		// -----------------------------------------------------
-		model.addAttribute("BdDetail",boardDetail);
+		model.addAttribute("BdDetail",BdDetail);
 		
 		// 조회수 증가
 		// -----------------------------------------------------
@@ -113,32 +132,20 @@ public class GhController {
 		System.out.println("boardCount->"+boardCount);
 		
 		// 댓글 조회
-		List<BoardComment> commentList = boardService.selectCommentList(b_num);
-		model.addAttribute("commentList",commentList);
-		commentList.size();
+//		List<BoardComment> commentList = boardService.selectCommentList(b_num);
+//		model.addAttribute("commentList",commentList);
 		
 		return "gh/boardDetail";
 	}
-	
-	/* 댓글 목록 조회 */
-//	@RequestMapping(value = "selectBdCommentList")
-//	public String commentList(Model model, int b_num) {
-//		System.out.println("GhController commentList Start...");
-//		System.out.println("board.getB_num()->"+b_num);
-//		
-//		// -----------------------------------------------------
-//		Board boardDetail = boardService.selectComment(b_num);
-//		// -----------------------------------------------------
-//		model.addAttribute("BdDetail",boardDetail);
-//		
-//		return "gh/boardDetail";
-//	}
-	
 	
 	/* 글 작성 폼 */
 	@RequestMapping(value = "customer/boardForm")
 	public String boardForm(Model model, String b_category) {
 		System.out.println("GhController boardForm Start...");
+		
+		// 회원정보
+		Member member = aboutMember();
+		model.addAttribute("member", member);
 		
 		// 글 작성 할때 목록 -> 카테고리 목록으로 가기
 		model.addAttribute("BoardCategory", b_category);
@@ -154,6 +161,8 @@ public class GhController {
 							  ) throws IOException {
 		System.out.println("GhController insertBoard Start...");
 		System.out.println("GhController insertBoard b_regi_date->"+b_regi_date);
+		System.out.println("GhController insertBoard board.getB_num()->"+board.getB_num());
+		System.out.println("GhController insertBoard board.getB_ref_num()->"+board.getB_ref_num()); // 이게 문제임
 		
 		if(!file1.isEmpty()) {
 			// file Upload
@@ -171,7 +180,7 @@ public class GhController {
 			String saveName = uploadFile(file1.getOriginalFilename(), file1.getBytes(), uploadPath);  // 저장되는 파일명 
 			log.info("saveName: " + saveName);
 			
-			board.setB_attach_name(file1.getOriginalFilename());
+			board.setB_attach_name(file1.getOriginalFilename());	
 			board.setB_attach_path(attach_path);
 		}
 		
@@ -180,13 +189,6 @@ public class GhController {
 		int insertForm = boardService.insertBoard(board);
 		// -----------------------------------------------------
 		
-//		if(insertForm > 0) {
-//			log.info("입력 성공");
-//			return "redirect:/customer/boardList?b_category="+board.getB_category();
-//		} else {
-//			log.info("입력 실패");
-//			return "redirect:/customer/boardForm";
-//		}
 		
 		return "redirect:/customer/boardList?b_category="+board.getB_category();
 	}
@@ -216,11 +218,11 @@ public class GhController {
 	@RequestMapping(value = "customer/boardUpdate")
 	public String boardUpdate(Model model, Board board, int b_num) {
 		System.out.println("GhController boardUpdate Start...");
-		// 게시물 상세
+		// 수정 정보 불러오기
 		// -----------------------------------------------------
-		Board boardDetail = boardService.selectBoard(b_num);
+		Board BdDetail = boardService.selectBoard(b_num);
 		// -----------------------------------------------------
-		model.addAttribute("BdDetail",boardDetail);
+		model.addAttribute("BdDetail",BdDetail);
 		
 
 		return "gh/boardUpdate";
@@ -228,25 +230,164 @@ public class GhController {
 	
 	/* 게시판 수정  */
 	@RequestMapping(value = "customer/updateBoard")
-	public String updateBoard() {
+	public String updateBoard(Board board, @RequestParam(value = "file1", required = false) 
+	  						  MultipartFile file1, HttpServletRequest request) throws IOException {
 		System.out.println("GhController updateBoard Start...");
-
-//		return "redirect:/customer/boardList?b_category="+board.getB_category();
-		return "gh/boardUpdate";
-	}
-	
-	
-	
-	/* ajax 테스트 */
-	@ResponseBody
-	@PostMapping(value = "boardNotieList")
-	public String boardNotieList(int b_category, String b_content, String b_title) {
-		System.out.println("boardNotieList b_category->"+b_category);
-		System.out.println("boardNotieList b_content->"+b_content);
-		System.out.println("boardNotieList b_title->"+b_title);
+		System.out.println("GhController updateBoard b_title->"+board.getB_title());
+		System.out.println("GhController updateBoard board.getB_num()->"+board.getB_num());
 		
-		return "success";
+		if(!file1.isEmpty()) {
+			// file Upload
+			log.info("파일o");
+			String attach_path = "upload/gh"; // 실제 파일이 저장되는 폴더명, uploadPath의 이름과 동일하게 해야 오류 X
+			String uploadPath = request.getSession().getServletContext().getRealPath("/upload/gh"); // 저장 위치 지정 
+			
+			System.out.println("GhController File Upload Post Start"); 
+			
+			log.info("originalName : " + file1.getOriginalFilename());		// 원본 파일명
+			log.info("size : "         + file1.getSize());					// 파일 사이즈
+			log.info("contextType : "  + file1.getContentType());			// 파일 타입
+			log.info("uploadPath : "   + uploadPath);						// 파일 저장되는 주소
+			
+			String saveName = uploadFile(file1.getOriginalFilename(), file1.getBytes(), uploadPath);  // 저장되는 파일명 
+			log.info("saveName: " + saveName);
+			
+			board.setB_attach_name(file1.getOriginalFilename());	
+			board.setB_attach_path(attach_path);
+		}
+
+		// 수정 정보 불러오기
+		// -----------------------------------------------------
+		int BdUpdate = boardService.updateBoard(board);
+		// -----------------------------------------------------
+		if(BdUpdate < 0) {
+			System.out.println("수정실패");
+		}
+		System.out.println("수정성공 BdUpdate->"+BdUpdate);
+		
+		return "redirect:/customer/boardList?b_category="+board.getB_category();
 	}
+	
+	/* 파일 삭제 */
+	@RequestMapping(value = "/customer/deleteFile", method = RequestMethod.POST)
+	@ResponseBody
+	public String deleteFile(@RequestBody Board board) {
+		System.out.println("GhController deleteFile Start...");
+		String resultStatus = null;
+		
+		System.out.println("board.getB_num()->"+board.getB_num());
+		
+		board.setB_attach_name(null);
+		board.setB_attach_path(null);
+
+		// 파일 삭제
+		// -----------------------------------------------------
+		int deleteFile = boardService.deleteFile(board);
+		// -----------------------------------------------------
+
+		if(deleteFile > 0) {
+			System.out.println("삭제 성공");
+			resultStatus = "success";
+		} else {
+			System.out.println("삭제 실패");
+			resultStatus = "fail";
+		}
+		
+		return resultStatus;
+	}
+	
+	/* 게시글 삭제 */
+	@RequestMapping(value = "customer/boardDelete")
+	public String deleteBoard(Board board, BoardComment boardComment) {
+		System.out.println("GhController deleteBoard Start...");
+		System.out.println("GhController deleteBoard boardComment.getBc_num()->"+boardComment.getBc_num());
+		System.out.println("GhController deleteBoard boardComment.getB_num()->"+boardComment.getB_num());
+		
+		// 수정 정보 불러오기
+		// -----------------------------------------------------
+		int BdDelete = boardService.deleteBoard(boardComment);
+		// -----------------------------------------------------
+		if(BdDelete < 0) {
+			System.out.println("삭제실패");
+		}
+
+		return "redirect:/customer/boardList?b_category="+board.getB_category();
+	}
+	
+	/* 댓글 목록 조회 */
+	@ResponseBody
+	@RequestMapping(value = "/customer/selectCommentList", method = RequestMethod.POST)
+	public List<BoardComment> selectCommentList(Model model, @RequestBody BoardComment boardComment) {
+		System.out.println("GhController commentList Start...");
+		System.out.println("selectCommentList board.getB_num()->"+boardComment.getB_num());
+		System.out.println("boardComment.getBc_regi_date();->"+boardComment.getBc_regi_date());
+		
+		// 댓글 조회
+		// -----------------------------------------------------
+		List<BoardComment> commentList = boardService.selectCommentList(boardComment.getB_num());
+		// -----------------------------------------------------
+		
+		return commentList;
+	}
+	
+	/* 댓글작성  */
+	@RequestMapping(value = "/customer/insertComment", method = RequestMethod.POST)
+	@ResponseBody
+	public String insertComment(@RequestBody BoardComment boardComment) {
+		System.out.println("GhController insertComment Start...");
+		
+		String resultStatus = null;
+		
+		System.out.println("insertComment getB_num->"+boardComment.getB_num());
+		System.out.println("insertComment getBc_content->"+boardComment.getBc_content());
+		System.out.println("insertComment getM_num->"+boardComment.getM_num());
+		
+		// 댓글 작성
+		// -----------------------------------------------------
+		int insertComment = boardService.insertComment(boardComment);
+		// -----------------------------------------------------
+
+		if(insertComment > 0) {
+			System.out.println("입력 성공");
+			resultStatus = "success";
+		} else {
+			System.out.println("입력 실패");
+			resultStatus = "fail";
+		}
+		
+		return resultStatus;
+	}
+
+	/* 댓글삭제 */
+	@RequestMapping(value = "/customer/deleteComment", method = RequestMethod.POST)
+	@ResponseBody
+	public String deleteComment(@RequestBody BoardComment boardComment) {
+		System.out.println("GhController deleteComment Start...");
+		
+		String resultStatus = null;
+		
+		System.out.println("boardComment.getB_num()->"+boardComment.getB_num());
+		System.out.println("boardComment.getM_num()->"+boardComment.getM_num());
+		System.out.println("boardComment.getBc_num()->"+boardComment.getBc_num());
+		
+		// 댓글 삭제
+		// -----------------------------------------------------
+		int deleteComment = boardService.deleteComment(boardComment);
+		// -----------------------------------------------------
+
+		if(deleteComment > 0) {
+			System.out.println("입력 성공");
+			resultStatus = "success";
+		} else {
+			System.out.println("입력 실패");
+			resultStatus = "fail";
+		}
+		
+		return resultStatus;
+	}
+	
+	
+	
 	
 	
 	

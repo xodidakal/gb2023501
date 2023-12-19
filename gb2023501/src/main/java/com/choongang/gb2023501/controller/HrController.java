@@ -1,10 +1,19 @@
 package com.choongang.gb2023501.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.choongang.gb2023501.domain.LearnGrp;
 import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.hrService.LearnGrpService;
@@ -27,10 +36,26 @@ public class HrController {
 		
 		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(0, sort, type, keyword);
 		model.addAttribute("learnGrps", learnGrps);
+		model.addAttribute("type", type);
+		model.addAttribute("keyword", keyword);
 		System.out.println("HrController learnGroupList() learnGrps.size() -> "+learnGrps.size());
 		
 		System.out.println("HrController learnGroupList() end..");		
 		return "/hr/learnGroupList";
+	}
+	
+	// 교육자마당 > 내학습그룹 (DELETE / JPA)
+	@ResponseBody
+	@RequestMapping(value = "educator/learnGroupListDelete", method = RequestMethod.DELETE)
+	public String learnGroupListDelete(Model model, int lg_num) {
+		System.out.println("HrController learnGroupListDelete() start..");
+		
+		System.out.println("HrController learnGroupListDelete() lg_num -> "+lg_num);
+		
+		lgService.learnGroupListDelete(lg_num);
+		
+		System.out.println("HrController learnGroupListDelete() end..");
+		return "1";
 	}
 	
 	// 교육자마당 > 학습그룹 상세 (SELECT / JPA)
@@ -116,14 +141,34 @@ public class HrController {
 	
 	// 교육자마당 > 학습그룹 등록 - 실행 (INSERT / JPA)
 	@PostMapping("educator/learnGroupFormInsert")
-	public String learnGroupFormInsert(Model model, LearnGrp learnGrp) {
+	public String learnGroupFormInsert(Model model, LearnGrp learnGrp, int lgPeriod) throws ParseException {
 		System.out.println("HrController learnGroupFormInsert() start..");
 		
 		// 회원번호 임시 세팅 ------------------ 추후 뺴야 함
 		// learnGrp.getMember().setMmNum(3);
 		
-		System.out.println("HrController learnGroupFormInsert() learnGrp -> "+ learnGrp);
+		System.out.println("HrController learnGroupFormInsert() learnGrp 1 -> "+ learnGrp);
 		
+		// 시작일자(lgSdate) & 개월수(lgPeriod) -> 종료일자(lgEdate)
+		System.out.println("HrController learnGroupFormInsert() lgSdate -> " + learnGrp.getLgSdate());
+		System.out.println("HrController learnGroupFormInsert() lgPeriod -> " + lgPeriod);
+		
+		// 시작일자 데이터타입 변경 (String -> Date)
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date lgSdate = format.parse(learnGrp.getLgSdate());
+		
+		// 종료일자 도출 (시작일자 + 개월수)
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(lgSdate);
+		calendar.add(Calendar.MONTH, lgPeriod);
+		
+		String lgEdate = format.format(calendar.getTime());
+		
+		// 종료일자 저장
+		learnGrp.setLgEdate(lgEdate);
+		
+		System.out.println("HrController learnGroupFormInsert() learnGrp 2 -> "+ learnGrp);
+
 		lgService.learnGroupFormInsert(learnGrp);
 		
 		System.out.println("HrController learnGroupFormInsert() end..");

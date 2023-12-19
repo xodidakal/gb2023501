@@ -8,12 +8,86 @@
 <title>Insert title here</title>
 <script type="text/javascript">
 	// 정렬기준 변경
-	function changeSort(){
+	function changeSort() {
 		var sort = $('#sort').val();
-		var type = $('#type').val();
-		var keyword = $('#keyword').val();
+		var type;
+		var keyword;
+		
+		if('${keyword}' != null){
+			var keyword = '${keyword}';
+			var type    = '${type}';
+		} else {
+			var keyword = $('#keyword').val();
+			var type    = $('#type').val();
+		}
 		
 		location.href = "/educator/learnGroupList?sort="+sort+"&type="+type+"&keyword="+keyword;
+	}
+	
+	// 삭제
+	function clickDelete() {
+		// 체크 수 = 0일 때
+		if($('input[name="checkbox"]:checked').length == 0){
+			alert("삭제할 학습그룹을 선택해주세요.");
+			
+		// 체크 수 = 0 아닐 때만 동작
+		} else {
+			// 가입 승인 인원이 0이 아닌 그룹이 있는지
+			var emptyChk;
+			
+			$('input[name="checkbox"]:checked').each(function(){
+				// index 정의
+				var index = $(this).val();
+				
+				//alert("$('#mmCnt'+index).val() -> "+$('#mmCnt'+index).val());
+				
+				// 모든 그룹을 순차 확인
+				// 0이면 emptyChk = 1
+				if($('#mmCnt'+index).val() == 0) {
+					emptyChk = 1;
+					//alert("가입 승인 인원 0 -> 삭제 가능");
+					
+				// 한 그룹이라도 0이 아니면 emptyChk = 0
+				} else {
+					emptyChk = 0;
+					//alert("가입 승인 인원 0 아님 -> 삭제 불가능");
+				}
+			})
+			
+			//alert("최종 emptyChk -> "+emptyChk);
+			
+			// 가입 승인 인원이 0인 그룹이 있을 때 (삭제 불가)
+			if(emptyChk == 0) {
+				alert("가입 승인 인원이 0인 그룹만 삭제 가능합니다.");
+				
+			// 가입 승인 인원이 0인 그룹이 있을 때 (삭제 가능)
+			} else {
+				if(confirm("삭제하시겠습니까?")){
+					$('input[name="checkbox"]:checked').each(function(){
+						// index 정의
+						var index = $(this).val();
+						
+						$.ajax(
+								{
+									type : "DELETE",
+									url : "/educator/learnGroupListDelete",
+									data : {lg_num : $('#lg_num'+index).val()},
+									dataType : 'text',
+									success : function(data){
+										if(data == "1"){
+											alert("삭제 완료되었습니다.");
+											location.reload();
+										} else {
+											alert("삭제 실패하였습니다. 다시 시도해주세요.");
+											location.reload();
+										}
+									}
+								}
+						)
+					})
+				}
+			}
+		}
 	}
 </script>
 </head>
@@ -23,7 +97,7 @@
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">내 학습 그룹</h2>
-	         <p style="margin-bottom: 35px;">총 N건</p>
+	         <p style="margin-bottom: 35px;">총 N건${keyword }</p>
 	    </div>
 
 		<form action="/educator/learnGroupList">
@@ -48,7 +122,10 @@
 				<div class="col">
 				<div class="d-flex align-items-center justify-content-end">
 	          		<div style="width: 65px;">
-		          		<a href="boardForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="삭제"></a>
+		          		<%-- <a href="/educator/learnGroupListDelete?lg_num=${lgDto.learnGrp.lgNum }"> --%>
+		          			<input type="button" class="btn rounded py-2 px-3" style="background: #263d94; color: white;"
+		          				   value="삭제" onclick="clickDelete()" >
+		          		<!-- </a> -->
 	            	</div>
 	            </div>
 				</div>
@@ -68,16 +145,26 @@
 				</tr>
 			</thead>
 			 <tbody>
-			 	<c:forEach var="lgDto" items="${learnGrps }">
+			 	<c:forEach var="lgDto" items="${learnGrps }" varStatus="status">
 				 	<tr>
-				 		<td><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
+				 		<td>
+				 			<input class="form-check-input" type="checkbox" name="checkbox" id="checkbox${status.index }" value="${status.index }" >
+				 			<input type="hidden" id="lg_num${status.index }" value="${lgDto.learnGrp.lgNum}" >
+				 			<input type="hidden" id="mmCnt${status.index }" value="${lgDto.mmCnt }" >
+				 		</td>
 						<td>No.</td>
 						<td>${lgDto.learnGrp.lgTitle}</td>
 						<td>${lgDto.learnGrp.game.ggTitle}</td>
 						<td>${lgDto.learnGrp.lgSdate } ~ ${lgDto.learnGrp.lgEdate }</td>
 						<td>${lgDto.learnGrp.lgTo }명</td>
 						<td>${lgDto.mmCnt }명</td>
-						<td width="100px;"><a href="/educator/learnGroupDetail?lg_num=${lgDto.learnGrp.lgNum }"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
+						<td width="100px;">
+							<a href="/educator/learnGroupDetail?lg_num=${lgDto.learnGrp.lgNum }">
+								<button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">
+									상세
+								</button>
+							</a>
+						</td>
 					</tr>
 				</c:forEach>
                 </tbody>   

@@ -35,6 +35,16 @@ public class LearnGrpServiceImpl implements LearnGrpService {
 		System.out.println("LearnGrpServiceImpl learnGroupList() end..");
 		return learnGrps;
 	}
+	
+	// 교육자마당 > 내학습그룹 (DELETE / JPA)
+	@Override
+	public void learnGroupListDelete(int lg_num) {
+		System.out.println("LearnGrpServiceImpl learnGroupListDelete() start..");
+		
+		hrRepository.learnGroupListDelete(lg_num);
+		
+		System.out.println("LearnGrpServiceImpl learnGroupListDelete() end..");
+	}
 		
 	// 교육자마당 > 학습그룹 등록 - 화면 (SELECT / MyBatis)
 	@Override
@@ -70,5 +80,6 @@ public class LearnGrpServiceImpl implements LearnGrpService {
 		System.out.println("LearnGrpServiceImpl joinedMemberList() end..");
 		return members;
 	}
+
 
 }
