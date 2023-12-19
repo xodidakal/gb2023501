@@ -53,16 +53,22 @@ public class EduMaterialsServiceImpl implements EduMaterialsService {
 	}
 	@Override
 	public int findTotal(Date s_date, Date e_date) {
-		System.out.println("YbController EduMaterialsServiceImpl selectSalesDetailList start...");
+		System.out.println("YbController EduMaterialsServiceImpl findTotal start...");
 		int findTotal = ed.findTotal(s_date, e_date);
 		return findTotal;
 	}
 	// 학습 등록 시 게임 콘텐츠 선택
 	@Override
 	public List<Game> selectGameList(Game game) {
-		System.out.println("YbController EduMaterialsServiceImpl selectSalesDetailList start...");
+		System.out.println("YbController EduMaterialsServiceImpl selectGameList start...");
 		List<Game> selectGameList = ed.selectGameList(game);
 		return selectGameList;
+	}
+	@Override
+	public int insertLgJoin(int lg_num, int m_num) {
+		System.out.println("YbController EduMaterialsServiceImpl insertLgJoin start...");
+		int insertLgJoin = ed.insertLgJoin(lg_num, m_num);
+		return insertLgJoin;
 	}
 
 

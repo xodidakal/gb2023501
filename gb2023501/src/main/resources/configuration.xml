@@ -16,5 +16,6 @@
 		<typeAlias alias="HwRecord" 		type="com.choongang.gb2023501.model.HwRecord"/>
 		<typeAlias alias="Game" 			type="com.choongang.gb2023501.model.Game"/>
 		<typeAlias alias="GameOrder" 		type="com.choongang.gb2023501.model.GameOrder"/>
+		<typeAlias alias="SearchDTO" 		type="com.choongang.gb2023501.model.SearchDTO"/>
 	</typeAliases>
 </configuration>

@@ -127,7 +127,7 @@ public class HrRepositoryImpl implements HrRepository {
 				// 검색유형 : 게임콘텐츠명
 				} else if(type.equals("typeGgTitle")) {
 					System.out.println("검색유형 : 게임콘텐츠명");
-					queryWhere = "WHERE learnGrp.game.ggTitle = '%"+keyword+"%' ";
+					queryWhere = "WHERE learnGrp.game.ggTitle LIKE '%"+keyword+"%' ";
 				}
 			}
 
@@ -168,6 +168,20 @@ public class HrRepositoryImpl implements HrRepository {
 		System.out.println("HrRepositoryImpl learnGroupList() end..");
 		return learnGrps;
 	}
+	
+	// 교육자마당 > 내학습그룹 (DELETE / JPA)
+	@Override
+	public void learnGroupListDelete(int lg_num) {
+		System.out.println("HrRepositoryImpl learnGroupListDelete() start..");
+		
+		em.createQuery("DELETE FROM LearnGrp lg " + 
+					   "WHERE lg.lgNum = :lgNum "
+					   )
+		  .setParameter("lgNum", lg_num)
+		  .executeUpdate();
+		
+		System.out.println("HrRepositoryImpl learnGroupListDelete() end..");
+	}
 
 	// 교육자마당 > 학습그룹 등록 - 실행 (INSERT / JPA)
 	@Override
@@ -196,17 +210,38 @@ public class HrRepositoryImpl implements HrRepository {
 	public List<MemberDTO> joinedMemberList(int lg_num) {
 		System.out.println("HrRepositoryImpl joinedMemberList() start..");
 		
-		List<MemberDTO> members = em.createQuery("SELECT new com.choongang.gb2023501.model.MemberDTO(m, lj.lgjAppdate) " + 
+		List<MemberDTO> members = em.createQuery("SELECT new com.choongang.gb2023501.model.MemberDTO(m, lj.lgjAppdate, lj.lgjJoindate) " + 
 												 "FROM   LgJoin lj " + 
 												 "JOIN   lj.member m " + 
-												 "WHERE  lj.learnGrp.lgNum = :lgNum "
+												 "WHERE  lj.learnGrp.lgNum = :lgNum " + 
+												 "AND    lj.lgjApproval = 1 "
+												 , MemberDTO.class)
+									.setParameter("lgNum", lg_num)
+									.getResultList();
+		
+		System.out.println("HrRepositoryImpl joinedMemberList() members.size() -> "+members.size());
+
+		System.out.println("HrRepositoryImpl joinedMemberList() end..");
+		return members;
+	}
+
+	// 교육자마당 > 학습그룹 가입 승인 - 화면 (SELECT / JPA) - 신청자 명단
+	@Override
+	public List<MemberDTO> joiningMemberList(int lg_num) {
+		System.out.println("HrRepositoryImpl joiningMemberList() start..");
+		
+		List<MemberDTO> members = em.createQuery("SELECT new com.choongang.gb2023501.model.MemberDTO(m, lj.lgjAppdate, lj.lgjJoindate) " + 
+												 "FROM   LgJoin lj " + 
+												 "JOIN   lj.member m " + 
+												 "WHERE  lj.learnGrp.lgNum = :lgNum " +
+												 "AND    lj.lgjApproval = 0 "
 												 , MemberDTO.class)
 									.setParameter("lgNum", lg_num)
 									.getResultList();
 		
 		System.out.println("HrRepositoryImpl learnGroupList() members.size() -> "+members.size());
 
-		System.out.println("HrRepositoryImpl joinedMemberList() end..");
+		System.out.println("HrRepositoryImpl joiningMemberList() end..");
 		return members;
 	}
 	

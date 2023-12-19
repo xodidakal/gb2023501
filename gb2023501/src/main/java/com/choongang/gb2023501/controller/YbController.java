@@ -29,6 +29,8 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -179,49 +181,62 @@ public class YbController {
 
 	// 학습자료 상세 화면 JPA
 	@GetMapping(value = "/operate/eduMaterialsDetail")
-	public String eduMaterialsDetail(int em_num, Model model) {
+	public String eduMaterialsDetail(int ggNum, Model model, int em_num, Game game, String beforeName) {
 		System.out.println("ybController operate/eduMaterialsDetail start...");
 		com.choongang.gb2023501.domain.EduMaterials eduMaterials = null;
 		System.out.println("ybController operate/eduMaterialsDetail em_num -> " + em_num);
+		System.out.println("ybController operate/eduMaterialsDetail ggNum -> " + ggNum);
 		Optional<com.choongang.gb2023501.domain.EduMaterials> OptiEduMaterials = js.findByEduMaterials(em_num);
 		System.out.println("ybController operate/eduMaterialsDetail Optional.eduMaterials -> " + OptiEduMaterials);
-		
+		System.out.println("\"ybController YbJpa/updateEduMaterials beforeName -> " + beforeName);
 		eduMaterials = OptiEduMaterials.get();
 		
+		List<Game> selectGameList = es.selectGameList(game);
 		System.out.println("edumaterials.getRegiDate -> " + eduMaterials.getEmRegiDate());
 		model.addAttribute("eduMaterials", eduMaterials);
+		model.addAttribute("selectGameList", selectGameList);
 		return "yb/eduMaterialsDetail";
 	}
 	
 	// 학습자료 수정 JPA
 	@PostMapping(value = "/operate/updateEduMaterials")
 	public String updateEduMaterials(com.choongang.gb2023501.domain.EduMaterials eduMaterials, int em_num, Model model,RedirectAttributes redirect,
-									 HttpServletRequest request, MultipartFile file1) throws IOException {
-		log.info("ybController YbJpa/updateEduMaterials start...");
-		
+									 HttpServletRequest request, MultipartFile file1, int gNum, String beforeName) throws IOException {
+		log.info("ybController YbJpa/updateEduMaterials start...");	
+
+		long g_num = gNum;
+		System.out.println("\"ybController YbJpa/updateEduMaterials beforeName -> " + beforeName);
+		System.out.println("\"ybController YbJpa/updateEduMaterials g_num -> " + g_num);
 		log.info("em_num -> " + em_num);
 		eduMaterials.setEmNum(em_num);
 		log.info("eduMaterials -> " + eduMaterials);
-		String uploadPath = request.getSession().getServletContext().getRealPath("/upload/yb");
 		
-		System.out.println("uploadForm POST Start");
-		// 파일 원본 이름
-		log.info("originalName" + file1.getOriginalFilename());
-		log.info("size: " + file1.getSize());
-		log.info("contentType : " + file1.getContentType());
-		log.info("uploadPathkkk : " + uploadPath);
-		// 파일 원본 이름 저장
-		String savedName = uploadFile(file1.getOriginalFilename(), file1.getBytes(), uploadPath);
-		//Service -> DB CRUD
-		
-		System.out.println("after update eduMaterials.savedNamekkk -> " + savedName);
-		eduMaterials.setEmAttachName(savedName);
-		eduMaterials.setEmAttachPath(uploadPath);
+		if(file1.getSize() == 0) {
+			eduMaterials.setEmAttachName(beforeName);
+		} else {
+			String uploadPath = request.getSession().getServletContext().getRealPath("/upload/yb");
+			
+			System.out.println("uploadForm POST Start");
+			// 파일 원본 이름
+			log.info("originalName" + file1.getOriginalFilename());
+			log.info("size: " + file1.getSize());
+			log.info("contentType : " + file1.getContentType());
+			log.info("uploadPathkkk : " + uploadPath);
+			// 파일 원본 이름 저장
+			String savedName = uploadFile(file1.getOriginalFilename(), file1.getBytes(), uploadPath);
+			System.out.println("after update eduMaterials.savedNamekkk -> " + savedName);
+			System.out.println("쿠쿠");
+			eduMaterials.setEmAttachName(savedName);
+			eduMaterials.setEmAttachPath(uploadPath);
+		}
+	
+		eduMaterials.setGgNum(g_num);
 		int result = js.updateByEduMaterials(eduMaterials);
 		System.out.println("after update eduMaterials.getAttachName -> " + eduMaterials.getEmAttachName());
 		log.info("ybController operate/updateEduMaterials result - > " + result);
 		log.info("update After -> " + eduMaterials);
 		
+		redirect.addAttribute("ggNum", g_num);
 		redirect.addAttribute("em_num", em_num);
 		model.addAttribute("eduMaterials", eduMaterials);
 		return "redirect:/operate/eduMaterialsDetail";
@@ -465,17 +480,39 @@ public class YbController {
 	}
 	// 학습 그룹 가입 신청 전송
 	@RequestMapping(value = "/learning/learnGrpJoinDo")
-	public String learnGrpJoinDo(@Param("lg_num") int lg_num, LgJoin lgJoin, LearnGrp learnGrp) {
+	public String learnGrpJoinDo(@Param("lg_num") int lg_num, LgJoin lgJoin, Model model) {
 		System.out.println("ybController /learning/learnGrpJoinDo start...");
 		System.out.println("ybController /learning/learnGrpJoinDo lg_num -> " + lg_num);
 		
 		Member member = jh.aboutMember();
-		lgJoin.setMember(member);
-		lgJoin.setLg_num(lg_num);
-		System.out.println("login member -> " + lgJoin.getMember());
+		int m_num = member.getMmNum();
+		System.out.println("m_num -> " + m_num);
+		System.out.println("ybController /learning/learnGrpJoinDo start... -> " + lgJoin.getMember());
+		int insertLgJoin = es.insertLgJoin(lg_num, m_num);
 		
-		js.insertJoin(lgJoin);
-		
-		return "yb/learnGrpJoinForm";
+		model.addAttribute("insertLgJoin", insertLgJoin);
+		return "redirect:/learning/learnGrpJoinForm";
 	}
+	// 매출 그래프 조회
+	@RequestMapping(value = "/operate/saleInquiryChart")
+	public String saleInquiryChart(Model model, String sDate, String eDate) {
+		 System.out.println("ybController /operate/saleInquiryChart Start...");
+
+		 System.out.println("ybController /operate/saleInquiryChart sDate -> " + sDate);
+		 System.out.println("ybController /operate/saleInquiryChart esDate -> " + eDate);
+		 
+		 Date s_date = java.sql.Date.valueOf(sDate);
+         Date e_date = java.sql.Date.valueOf(eDate);
+		
+		
+		List<SalesInquiryDTO> selectSaleList = js.findBySalesContaining(s_date, e_date);
+		
+		model.addAttribute("s_date", s_date);
+		model.addAttribute("e_date", e_date);
+		model.addAttribute("selectSaleList", selectSaleList);
+		return "saleInquiryChart";
+	}
+
+	
+	
 }

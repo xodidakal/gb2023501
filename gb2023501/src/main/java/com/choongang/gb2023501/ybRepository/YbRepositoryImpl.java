@@ -53,7 +53,7 @@ public class YbRepositoryImpl implements YbRepository {
 			eduMaterials2.setEmAttachName(eduMaterials.getEmAttachName());
 			eduMaterials2.setEmAttachPath(eduMaterials.getEmAttachPath());
 			eduMaterials2.setEmDataAddr(eduMaterials.getEmDataAddr());
-			
+			eduMaterials2.setGgNum(eduMaterials.getGgNum());
 			
 			em.persist(eduMaterials2);
 			log.info("YbRepositoryImpl updateByEduMaterials eduMaterials2 -> " + eduMaterials2);

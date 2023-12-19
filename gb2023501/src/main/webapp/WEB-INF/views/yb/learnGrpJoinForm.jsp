@@ -51,8 +51,14 @@ function reload() {
 
 function signUp() {
 	var lg_num = $('input[name=lg_num]:checked').val();
-	alert(lg_num)
-	location.href="/learning/learnGrpJoinDo?lg_num="+lg_num;
+
+	 if (confirm("신청하시겠습니까?") == true){  
+		 location.href="/learning/learnGrpJoinDo?lg_num="+lg_num;
+   	 } else {
+   		    	return false;
+   	 }
+	   	 return false;
+	
 }
 
 
@@ -104,7 +110,7 @@ function signUp() {
 				
 					<div class="d-flex align-items-center justify-content-end">
 		          		<div>
-			          		<button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" onclick="signUp()">등록</button>
+			          		<button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" onclick="signUp()">신청</button>
 		            	</div>
 		            </div>
 				</div>
