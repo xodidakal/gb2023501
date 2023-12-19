@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.choongang.gb2023501.domain.LearnGrp;
 import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.hrService.LearnGrpService;
@@ -22,7 +21,6 @@ import com.choongang.gb2023501.model.Game;
 import com.choongang.gb2023501.model.SearchDTO;
 import com.choongang.gb2023501.model.LearnGrpDTO;
 import com.choongang.gb2023501.model.MemberDTO;
-
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -79,39 +77,49 @@ public class HrController {
 		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(mNum, lg_num, "", "", "");
 		System.out.println("HrController learnGroupList() learnGrps.size() -> "+learnGrps.size());
 		
-		LearnGrpDTO learnGrpDTO = learnGrps.get(0);
-		
-		model.addAttribute("learnGrpDTO", learnGrpDTO);
-		model.addAttribute("lg_num", lg_num);
-		
-		// 학습자 명단
-		List<MemberDTO> members = lgService.joinedMemberList(lg_num);
-		System.out.println("HrController learnGroupList() members.size() -> "+members.size());
-		
-		// 휴대전화 하이픈 추가
-		for(MemberDTO member : members) {
-			// Member 객체 추출
-			Member memberObject = member.getMember();
+		// learnGrps.size()가 0일 경우 -> 에러페이지
+		if(learnGrps.size() == 0) {
+			System.out.println("HrController learnGroupDetail() error!");
+			return "/hr/error";
+		} else {
+			LearnGrpDTO learnGrpDTO = learnGrps.get(0);
 			
-			// 휴대전화 추출
-			String ph = memberObject.getPhone();
-			System.out.println("ph -> "+ph);
+			model.addAttribute("learnGrpDTO", learnGrpDTO);
+			model.addAttribute("lg_num", lg_num);
 			
-			// 하이픈 추가
-			String phHyphen = ph.substring(0,3) + "-" + ph.substring(3,7) + "-" + ph.substring(7,11);
-			System.out.println("phHyphen -> "+phHyphen);
+			// 학습그룹 목록 (for ComboBox)
+			List<LearnGrpDTO> learnGrpsAll = lgService.learnGroupList(mNum, 0, "", "", "");
+			model.addAttribute("learnGrpsAll", learnGrpsAll);
 			
-			// 휴대전화 재설정
-			memberObject.setPhone(phHyphen);
+			// 학습자 명단
+			List<MemberDTO> members = lgService.joinedMemberList(lg_num);
+			System.out.println("HrController learnGroupList() members.size() -> "+members.size());
 			
-			// Member 재설정
-			member.setMember(memberObject);
-		}
-		
-		model.addAttribute("members", members);
+			// 휴대전화 하이픈 추가
+			for(MemberDTO member : members) {
+				// Member 객체 추출
+				Member memberObject = member.getMember();
+				
+				// 휴대전화 추출
+				String ph = memberObject.getPhone();
+				System.out.println("ph -> "+ph);
+				
+				// 하이픈 추가
+				String phHyphen = ph.substring(0,3) + "-" + ph.substring(3,7) + "-" + ph.substring(7,11);
+				System.out.println("phHyphen -> "+phHyphen);
+				
+				// 휴대전화 재설정
+				memberObject.setPhone(phHyphen);
+				
+				// Member 재설정
+				member.setMember(memberObject);
+			}
+			
+			model.addAttribute("members", members);
 
-		System.out.println("HrController learnGroupDetail() end..");		
-		return "/hr/learnGroupDetail";
+			System.out.println("HrController learnGroupDetail() end..");		
+			return "/hr/learnGroupDetail";			
+		}
 	}
 	
 	// 교육자마당 > 학습그룹 등록 - 화면 1 (SELECT / MyBatis)
@@ -159,22 +167,31 @@ public class HrController {
 		List<Game> gameList = lgService.learnGroupForm(searchDTO);
 		System.out.println("HrController learnGroupForm2() gameList.size() -> "+ gameList.size());	
 		
-		Game game = gameList.get(0);
-		
-		model.addAttribute("game", game);
-		model.addAttribute("g_num", g_num);
-		
-		System.out.println("HrController learnGroupForm2() end..");
-		return "/hr/learnGroupForm2";
+		// gameList.size()가 0일 경우 -> 에러페이지
+		if(gameList.size() == 0) {
+			System.out.println("HrController learnGroupForm2() error!");
+			return "/hr/error";
+		} else {
+			Game game = gameList.get(0);
+			
+			model.addAttribute("game", game);
+			model.addAttribute("g_num", g_num);
+			model.addAttribute("m_num", mNum);
+			
+			System.out.println("HrController learnGroupForm2() end..");
+			return "/hr/learnGroupForm2";
+		}
 	}
 	
 	// 교육자마당 > 학습그룹 등록 - 실행 (INSERT / JPA)
 	@PostMapping("educator/learnGroupFormInsert")
 	public String learnGroupFormInsert(Model model, LearnGrp learnGrp, int lgPeriod) throws ParseException {
 		System.out.println("HrController learnGroupFormInsert() start..");
-		
-		// 회원번호 임시 세팅 ------------------ 추후 뺴야 함
-		// learnGrp.getMember().setMmNum(3);
+
+		// 로그인한 회원의 회원번호 도출 -> NullPointerException 발생 -> jsp 화면에서 hidden으로 받아오는 것으로 수정
+//		int mNum = memberService.selectMmNumById();
+//		Member member = learnGrp.getMember();
+//		member.setMmNum(mNum);
 		
 		System.out.println("HrController learnGroupFormInsert() learnGrp 1 -> "+ learnGrp);
 		
@@ -198,10 +215,11 @@ public class HrController {
 		
 		System.out.println("HrController learnGroupFormInsert() learnGrp 2 -> "+ learnGrp);
 
+		// INSERT
 		lgService.learnGroupFormInsert(learnGrp);
 		
 		System.out.println("HrController learnGroupFormInsert() end..");
-		return "redirect:/educator/learnGroupForm1";
+		return "redirect:/educator/learnGroupList";
 	}
 	
 	// 교육자마당 > 학습그룹 가입 승인 - 화면 (SELECT / JPA)
@@ -219,48 +237,64 @@ public class HrController {
 		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(mNum, lg_num, "", "", "");
 		System.out.println("HrController learnGroupJoinList() learnGrps.size() -> "+learnGrps.size());
 		
-		LearnGrpDTO learnGrpDTO = learnGrps.get(0);
-		
-		model.addAttribute("learnGrpDTO", learnGrpDTO);
-		model.addAttribute("lg_num", lg_num);
-		
-		// 신청자 명단
-		List<MemberDTO> members = lgService.joiningMemberList(lg_num);
-		System.out.println("HrController learnGroupJoinList() members.size() -> "+members.size());
-		
-		// 휴대전화 하이픈 추가
-		for(MemberDTO member : members) {
-			// Member 객체 추출
-			Member memberObject = member.getMember();
+		// learnGrps.size()가 0일 경우 -> 에러페이지
+		if(learnGrps.size() == 0) {
+			System.out.println("HrController learnGroupDetail() error!");
+			return "/hr/error";
+		} else {
+			LearnGrpDTO learnGrpDTO = learnGrps.get(0);
 			
-			// 휴대전화 추출
-			String ph = memberObject.getPhone();
-			System.out.println("ph -> "+ph);
+			model.addAttribute("learnGrpDTO", learnGrpDTO);
+			model.addAttribute("lg_num", lg_num);
 			
-			// 하이픈 추가
-			String phHyphen = ph.substring(0,3) + "-" + ph.substring(3,7) + "-" + ph.substring(7,11);
-			System.out.println("phHyphen -> "+phHyphen);
-			
-			// 휴대전화 재설정
-			memberObject.setPhone(phHyphen);
-			
-			// Member 재설정
-			member.setMember(memberObject);
-		}
+			// 학습그룹 목록 (for ComboBox)
+			List<LearnGrpDTO> learnGrpsAll = lgService.learnGroupList(mNum, 0, "", "", "");
+			model.addAttribute("learnGrpsAll", learnGrpsAll);
 
-		model.addAttribute("members", members);
-		
-		System.out.println("HrController learnGroupJoinList() end..");
-		return "/hr/learnGroupJoinList";
+			// 신청자 명단
+			List<MemberDTO> members = lgService.joiningMemberList(lg_num);
+			System.out.println("HrController learnGroupJoinList() members.size() -> "+members.size());
+			
+			// 휴대전화 하이픈 추가
+			for(MemberDTO member : members) {
+				// Member 객체 추출
+				Member memberObject = member.getMember();
+				
+				// 휴대전화 추출
+				String ph = memberObject.getPhone();
+				System.out.println("ph -> "+ph);
+				
+				// 하이픈 추가
+				String phHyphen = ph.substring(0,3) + "-" + ph.substring(3,7) + "-" + ph.substring(7,11);
+				System.out.println("phHyphen -> "+phHyphen);
+				
+				// 휴대전화 재설정
+				memberObject.setPhone(phHyphen);
+				
+				// Member 재설정
+				member.setMember(memberObject);
+			}
+	
+			model.addAttribute("members", members);
+			
+			System.out.println("HrController learnGroupJoinList() end..");
+			return "/hr/learnGroupJoinList";
+		}
 	}
 
-	// 교육자마당 > 학습그룹 가입 승인 - 실행
-	@PostMapping("educator/learnGroupJoinApproval")
-	public String learnGroupJoinApproval() {
+	// 교육자마당 > 학습그룹 가입 승인 - 실행 (UPDATE / JPA)
+	@ResponseBody
+	@RequestMapping("educator/learnGroupJoinApproval")
+	public String learnGroupJoinApproval(int lg_num, int m_num) {
 		System.out.println("HrController learnGroupJoinApproval() start..");
 		
+		System.out.println("HrController learnGroupJoinApproval() lg_num -> "+lg_num);
+		System.out.println("HrController learnGroupJoinApproval() m_num -> "+m_num);
+		
+		lgService.learnGroupJoinApproval(lg_num, m_num);
+		
 		System.out.println("HrController learnGroupJoinApproval() end..");
-		return "";
+		return "1";
 	}
 	
 }

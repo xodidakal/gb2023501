@@ -160,6 +160,7 @@ public class HrRepositoryImpl implements HrRepository {
 										"FROM LearnGrp learnGrp " +
 										"LEFT JOIN learnGrp.lgJoin lj " +
 										"WHERE learnGrp.lgNum = " + lg_num + 
+										"AND learnGrp.member.mmNum = " + mNum +
 										"GROUP BY learnGrp ", LearnGrpDTO.class)
 						  .getResultList();		
 		}
@@ -244,6 +245,22 @@ public class HrRepositoryImpl implements HrRepository {
 
 		System.out.println("HrRepositoryImpl joiningMemberList() end..");
 		return members;
+	}
+
+	// 교육자마당 > 학습그룹 가입 승인 - 실행 (UPDATE / JPA)
+	@Override
+	public void learnGroupJoinApproval(int lg_num, int m_num) {
+		System.out.println("HrRepositoryImpl learnGroupJoinApproval() start..");
+		
+		em.createQuery("UPDATE LgJoin lj " + 
+					   "SET    lgjApproval = 1, lgjAppdate = sysdate " + 
+					   "WHERE  lj.learnGrp.lgNum = :lg_num AND lj.member.mmNum = :m_num "
+					   )
+		  .setParameter("lg_num", lg_num)
+		  .setParameter("m_num", m_num)
+		  .executeUpdate();
+		
+		System.out.println("HrRepositoryImpl learnGroupJoinApproval() end..");
 	}
 	
 }

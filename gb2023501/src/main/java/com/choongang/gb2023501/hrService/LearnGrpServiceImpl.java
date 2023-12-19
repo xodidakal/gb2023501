@@ -94,4 +94,14 @@ public class LearnGrpServiceImpl implements LearnGrpService {
 		return members;
 	}
 
+	// 교육자마당 > 학습그룹 가입 승인 - 실행 (UPDATE / JPA)
+	@Override
+	public void learnGroupJoinApproval(int lg_num, int m_num) {
+		System.out.println("LearnGrpServiceImpl learnGroupJoinApproval() start..");
+		
+		hrRepository.learnGroupJoinApproval(lg_num, m_num);
+		
+		System.out.println("LearnGrpServiceImpl learnGroupJoinApproval() end..");
+	}
+
 }

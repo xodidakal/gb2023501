@@ -23,4 +23,7 @@ public interface HrRepository {
 	// 교육자마당 > 학습그룹 가입 승인 - 화면 (SELECT / JPA) - 신청자 명단
 	List<MemberDTO> joiningMemberList(int lg_num);
 
+	// 교육자마당 > 학습그룹 가입 승인 - 실행 (UPDATE / JPA)
+	void learnGroupJoinApproval(int lg_num, int m_num);
+
 }
