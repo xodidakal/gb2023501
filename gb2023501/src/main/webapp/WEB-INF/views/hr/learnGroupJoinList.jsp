@@ -42,15 +42,15 @@
 	    <table class="subTable">
 			<tr>
 				<th>학습그룹명</th>
-				<td>ㅇㅇㅇ</td>
+				<td>${learnGrpDTO.learnGrp.lgTitle}</td>
 				<th>게임콘텐츠명</th>
-				<td>ㅇㅇㅇ</td>
+				<td>${learnGrpDTO.learnGrp.game.ggTitle}</td>
 			</tr>
 			<tr>
 				<th>수용 가능 인원</th>
-				<td>ㅇㅇㅇ</td>
+				<td>${learnGrpDTO.learnGrp.lgTo }명</td>
 				<th>가입 승인 인원</th>
-				<td>ㅇㅇㅇ</td>
+				<td>${learnGrpDTO.mmCnt }명</td>
 			</tr>
 	    </table>
 	    
@@ -60,30 +60,31 @@
 				<tr>
 					<th>No.</th>
 					<th>이름</th>
-					<th>연락처</th>
+					<th>휴대전화</th>
 					<th>가입신청일자</th>
 					<th>선택</th>
 				</tr>
 			</thead>
 			<tbody>
-<%-- 					 <c:forEach var="" items=""> --%>
-			 	<tr>
-			 		<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
-				</tr>
-				
-				<tr>
-			 		<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
-				</tr>
-				
-<%-- 					 </c:forEach> --%>
+				<c:choose>
+			 		<c:when test="${empty members}">
+			 			<tr>
+			 				<td colspan="5">가입 신청자가 없습니다.</td>
+			 			</tr>
+			 		</c:when>
+			 		
+			 		<c:otherwise>
+			 			<c:forEach var="members" items="${members }">
+						 	<tr>
+						 		<td>No.</td>
+								<td>${members.member.mmName }</td>
+								<td>${members.member.phone }</td>
+								<td><fmt:formatDate value="${members.lgjJoindate }" pattern="yyyy-MM-dd"/></td>
+								<td><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
+							</tr>
+			 			</c:forEach>
+			 		</c:otherwise>
+			 	</c:choose>
 			</tbody>   
        	</table>
        	

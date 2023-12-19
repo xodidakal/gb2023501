@@ -6,6 +6,30 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+	function ramainingChk() {
+		//alert("lgForm.lgTo.value -> "+lgForm.lgTo.value);
+		//alert("'${game.remainingTo}' -> "+'${game.remainingTo}');
+		//alert("lgForm.lgPeriod.value -> "+lgForm.lgPeriod.value);
+		//alert("'${game.remainingPeriod}' -> "+'${game.remainingPeriod}');
+		
+		if(Number(lgForm.lgTo.value) > Number('${game.remainingTo}')) {
+			alert("수용 가능 인원은 학습 잔여 인원보다 클 수 없습니다.");
+			lgForm.lgTo.focus();
+			lgForm.lgTo.value = "";
+			return false;
+		}
+		
+		if(Number(lgForm.lgPeriod.value) > Number('${game.remainingPeriod}')) {
+			alert("학습 기간 개월수는 구독 잔여 기간보다 클 수 없습니다.");
+			lgForm.lgPeriod.focus();
+			lgForm.lgPeriod.value = "";
+			return false;
+		}
+		
+		return true;
+	}
+</script>
 </head>
 <body>
 <div class="row g-0 justify-content-center">
@@ -38,7 +62,7 @@
               </table>
               
 	         <h5 style="margin-top: 70px;">그룹 상세 정보 입력</h5>
-	         <form action="learnGroupFormInsert" method="post">
+	         <form action="learnGroupFormInsert" method="post" name="lgForm" onsubmit="return ramainingChk()">
                 <table class="formTable">
 					<tr>
 						<th>교육자명</th>
@@ -67,12 +91,13 @@
 						<td></td>
 						<td width="80px;">개월수 : </td>
 						<td>
-							<select class="w-17 rounded" name="lgPeriod"
+							<select class="w-17 rounded" name="lgPeriod" required="required"
 									style="border-color: #ced4da;
 										   width: 300px;
 										   display: inline-block;
 										   padding: 0.375rem 0.75rem;
 										   color: #777;">
+								<option value="">선택</option>
 								<option value="1">1개월</option>
 								<option value="2">2개월</option>
 								<option value="3">3개월</option>
