@@ -237,7 +237,7 @@
                          
                          if(response === "1"){
                         	 alert("이미 가입된 사용자 입니다.");
-                        	 location.href='/login';
+                        	 location.href='/info/loginForm';
                          } else if(response === "2"){
                         	 location.href="/info/joinForm";
                          } else if(response === "3"){
