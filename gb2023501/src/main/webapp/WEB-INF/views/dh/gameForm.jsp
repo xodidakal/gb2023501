@@ -11,7 +11,7 @@
 
 <div class="row g-0 justify-content-center">
 	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
-		<form action="gameInsertResult" method="post">
+		<form action="gameInsertResult" method="post" enctype="multipart/form-data">
 	        <div class="row g-3">
 	        <h2 class="display-7 mb-4">게임 콘텐츠 등록</h2>
 	        <hr class="my-3">
@@ -68,12 +68,12 @@
 		                   	<textarea class="form-control" placeholder="Leave a message here" name="g_content" id="g_content" style="height: 200px"></textarea>
 						</td>
 					</tr>
-	               <!--  <tr>
+	                <tr>
 	                	<th>썸네일</th>
 						<td colspan="3">
-		                    <input type="file" class="form-control" name="g_attach_name" id="g_attach_name" placeholder="Subject">
+		                    <input type="file" class="form-control" name="file" id="file" placeholder="Subject">
 		                </td>
-	                </tr> -->
+	                </tr>
 	                <tr>
 						<th>전시여부</th>
 						<td width="150px;">

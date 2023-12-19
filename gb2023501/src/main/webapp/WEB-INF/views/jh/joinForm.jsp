@@ -50,6 +50,7 @@
         $('#mmId').on('input', function () {
             validateId();
         });
+		//아이디 유효성 검사
         function validateId() {
             var id = $('#mmId').val();
             var regex = /^[a-zA-Z0-9]{1,6}$/;
@@ -75,18 +76,18 @@
         
         
         
-     // 비밀번호 입력 시 유효성 검사
+     // 비밀번호 입력 시 유효성 검사 이벤트 핸들러
         $('#mmPswd').on('input', function () {
             validatePassword();
         });
 
-        // 비밀번호 확인 입력 시 유효성 검사
+        // 비밀번호 확인 입력 시 유효성 검사 이벤트 핸들러
         $('#mmPswdConfirm').on('input', function () {
             validatePassword();
         });
 
 
-
+		//비밀번호 유효성 검증
         function validatePassword() {
             var mmPswd = $('#mmPswd').val();
             var mmPswdConfirm = $('#mmPswdConfirm').val();
@@ -119,25 +120,73 @@
             }
         }
 
+        //이메일 형식 검사 이벤트 핸들러
+            $('#emailInput').on('input', function () {
+                validateEmail();
+            });
 
+        //이메일 형식 유효성 검사
+        function validateEmail() {
+            var emailInput = $('#emailInput');
+            var emailValidationMessage = $('#emailValidationMessage');
+
+            var email = emailInput.val();
+            var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+            if (email.length === 0) {
+            	emailValidationMessage.text('');
+               return ;
+            }
+            
+            if (emailRegex.test(email)) {
+                // 올바른 이메일 형식
+                emailValidationMessage.text('');
+            } else {
+                // 부적절한 이메일 형식
+                emailValidationMessage.text('유효한 이메일 주소를 입력하세요.').css('color', 'red');
+            }
+        }
 
 
         //휴대폰번호에 숫자만 입력되게 하는 이벤트 핸들러
         $('#phoneInput').on('input', function(){
+        	validatePhone();
+        });
+        
+        //휴대폰 번호 유효성 검사
+        function validatePhone(){
+        	
         	var phoneInput = $(this).val();
         	var validatePhone = phoneInput.replace(/\D/g, ''); // 숫자 이외의 문자 모두 제거
         	
+            if (phoneInput.length === 0) {
+                $('#phoneValidationMessage').text('');
+                return;
+            }
         	if(phoneInput !== validatePhone){
         		$('#phoneValidationMessage').text('숫자만 입력해주세요');
         		//문자 입력한 건 다 지워지고 숫자만 남김
         		$(this).val(validatePhone);
         	} else{
+        		if(phoneInput.length < 11){
+        		$('#phoneValidationMessage').text('휴대폰 번호 11자리를 입력해주세요');
+        			
+        		} else{
         		$('#phoneValidationMessage').text('');
+        			
+        		}
         	}
-        });
+        }
         
         //전화번호에도 적용하기
         $('#telInput').on('input', function(){
+        	validateTel();
+        	
+        });
+        
+        //전화번호 유효성 검증
+        function validateTel(){
+        	
         	var telInput = $(this).val();
         	var validateTel = telInput.replace(/\D/g, ''); // 숫자 이외의 문자 모두 제거
         	
@@ -148,10 +197,8 @@
         	} else{
         		$('#telValidationMessage').text('');
         	}
-        });
+        }
         
-
-	
 	});	
 	
 	function duplicateChk(){
@@ -213,6 +260,18 @@
 	        return;
 	    }
 	    
+
+	    
+	 // 모든 검사가 통과되었는지 확인
+		  if ($('#pswdValidationMessage').text() !== '' ||
+	        $('#emailValidationMessage').text() !== '' ||
+	        $('#phoneValidationMessage').text() !== '' ||
+	        $('#telValidationMessage').text() !== '' 
+	    ) {
+			  alert('입력 정보를 확인해 주세요!')
+			  return;
+		  }
+	    
 		var formData = $("#joinForm").serialize();
 	    
 		$.ajax({
@@ -271,7 +330,7 @@
 		                    <input type="text" class="form-control" id="mmId" name="mmId" required>
 						</td>
 						<td>
-		            		<input class="btn rounded py-2 px-3 mx-4" type="button" style="background: #263d94; color: white;" id="duplicateChkBtn" value="중복확인" onclick="duplicateChk()" disabled >
+		            		<input class="btn rounded py-2 px-3 mx-5" type="button" style="background: #263d94; color: white;" id="duplicateChkBtn" value="중복확인" onclick="duplicateChk()" disabled >
 		            	</td>
 					</tr>
 					<tr style="height: 5px;" id="idValidationMessageTr">
@@ -305,7 +364,7 @@
 		                    <input type="date" class="form-control" id="birth" name="birth" required>
 		            	</td>
 		            	<th style="padding-left: 40px;">성별</th>
-                        <td width="150px">
+                        <td width="180px">
 					        <div class="form-check form-check-inline">
 					            <input class="form-check-input" type="radio" name="gender" id="genderWoman" value="1" checked>
 					            <label class="form-check-label" for="genderWoman">남자</label>
@@ -321,6 +380,12 @@
 						<td colspan="3">
 		                    <input type="email" class="form-control" id="emailInput" name="email">
 		            	</td>
+					</tr>
+					<tr style="height: 5px;" id="emailValidationMessageTr">
+					    <th></th>
+					    <td colspan="3">
+					        <div id="emailValidationMessage" style="color: red;"></div>
+					    </td>
 					</tr>
 		            <tr>
 						<th>주소</th>
@@ -366,7 +431,7 @@
 					<tr>
 						<th>수신 동의</th>
 						<td colspan="3">
-						이벤트, 커리큘럼, 신규 콘텐츠 등 광고 메시지 수집 동의
+						이벤트, 커리큘럼, 신규 콘텐츠 등 광고 메시지 수집 동의 
 		                <input class="form-check-input" style="margin-left: 20px;" type="checkbox" name="econsent" id="econsent" value="1">
 						<label>이메일 </label>
 		                <input class="form-check-input"  style="margin-left: 20px;" type="checkbox" name="sconsent" id="sconsent" value="1">

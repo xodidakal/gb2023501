@@ -5,7 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <title>Insert title here</title>
+
 <style type="text/css">
 .center-text {
 	  	text-align: center; /* 텍스트 가운데 정렬 */
@@ -40,8 +43,47 @@
       <header class="top">
          <h1 class="infoTit">
            	매출 그래프 ${s_date } ~ ${e_date }
+           	
          </h1>
       </header>
+      <canvas id="line_chart" width="1000" height="400"></canvas>
+<script type="text/javascript">
+	
+	document.addEventListener('DOMContentLoaded', function () {
+
+		var selectSaleList = ${selectSaleListJson};
+		var selectDateList = ${selectDateList};
+		
+		var dateList = [];
+		var salesList = [];
+		
+		for(let i=selectSaleList.length -1; i>=0; i--){
+			salesList.push(selectSaleList[i].salesSum);		
+		}
+		for(let i=selectDateList.length -1; i>=0; i--){
+			dateList.push(selectDateList[i])
+		}
+		
+		new Chart(document.getElementById("line_chart"), {
+	        type: 'line',
+	        data: {
+	            labels: dateList,
+	            datasets: [{
+	                data: salesList,
+	                label: "매출",
+	                borderColor: "#3e95cd"
+	            }]
+	        },
+	        options: {
+	            title: {
+	                display: true,
+	                text: '검색 기간 매출'
+	            }
+	        }
+	    });
+	});
+
+</script>
    </div>
 </main>
 </body>

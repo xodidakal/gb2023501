@@ -9,6 +9,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -19,7 +20,7 @@ import lombok.Data;
 public class HwRecord {
 	@Id								// PK
 	@ManyToOne						// 1숙제 : N숙제배포
-	@JoinColumn(name="h_num")		// h_num으로 Homework 테이블과 조인
+	@JoinColumn(name="h_num")		// h_num으로 HwSend 테이블과 조인
 	private Homework homework;		// 숙제번호
 	
 	@Id								// PK
@@ -44,9 +45,12 @@ public class HwRecord {
 	private Date hrModiDate;		// 숙제 수정 일시
 	
 	@Column(name="hr_eval")
-	private int hrEval;				// 숙제 교육자 평가
+	private Integer hrEval;			// 숙제 교육자 평가
 	
 	@Column(name="hr_eval_date")
 	private Date hrEvalDate;		// 숙제 교육자 평가일시
+	
+	@Transient	
+	private int hrMaxLevel;		// 학습자의 현재 최고 레벨
 	
 }
