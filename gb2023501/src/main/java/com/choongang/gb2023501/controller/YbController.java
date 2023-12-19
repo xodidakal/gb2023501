@@ -317,7 +317,7 @@ public class YbController {
 			System.out.println("ybController /operate/selectDateList selectSaleList -> " + selectSaleList);
 
 			log.info("selectSaleList -> " + selectSaleList.size());
-
+			model.addAttribute("selectDate", selectDate);
 			model.addAttribute("selectTotal", selectTotal);
 			model.addAttribute("selectSaleList", selectSaleList);
 			model.addAttribute("s_date", s_date);
@@ -342,6 +342,7 @@ public class YbController {
 	        selectTotal = es.findTotal(s_date, e_date);
 	        selectSaleList = js.selectSaleList(s_date, e_date);
 	        log.info("selectSaleList -> " + selectSaleList.size());
+	        model.addAttribute("selectDate", selectDate);
 	        model.addAttribute("s_date", s_date);
 	        model.addAttribute("e_date", e_date);	      
 	        model.addAttribute("selectTotal", selectTotal);
@@ -506,58 +507,60 @@ public class YbController {
 	}
 	// 매출 그래프 조회
 	@RequestMapping(value = "/operate/saleInquiryChart")
-	public String saleInquiryChart(Model model, String sDate, String eDate) throws JsonProcessingException {
+	public String saleInquiryChart(Model model, String sDate, String eDate, String s, String selectDate) throws JsonProcessingException {
 		 System.out.println("ybController /operate/saleInquiryChart Start...");
-
+		 List<String> dateList = new ArrayList<>();
+		 List<String> salesList = new ArrayList<>();
 		 System.out.println("ybController /operate/saleInquiryChart sDate -> " + sDate);
 		 System.out.println("ybController /operate/saleInquiryChart eDate -> " + eDate);
 		 Date s_date =  stringMathToDate(sDate);
 		 Date e_date =  stringMathToDate(eDate);
-		 
+		 System.out.println("ybController /operate/saleInquiryChart selectDate ->" + selectDate);
 		 System.out.println("ybController /operate/saleInquiryChart s_date -> " + s_date);
 		 System.out.println("ybController /operate/saleInquiryChart e_date -> " + e_date);
 		
 		List<SalesInquiryDTO> selectSaleList = js.findBySalesContaining(s_date, e_date);
 		System.out.println("ybController /operate/saleInquiryChart selectSaleList.get(0).toString() -> " + selectSaleList.get(0).getGoOrderDate());
 		System.out.println("ybController /operate/saleInquiryChart selectSaleList.get(0).toString() -> " + selectSaleList.get(0).getSalesSum());
-		long salesSum =  selectSaleList.get(0).getSalesSum();
-		
-//		Long formattedSalesSum = formatNumberWithCommas(salesSum, Locale.KOREA);
-//		System.out.println("ybController /operate/saleInquiryChart selectSaleList.get(0).toString() -> " + formattedSalesSum);
-		List<String> dateList = new ArrayList<>();
+		for(int i=0; i<selectSaleList.size(); i++) {
+			long salesSum =  selectSaleList.get(i).getSalesSum();
+			String formattedSalesSum = formatNumberWithCommas(salesSum, Locale.KOREA);
+			
+			salesList.add(formattedSalesSum);
+		}
+
+		System.out.println("ybController /operate/saleInquiryChart salesList -> " + salesList);
+
+		// selectSaleList에서 날짜 뽑아서 형식 변환
 		for(int i=0; i<selectSaleList.size(); i++) {
 			Date  goOrderDate1 = selectSaleList.get(i).getGoOrderDate();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String formattedDate = dateFormat.format(goOrderDate1);
-            
+
 			dateList.add(formattedDate);
 		}
-		
-		for(int i=0; i<selectSaleList.size(); i++) {
-			Date  goOrderDate1 = selectSaleList.get(i).getGoOrderDate();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String formattedDate = dateFormat.format(goOrderDate1);
-            
-			dateList.add(formattedDate);
-		}
-		
-		 selectSaleList.get(0).getGoOrderDate();
-		
+		System.out.println("ybController /operate/saleInquiryChart dateList -> " + dateList);
 		System.out.println("ybController /operate/saleInquiryChart selectSaleList -> " + selectSaleList.toString());
-	
+		
 		ObjectMapper objectMapper = new ObjectMapper();
 		String selectSaleListJson = objectMapper.writeValueAsString(selectSaleList);
 		String selectDateList = objectMapper.writeValueAsString(dateList);
-		
+		String selectSalesList = objectMapper.writeValueAsString(salesList);
 		System.out.println("ybController /operate/saleInquiryChart selectSaleListJson -> " + selectSaleListJson.toString());
 		System.out.println("ybController /operate/saleInquiryChart selectSaleList.size() -> " + selectSaleList.size());
 		model.addAttribute("selectDateList", selectDateList);
 		model.addAttribute("selectSaleListJson", selectSaleListJson);
+		model.addAttribute("selectSalesList", selectSalesList);
 		model.addAttribute("s_date", s_date);
 		model.addAttribute("e_date", e_date);
 		model.addAttribute("selectSaleList", selectSaleList);
 		
 		return "yb/saleInquiryChart";
+	}
+	// 
+	private String formatNumberWithCommas(long number, Locale locale) {
+		NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
+        return numberFormat.format(number);
 	}
 
 

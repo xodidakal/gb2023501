@@ -59,13 +59,14 @@
         
         window.open(url, name, 'width='+popupW+',height='+popupH+',left='+left+',top='+top);
 	}
-	function saleInquiryChart(sDate, eDate) {
+	function saleInquiryChart(sDate, eDate, date) {
+		alert(selectDate);
 		var popupW = 1000;
 		var popupH = 500;
 		var left = Math.ceil((window.screen.width - popupW)/2);
 		var top = Math.ceil((window.screen.height - popupH)/2);
 	
-		var url = "/operate/saleInquiryChart?sDate="+sDate +"&eDate="+eDate;
+		var url = "/operate/saleInquiryChart?sDate="+sDate +"&eDate="+eDate+"&date="+date;
         var name = "saleInquiryChart";
         
         window.open(url, name, 'width='+popupW+',height='+popupH+',left='+left+',top='+top);
@@ -100,7 +101,9 @@
 				
 				<button type="submit" class="btn btn-light rounded py-2 px-2">검색</button>
 				<button type="button" class="btn btn-light rounded py-2 px-2" style="margin-left: 660px;" 
-						onclick="saleInquiryChart(<fmt:formatDate value="${s_date }" pattern="yyyyMMdd"/>, <fmt:formatDate value="${e_date }" pattern="yyyyMMdd"/>)">그래프 보기</button>
+						onclick="saleInquiryChart(<fmt:formatDate value="${s_date }" pattern="yyyyMMdd"/>, <fmt:formatDate value="${e_date }" pattern="yyyyMMdd"/>, ${selectDate })">그래프 보기</button>
+						<input type="text" value="${selectDate }" name="selectDate" id="selectDate">
+						
 			</div>
 		</form>
 		

@@ -46,43 +46,57 @@
            	
          </h1>
       </header>
-      <canvas id="line_chart" width="1000" height="400"></canvas>
+      <canvas id="line_chart" width="1100" height="400"></canvas>
 <script type="text/javascript">
 	
 	document.addEventListener('DOMContentLoaded', function () {
-
-		var selectSaleList = ${selectSaleListJson};
-		var selectDateList = ${selectDateList};
-		
-		var dateList = [];
-		var salesList = [];
-		
-		for(let i=selectSaleList.length -1; i>=0; i--){
-			salesList.push(selectSaleList[i].salesSum);		
-		}
-		for(let i=selectDateList.length -1; i>=0; i--){
-			dateList.push(selectDateList[i])
-		}
-		
-		new Chart(document.getElementById("line_chart"), {
-	        type: 'line',
-	        data: {
-	            labels: dateList,
-	            datasets: [{
-	                data: salesList,
-	                label: "매출",
-	                borderColor: "#3e95cd"
-	            }]
-	        },
-	        options: {
-	            title: {
-	                display: true,
-	                text: '검색 기간 매출'
-	            }
-	        }
-	    });
-	});
-
+	var selectSalesList = ${selectSalesList}
+	var selectSaleList = ${selectSaleListJson};
+	var selectDateList = ${selectDateList};
+	alert(selectSaleList);
+	alert(selectDateList);
+	var dateList = [];
+	var salesList = [];
+	
+	for(let i=selectSaleList.length -1; i>=0; i--){
+		salesList.push(selectSaleList[i].salesSum);		
+	}
+	for(let i=selectDateList.length -1; i>=0; i--){
+		dateList.push(selectDateList[i])
+	}
+	
+	new Chart(document.getElementById("line_chart"), {
+        type: 'line',
+        data: {
+            labels: dateList,
+            datasets: [{
+                data: salesList,
+                label: "매출(원)",
+                borderColor: "red"
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: '검색 기간 매출'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: false,
+                        callback: function (value, index, values) {
+                            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        }
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: '매출 단위(원)'
+                    }
+                }]
+            }
+        }
+    });
+});
 </script>
    </div>
 </main>
