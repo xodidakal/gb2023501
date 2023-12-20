@@ -226,7 +226,8 @@ public class JhController {
 		} else {
 			result = "2";
 		}
-		
+		//한번 응답 받고나면 인증번호 재 사용 못하게 삭제
+		session.removeAttribute("tempPassword");
 		return result;
 	}
 	
