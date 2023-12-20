@@ -15,47 +15,7 @@
 <script type="text/javascript">
 
 	var BoardCategory = ${BoardCategory};
-	// 옵션 선택에 따라 게시 숫자 변경
-	/* function chooseCount() {
-		var selectedValue = document.getElementById("count_type").value;
-		
-		switch (selectedValue) {
-			case "10":
-				alert("10");
-				window.location.href="/customer/boardList?b_category=" + BoardCategory + "&rowPage=10";
-				break;
-			case "20":
-				alert("20");
-				window.location.href="/customer/boardList?b_category=" + BoardCategory + "&rowPage=20";
-				break;
-			case "30":
-				alert("30");
-				window.location.href="/customer/boardList?b_category=" + BoardCategory + "&rowPage=30";
-				break;
-			default:
-				break;
-		}
-	} */
-	/* $(function() {
-		var count_type = document.getElementById("count_type").value;
-		
-		$("#count_type").on('change',function() {
-			alert("숫자선택");
-			alert("count_type->"+count_type);
-			
-			window.location.href="/customer/boardList?b_category=" + BoardCategory + "&rowPage=" + count_type;
-			
-		});
 	
-	}); */
-	
-	
-	// 옵션 선택 후 페이지 이동하면 옵션값 선택유지
-	/* window.onload = function () {
-        var countType = '${rowPage}';
-        document.getElementById("count_type").value = countType;
-    } */
-    
     $(function() {
     	var count_type = ${rowPage}
 
@@ -83,14 +43,6 @@
     	});
     });
     
-	/* function search_start() {
-		var search_keyword = document.getElementById("search_keyword").value;
-		var search_type = document.getElementById("search_type").value;
-		
-		alert("검색시작");
-		window.location.href="/customer/boardList?search_type=" + search_type + "&search_keyword=" + search_keyword + "&b_category=" + BoardCategory;
-		
-	} */
 	
 </script>
 <!-- JS END -->
@@ -155,7 +107,7 @@
 			</div>
 	    </div>
 
-       	<table class="listTable" style="text-align: center;">
+       	<table class="listTable">
        	<!-- style="text-align: center;"없으면 안맞음 -->
 			<tr>
 				<th>No.</th>

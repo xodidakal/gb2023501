@@ -160,7 +160,7 @@
 							<td width="150px;">
 			                    <select id="b_category" name="b_category" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
 			                    	<c:choose>
-			                    		<c:when test="${member.category eq 4}">
+			                    		<c:when test="${member.category == 4}">
 			                    			<option value="1">공지사항</option>
 											<option value="2">Q&A</option>
 											<option value="3">FAQ</option>
