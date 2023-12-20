@@ -89,20 +89,32 @@
 					</tr>
 				</thead>
 				<tbody>
-				 	<c:forEach var="gameList" items="${gameList }"  varStatus="status">
-					 	<tr>
-					 		<td>
-					 			<input class="form-check-input" type="radio" name="g_num" id="${status.index }" value="${gameList.g_num }" required>
-					 			<input type="hidden" id="remainingPeriod${status.index }" value="${gameList.remainingPeriod}" >
-					 			<input type="hidden" id="remainingTo${status.index }" value="${gameList.remainingTo}" >
-					 		</td>
-							<td>${gameList.g_title}</td>
-							<td>${gameList.g_period}개월</td>
-							<td>${gameList.remainingPeriod}개월</td>
-							<td>${gameList.g_to}명</td>
-							<td>${gameList.remainingTo}명</td>
-						</tr>
-					</c:forEach>
+					<c:choose>
+						<c:when test="">
+							<tr>
+								<td colspan="6">게임콘텐츠가 없습니다.</td>
+							</tr>
+							<tr>
+								<td colspan="6">구독 및 결제를 먼저 진행해주세요.</td>
+							</tr>
+						</c:when>
+						<c:otherwise>
+							<c:forEach var="gameList" items="${gameList }"  varStatus="status">
+							 	<tr>
+							 		<td>
+							 			<input class="form-check-input" type="radio" name="g_num" id="${status.index }" value="${gameList.g_num }" required>
+							 			<input type="hidden" id="remainingPeriod${status.index }" value="${gameList.remainingPeriod}" >
+							 			<input type="hidden" id="remainingTo${status.index }" value="${gameList.remainingTo}" >
+							 		</td>
+									<td>${gameList.g_title}</td>
+									<td>${gameList.g_period}개월</td>
+									<td>${gameList.remainingPeriod}개월</td>
+									<td>${gameList.g_to}명</td>
+									<td>${gameList.remainingTo}명</td>
+								</tr>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
 				</tbody>   
 	       	</table>
 	       	

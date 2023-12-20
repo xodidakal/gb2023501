@@ -39,32 +39,45 @@
 		if($('input[name="checkbox"]:checked').length == 0){
 			alert("학습자를 선택해주세요.");
 			
-		// 체크 수 = 0 아닐 때만 동작
+		// 체크 수 = 0 아닐 때
 		} else {
-			if(confirm("승인하시겠습니까?")){
-				$('input[name="checkbox"]:checked').each(function(){
-					// index 정의
-					var index = $(this).val();
-					
-					$.ajax(
-							{
-								/* type : "DELETE", */
-								url : "/educator/learnGroupJoinApproval",
-								data : {lg_num : ${learnGrpDTO.learnGrp.lgNum },
-										m_num : $('#mmNum'+index).val()},
-								dataType : 'text',
-								success : function(data){
-									if(data == "1"){
-										alert("승인 완료되었습니다.");
-										location.reload();
-									} else {
-										alert("승인 실패하였습니다. 다시 시도해주세요.");
-										location.reload();
+			
+			var remainingTo = Number('${learnGrpDTO.learnGrp.lgTo }') - Number('${learnGrpDTO.mmCnt }');
+			
+			// 잔여 인원(수용 가능 인원 - 가입 승인 인원) = 0일 때
+			if(remainingTo == 0) {
+				alert("정원 초과로 더이상 승인 불가능합니다.");
+			
+			// 체크 수 > 잔여 인원일 때
+			} else if($('input[name="checkbox"]:checked').length > remainingTo) {
+				alert("최대 "+remainingTo+"명까지만 승인 가능합니다.");
+			
+			// 체크 수 < 잔여 인원일 때 -> 이때만 동작
+			} else {
+				if(confirm("승인하시겠습니까?")){
+					$('input[name="checkbox"]:checked').each(function(){
+						// index 정의
+						var index = $(this).val();
+						
+						$.ajax(
+								{
+									url : "/educator/learnGroupJoinApproval",
+									data : {lg_num : ${learnGrpDTO.learnGrp.lgNum },
+											m_num : $('#mmNum'+index).val()},
+									dataType : 'text',
+									success : function(data){
+										if(data == "1"){
+											alert("승인 완료되었습니다.");
+											location.reload();
+										} else {
+											alert("승인 실패하였습니다. 다시 시도해주세요.");
+											location.reload();
+										}
 									}
 								}
-							}
-					)
-				})
+						)
+					})
+				}				
 			}
 		}
 	}
@@ -127,8 +140,9 @@
 			 		
 			 		<c:otherwise>
 			 			<c:forEach var="members" items="${members }" varStatus="status">
+							<c:set var="i" value="${i+1 }"></c:set>
 						 	<tr>
-						 		<td>No.</td>
+						 		<td>${i }</td>
 								<td>${members.member.mmName }</td>
 								<td>${members.member.phone }</td>
 								<td><fmt:formatDate value="${members.lgjJoindate }" pattern="yyyy-MM-dd"/></td>

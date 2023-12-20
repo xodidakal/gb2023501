@@ -15,4 +15,7 @@ public interface JpaInterHwSendRepository extends JpaRepository<HwSend, HwSendPk
 	
 	// 내 숙제 총 개수
 	Long countByMemberMmNum(int m_num);
+
+	// 검색에 따른 내 숙제 총 개수 가져오기
+	// Long countByMemberMmNumAndSearchTypeAndSearchKeyword(int mmNum, String searchType, String searchKeyword);
 }

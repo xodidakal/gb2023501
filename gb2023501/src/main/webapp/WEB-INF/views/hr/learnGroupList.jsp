@@ -97,7 +97,18 @@
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">내 학습 그룹</h2>
-	         <p style="margin-bottom: 35px;">총 N건</p>
+	         <p style="margin-bottom: 35px;">총 ${size }건</p>
+	         <c:if test="${keyword ne null}">
+		         <h6 style="margin-top: 35px;margin-bottom: 35px;">
+		         	'
+		         	<c:choose>
+		         		<c:when test="${type eq 'typeLgTitle'}">학습그룹명</c:when>
+		         		<c:when test="${type eq 'typeGgTitle'}">게임콘텐츠명</c:when>
+		         	</c:choose>
+		         	 : ${keyword }' 검색 결과
+		         </h6>
+	         </c:if>
+	         
 	    </div>
 
 		<form action="/educator/learnGroupList">
@@ -144,31 +155,41 @@
 					<th width="100px;"></th>
 				</tr>
 			</thead>
-			 <tbody>
-			 	<c:forEach var="lgDto" items="${learnGrps }" varStatus="status">
-				 	<tr>
-				 		<td>
-				 			<input class="form-check-input" type="checkbox" name="checkbox" id="checkbox${status.index }" value="${status.index }" >
-				 			<input type="hidden" id="lg_num${status.index }" value="${lgDto.learnGrp.lgNum}" >
-				 			<input type="hidden" id="mmCnt${status.index }" value="${lgDto.mmCnt }" >
-				 		</td>
-						<td>No.</td>
-						<td>${lgDto.learnGrp.lgTitle}</td>
-						<td>${lgDto.learnGrp.game.ggTitle}</td>
-						<td>${lgDto.learnGrp.lgSdate } ~ ${lgDto.learnGrp.lgEdate }</td>
-						<td>${lgDto.learnGrp.lgTo }명</td>
-						<td>${lgDto.mmCnt }명</td>
-						<td width="100px;">
-							<a href="/educator/learnGroupDetail?lg_num=${lgDto.learnGrp.lgNum }">
-								<button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">
-									상세
-								</button>
-							</a>
-						</td>
-					</tr>
-				</c:forEach>
-                </tbody>   
-              </table>
+			<tbody>
+				<c:choose>
+					<c:when test="${empty learnGrps}">
+						<tr>
+							<td colspan="8">내 학습 그룹이 없습니다.</td>
+						</tr>
+					</c:when>
+					<c:otherwise>
+					 	<c:forEach var="lgDto" items="${learnGrps }" varStatus="status">
+					 		<c:set var="i" value="${i+1 }"></c:set>
+						 	<tr>
+						 		<td>
+						 			<input class="form-check-input" type="checkbox" name="checkbox" id="checkbox${status.index }" value="${status.index }" >
+						 			<input type="hidden" id="lg_num${status.index }" value="${lgDto.learnGrp.lgNum}" >
+						 			<input type="hidden" id="mmCnt${status.index }" value="${lgDto.mmCnt }" >
+						 		</td>
+								<td>${i }</td>
+								<td>${lgDto.learnGrp.lgTitle}</td>
+								<td>${lgDto.learnGrp.game.ggTitle}</td>
+								<td>${lgDto.learnGrp.lgSdate } ~ ${lgDto.learnGrp.lgEdate }</td>
+								<td>${lgDto.learnGrp.lgTo }명</td>
+								<td>${lgDto.mmCnt }명</td>
+								<td width="100px;">
+									<a href="/educator/learnGroupDetail?lg_num=${lgDto.learnGrp.lgNum }">
+										<button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">
+											상세
+										</button>
+									</a>
+								</td>
+							</tr>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
+			</tbody>   
+       	</table>
 	</div>
 </div>
 <%@ include file="../common/footerFo.jsp" %>
