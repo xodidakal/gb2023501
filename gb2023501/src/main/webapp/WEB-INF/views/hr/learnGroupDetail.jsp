@@ -100,8 +100,9 @@
 			 		
 			 		<c:otherwise>
 						<c:forEach var="members" items="${members }">
+							<c:set var="i" value="${i+1 }"></c:set>
 						 	<tr>
-						 		<td>No.</td>
+						 		<td>${i }</td>
 								<td>${members.member.mmName }</td>
 								<td>${members.member.phone }</td>
 								<td>${members.member.email }</td>
@@ -113,7 +114,7 @@
 			 	</c:choose>
 			 </tbody>   
               </table>
-              <div class="row mt-8" style="width:100%;">
+              <!-- <div class="row mt-8" style="width:100%;">
 				<div class="d-flex justify-content-center" style="margin-top:12px">
                 <nav aria-label="Page navigation example">
 				  <ul class="pagination">
@@ -132,7 +133,7 @@
 				  </ul>
 				</nav>
 				</div>
-              </div>
+              </div> -->
 	</div>
 </div>
 <%@ include file="../common/footerFo.jsp" %>

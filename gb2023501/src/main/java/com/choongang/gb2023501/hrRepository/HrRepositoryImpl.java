@@ -123,12 +123,12 @@ public class HrRepositoryImpl implements HrRepository {
 				// 검색유형 : 학습그룹명
 				if(type.equals("typeLgTitle")) {
 					System.out.println("검색유형 : 학습그룹명");
-					queryWhere2 = "WHERE learnGrp.lgTitle LIKE '%"+keyword+"%' ";
+					queryWhere2 = "AND learnGrp.lgTitle LIKE '%"+keyword+"%' ";
 					
 				// 검색유형 : 게임콘텐츠명
 				} else if(type.equals("typeGgTitle")) {
 					System.out.println("검색유형 : 게임콘텐츠명");
-					queryWhere2 = "WHERE learnGrp.game.ggTitle LIKE '%"+keyword+"%' ";
+					queryWhere2 = "AND learnGrp.game.ggTitle LIKE '%"+keyword+"%' ";
 				}
 			}
 
