@@ -225,9 +225,9 @@
 							<th>No.</th>
 							<th>학습자명</th>
 							<th>숙제제출일자</th>
-							<th>학습제출내용</th>
+							<th style="width:30%;">학습제출내용</th>
 							<th>학습진도</th>
-							<th>추가질의내용</th>
+							<th style="width:30%;">추가질의내용</th>
 							<th>평가</th>	
 						</tr>
 					</thead>
