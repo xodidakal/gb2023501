@@ -3,6 +3,7 @@ package com.choongang.gb2023501.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -47,6 +49,8 @@ import com.choongang.gb2023501.model.SalesInquiryDTO;
 import com.choongang.gb2023501.ybService.EduMaterialsService;
 import com.choongang.gb2023501.ybService.JpaEduMaterialsService;
 import com.choongang.gb2023501.ybService.Paging;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -313,7 +317,7 @@ public class YbController {
 			System.out.println("ybController /operate/selectDateList selectSaleList -> " + selectSaleList);
 
 			log.info("selectSaleList -> " + selectSaleList.size());
-
+			model.addAttribute("selectDate", selectDate);
 			model.addAttribute("selectTotal", selectTotal);
 			model.addAttribute("selectSaleList", selectSaleList);
 			model.addAttribute("s_date", s_date);
@@ -338,6 +342,7 @@ public class YbController {
 	        selectTotal = es.findTotal(s_date, e_date);
 	        selectSaleList = js.selectSaleList(s_date, e_date);
 	        log.info("selectSaleList -> " + selectSaleList.size());
+	        model.addAttribute("selectDate", selectDate);
 	        model.addAttribute("s_date", s_date);
 	        model.addAttribute("e_date", e_date);	      
 	        model.addAttribute("selectTotal", selectTotal);
@@ -384,8 +389,8 @@ public class YbController {
 	      List<GameOrder> selectSaleList = null;
 	      // 일별 상세 리스트
 	      if(go_order_date.length() == 8) {
-	         String stringDate = go_order_date.substring(0,4) + "-" +go_order_date.substring(4,6) + "-" +go_order_date.substring(6,8);
-	         orderDate = java.sql.Date.valueOf(stringDate);
+	         
+	         orderDate = stringMathToDate(go_order_date);
 	         
 	         System.out.println("orderDate -> " + orderDate);
 	         gameOrder.setGoOrderDate(orderDate);
@@ -428,7 +433,13 @@ public class YbController {
     private static String formatDate(LocalDate date) {
         return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
-    
+
+    // yyyymmdd 형식 String -> yyyy-mm-dd 형식 Date
+    public static Date stringMathToDate(String date) {
+		String stringDate = date.substring(0,4) + "-" +date.substring(4,6) + "-" +date.substring(6,8);
+		Date typeDate = java.sql.Date.valueOf(stringDate);
+		return typeDate;
+	}
  
     // 학습 그룹 가입 신청 페이지
     @RequestMapping(value = "/learning/learnGrpJoinForm")
@@ -484,10 +495,11 @@ public class YbController {
 		System.out.println("ybController /learning/learnGrpJoinDo start...");
 		System.out.println("ybController /learning/learnGrpJoinDo lg_num -> " + lg_num);
 		
+		
 		Member member = jh.aboutMember();
 		int m_num = member.getMmNum();
 		System.out.println("m_num -> " + m_num);
-		System.out.println("ybController /learning/learnGrpJoinDo start... -> " + lgJoin.getMember());
+		System.out.println("ybController /learning/learnGrpJoinDo` start... -> " + lgJoin.getMember());
 		int insertLgJoin = es.insertLgJoin(lg_num, m_num);
 		
 		model.addAttribute("insertLgJoin", insertLgJoin);
@@ -495,23 +507,62 @@ public class YbController {
 	}
 	// 매출 그래프 조회
 	@RequestMapping(value = "/operate/saleInquiryChart")
-	public String saleInquiryChart(Model model, String sDate, String eDate) {
+	public String saleInquiryChart(Model model, String sDate, String eDate, String s, String selectDate) throws JsonProcessingException {
 		 System.out.println("ybController /operate/saleInquiryChart Start...");
-
+		 List<String> dateList = new ArrayList<>();
+		 List<String> salesList = new ArrayList<>();
 		 System.out.println("ybController /operate/saleInquiryChart sDate -> " + sDate);
-		 System.out.println("ybController /operate/saleInquiryChart esDate -> " + eDate);
-		 
-		 Date s_date = java.sql.Date.valueOf(sDate);
-         Date e_date = java.sql.Date.valueOf(eDate);
-		
+		 System.out.println("ybController /operate/saleInquiryChart eDate -> " + eDate);
+		 Date s_date =  stringMathToDate(sDate);
+		 Date e_date =  stringMathToDate(eDate);
+		 System.out.println("ybController /operate/saleInquiryChart selectDate ->" + selectDate);
+		 System.out.println("ybController /operate/saleInquiryChart s_date -> " + s_date);
+		 System.out.println("ybController /operate/saleInquiryChart e_date -> " + e_date);
 		
 		List<SalesInquiryDTO> selectSaleList = js.findBySalesContaining(s_date, e_date);
+		System.out.println("ybController /operate/saleInquiryChart selectSaleList.get(0).toString() -> " + selectSaleList.get(0).getGoOrderDate());
+		System.out.println("ybController /operate/saleInquiryChart selectSaleList.get(0).toString() -> " + selectSaleList.get(0).getSalesSum());
+		for(int i=0; i<selectSaleList.size(); i++) {
+			long salesSum =  selectSaleList.get(i).getSalesSum();
+			String formattedSalesSum = formatNumberWithCommas(salesSum, Locale.KOREA);
+			
+			salesList.add(formattedSalesSum);
+		}
+
+		System.out.println("ybController /operate/saleInquiryChart salesList -> " + salesList);
+
+		// selectSaleList에서 날짜 뽑아서 형식 변환
+		for(int i=0; i<selectSaleList.size(); i++) {
+			Date  goOrderDate1 = selectSaleList.get(i).getGoOrderDate();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedDate = dateFormat.format(goOrderDate1);
+
+			dateList.add(formattedDate);
+		}
+		System.out.println("ybController /operate/saleInquiryChart dateList -> " + dateList);
+		System.out.println("ybController /operate/saleInquiryChart selectSaleList -> " + selectSaleList.toString());
 		
+		ObjectMapper objectMapper = new ObjectMapper();
+		String selectSaleListJson = objectMapper.writeValueAsString(selectSaleList);
+		String selectDateList = objectMapper.writeValueAsString(dateList);
+		String selectSalesList = objectMapper.writeValueAsString(salesList);
+		System.out.println("ybController /operate/saleInquiryChart selectSaleListJson -> " + selectSaleListJson.toString());
+		System.out.println("ybController /operate/saleInquiryChart selectSaleList.size() -> " + selectSaleList.size());
+		model.addAttribute("selectDateList", selectDateList);
+		model.addAttribute("selectSaleListJson", selectSaleListJson);
+		model.addAttribute("selectSalesList", selectSalesList);
 		model.addAttribute("s_date", s_date);
 		model.addAttribute("e_date", e_date);
 		model.addAttribute("selectSaleList", selectSaleList);
-		return "saleInquiryChart";
+		
+		return "yb/saleInquiryChart";
 	}
+	// 
+	private String formatNumberWithCommas(long number, Locale locale) {
+		NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
+        return numberFormat.format(number);
+	}
+
 
 	
 	

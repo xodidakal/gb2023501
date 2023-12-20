@@ -255,6 +255,10 @@ public class JhController {
 			
 		}
 		
+		//세션 초기화
+		//안하면 뒤로가기했다 앞으로 왔을 떄 인증 다시 안해도 정보가 계속 저장되어버림
+		session.invalidate();
+		
 		return modelAndView;
 	}
 	

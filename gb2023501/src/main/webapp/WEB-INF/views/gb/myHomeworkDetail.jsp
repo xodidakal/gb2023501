@@ -6,6 +6,67 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+	tbody {
+		border : 1px solid #959595;
+	}
+	th{
+		border : 1px solid #959595;
+		background-color: #EEEEEE;
+		text-align: center;
+	}
+	td{
+		padding-left: 13px;
+	}
+	#borderRight{
+		border-right: 1px solid #959595;
+	}
+	#borderLeft{
+		border-left: 1px solid #959595;
+	}
+</style>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		// 전체 선택 클릭 시 발생 이벤트
+		$("#checkAll").click(function() {
+			if($("#checkAll").is(":checked")){
+				$("input[name=h_num]").prop("checked", true);
+			}else{
+				$("input[name=h_num]").prop("checked", false);
+			}
+		});
+		
+		// 전체 체크에서 하나라도 체크를 해제하거나 전체가 다 체크되었을 때
+		$("input[name=h_num]").click(function(){
+		    var totalHrLevel = $("input[name=h_num]").length;		// 전체 체크박스 개수
+		    var checked1 = $("input[name=h_num]:checked").length;	// 클릭된 체크박스 개수
+		    
+		    if(totalHrLevel != checked1){	// 전체 체크박스 개수 != 클릭된 체크박스 개수 (전체가 체크안되어있을 경우)
+		      $("#checkAll").prop("checked", false);
+		    }else{
+		      $("#checkAll").prop("checked", true);
+		    }
+		  });
+		
+		var result = '${result}';
+		if(result > 0){
+			alert("숙제가 정상적으로 제출되었습니다.");
+		}
+	});
+	
+	function myHomeworkSubmit(pIndex){
+		var h_num = $('#h_num'+pIndex).val();
+		var hr_level = $('#hr_level'+pIndex).val();
+		var hr_content = $('#hr_content'+pIndex).val();
+		var hr_question = $('#hr_question'+pIndex).val();
+
+		
+		location.href = "/learning/myHomeworkSubmitAction?h_num="+h_num+"&hr_level="+hr_level+"&hr_content="+hr_content+"&hr_question="+hr_question;
+	}
+
+</script>
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->
@@ -14,77 +75,146 @@
 <!--     </div> -->
 <div class="row g-0 justify-content-center">
 	<div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
-		<form>
-	        <div class="row g-3">
-	        <h2 class="display-7 mb-4">숙제 제출</h2>
-	        <hr class="my-3">
-	        	<table class="formTable">
-					<tr>
-						<th>셀렉스 박스</th>
-							<td width="150px;">
-			                    <select id="search_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
-									<option value="title">1</option>
-									<option value="writer">2</option>
-									<option value="writer">3</option>
-								</select>
-			                </td>
-						<th>셀렉스 박스</th>
-							<td width="150px;">
-								<select id="search_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
-									<option value="title">1</option>
-									<option value="writer">2</option>
-									<option value="writer">3</option>
-									<option value="writer">4</option>
-								</select>							
-							</td>
+        <div class="row g-3">
+        <h2 class="display-7 mb-4">숙제 제출</h2>
+        <hr class="my-3">
+        	<table class="formTable" style="border:1px;solid;#959595;">
+				<thead>
+					<tr>	
+						<th style="width:45%; text-align: center;">숙제 내용</th>	
+						<th style="text-align: center;">제출 내용</th>		
+						<th style="width:10%; text-align: center;">
+							<input class="form-check-input" type="checkbox" name="em_type" id="checkAll">
+						</th>
 					</tr>
-					<tr>
-						<th>체크박스</th>
-						<td width="150px;">
-		                    <input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" >
-		                </td>
-					</tr>
-		            <tr>
-						<th>제목</th>
-						<td colspan="3">
-		                    <input type="text" class="form-control" id="subject" placeholder="Subject">
-<!-- 		                    <label for="subject">자료명</label> -->
-		            	</td>
-					</tr>
-					<tr>
-						<th>라디오 박스</th>
-						<td width="150px;">
-							<input class="form-check-input" type="radio" name="em_type" id="flexRadioDefault1" >
-							<label for="subject">등록 즉시 게시</label>
-						</td>
-						<td width="150px;">
-							<input class="form-check-input" type="radio" name="em_type" id="flexRadioDefault1" >
-							<label for="subject">게시 일자 선택</label>					
-						</td>
-					</tr>
-					<tr>
-						<th>textarea</th>
-						<td colspan="3">
-		                   	<textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 200px"></textarea>    
-						</td>
-					</tr>
-					<tr></tr>
-	                <tr>
-	                	<th>첨부파일</th>
-	                	<td colspan="3">
-	                		<label style="font-size: medium;">파일 1개당 최대 첨부 용량 30MB</label>
-		                    <input type="file" class="form-control" id="subject" placeholder="Subject">
-		                </td>
-	                
-	                </tr>
-                </table>
-                <div class="d-grid gap-2 d-md-flex justify-content-center" >
-					<a href="#"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
-					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="등록">
-				</div>
-                
+				</thead>
+				<c:choose>
+					<c:when test="${myHomeworkDetailList.size() > 0 }">
+						<c:forEach var="totalRow" begin= "1" end="${myHomework.hhLevel}" >
+							<!-- 학습현황 테이블에 있는 진도인지 체크하기 위한 변수 설정 -->
+							<c:set var="homeworkChK" value="0" />
+							<!-- 학습현황에 해당되는 진도가 있을 때 학습현황에 등록된 값 출력 -->
+							<c:forEach var="myHomeworkDetail" items="${myHomeworkDetailList }">
+								<c:if test="${myHomeworkDetail.hrLevel eq totalRow }">
+									<tbody>
+										<tr>
+							                <td id="borderRight">숙제명 : ${myHomeworkDetail.homework.hhTitle }</td>
+							                <td>
+							                	내 진도 : <input type="hidden" id="hr_level${totalRow}" name="hr_level" value="${myHomeworkDetail.hrLevel }">
+							                	${myHomeworkDetail.hrLevel } 레벨
+							                </td>
+							                <td id="borderLeft" rowspan="5">
+												<input type="hidden" id="h_num${totalRow}" name="h_num1" value="${myHomeworkDetail.homework.hhNum }">
+							                    <input class="btn rounded py-2 px-3" type="button" onclick="myHomeworkSubmit(${totalRow})" style="background: #263d94; color: white;" value="수정 ">
+							                   <%--  <input class="form-check-input" type="checkbox" name="h_num" value="${myHomeworkDetail.homework.hhNum }" id="flexRadioDefault1" > --%>
+							                </td>
+										</tr>
+							            <tr>
+											<td id="borderRight">교육자 : ${myHomeworkDetail.homework.member.mmName }</td>
+											<td rowspan="2"> 
+												금번학습내용 :<br>
+												<textarea rows="5" cols="45" id="hr_content${totalRow}" name="hr_content">${myHomeworkDetail.hrContent }</textarea> 
+							            	</td>
+										</tr>
+										<tr>
+											<td id="borderRight" rowspan="1">숙제내용 : <br>${myHomeworkDetail.homework.hhContent} </td>
+										</tr>
+										<tr>
+											<td id="borderRight">숙제 진도 : ${myHomeworkDetail.homework.hhLevel}</td>
+											<td rowspan="2">
+												추가질의내용 : <br><textarea rows="3" cols="45" id="hr_question${totalRow}" name="hr_question" >${myHomeworkDetail.hrQuestion }</textarea>
+											</td>
+										</tr>
+										<tr>
+											<td id="borderRight">제출기한 : ${myHomeworkDetail.homework.hhDeadline}</td>
+										</tr>
+									</tbody>
+									<!-- 학습현황 테이블에 진도가 있으면 1로 변경하기 -->
+									<c:set var="homeworkChK" value="1" />
+								</c:if>
+							</c:forEach>
+							<!-- 학습현황에서 해당되는 진도레벨이 없을 때 빈 값 출력 -->
+							<c:if test="${homeworkChK eq '0' }">
+								<tbody>
+								<tr>
+					                <td id="borderRight">숙제명 : ${myHomework.hhTitle }</td>
+					                <td>
+					                	내 진도 : 
+					                	<input type="hidden" id="hr_level${totalRow}" name="hr_level" value="${totalRow }">${totalRow } 레벨
+					                </td>
+					                <td id="borderLeft" rowspan="5">
+										<input type="hidden" id="h_num${totalRow}" name="h_num" value="${myHomework.hhNum }">
+					                    <input class="btn rounded py-2 px-3" type="button" onclick="myHomeworkSubmit(${totalRow})" style="background: #263d94; color: white;" value="제출 ">
+					                </td>
+								</tr>
+					            <tr>
+									<td id="borderRight">교육자 : ${myHomework.member.mmName }</td>
+									<td rowspan="2"> 
+										금번학습내용 :<br>
+										<textarea rows="5" id="hr_content${totalRow}" cols="45" name="hr_content"></textarea> 
+					            	</td>
+								</tr>
+								<tr>
+									<td id="borderRight" rowspan="1">숙제내용 : <br>${myHomework.hhContent} </td>
+								</tr>
+								<tr>
+									<td id="borderRight">숙제 진도 : ${myHomework.hhLevel}</td>
+									<td rowspan="2">
+										추가질의내용 : <br><textarea rows="3" cols="45" id="hr_question${totalRow}" name="hr_question"></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td id="borderRight">제출기한 : ${myHomework.hhDeadline}</td>
+								</tr>
+							 </tbody>
+							</c:if>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<c:forEach var="totalRow" begin= "1" end="${myHomework.hhLevel}" >
+							<tbody>
+								<tr>
+					                <td id="borderRight">숙제명 : ${myHomework.hhTitle }</td>
+					                <td>
+					                	내 진도 : 
+					                	<input type="hidden" id="hr_level${totalRow}" name="hr_level" value="${totalRow }">${totalRow } 레벨
+					                </td>
+					                <td id="borderLeft" rowspan="5">
+										<input type="hidden" id="h_num${totalRow}" name="h_num1" value="${myHomework.hhNum }">
+					                    <input class="btn rounded py-2 px-3" type="button" onclick="myHomeworkSubmit(${totalRow})" style="background: #263d94; color: white;" value="제출 ">
+					                </td>
+								</tr>
+					            <tr>
+									<td id="borderRight">교육자 : ${myHomework.member.mmName }</td>
+									<td rowspan="2"> 
+										금번학습내용 :<br>
+										<textarea rows="5" cols="45" id="hr_content${totalRow}" name="hr_content"></textarea> 
+					            	</td>
+								</tr>
+								<tr>
+									<td id="borderRight" rowspan="1">숙제내용 : <br>${myHomework.hhContent} </td>
+								</tr>
+								<tr>
+									<td id="borderRight">숙제 진도 : ${myHomework.hhLevel}</td>
+									<td rowspan="2">
+										추가질의내용 : <br><textarea id="hr_question${totalRow}" rows="3" cols="45" name="hr_question"></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td id="borderRight">제출기한 : ${myHomework.hhDeadline}</td>
+								</tr>
+							 </tbody>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
+				
+               </table>
+               <div class="d-grid gap-2 d-md-flex justify-content-center" >
+				<a href="myhomeworkList?m_num=${mmNum }"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
+				<input class="btn rounded py-2 px-3" type="button" onclick="myHomeworkSubmit()" style="background: #263d94; color: white;" value="숙제 제출 ">
 			</div>
-		</form>
+               
+		</div>
 	</div>
 </div>
 <%@ include file="../common/footerFo.jsp" %>

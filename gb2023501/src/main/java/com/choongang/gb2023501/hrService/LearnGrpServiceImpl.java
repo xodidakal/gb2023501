@@ -27,10 +27,10 @@ public class LearnGrpServiceImpl implements LearnGrpService {
 	// 교육자마당 > 내학습그룹 (SELECT / JPA)
 	// 교육자마당 > 학습그룹 상세 (SELECT / JPA) - 학습그룹 정보
 	@Override
-	public List<LearnGrpDTO> learnGroupList(int lg_num, String sort, String type, String keyword) {
+	public List<LearnGrpDTO> learnGroupList(int mNum, int lg_num, String sort, String type, String keyword) {
 		System.out.println("LearnGrpServiceImpl learnGroupList() start..");
 		
-		List<LearnGrpDTO> learnGrps = hrRepository.learnGroupList(lg_num, sort, type, keyword);
+		List<LearnGrpDTO> learnGrps = hrRepository.learnGroupList(mNum, lg_num, sort, type, keyword);
 		System.out.println("LearnGrpServiceImpl learnGroupList() learnGrps.size() -> "+learnGrps.size());
 		
 		System.out.println("LearnGrpServiceImpl learnGroupList() end..");
@@ -92,6 +92,16 @@ public class LearnGrpServiceImpl implements LearnGrpService {
 		
 		System.out.println("LearnGrpServiceImpl joiningMemberList() end..");
 		return members;
+	}
+
+	// 교육자마당 > 학습그룹 가입 승인 - 실행 (UPDATE / JPA)
+	@Override
+	public void learnGroupJoinApproval(int lg_num, int m_num) {
+		System.out.println("LearnGrpServiceImpl learnGroupJoinApproval() start..");
+		
+		hrRepository.learnGroupJoinApproval(lg_num, m_num);
+		
+		System.out.println("LearnGrpServiceImpl learnGroupJoinApproval() end..");
 	}
 
 }

@@ -7,6 +7,6 @@ import com.choongang.gb2023501.model.HomeworkDTO;
 
 public interface JpaHomeworkRepository {
 
-	List<HomeworkDTO> selectMyHomeworkList(int m_num);
+	List<HwSend> selectMyHomeworkList(int m_num);
 
 }

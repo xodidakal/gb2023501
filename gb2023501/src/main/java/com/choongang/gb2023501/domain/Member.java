@@ -69,7 +69,7 @@ public class Member {
 	
 	
 	//휴대폰 번호
-	//@Pattern(regexp = "\\d{11}", message = "Phone number must be 11 digits") //11자리의 숫자인지 검증
+	@Pattern(regexp = "\\d{11}", message = "Phone number must be 11 digits") //11자리의 숫자인지 검증
 	@Column(name = "m_phone")
 	private String phone;		
 	

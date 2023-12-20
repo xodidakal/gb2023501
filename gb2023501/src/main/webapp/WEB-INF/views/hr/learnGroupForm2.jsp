@@ -64,10 +64,10 @@
 	         <h5 style="margin-top: 70px;">그룹 상세 정보 입력</h5>
 	         <form action="learnGroupFormInsert" method="post" name="lgForm" onsubmit="return ramainingChk()">
                 <table class="formTable">
-					<tr>
+					<!-- <tr>
 						<th>교육자명</th>
 						<td colspan="3">(교육자명)</td>
-	                </tr>
+	                </tr> -->
 					<tr>
 						<th>그룹명</th>
 						<td colspan="3">
@@ -132,7 +132,7 @@
                 </div>
                 
                 <input type="hidden" name="g_num" value="${g_num }">
-                <input type="hidden" name="m_num" value="3">
+                <input type="hidden" name="m_num" value="${m_num }">
 	         </form>
               
 	</div>
