@@ -299,6 +299,14 @@ public class JhController {
 	
 	
 	
+	//아이디/비번 찾기 페이지
+	@RequestMapping(value = "info/idPwInquiry")
+	public String idPwInquiry() {
+		
+		return "jh/idPwInquiry";
+	}
+	
+	
 	//회원 목록 관리 페이지
 	@RequestMapping(value = "operate/memberList")
 	public String memberList() {

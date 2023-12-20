@@ -68,7 +68,7 @@
                             <div class="form-group text-center">
                                 <a class="fs-sm text-reset" href="/info/joinAgreeForm">회원가입 </a>
                                 <small class="fs-sm text-reset"> | </small>
-                                <a class="fs-sm text-reset" data-bs-toggle="modal" href="/info/idPwInquiry">아이디 찾기 | 비밀번호 찾기 </a>
+                                <a class="fs-sm text-reset" href="/info/idPwInquiry">아이디 찾기 | 비밀번호 찾기 </a>
 <!--                                 <small class="fs-sm text-reset"> | </small>
                                 <a class="fs-sm text-reset" data-bs-toggle="modal" href="#modalPasswordReset">비밀번호 찾기 </a> -->
                             </div>

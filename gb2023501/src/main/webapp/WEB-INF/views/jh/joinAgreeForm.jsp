@@ -47,6 +47,7 @@
         //});    
 
 
+        //인증수단에 따른 유효성 검증 함수 실행
      	$('#varificationInput').on('input', function(){
 			var varificationType = $('#varificationInput').prop('type'); 		
     		if(varificationType === 'tel'){
