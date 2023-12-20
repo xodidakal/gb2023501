@@ -18,6 +18,15 @@
 		location.href = "gameOrderList?keyword="+keyword;
 	}
 	
+	function check() {
+		var f = document.frm;
+		if(f.g_num.checked == false){
+		    alert("체크박스는 기본 입력사항입니다. 최소 한가지이상 선택해 주세요");
+		    return false;
+		}
+		
+	}
+	
 </script>
 <body>
 <div class="row g-0 justify-content-center">
@@ -40,12 +49,13 @@
 			<div class="col">
 			<div class="d-flex align-items-center justify-content-end">
           		<div style="width: 100px;">
-	          		<a href="gameOrderInsert"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="구독하기"></a>
+	          		<a><input class="btn rounded py-2 px-3" type="button" onclick="document.forms['frm'].submit();" style="background: #263d94; color: white;" value="구독하기"></a>
             	</div>
             </div>
 			</div>
 	    </div>
 	    <!-- 게임목록 -->
+	    <form action="/subscribe/gameOrderInsertResult" name="frm">
 	        	<table class="listTable">
 	        		<thead>
 						<tr>
@@ -61,9 +71,9 @@
 					 <tbody>
 					 <c:set var="num" value="${page.startRow}"/>
 					 <c:forEach var="game" items="${listGameOrder}" varStatus="status">
-					 	<input type="hidden" name="g_num" value="${game.g_num}" id="g_num${status.index}">
+					 	
 					 	<tr id="gameOrder${status.index}">
-					 	<td valign="middle"><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
+					 	<td valign="middle"><input class="form-check-input" type="checkbox" name="g_num" id="flexRadioDefault1" value="${game.g_num}"></td>
 							<td valign="middle">${num}</td>
 							<td style="width:100px;" height="80px;" valign="middle">
 								<div align=center>
@@ -77,7 +87,8 @@
 						<c:set var="num" value="${num+1}"/>
  					 </c:forEach>
 	                 </tbody>   
-                </table>
+                </table> 
+            </form>   
                  <!-- 페이징 처리 -->
                <div class="row mt-8" style="width:100%;">
  					<div class="d-flex justify-content-center" style="margin-top:12px">
@@ -97,7 +108,6 @@
 					</div>
 				</div>
 			</div>
-	</div>
 </div>
 <%@ include file="../common/footerFo.jsp" %>
 </body>

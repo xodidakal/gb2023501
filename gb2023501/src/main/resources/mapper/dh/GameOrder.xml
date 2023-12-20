@@ -7,8 +7,9 @@
 		SELECT 	a.*
 		FROM   (SELECT rownum rn, g.*
 				FROM  game g
+				where g_dele_status = 0
 				<if test="keyword != null and keyword != ''">
-			 	where g_title like '%' || #{keyword} || '%'
+			 	and   g_title like '%' || #{keyword} || '%'
 			 	</if>
 				) a
 		WHERE rn BETWEEN #{start} AND #{end}
@@ -18,10 +19,32 @@
 	<select id="dhGameOrderSearchTotal" resultType="int" parameterType="Game">
 		SELECT count(*)
 		FROM   game
+		where  g_dele_status = 0
 		<if test="keyword != null and keyword != ''">
-		where  g_title like '%' || #{keyword} || '%'
+		and  g_title like '%' || #{keyword} || '%'
 		</if>
 	</select>
+	
+	<!-- 구독신청 -->
+	<select id="dhGameOrderSelect" parameterType="java.util.Map" resultType="Game">
+  		SELECT 	*
+  		FROM	game
+   		WHERE	g_num in
+   		<foreach collection="g_num" item="g_num"
+   		open="(" separator="," close=")">
+   		#{g_num}
+   		</foreach>	
+   </select>
+   
+   <select id="dhGameSum" parameterType="java.util.Map" resultType="int">
+  		SELECT sum(g_sell_price)
+		FROM game 
+		WHERE g_num IN
+		<foreach collection="g_num" item="g_num"
+   		open="(" separator="," close=")">
+   		#{g_num}
+   		</foreach>	
+   </select>
 	
 	<insert id="dhGameOrderInsert" parameterType="Game">
    		INSERT INTO game(g_num, m_num, g_title,g_step, g_period, g_to, g_price, discount, g_sell_price, g_content,g_attach_name, g_attach_path,g_dele_status)

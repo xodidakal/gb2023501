@@ -25,7 +25,7 @@
 					 <tr>
 						<th>학습난이도</th>
 						<td colspan="3">
-							<select name="g_step" id="g_step" class="form-control">
+							<select id="g_step" name="g_step" class="w-100 rounded" style="margin-right: 20%; border-color: #ced4da">
 								<option value="1">초급</option>
 								<option value="2">중급</option>
 								<option value="3">고급</option>
@@ -65,7 +65,7 @@
 					<tr>
 						<th>상품소개</th>
 						<td colspan="3">
-		                   	<textarea class="form-control" placeholder="Leave a message here" name="g_content" id="g_content" style="height: 200px"></textarea>
+		                   	<textarea class="form-control" placeholder="상품에 대한 소개를 입력해주세요" name="g_content" id="g_content" style="height: 200px"></textarea>
 						</td>
 					</tr>
 	                <tr>
