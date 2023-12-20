@@ -22,6 +22,7 @@
 <!-- JS START -->
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
+
 	
 	// 댓글 날짜 표시 = 2023-11-09
 	function formatDate(d) {
@@ -65,8 +66,7 @@
 		params.b_num = "${BdDetail.b_num}";
 		params.m_num = "${member.mmNum}";
 		params.bc_content = $('textarea[name=bc_content]').val();
-
-		alert("bc_content->"+params.bc_content);
+		
 		$.ajax({
 			url			: "insertComment",
 			type		: 'POST',
@@ -117,7 +117,7 @@
 	function drawCommentList(comments) {
 		$("#divCommentList").empty();
 		if(comments.length == 0) {
-			alert("댓글 없음");
+	//		alert("댓글 없음");
 			$("#divCommentList").html("");
 			$("#divCommentList").hide();
 		} else {
@@ -184,6 +184,10 @@
         } else {
             window.location.href="/customer/boardDelete?b_num=${BdDetail.b_num}&b_category=${BdDetail.b_category}";
         }
+        var msg = "<c:out value='${msg}'/>";
+        var url = "<c:out value='${url}'/>";
+        alert(msg);
+        location.href = url;
     }
 	
 	// 업로드 파일 삭제
@@ -328,13 +332,26 @@
                 	<c:forEach var="cList" items="${commentList}">
 		                		<input type=hidden value="${cList.bc_num}">
                 	</c:forEach>
-	                
+                	
+                	<div class="d-grid gap-2 d-md-flex justify-content-center" >
+						<a href="boardList?b_category=${BdDetail.b_category}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
+						<!-- 회원정보가 같거나 운영자면 버튼 노출 -->
+						<c:if test="${member.mmNum == BdDetail.m_num or member.category == 4}">
+							<a onclick="deleteQuestion()"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
+							<a href="/customer/boardUpdate?b_num=${BdDetail.b_num}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">수정</button></a>					
+	                	</c:if>
+	                	<!-- Q&A or FAQ이면서 운영자면 작성 버튼 노출 -->
+	                	<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and member.category eq 4}">
+	                		<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="작성">
+	                	</c:if>
+					</div>
+		                
 				</c:if>
 				
 				<!-- Q&A + FAQ -->
 				
-				<!-- Q&A와 FAQ이면서 회원이면 원글만 보기 -->
-				<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and member.category eq '1' or '2' or '3'}">
+				<!-- Q&A와 FAQ이면서 비회원 + 회원이고 [답변]이 아니면 원글만 보기 -->
+				<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and (empty member.category or member.category eq '1' or '2' or '3')and not BdDetail.b_title.contains('[답변]')}">
                		<!-- 원글 -->
                		<hr class="my-3">
 	        		
@@ -388,11 +405,92 @@
 			                </td>
 		                </tr>
 	                </table>
+	                
+	                <div class="d-grid gap-2 d-md-flex justify-content-center" >
+						<a href="boardList?b_category=${BdDetail.b_category}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
+						<!-- 회원정보가 같거나 운영자면 버튼 노출 -->
+						<c:if test="${member.mmNum == BdDetail.m_num or member.category == 4}">
+							<a onclick="deleteQuestion()"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
+							<a href="/customer/boardUpdate?b_num=${BdOriDetail.b_num}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">수정</button></a>					
+	                	</c:if>
+	                	<!-- 운영자만 삭제 버튼 노출 -->
+	                	<c:if test="${member.category == 4}">
+	                		<a onclick="deleteQuestion()"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
+						</c:if>
+					</div>
+	                
 	            </c:if>
 	            
-               	<!-- Q&A와 FAQ이면서 회원이고 [답변]이면 원글+답글 조회 -->
-               	<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and (member.category eq '1' or '2' or '3') and BdDetail.b_title.contains('[답변]')}">
+               	<!-- Q&A와 FAQ이면서 비회원 + 회원이고 [답변]이면 원글+답글 조회 -->
+               	<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and (empty member.category or member.category eq '1' or '2' or '3') and BdDetail.b_title.contains('[답변]')}">
                		
+               		<!-- 원글 -->
+               		<hr class="my-3">
+	        		
+		        	<table class="formTable">
+						<tr>
+							<th>게시 구분</th>
+							<td width="150px;">
+								<c:choose>
+								 	<c:when test="${BdOriDetail.b_category == 1}"><label style="margin-right: 110px;">공지사항</label></c:when>
+								 	<c:when test="${BdOriDetail.b_category == 2}"><label style="margin-right: 110px;">Q&A</label></c:when>
+						 			<c:otherwise><label style="margin-right: 110px;">FAQ</label></c:otherwise>
+								</c:choose>
+							</td>
+							
+							<th>게시 분류</th>
+							<td width="150px;">
+								<c:choose>
+						 			<c:when test="${BdOriDetail.b_notie_type == 1}"><label style="margin-right: 110px;">공통</label></c:when>
+						 			<c:when test="${BdOriDetail.b_notie_type == 2}"><label style="margin-right: 110px;">이벤트</label></c:when>
+						 			<c:when test="${BdOriDetail.b_notie_type == 3}"><label style="margin-right: 110px;">업데이트</label></c:when>
+						 			<c:otherwise>규정 및 정책</c:otherwise>
+						 		</c:choose>
+							</td>
+						</tr>
+						<tr>
+							<th>제목</th>
+							<td colspan="3">
+								<label>${BdOriDetail.b_title}</label>
+							</td>
+						</tr>
+						<tr>
+							<th>게시 일자</th>
+							<td width="150px;">
+								<label>
+									<fmt:formatDate value="${BdOriDetail.b_regi_date}" type="date" pattern="yyyy-MM-dd"/>
+								</label>
+							</td>
+						</tr>
+						<tr></tr>
+						<tr>
+							<th>내용</th>
+							<td colspan="3">
+								<label>${BdOriDetail.b_content}</label>
+							</td>
+						</tr>
+						<tr></tr>
+		                <tr>
+		                	<th>첨부파일</th>
+							<td colspan="3">
+		                		<label><a href="/upload/gh/${BdOriDetail.b_attach_name}" download="test">${BdOriDetail.b_attach_name}</a></label>
+			                </td>
+		                </tr>
+	                </table>
+	                
+	                <!-- 수정, 삭제, 목록 버튼 -->
+					<div class="d-grid gap-2 d-md-flex justify-content-center" >
+						<a href="boardList?b_category=${BdDetail.b_category}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
+						<!-- 회원정보가 같거나 운영자면 버튼 노출 -->
+						<c:if test="${member.mmNum == BdDetail.m_num or member.category == 4}">
+							<a href="/customer/boardUpdate?b_num=${BdOriDetail.b_num}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">수정</button></a>					
+	                	</c:if>
+	                	<!-- 운영자만 삭제 버튼 노출 -->
+	                	<c:if test="${member.category == 4}">
+	                		<a onclick="deleteQuestion()"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
+						</c:if>
+					</div>
+	                
 	                <!-- 답글 조회 -->
                		<hr>
 	                
@@ -433,7 +531,7 @@
 		                </tr>
 	                </table>
                	</c:if>
-				
+               	
                	<!-- Q&A와 FAQ이면서 운영자이고 원글이면 답변 가능 -->
                	<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and member.category eq 4 and not BdDetail.b_title.contains('[답변]')}">
                		<!-- 원글 -->
@@ -484,16 +582,21 @@
 						<tr></tr>
 		                <tr>
 		                	<th>첨부파일</th>
-			                <%-- <c:if test="${BdDetail.b_attach_path ne null}">
-			                	<td colspan="3">
-			                		<label><a href="javascript:popup('/upload/${BdDetail.b_attach_path}',800,600)">${BdDetail.b_attach_name}</a></label>
-				                </td>
-							</c:if> --%>
 							<td colspan="3">
 		                		<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="test">${BdDetail.b_attach_name}</a></label>
 			                </td>
 		                </tr>
 	                </table>
+	                
+	                <!-- 수정, 삭제, 목록 버튼 -->
+					<div class="d-grid gap-2 d-md-flex justify-content-center" >
+						<a href="boardList?b_category=${BdDetail.b_category}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
+						<!-- 회원정보가 같거나 운영자면 버튼 노출 -->
+						<c:if test="${member.mmNum == BdDetail.m_num or member.category == 4}">
+							<a onclick="deleteQuestion()"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
+							<a href="/customer/boardUpdate?b_num=${BdDetail.b_num}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">수정</button></a>					
+	                	</c:if>
+					</div>
 	                
 	                <!-- 답변 -->
                		<hr>
@@ -537,6 +640,13 @@
 			                </td>
 		                </tr>
 	                </table>
+	                
+	                <!-- Q&A or FAQ이면서 운영자면 작성 버튼 노출 -->
+	                <div class="d-grid gap-2 d-md-flex justify-content-center" >
+	                	<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and member.category eq 4}">
+	                		<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="작성">
+	                	</c:if>
+                	</div>
                	</c:if>
                	
                 <!-- Q&A와 FAQ이면서 운영자이고 [답변]이 포함 되어있으면 답변 수정 가능 -->
@@ -596,6 +706,19 @@
 			                </td>
 		                </tr>
 	                </table>
+	                
+	                <!-- 수정, 삭제, 목록 버튼 -->
+					<div class="d-grid gap-2 d-md-flex justify-content-center" >
+						<a href="boardList?b_category=${BdDetail.b_category}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
+						<!-- 회원정보가 같거나 운영자면 버튼 노출 -->
+						<c:if test="${member.mmNum == BdDetail.m_num or member.category == 4}">
+							<a href="/customer/boardUpdate?b_num=${BdDetail.b_num}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">수정</button></a>					
+	                	</c:if>
+	                	<!-- 답변 달린글은 운영자만 삭제 버튼 노출 -->
+	                	<c:if test="${member.category == 4}">
+	                		<a onclick="deleteQuestion()"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
+						</c:if>
+					</div>
                		
 	                <!-- 답글 수정 -->
                		<hr>
@@ -655,11 +778,17 @@
 			                
 		                </tr>
 	                </table>
+	                
+	                <!-- Q&A or FAQ이면서 운영자면 작성 버튼 노출 -->
+	                <div class="d-grid gap-2 d-md-flex justify-content-center" >
+	                	<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and member.category eq 4}">
+	                		<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="답변 작성">
+	                	</c:if>
+	                </div>
                	</c:if>
                	         	
-                
                 <!-- 수정, 삭제, 목록 버튼 -->
-				<div class="d-grid gap-2 d-md-flex justify-content-center" >
+				<%-- <div class="d-grid gap-2 d-md-flex justify-content-center" >
 					<a href="boardList?b_category=${BdDetail.b_category}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
 					<!-- 회원정보가 같거나 운영자면 버튼 노출 -->
 					<c:if test="${member.mmNum == BdDetail.m_num or member.category == 4}">
@@ -670,7 +799,7 @@
                 	<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and member.category eq 4}">
                 		<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="작성">
                 	</c:if>
-				</div>
+				</div> --%>
                 
 			</div>
 		</form>

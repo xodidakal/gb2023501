@@ -234,7 +234,6 @@ public class GhController {
 		// -----------------------------------------------------
 		model.addAttribute("BdDetail",BdDetail);
 		
-
 		return "gh/boardUpdate";
 	}
 	
@@ -266,7 +265,7 @@ public class GhController {
 			board.setB_attach_path(attach_path);
 		}
 
-		// 수정 정보 불러오기
+		// 정보 업데이트
 		// -----------------------------------------------------
 		int BdUpdate = boardService.updateBoard(board);
 		// -----------------------------------------------------
@@ -275,7 +274,7 @@ public class GhController {
 		}
 		System.out.println("수정성공 BdUpdate->"+BdUpdate);
 		
-		return "redirect:/customer/boardList?b_category="+board.getB_category();
+		return "redirect:/customer/boardDetail?b_num="+board.getB_num();
 	}
 	
 	/* 파일 삭제 */
@@ -308,19 +307,30 @@ public class GhController {
 	
 	/* 게시글 삭제 */
 	@RequestMapping(value = "customer/boardDelete")
-	public String deleteBoard(Board board, BoardComment boardComment) {
+	public String deleteBoard(Board board, BoardComment boardComment, Model model) {
 		System.out.println("GhController deleteBoard Start...");
 		System.out.println("GhController deleteBoard boardComment.getBc_num()->"+boardComment.getBc_num());
 		System.out.println("GhController deleteBoard boardComment.getB_num()->"+boardComment.getB_num());
 		
-		// 수정 정보 불러오기
-		// -----------------------------------------------------
-		int BdDelete = boardService.deleteBoard(boardComment);
-		// -----------------------------------------------------
-		if(BdDelete < 0) {
-			System.out.println("삭제실패");
+		// 답글 여부 확인
+		int answerCheck = boardService.selectAnswerCnt(boardComment);
+		
+		if(answerCheck > 1) {
+			System.out.println("답글 있음 -> 삭제불가");
+			model.addAttribute("msg", "삭제가 불가능 합니다. 답변글이 존재합니다.");
+    		model.addAttribute("url", "/customer/boardDetail?b_num="+board.getB_num());
+    		return "alert";
+		} else {
+			System.out.println("답글 없음 -> 바로 삭제");
+			// 게시글 삭제
+			// -----------------------------------------------------
+			int BdDelete = boardService.deleteBoard(boardComment);
+			// -----------------------------------------------------
+			if(BdDelete < 0) {
+				System.out.println("삭제 실패");
+			}
+			System.out.println("삭제 성공");
 		}
-
 		return "redirect:/customer/boardList?b_category="+board.getB_category();
 	}
 	
@@ -343,9 +353,9 @@ public class GhController {
 	/* 댓글작성  */
 	@RequestMapping(value = "/customer/insertComment", method = RequestMethod.POST)
 	@ResponseBody
-	public String insertComment(@RequestBody BoardComment boardComment) {
+	public String insertComment(@RequestBody BoardComment boardComment, Model model) {
 		System.out.println("GhController insertComment Start...");
-		
+
 		String resultStatus = null;
 		
 		System.out.println("insertComment getB_num->"+boardComment.getB_num());

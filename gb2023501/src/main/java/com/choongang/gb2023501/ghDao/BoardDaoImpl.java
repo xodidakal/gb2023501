@@ -210,6 +210,20 @@ public class BoardDaoImpl implements BoardDao {
 		}
 		return board;
 	}
+
+	@Override
+	public int selectAnswerCnt(BoardComment boardComment) {
+		System.out.println("BoardDaoImpl selectAnswerCnt start...");
+		int result = 0;
+		try {
+			result = sqlSession.selectOne("mkhSelectAnswerCnt", boardComment);
+			System.out.println("BoardDaoImpl selectAnswerCnt result->"+result);
+		} catch (Exception e) {
+			System.out.println("BoardDaoImpl selectAnswerCnt Exception->"+e.getMessage());
+		}
+		
+		return result;
+	}
 	
 
 //	@Override

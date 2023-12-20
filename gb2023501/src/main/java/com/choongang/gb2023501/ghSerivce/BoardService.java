@@ -20,6 +20,7 @@ public interface BoardService {
 	int updateBoard(Board board);
 	int deleteFile(Board board);
 	Board selectOriBoard(int b_num);
+	int selectAnswerCnt(BoardComment boardComment);
 	
 //	int 				selectBdCommentListCnt(BoardComment boardComment);
 

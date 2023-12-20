@@ -23,6 +23,7 @@ public interface BoardDao {
 	int deleteFile(Board board);
 	int deleteBoardComment(BoardComment boardComment);
 	Board selectOriBoard(int b_num);
+	int selectAnswerCnt(BoardComment boardComment);
 	
 //	int 				selectBdCommentListCnt(BoardComment boardComment);
 

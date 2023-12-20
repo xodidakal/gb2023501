@@ -130,6 +130,14 @@ public class BoardServiceImpl implements BoardService {
 		
 		return board;
 	}
+
+	@Override
+	public int selectAnswerCnt(BoardComment boardComment) {
+		System.out.println("BoardServiceImpl selectAnswerCnt Start...");
+		int result = boardDao.selectAnswerCnt(boardComment);
+
+		return result;
+	}
 	
 	// ver2
 //	@Override
