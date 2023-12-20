@@ -131,7 +131,7 @@
             var emailValidationMessage = $('#emailValidationMessage');
 
             var email = emailInput.val();
-            var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z]+\.[a-zA-Z]{2,3}$/;
 
             if (email.length === 0) {
             	emailValidationMessage.text('');
