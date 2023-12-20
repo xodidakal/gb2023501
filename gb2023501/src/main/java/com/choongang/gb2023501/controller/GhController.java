@@ -62,7 +62,8 @@ public class GhController {
 	public String boardList(Model model, String b_category, 	Board board 
 							,@RequestParam(defaultValue = "1") 	String currentPage
 							,@RequestParam(defaultValue = "10") int rowPage
-							,String search_type, String search_keyword) {
+							,String search_type, String search_keyword
+							,BoardComment boardComment) {
 		System.out.println("GhController boardList Start...");
 //		System.out.println("b_category->"+b_category); 
 //		System.out.println("board.getB_category();->"+board.getB_category());
@@ -76,8 +77,11 @@ public class GhController {
 		model.addAttribute("member", member);
 		
 		// 게시물 count
+		// -----------------------------------------------------
 		int bdCount = boardService.selectBoardListCnt(b_category);
+		// -----------------------------------------------------
 		System.out.println("GhController selectBoardListCnt bdCount->"+bdCount);
+		
 		// 페이징 작업
 		// bdCount를 list.size로 바꿀방법?
 		Paging page = new Paging(bdCount, currentPage, rowPage);
@@ -88,6 +92,12 @@ public class GhController {
 		// 검색작업
 		board.setSearch_type(search_type);
 		board.setSearch_keyword(search_keyword);
+		
+		// 답변 여부 (1이면 답변 없음 / 2면 답변 있음)
+		// -----------------------------------------------------
+		int answerCheck = boardService.selectAnswerCnt(boardComment);
+		// -----------------------------------------------------
+		model.addAttribute("answerCheck", answerCheck);
 		
 		// 게시판 list + 댓글 숫자
 		// -----------------------------------------------------

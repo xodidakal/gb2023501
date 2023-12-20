@@ -108,7 +108,6 @@
 	    </div>
 
        	<table class="listTable">
-       	<!-- style="text-align: center;"없으면 안맞음 -->
 			<tr>
 				<th>No.</th>
 				<th>게시 분류</th>
@@ -131,14 +130,16 @@
 						 			<c:otherwise>규정 및 정책</c:otherwise>
 						 		</c:choose>
 					 		</td>
-							<td>
+							<td style="text-align: left;">
 								<!-- 상단 표시 -->
+								<div>
 								<c:if test="${Blist.b_flag eq '0'}"><img src="/assets/img/notice_icon.png" style="margin-bottom:4px"></c:if>
 								<!-- 댓글 표시 -->
-								<%-- <c:if test="${Blist.b_num eq Blist.b_ref_num}"><img src="/assets/img/re_icon.png" style="margin-bottom:4px"></c:if> --%>
+								<c:if test="${Blist.b_title.contains('[답변]')}"><img src="/assets/img/reply.png" style="margin-bottom:4px"></c:if>
 								${Blist.b_title} &nbsp;
 								<!-- 댓글 표시 -->
 								<c:if test="${Blist.b_category eq '1'}"><label style="color: orange;">[${Blist.comment_count}]</label></c:if>
+								</div>
 							</td>
 							<td>${Blist.m_name}</td>
 							<td><fmt:formatDate value="${Blist.b_regi_date}" type="date" pattern="yyyy-MM-dd"/></td>
