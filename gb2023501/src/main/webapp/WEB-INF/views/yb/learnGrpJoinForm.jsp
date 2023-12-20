@@ -42,7 +42,7 @@ function selectType() {
     }
 }
 function reload() {
-	 var lgTitle = document.getElementById("lgTitle").value;
+	 var lgTitle = document.getElementById("searchType").value;
 	 
 	 if(lgTitle == "") {
 		 location.href="/learning/learnGrpJoinForm";
@@ -74,7 +74,7 @@ function signUp() {
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">학습그룹 가입신청</h2>
-	         <p style="margin-bottom: 35px;">총 ${selectLgpListByTitleCnt } 건</p>
+	         <p style="margin-bottom: 35px;">총 ${selectLgpListByTitle.size() } 건</p>
 	    </div>
 		<c:if test="${selectLgpListByTitleCnt == 0 }">			
 	 		<div class="row" style="height: 100px">
@@ -97,11 +97,13 @@ function signUp() {
 								<option value="${selectLGpList.lgTitle }">${selectLGpList.lgTitle }</option>
 							</c:forEach>
 						</select>
+						
 						<!-- 카테고리 검색 -->
 						<select id="mmName" name="mmName" class="w-17 rounded" style="margin-right: 5px; border-color: #ced4da; display: none; height: 40px;" >
+							<option value="reload">전체보기</option>
 							<c:forEach var="selectLGpList" items="${selectLGpList }">
-								<option value="title">${selectLGpList.member.mmName }</option>
-							</c:forEach>
+								<option value="${selectLGpList.member.mmNum }">${selectLGpList.member.mmName }</option>
+`							</c:forEach>
 						</select>&nbsp;&nbsp;
 		            	<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="조회" onsubmit="chk reload()">
 	            </form>

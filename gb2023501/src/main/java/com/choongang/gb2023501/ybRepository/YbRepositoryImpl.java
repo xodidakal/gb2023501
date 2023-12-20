@@ -122,7 +122,7 @@ public class YbRepositoryImpl implements YbRepository {
 	public List<LearnGrp> selectLGpList() {
 		
 		System.out.println("YbRepositoryImpl selectLGpList start...");
-		List<LearnGrp> selectLGpList = em.createQuery("select DISTINCT l from LearnGrp l", LearnGrp.class)
+		List<LearnGrp> selectLGpList = em.createQuery("select DISTINCT l from LearnGrp l where l.lgSdate <= sysdate", LearnGrp.class)
 				   						 .getResultList();	
 		
 		return selectLGpList;

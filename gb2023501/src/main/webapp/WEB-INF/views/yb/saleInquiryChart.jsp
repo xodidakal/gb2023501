@@ -50,11 +50,10 @@
 <script type="text/javascript">
 	
 	document.addEventListener('DOMContentLoaded', function () {
-	var selectSalesList = ${selectSalesList}
+
 	var selectSaleList = ${selectSaleListJson};
 	var selectDateList = ${selectDateList};
-	alert(selectSaleList);
-	alert(selectDateList);
+
 	var dateList = [];
 	var salesList = [];
 	
@@ -72,7 +71,7 @@
             datasets: [{
                 data: salesList,
                 label: "매출(원)",
-                borderColor: "red"
+                borderColor: "#263d94"
             }]
         },
         options: {

@@ -8,114 +8,12 @@
 <title>Insert title here</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript">
-	$(function(){
-		// 숙제 전송 여부 확인
-		var count = '${count}';
-		if(count > 0){
-			alert("숙제를 정상적으로 전송하였습니다.");
-		}else if (count == 0){
-			alert("숙제는 이미 학습자에게 발송되었습니다.");
-		}
-		
-		// 숙제명 검색 셀렉트 박스 변경 시 검색
-		$("#searchHtitle").change(function(){
-		    // Value값 가져오기
-		    var h_title = $("#searchHtitle :selected").val();
-		    var lg_num = ${hwsend.lg_num};
-			
-		    location.href = "homeworkSend?lg_num="+lg_num+"&h_title="+h_title;
-		  });
-		  
-		// 학습그룹명 검색 셀렉트 박스 변경 시 검색
-		$("#searchLgtitle").change(function(){
-			// Value값 가져오기
-			var lg_num = $("#searchLgtitle :selected").val();
-			var h_title = $("#searchHtitle :selected").val();
-			
-			location.href = "homeworkSend?lg_num="+lg_num+"&h_title="+h_title;
-		});
-		  
-		// 전체 선택 클릭 시 발생 이벤트
-		$("#checkAll").click(function() {
-			var checkAll = $('#checkAll').val();
-			
-			if(checkAll == '전체선택'){
-				$("input[name=m_num]").prop("checked", true);
-				$('#checkAll').val('전체해제');
-			}else{
-				$("input[name=m_num]").prop("checked", false);
-				$('#checkAll').val('전체선택');
-			}
-		});
-		
-		// 학습자 체크할 때마다 체크
-		$("input[name=m_num]").click(function() {
-			var totalM_num = $("input[name=m_num]").length;
-			var totalChecked = $("input[name=m_num]:checked").length;
-			  
-			if(totalM_num != totalChecked){
-				$('#checkAll').val('전체선택');
-			}else {
-				$('#checkAll').val('전체해제');
-			}
-		});
-		
-		// 숙제번호 체크할 때마다 체크
-		$("input[name=h_num]").click(function() {
-			var pH_num = $("input[name=h_num]:checked").val();
-			var pLg_num = $("#searchLgtitle").val();
 
-			$.ajax({
-				url : "/educator/homeworkSendExist",
-				data : {h_num : pH_num, lg_num : pLg_num},
-				dataType : 'json',
-				success : function(data){	// data -> homeworkSendExist 결과값
-					var hwSendMemberList = JSON.stringify(data);
-					// alert("hwSendMemberList -> "+hwSendMemberList);
-					
-					if(hwSendMemberList == "[]"){
-						$('#memberTable').empty();
-						$('#memberTable').append("<tr><td>가입한 학습자가 없습니다.</td></tr>");
-					}else {
-						$('#memberTable').empty();
-						var html = "";
-						$(data).each(function() {
-							html += "<tr>";
-							if(this.existence == 1){
-								html += "<td><span style='color:red;'>전송완료</span></td>";
-							}else{
-								html += "<td><input class='form-check-input' type='checkbox' name='m_num' value="+this.m_num;
-								html += " id='flexRadioDefault1'></td>";
-							}
-							html += "<td>"+this.m_name+"</td>";
-							html += "<td>"+this.m_phone+"</td>";
-							html += "<td>"+this.hr_level+"</td></tr>";
-						});
-						$('#memberTable').append(html);
-					}
-				}
-			});
-		});
-		  
-	});
+	function homeworkClick(pIndex){
+		var hhNum = $('#hhNum'+pIndex).val();
+		alert("내가 선택한 숙제의 번호는 -> "+hhNum);
+	}
 	
-	function totalCheck() {
-		// m_num 체크박스에서 체크된 개수
-		var totalM_numChecked = $("input[name=m_num]:checked").length;
-		// h_num 체크박스에서 체크된 개수
-		var totalH_numChecked = $("input[name=h_num]:checked").length;
-		
-		// h_num과 m_num이 0보다 커야 true
-		if(totalM_numChecked > 0 && totalH_numChecked > 0){
-			return true;
-		}else if(totalH_numChecked < 1){
-			alert("숙제를 선택해주세요.");
-			return false;
-		}else if(totalM_numChecked < 1){
-			alert("학습자를 선택해주세요.");
-			return false;
-		}
-	}	
 </script>
 </head>
 <body>
@@ -149,23 +47,27 @@
 							<th style="width: 20%;">숙제명</th>
 							<th style="width: 40%;">숙제내용</th>
 							<th>진도</th>
-							<th>제출기한</th>	
-							<th>전송일자</th>
-							<th>평가완료</th>			
+							<th>제출기한</th>			
 						</tr>
 					</thead>
 					 <tbody>
+					 <c:set var="i" value="1"/>
+					 <c:forEach var="homework" items="${homeworkList }" varStatus="status">
 					 	<tr onmouseover="this.style.background='#BFE4FF'; this.style.cursor='pointer'" 
 					 		onmouseout="this.style.backgroundColor=''"
-					 		onclick="#">
-							<td>1</td>
-							<td>바둑</td>
-							<td>바둑숙제</td>
-							<td>1</td>
-							<td>2023-12-31</td>
-							<td>2023-12-01</td>
-							<td>5/10</td>
-						</tr>				
+					 		onclick="homeworkClick(${status.index})">
+							<td>
+								<input type="hidden" id="hhNum${status.index }" value="${homework.hhNum }">
+								${i }
+							</td>
+							<td>${homework.hhTitle }</td>
+							<td>${homework.hhContent }</td>
+							<td>${homework.hhLevel }</td>
+							<td>${homework.hhDeadline }</td>
+						</tr>
+						<c:set var="i" value="${i+1 }"/>	
+					 </c:forEach>
+					 				
 	                 </tbody>   
                 </table>
                 <!-- 숙제목록 페이징 -->
@@ -225,9 +127,9 @@
 							<th>No.</th>
 							<th>학습자명</th>
 							<th>숙제제출일자</th>
-							<th>학습제출내용</th>
+							<th style="width:30%;">학습제출내용</th>
 							<th>학습진도</th>
-							<th>추가질의내용</th>
+							<th style="width:30%;">추가질의내용</th>
 							<th>평가</th>	
 						</tr>
 					</thead>

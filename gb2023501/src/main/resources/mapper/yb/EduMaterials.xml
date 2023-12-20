@@ -34,4 +34,11 @@
 		<insert id="ybInsertLgJoin" parameterType="map">
 			INSERT INTO lg_join (lg_num, m_num, lgj_joinDate, lgj_approval) values (#{lg_num}, #{m_num}, sysdate, 0)
 		</insert>
+		
+		
+		<select id="selectListCnt" parameterType="map" resultType="int">
+			SELECT count(*) 
+			FROM   game_order
+			WHERE  go_order_date BETWEEN #{s_date} AND #{e_date}
+		</select>
 	</mapper>

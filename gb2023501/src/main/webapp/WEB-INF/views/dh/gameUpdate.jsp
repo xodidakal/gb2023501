@@ -27,7 +27,7 @@
 					 <tr>
 						<th>학습난이도</th>
 						<td colspan="3">
-		            		<select name="g_step" id="g_step" class="form-control">
+						<select id="g_step" name="g_step" class="w-100 rounded" style="margin-right: 20%; border-color: #ced4da">
 								<option value="1" <c:if test="${game.g_step == 1}">selected</c:if> >초급</option>
 								<option value="2" <c:if test="${game.g_step == 2}">selected</c:if> >중급</option>
 								<option value="3" <c:if test="${game.g_step == 3}">selected</c:if> >고급</option>

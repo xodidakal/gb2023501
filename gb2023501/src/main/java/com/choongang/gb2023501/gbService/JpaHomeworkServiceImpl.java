@@ -79,6 +79,16 @@ public class JpaHomeworkServiceImpl implements JpaHomeworkService {
 		
 		return myHomework;
 	}
+
+	@Override
+	public List<Homework> selectHomeworkList(HwSend hwsend) {
+		System.out.println("JpaHomeworkServiceImpl selectHomeworkList start...");
+		
+		List<Homework> homeworkList = jhr.selectHomeworkList(hwsend);
+		System.out.println("JpaHomeworkServiceImpl selectHomeworkList homeworkList -> "+homeworkList.size());
+		
+		return homeworkList;
+	}
 	
 	
 }

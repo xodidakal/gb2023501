@@ -1,12 +1,12 @@
 package com.choongang.gb2023501.dhDao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.choongang.gb2023501.model.Game;
-import com.choongang.gb2023501.model.GameOrder;
 
 import lombok.RequiredArgsConstructor;
 
@@ -131,12 +131,23 @@ public class GameOrderDaoImpl implements GameOrderDao {
 		}
 
 	@Override
-	public int insertGameOrder(Game game) {
+	public List<Game> selectGameOrder(Map<String, Object> map) {
+		List<Game> gameorderselect = null;
+		try {
+			gameorderselect = session.selectList("dhGameOrderSelect", map);
+		}catch (Exception e) {
+			System.out.println("GameOrderDaoImpl selectGame->"+e.getMessage());
+		}
+		return gameorderselect;
+	}
+
+	@Override
+	public int gamesum(Map<String, Object> map) {
 		int result = 0;
 		try {
-			result = session.insert("dhGameOrderInsert", game);
+			result = session.selectOne("dhGameSum",map);
 		} catch (Exception e) {
-			System.out.println("GameOrderDaoImpl insertGameOrder->"+e.getMessage());
+			System.out.println("GameOrderDaoImpl  gamesum->"+e.getMessage());
 		}
 		return result;
 	}

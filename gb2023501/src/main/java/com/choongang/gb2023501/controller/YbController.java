@@ -301,23 +301,25 @@ public class YbController {
 		System.out.println("ybController /operate/selectDateList start...");
 		List<SalesInquiryDTO> selectSaleList= null;
 		int selectTotal = 0;
+		int selectListCnt = 0;
 		Date s_date = null;
 		Date e_date = null;
-		
 		System.out.println("ybController /operate/selectDateList selectDate -> " + selectDate);
 		// 일별 검색 
-		if(selectDate.equals("date")) {
+		if(selectDate.equals("date1")) {
 			System.out.println("ybController /operate/selectDateList s_sdate -> " + startDate);
 			System.out.println("ybController /operate/selectDateList e_sdate -> " + endDate);
 			s_date = java.sql.Date.valueOf(startDate);
 			e_date = java.sql.Date.valueOf(endDate);
 			
+			selectListCnt = es.selectListCnt(s_date, e_date);
 			selectTotal = es.findTotal(s_date, e_date);
 			selectSaleList = js.findBySalesContaining(s_date, e_date);	//, pageable
 			System.out.println("ybController /operate/selectDateList selectSaleList -> " + selectSaleList);
-
+			System.out.println("ybController /operate/selectDateList selectListCnt -> " + selectListCnt);
 			log.info("selectSaleList -> " + selectSaleList.size());
-			model.addAttribute("selectDate", selectDate);
+			model.addAttribute("selectListCnt", selectListCnt);
+			model.addAttribute("selectDate1", selectDate);
 			model.addAttribute("selectTotal", selectTotal);
 			model.addAttribute("selectSaleList", selectSaleList);
 			model.addAttribute("s_date", s_date);
@@ -334,51 +336,31 @@ public class YbController {
 	        // 해당 월 마지막 날 구하기
 			String lastDay = getLastDayOfMonth(eMonth);
 	        
+			
 	        s_date = java.sql.Date.valueOf(firstDay);
 			e_date = java.sql.Date.valueOf(lastDay);
 	        System.out.println("ybController /operate/selectDateList firstDay -> " + s_date);
 	        System.out.println("ybController /operate/selectDateList lastDay -> " + e_date);
+	        selectListCnt = es.selectListCnt(s_date, e_date);
 			/* month = java.sql.Date.valueOf(sMonth); */
 	        selectTotal = es.findTotal(s_date, e_date);
 	        selectSaleList = js.selectSaleList(s_date, e_date);
 	        log.info("selectSaleList -> " + selectSaleList.size());
-	        model.addAttribute("selectDate", selectDate);
+	        
+	        model.addAttribute("selectListCnt", selectListCnt);
+	        model.addAttribute("selectDate1", selectDate);
 	        model.addAttribute("s_date", s_date);
 	        model.addAttribute("e_date", e_date);	      
 	        model.addAttribute("selectTotal", selectTotal);
 	        model.addAttribute("selectSaleList1", selectSaleList);
 		}
-
+		
+		
 		
 		
 		return "yb/salesInquiryDetail";
 	}
-//	// 매출 상세 리스트 
-//	@RequestMapping(value = "/operate/searchSalesInquiryDetail")
-//	public String searchSalesInquiryDetail(@Param("go_order_date") String go_order_date, GameOrder gameOrder, Model model) throws ParseException {
-//		System.out.println("ybController /operate/searchSalesInquiryDetail go_order_date -> " + go_order_date);
-//		System.out.println("go_order_date -> " + go_order_date);
-//		
-//		
-//		String stringDate = go_order_date.substring(0,4) + "-" +go_order_date.substring(4,6) + "-" +go_order_date.substring(6,8);
-//		Date orderDate = java.sql.Date.valueOf(stringDate);
-//		
-//		
-//		
-//		System.out.println("orderDate -> " + orderDate);
-//		gameOrder.setGoOrderDate(orderDate);
-////		List<com.choongang.gb2023501.model.GameOrder> selectSalesDetailList = es.selectSalesDetailList(gameOrder);
-//		
-//		List<GameOrder> selectSaleList = js.getListAllGameOrder(orderDate);
-//		log.info("selectSaleList -> " + selectSaleList);
-//		
-//		selectSaleList.get(0);
-//		
-//		model.addAttribute("selectSaleList", selectSaleList);
-//		model.addAttribute("date", selectSaleList.get(0).getGoOrderDate());
-//		return "yb/searchSalesInquiryDetail";
-//	}
-	
+
 	// 매출 상세 리스트 
 	   @RequestMapping(value = "/operate/searchSalesInquiryDetail")
 	   public String searchSalesInquiryDetail(@Param("go_order_date") String go_order_date, GameOrder gameOrder, Model model) throws ParseException {
@@ -443,20 +425,27 @@ public class YbController {
  
     // 학습 그룹 가입 신청 페이지
     @RequestMapping(value = "/learning/learnGrpJoinForm")
-    public String learnGrpJoin(Model model,  com.choongang.gb2023501.model.LearnGrp learnGrp, String lgTitle) {
+    public String learnGrpJoin(Model model,  com.choongang.gb2023501.model.LearnGrp learnGrp, String lgTitle, String mmName, String searchType) {
     	System.out.println("ybController /learning/learnGrpJoin start...");
+    	System.out.println("ybController /learning/learnGrpJoin searchType -> " + searchType);
     	Member member = jh.aboutMember();
     	List<LearnGrp> selectLGpList = js.selectLGpList();
-    	
+//    	int m_num = 0;
+//    	if(searchType.equals("mmName")) {
+//    		member.setMmName(mmName);
+//    		m_num = member.getMmNum();
+//    	}
+//    	System.out.println("ybController /learning/learnGrpJoin searchType_m_num -> " + m_num);
+//    	System.out.println("ybController /learning/learnGrpJoin searchType -> " + m_num);
     	System.out.println("ybController /learning/learnGrpJoin selectLGpList.size() -> " + selectLGpList.size());
     	int mmNum = ms.selectMmNumById();
     	learnGrp.setM_num(mmNum);
     	List<LearnGrp> selectLgpListByTitle = es.selecLgpListByTitle(learnGrp);
-    	int selectLgpListByTitleCnt = es.selectLgpListByTitleCnt(lgTitle, mmNum);
+//    	int selectLgpListByTitleCnt = es.selectLgpListByTitleCnt(lgTitle, mmNum);
     	System.out.println("ybController /learning/learnGrpJoin selectLgpListByTitle.size() -> " + selectLgpListByTitle.size());
-    	System.out.println("ybController /learning/learnGrpJoin selectLgpListByTitleCnt.size() -> " + selectLgpListByTitleCnt);
+//    	System.out.println("ybController /learning/learnGrpJoin selectLgpListByTitleCnt.size() -> " + selectLgpListByTitleCnt);
     	
-    	model.addAttribute("selectLgpListByTitleCnt", selectLgpListByTitleCnt);
+//    	model.addAttribute("selectLgpListByTitleCnt", selectLgpListByTitleCnt);
     	
     	model.addAttribute("selectLgpListByTitle", selectLgpListByTitle);
     	model.addAttribute("selectLGpList", selectLGpList);	    	
@@ -468,11 +457,11 @@ public class YbController {
 		System.out.println("ybController /learning/searchGrpList start...");
 		
 		System.out.println("ybController /learning/searchGrpList searchType -> " + searchType);
-		System.out.println("ybController /learning/searchGrpList lgTitle -> " + lgTitle);
+		
 		List<LearnGrp> selectLGpList = js.selectLGpList();
 		int mmNum = ms.selectMmNumById();
     	
-		int selectLgpListByTitleCnt = es.selectLgpListByTitleCnt(lgTitle, mmNum);
+//		int selectLgpListByTitleCnt = es.selectLgpListByTitleCnt(lgTitle, mmNum);
 		List<LearnGrp> selectLgpListByTitle = null;
 		if(searchType.equals("lgTitle")) {
 			System.out.println("ybController /learning/searchGrpList lgTitle -> " + lgTitle);
@@ -480,12 +469,13 @@ public class YbController {
 			learnGrp.setM_num(mmNum);
 			selectLgpListByTitle = es.selecLgpListByTitle(learnGrp);
 		} else {
+			System.out.println("ybController /learning/searchGrpList mmName -> " + mmName);
 			learnGrp.setM_name(mmName);
-			learnGrp.setM_num(mmNum);
+			
 			selectLgpListByTitle = es.selecLgpListByTitle(learnGrp);
 		} 
 		model.addAttribute("selectLGpList", selectLGpList);
-		model.addAttribute("selectLgpListByTitleCnt", selectLgpListByTitleCnt);
+//		model.addAttribute("selectLgpListByTitleCnt", selectLgpListByTitleCnt);
 		model.addAttribute("selectLgpListByTitle", selectLgpListByTitle);
     	return "yb/learnGrpJoinForm";
 	}
@@ -507,29 +497,29 @@ public class YbController {
 	}
 	// 매출 그래프 조회
 	@RequestMapping(value = "/operate/saleInquiryChart")
-	public String saleInquiryChart(Model model, String sDate, String eDate, String s, String selectDate) throws JsonProcessingException {
+	public String saleInquiryChart(Model model, String sDate, String eDate, String s, String date) throws JsonProcessingException {
 		 System.out.println("ybController /operate/saleInquiryChart Start...");
 		 List<String> dateList = new ArrayList<>();
-		 List<String> salesList = new ArrayList<>();
+		 
 		 System.out.println("ybController /operate/saleInquiryChart sDate -> " + sDate);
 		 System.out.println("ybController /operate/saleInquiryChart eDate -> " + eDate);
 		 Date s_date =  stringMathToDate(sDate);
 		 Date e_date =  stringMathToDate(eDate);
-		 System.out.println("ybController /operate/saleInquiryChart selectDate ->" + selectDate);
+		 System.out.println("ybController /operate/saleInquiryChart selectDate ->" + date);
 		 System.out.println("ybController /operate/saleInquiryChart s_date -> " + s_date);
 		 System.out.println("ybController /operate/saleInquiryChart e_date -> " + e_date);
 		
-		List<SalesInquiryDTO> selectSaleList = js.findBySalesContaining(s_date, e_date);
+		List<SalesInquiryDTO> selectSaleList = null;
+		// 월 검색일 때
+		if(date.equals("month")) {
+			selectSaleList = js.selectSaleList(s_date, e_date);
+		} 
+		// 일 별 검색
+		else {
+			selectSaleList = js.findBySalesContaining(s_date, e_date);
+		}
 		System.out.println("ybController /operate/saleInquiryChart selectSaleList.get(0).toString() -> " + selectSaleList.get(0).getGoOrderDate());
 		System.out.println("ybController /operate/saleInquiryChart selectSaleList.get(0).toString() -> " + selectSaleList.get(0).getSalesSum());
-		for(int i=0; i<selectSaleList.size(); i++) {
-			long salesSum =  selectSaleList.get(i).getSalesSum();
-			String formattedSalesSum = formatNumberWithCommas(salesSum, Locale.KOREA);
-			
-			salesList.add(formattedSalesSum);
-		}
-
-		System.out.println("ybController /operate/saleInquiryChart salesList -> " + salesList);
 
 		// selectSaleList에서 날짜 뽑아서 형식 변환
 		for(int i=0; i<selectSaleList.size(); i++) {
@@ -539,29 +529,26 @@ public class YbController {
 
 			dateList.add(formattedDate);
 		}
+		
 		System.out.println("ybController /operate/saleInquiryChart dateList -> " + dateList);
 		System.out.println("ybController /operate/saleInquiryChart selectSaleList -> " + selectSaleList.toString());
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		String selectSaleListJson = objectMapper.writeValueAsString(selectSaleList);
 		String selectDateList = objectMapper.writeValueAsString(dateList);
-		String selectSalesList = objectMapper.writeValueAsString(salesList);
+
 		System.out.println("ybController /operate/saleInquiryChart selectSaleListJson -> " + selectSaleListJson.toString());
 		System.out.println("ybController /operate/saleInquiryChart selectSaleList.size() -> " + selectSaleList.size());
+		
 		model.addAttribute("selectDateList", selectDateList);
 		model.addAttribute("selectSaleListJson", selectSaleListJson);
-		model.addAttribute("selectSalesList", selectSalesList);
 		model.addAttribute("s_date", s_date);
 		model.addAttribute("e_date", e_date);
 		model.addAttribute("selectSaleList", selectSaleList);
 		
 		return "yb/saleInquiryChart";
 	}
-	// 
-	private String formatNumberWithCommas(long number, Locale locale) {
-		NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
-        return numberFormat.format(number);
-	}
+
 
 
 	

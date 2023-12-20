@@ -3,9 +3,11 @@ package com.choongang.gb2023501.gbRepository;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
+import com.choongang.gb2023501.domain.Homework;
 import com.choongang.gb2023501.domain.HwSend;
 import com.choongang.gb2023501.model.HomeworkDTO;
 
@@ -67,6 +69,33 @@ public class JpaHomeworkRepositoryImpl implements JpaHomeworkRepository {
 		}
 		
 		return myHomeworkList;
+	}
+	
+	// 숙제 평가 목록 가져오기
+	@Override
+	public List<Homework> selectHomeworkList(HwSend hwsend) {
+		System.out.println("JpaHomeworkRepositoryImpl selectHomeworkList start...");
+		List<Homework> homeworkList = null;
+		
+		try {
+			String sql = "SELECT hr.homework.hhNum "
+					   + "FROM HwRecord hr "
+					   + "GROUP BY hr.homework.hhNum";
+			List<Integer> hhNumList = em.createQuery(sql, Integer.class).getResultList();
+			String sql2 = "SELECT h "
+						+ "FROM Homework h "
+						+ "WHERE h.hhNum IN :hhNumList "
+						+ "AND h.member.mmNum = :mmNum";
+			homeworkList = em.createQuery(sql2, Homework.class)
+											.setParameter("hhNumList", hhNumList)
+											.setParameter("mmNum", hwsend.getMember().getMmNum())
+											.getResultList();
+		} catch (Exception e) {
+			System.out.println("JpaHomeworkRepositoryImpl selectHomeworkList Exception -> "+ e.getMessage());
+		}
+		
+		
+		return homeworkList;
 	}
 
 }

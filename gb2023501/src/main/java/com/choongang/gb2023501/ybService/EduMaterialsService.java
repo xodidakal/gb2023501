@@ -16,7 +16,7 @@ public interface EduMaterialsService {
 
 	List<LearnGrp> 				selecLgpListByTitle(com.choongang.gb2023501.model.LearnGrp learnGrp);
 
-	int 						selectLgpListByTitleCnt(String lgTitle, int mmNum);
+//	int 						selectLgpListByTitleCnt(String lgTitle, int mmNum);
 
 	List<GameOrder> 			selectSalesDetailList(GameOrder gameOrder);
 
@@ -25,6 +25,9 @@ public interface EduMaterialsService {
 	List<Game> 					selectGameList(Game game);
 
 	int 						insertLgJoin(int lg_num, int m_num);
+
+	int 						selectListCnt(Date s_date, Date e_date);
+
 
 
 }
