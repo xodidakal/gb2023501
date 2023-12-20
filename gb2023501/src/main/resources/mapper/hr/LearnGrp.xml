@@ -26,10 +26,10 @@
 			ORDER BY g.g_title
 			</when>
 			<when test="'remainingPeriod'.equals(sort)">
-			ORDER BY remainingTo
+			ORDER BY remainingPeriod DESC
 			</when>
 			<when test="'remainingTo'.equals(sort)">
-			ORDER BY remainingTo
+			ORDER BY remainingTo DESC
 			</when>
 		</choose>
 	</select>
