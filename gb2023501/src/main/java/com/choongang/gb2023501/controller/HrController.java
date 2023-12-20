@@ -38,11 +38,15 @@ public class HrController {
 		// 로그인한 회원의 회원번호 도출
 		int mNum = memberService.selectMmNumById();
 
+		// SELECT
 		List<LearnGrpDTO> learnGrps = lgService.learnGroupList(mNum, 0, sort, type, keyword);
+		System.out.println("HrController learnGroupList() learnGrps.size() -> "+learnGrps.size());
+
+		// model 저장
 		model.addAttribute("learnGrps", learnGrps);
 		model.addAttribute("type", type);
 		model.addAttribute("keyword", keyword);
-		System.out.println("HrController learnGroupList() learnGrps.size() -> "+learnGrps.size());
+		model.addAttribute("size", learnGrps.size());
 		
 		System.out.println("HrController learnGroupList() end..");		
 		return "/hr/learnGroupList";

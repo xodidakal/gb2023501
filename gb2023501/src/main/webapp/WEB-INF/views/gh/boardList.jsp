@@ -15,47 +15,7 @@
 <script type="text/javascript">
 
 	var BoardCategory = ${BoardCategory};
-	// 옵션 선택에 따라 게시 숫자 변경
-	/* function chooseCount() {
-		var selectedValue = document.getElementById("count_type").value;
-		
-		switch (selectedValue) {
-			case "10":
-				alert("10");
-				window.location.href="/customer/boardList?b_category=" + BoardCategory + "&rowPage=10";
-				break;
-			case "20":
-				alert("20");
-				window.location.href="/customer/boardList?b_category=" + BoardCategory + "&rowPage=20";
-				break;
-			case "30":
-				alert("30");
-				window.location.href="/customer/boardList?b_category=" + BoardCategory + "&rowPage=30";
-				break;
-			default:
-				break;
-		}
-	} */
-	/* $(function() {
-		var count_type = document.getElementById("count_type").value;
-		
-		$("#count_type").on('change',function() {
-			alert("숫자선택");
-			alert("count_type->"+count_type);
-			
-			window.location.href="/customer/boardList?b_category=" + BoardCategory + "&rowPage=" + count_type;
-			
-		});
 	
-	}); */
-	
-	
-	// 옵션 선택 후 페이지 이동하면 옵션값 선택유지
-	/* window.onload = function () {
-        var countType = '${rowPage}';
-        document.getElementById("count_type").value = countType;
-    } */
-    
     $(function() {
     	var count_type = ${rowPage}
 
@@ -83,14 +43,6 @@
     	});
     });
     
-	/* function search_start() {
-		var search_keyword = document.getElementById("search_keyword").value;
-		var search_type = document.getElementById("search_type").value;
-		
-		alert("검색시작");
-		window.location.href="/customer/boardList?search_type=" + search_type + "&search_keyword=" + search_keyword + "&b_category=" + BoardCategory;
-		
-	} */
 	
 </script>
 <!-- JS END -->
@@ -155,8 +107,7 @@
 			</div>
 	    </div>
 
-       	<table class="listTable" style="text-align: center;">
-       	<!-- style="text-align: center;"없으면 안맞음 -->
+       	<table class="listTable">
 			<tr>
 				<th>No.</th>
 				<th>게시 분류</th>
@@ -179,14 +130,16 @@
 						 			<c:otherwise>규정 및 정책</c:otherwise>
 						 		</c:choose>
 					 		</td>
-							<td>
+							<td style="text-align: left;">
 								<!-- 상단 표시 -->
+								<div>
 								<c:if test="${Blist.b_flag eq '0'}"><img src="/assets/img/notice_icon.png" style="margin-bottom:4px"></c:if>
 								<!-- 댓글 표시 -->
-								<%-- <c:if test="${Blist.b_num eq Blist.b_ref_num}"><img src="/assets/img/re_icon.png" style="margin-bottom:4px"></c:if> --%>
+								<c:if test="${Blist.b_title.contains('[답변]')}"><img src="/assets/img/reply.png" style="margin-bottom:4px"></c:if>
 								${Blist.b_title} &nbsp;
 								<!-- 댓글 표시 -->
 								<c:if test="${Blist.b_category eq '1'}"><label style="color: orange;">[${Blist.comment_count}]</label></c:if>
+								</div>
 							</td>
 							<td>${Blist.m_name}</td>
 							<td><fmt:formatDate value="${Blist.b_regi_date}" type="date" pattern="yyyy-MM-dd"/></td>
