@@ -11,7 +11,7 @@
 
 <div class="row g-0 justify-content-center">
 	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
-		<form action="gameInsertResult" method="post">
+		<form action="gameInsertResult" method="post" enctype="multipart/form-data">
 	        <div class="row g-3">
 	        <h2 class="display-7 mb-4">게임 콘텐츠 등록</h2>
 	        <hr class="my-3">
@@ -19,19 +19,23 @@
 		            <tr>
 						<th>게임명</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name=",g_Title" id="g_Title">
+		                    <input type="text" class="form-control" name="g_title" id="g_title">
 		            	</td>
 					</tr>
 					 <tr>
 						<th>학습난이도</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="emTitle" id="emTitle" >
+							<select name="g_step" id="g_step" class="form-control">
+								<option value="1">초급</option>
+								<option value="2">중급</option>
+								<option value="3">고급</option>
+							</select>
 		            	</td>
 					</tr>
 					 <tr>
 						<th>구독기간</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="g-period" id="g-period" >개월
+		                    <input type="text" class="form-control" name="g_period" id="g_period" >개월
 		            	</td>
 					</tr>
 					 <tr>
@@ -67,7 +71,7 @@
 	                <tr>
 	                	<th>썸네일</th>
 						<td colspan="3">
-		                    <input type="file" class="form-control" name="g_attach_name" id="g_attach_name" placeholder="Subject">
+		                    <input type="file" class="form-control" name="file" id="file" placeholder="Subject">
 		                </td>
 	                </tr>
 	                <tr>

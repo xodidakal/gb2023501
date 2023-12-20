@@ -9,4 +9,5 @@ public interface LearnGrpRepository extends JpaRepository<LearnGrp, Long> {
 
 	void save(LgJoin lgJoin);
 
+
 }

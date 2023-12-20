@@ -18,6 +18,7 @@
 		width: 150px;
 	}
 </style>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script type="text/javascript">
 	function deleteEdu(emNum) {
 		 if (confirm("삭제하시겠습니까?") == true){  
@@ -27,6 +28,30 @@
 	    	 }
 		   	 return false;
 	}
+	
+	 // input file에 change 이벤트 부여
+    const file1 = document.getElementById("file1")
+    file1.addEventListener("change", e => {
+    	readImage(e.target)
+    })
+	
+	function readImage(input){
+		if(input.files && input.files[0]){
+			//FileReader 인스턴스 생성
+			const reader = new FileReader()	
+
+			//이미지파일만 넣을 수 있도록하기
+
+			//이미지가 로드 된 경우
+			reader.onload = e => {
+				const img = document.getElementById("img")
+				img.src = e.target.result
+			}
+			// reader가 이미지 읽도록 하기
+			reader.readAsDataURL(input.files[0])
+		}
+	}
+   
 </script>
 </head>
 <body>
@@ -36,7 +61,7 @@
 <!--     </div> -->
 <div class="row g-0 justify-content-center">
 	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
-		<form action="/operate/updateEduMaterials" method="post">
+		<form action="/operate/updateEduMaterials" method="post" enctype="multipart/form-data">
 			<input type="hidden" value="${eduMaterials.emNum }" name="em_num" id="em_num">
 <%-- 			<input type="text" value="${m_num }" name="mNum" id="mNum"> --%>
 <%-- 			<input type="text" value="${eduMaterials.ggNum }" name="ggNum" id="ggNum"> --%>
@@ -48,6 +73,20 @@
 	        	<small>작성일 : <fmt:formatDate value="${eduMaterials.emRegiDate }" pattern="yyyy년MM월dd일"/></small>			                  
 <%-- 	        	<input type="hidden" value="${eduMaterials.emRegiDate }" name="emRegiDate" id="emRegiDate"> --%>
 	        	<table id="table" style="margin-top: 0px;">
+					<tr>
+						<th>게임 콘텐츠</th>
+						<td><input type="hidden" value="${eduMaterials.ggNum }" id="ggNum" name="ggNum">
+							<select id="gNum" name="gNum" class="w-17 rounded" style="border-color: #ced4da; height: 30px;">
+								<option value="0"></option>
+								<c:forEach items="${selectGameList }" var="selectGameList">
+									<option value="${selectGameList.g_num }" 
+										<c:if test="${selectGameList.g_num eq eduMaterials.ggNum }"> selected="selected" </c:if>>
+											${selectGameList.g_title }
+									</option>
+								</c:forEach>	
+							</select>
+						 </td>
+					</tr>
 					<tr>
 						<th>자료구분</th>
 						<c:choose>
@@ -99,17 +138,17 @@
 				                    <label>동영상</label>
 				                </td>
 				                <td width="150px;">   
-				                    <input class="form-check-input" type="radio" name="em_type" value="2" id="em_typeVideo" checked="checked">
+				                    <input class="form-check-input" type="radio" name="emType" value="2" id="em_typeVideo" checked="checked">
 				                    <label>교재</label>
 								</td>
 								<td width="150px;">   
-				                    <input class="form-check-input" type="radio" name="em_type" value="3" id="em_typeSite" >
+				                    <input class="form-check-input" type="radio" name="emType" value="3" id="em_typeSite" >
 				                    <label>웹사이트</label>
 								</td>
 							</c:when>
 							<c:otherwise>
 								<td width="150px;">
-				                    <input class="form-check-input" type="radio" name="em_type" value="1" id="em_typeTutorial">
+				                    <input class="form-check-input" type="radio" name="emType" value="1" id="em_typeTutorial">
 				                    <label>동영상</label>
 				                </td>
 				                <td width="150px;">   
@@ -170,10 +209,20 @@
 					</tr>
 	                <tr>
 	                	<th>썸네일</th>
-						<td colspan="3">
+						<td colspan="2">
 							<div class="d-grid gap-2 d-flex justify-content-center">
-								<label for="emAttachName"><img src="${eduMaterials.emAttachName }" alt="도서 썸네일" class="img-fluid" style="width: 5rem; height: 80px;"></label>
-								<input type="file" class="form-control" id="emAttachName" name="emAttachName" value="" style="visibility: hidden;" >
+								<input type="hidden" value="${eduMaterials.emAttachName}" name="beforeName"> 
+								<label for="file1">
+									<c:choose>
+			                            <c:when test="${fn:contains(eduMaterials.emAttachName, 'http')}">
+			                            	<img src="${eduMaterials.emAttachName}" alt="Ecommerce"  width="75px" height="90px" id="img">
+		                           		</c:when>
+		                            	<c:otherwise>
+		                              		<img src="${pageContext.request.contextPath}/upload/yb/${eduMaterials.emAttachName}" alt="Ecommerce"  width="75px" height="90px" id="img">
+		                            	</c:otherwise>
+	                        	    </c:choose>
+	                        	</label>
+								<input type="file" class="form-control" id="file1" name="file1" width="100px;" style="height: 40px;" value="${eduMaterials.emAttachName }" >
 			                </div>
 		                </td>
 	                </tr>   

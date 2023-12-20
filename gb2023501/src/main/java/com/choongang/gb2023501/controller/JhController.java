@@ -8,6 +8,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -166,7 +167,7 @@ public class JhController {
 				try {
 					String title = "한국바둑기원 회원가입 인증번호 입니다.";
 					String toEmail = (String) email;
-					String setFrom= "awg3200@gmail.com";
+					String setFrom= "alphago5012@gmail.com";
 					
 					//Mime 전자우편 Internet 표준 Format
 					MimeMessage message = mailSender.createMimeMessage();
@@ -254,8 +255,48 @@ public class JhController {
 			
 		}
 		
+		//세션 초기화
+		//안하면 뒤로가기했다 앞으로 왔을 떄 인증 다시 안해도 정보가 계속 저장되어버림
+		session.invalidate();
+		
 		return modelAndView;
 	}
+	
+	//아이디 중복체크
+	@ResponseBody
+	@PostMapping(value = "info/idDuplicateCheck")
+	public String idDuplicateCheck(String id) {
+		System.out.println("JhController idDuplicateCheck Start...");
+		System.out.println("JhController idDuplicateCheck id -> "+id);
+		
+		boolean existsByMmId = ms.existsByMmId(id);
+		
+		//중복아이디면 1, 아니면 0
+		//ajax 결과는 boolean을 받지 못하기 때문
+		String result = existsByMmId ? "1" : "0";
+//		String result = "2";
+		return result;
+	}
+	
+	//회원가입
+	@ResponseBody
+	@PostMapping(value = "info/join")
+	public String join( @Valid Member member) {
+		System.out.println("JhController join Start...");
+		System.out.println("memeber -> " + member);
+		Member savedMember = null;
+		savedMember =  ms.join(member);
+		String result = null;
+		
+		if(savedMember != null) {
+			result = "1";
+		} else 
+		result = "0";
+		
+		return result;
+	}
+	
+	
 	
 	//회원 목록 관리 페이지
 	@RequestMapping(value = "operate/memberList")

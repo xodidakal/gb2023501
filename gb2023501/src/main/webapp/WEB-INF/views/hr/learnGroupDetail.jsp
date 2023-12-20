@@ -26,6 +26,13 @@
 	border-top: 1px solid #dfdfdf;
 }
 </style>
+<script type="text/javascript">
+	//combo box 변경
+	function changeLg() {
+		var lg_num = $('select[name="lgTitle"]').val();
+		location.href = "/educator/learnGroupDetail?lg_num="+lg_num;
+	}
+</script>
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->
@@ -42,7 +49,16 @@
 	    <table class="subTable">
 			<tr>
 				<th>학습그룹명</th>
-				<td>${learnGrpDTO.learnGrp.lgTitle}</td>
+				<td>
+					<select id="lgTitle" name="lgTitle" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da; margin:0 auto;"
+							onchange="changeLg()">
+						<c:forEach var="learnGrpsAll" items="${learnGrpsAll }">
+							<option value="${learnGrpsAll.learnGrp.lgNum }" <c:if test="${learnGrpsAll.learnGrp.lgNum eq learnGrpDTO.learnGrp.lgNum }"> selected </c:if>>
+								${learnGrpsAll.learnGrp.lgTitle }
+							</option>
+						</c:forEach>
+					</select>
+				</td>
 				<th>게임콘텐츠명</th>
 				<td>${learnGrpDTO.learnGrp.game.ggTitle}</td>
 			</tr>
@@ -59,7 +75,7 @@
 			<div style="margin-bottom: 15px; float: right;">
 <!-- 			<div class="d-flex align-items-center justify-content-end"> -->
           		<div>
-	          		<a href="boardForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="가입 신청 확인"></a>
+	          		<a href="/educator/learnGroupJoinList?lg_num=${lg_num }"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="가입 신청 확인"></a>
             	</div>
             </div>
 		</div>
@@ -98,7 +114,7 @@
 			 </tbody>   
               </table>
               <div class="row mt-8" style="width:100%;">
-					<div class="d-flex justify-content-center" style="margin-top:12px">
+				<div class="d-flex justify-content-center" style="margin-top:12px">
                 <nav aria-label="Page navigation example">
 				  <ul class="pagination">
 				    <li class="page-item"><a class="page-link" href="#">이전</a></li>
@@ -115,8 +131,8 @@
 				    <li class="page-item"><a class="page-link" href="#">다음</a></li>
 				  </ul>
 				</nav>
-			</div>
-		</div>
+				</div>
+              </div>
 	</div>
 </div>
 <%@ include file="../common/footerFo.jsp" %>

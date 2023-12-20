@@ -105,6 +105,127 @@ public class BoardDaoImpl implements BoardDao {
 		return list;
 	}
 
+	@Override
+	public int updateParentNum(int b_num) {
+		System.out.println("BoardDaoImpl updateParentNum start...");
+		int result = 0;
+		try {
+			result = sqlSession.update("mkhUpdateParentNum", b_num);
+		} catch (Exception e) {
+			System.out.println("BoardDaoImpl updateParentNum Exception->"+e.getMessage());
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int insertComment(BoardComment boardComment) {
+		System.out.println("BoardDaoImpl insertComment start...");
+		int result = 0;
+		try {
+			result = sqlSession.insert("mkhInsertComment", boardComment);
+		} catch (Exception e) {
+			System.out.println("BoardDaoImpl insertComment Exception->"+e.getMessage());
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int deleteComment(BoardComment boardComment) {
+		System.out.println("BoardDaoImpl deleteComment start...");
+		int result = 0;
+		try {
+			result = sqlSession.delete("mkhDeleteComment", boardComment);
+			System.out.println("BoardDaoImpl deleteComment result->"+result);
+		} catch (Exception e) {
+			System.out.println("BoardDaoImpl deleteComment Exception->"+e.getMessage());
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int deleteBoard(BoardComment boardComment) {
+		System.out.println("BoardDaoImpl deleteBoard start...");
+		int result = 0;
+		try {
+			result = sqlSession.delete("mkhDeleteBoard", boardComment);
+		} catch (Exception e) {
+			System.out.println("BoardDaoImpl deleteBoard Exception->"+e.getMessage());
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int updateBoard(Board board) {
+		System.out.println("BoardDaoImpl updateBoard start...");
+		int result = 0;
+		try {
+			result = sqlSession.update("mkhUpdateBoard", board);
+			System.out.println("BoardDaoImpl updateBoard result->"+result);
+		} catch (Exception e) {
+			System.out.println("BoardDaoImpl updateBoard Exception->"+e.getMessage());
+		}
+
+		return result;
+	}
+
+	@Override
+	public int deleteFile(Board board) {
+		System.out.println("BoardDaoImpl deleteFile start...");
+		int result = 0;
+		try {
+			result = sqlSession.update("mkhDeleteFile", board);
+		} catch (Exception e) {
+			System.out.println("BoardDaoImpl deleteFile Exception->"+e.getMessage());
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int deleteBoardComment(BoardComment boardComment) {
+		System.out.println("BoardDaoImpl deleteBoardComment start...");
+		int result = 0;
+		try {
+			result = sqlSession.delete("mkhDeleteBoardComment", boardComment);
+			System.out.println("deleteBoardComment 결과->"+result);
+		} catch (Exception e) {
+			System.out.println("BoardDaoImpl deleteBoardComment Exception->"+e.getMessage());
+		}
+		
+		return result;
+	}
+
+	@Override
+	public Board selectOriBoard(int b_num) {
+		System.out.println("BoardDaoImpl selectOriBoard start...");
+		Board board = null;
+		try {
+			board = sqlSession.selectOne("mkhSelectOriBoard", b_num);
+		} catch (Exception e) {
+			System.out.println("BoardDaoImpl selectOriBoard Exception->"+e.getMessage());
+		}
+		return board;
+	}
+
+	@Override
+	public int selectAnswerCnt(BoardComment boardComment) {
+		System.out.println("BoardDaoImpl selectAnswerCnt start...");
+		int result = 0;
+		try {
+			result = sqlSession.selectOne("mkhSelectAnswerCnt", boardComment);
+			System.out.println("BoardDaoImpl selectAnswerCnt result->"+result);
+		} catch (Exception e) {
+			System.out.println("BoardDaoImpl selectAnswerCnt Exception->"+e.getMessage());
+		}
+		
+		return result;
+	}
+	
+
 //	@Override
 //	public int selectBdCommentListCnt(BoardComment boardComment) {
 //		System.out.println("BoardDaoImpl selectBdCommentListCnt start...");

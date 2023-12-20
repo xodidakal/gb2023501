@@ -58,4 +58,17 @@
 		</foreach> 
 		SELECT * FROM DUAL
 	</insert>
+	
+	<insert id="gbInsertUpdateMyHomework" parameterType="HwRecord">
+		MERGE INTO hw_record                                
+		USING DUAL                                         
+		ON (h_num = #{h_num} AND m_num = #{m_num} AND hr_level = #{hr_level})                                 
+		WHEN MATCHED THEN
+		UPDATE SET hr_content = #{hr_content},
+		           hr_question = #{hr_question},
+		           hr_modi_date = sysdate
+		WHEN NOT MATCHED THEN
+		INSERT(h_num, m_num, hr_level, hr_content, hr_question, hr_subm_date)
+		VALUES(#{h_num}, #{m_num}, #{hr_level}, #{hr_content}, #{hr_question}, sysdate)  
+	</insert>
 </mapper>

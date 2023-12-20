@@ -33,6 +33,7 @@ public interface YbRepository {
 
 	List<GameOrder> 			findByGoOrderDateAtBetween(Date s_date, Date e_date);
 
+
 	
 	
 }

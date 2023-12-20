@@ -17,7 +17,7 @@
 		<div class="mb-9">
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">내 숙제</h2>
-	         <p style="margin-bottom: 35px;">총 9,999 건</p>
+	         <p style="margin-bottom: 35px;">총 <fmt:formatNumber value="${myHomeworkCnt}" groupingUsed="true"/> 건</p>
 	    </div>
 
 		<div class="input-group col-md-5 mb-3"> 
@@ -49,23 +49,21 @@
 					<th width="100px;">상세</th>				
 				</tr>
 			</thead>
-			 <tbody>
-			 <c:set var="startRow" value="${startRow }"></c:set>
-			 <c:forEach var="myHomework" items="${myHomeworkList }">
-			 	
-			 	<tr>
-			 		<td>${startRow}</td>
-					<td>${myHomework.hhTitle }</td>
-					<td>${myHomework.mmName }</td>
-					<td>${myHomework.hhLevel }</td>
-					<td>${myHomework.hhDeadline }</td>
-					<td width="100px;"><a href="/learning/myHomeworkDetail"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
-				</tr>
-				<c:set var="startRow" value="${startRow + 1 }"></c:set>				
-			 </c:forEach>
-				
-                </tbody>   
-              </table>
+			<tbody>
+				 <c:set var="startRow" value="${startRow }"></c:set>
+				 <c:forEach var="myHomework" items="${myHomeworkList }">
+				 	<tr>
+				 		<td>${startRow}</td>
+						<td>${myHomework.homework.hhTitle }</td>
+						<td>${myHomework.homework.member.mmName }</td>
+						<td>${myHomework.homework.hhLevel }</td>
+						<td>${myHomework.homework.hhDeadline }</td>
+						<td width="100px;"><a href="/learning/myHomeworkDetail?h_num=${myHomework.homework.hhNum }"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
+					</tr>
+					<c:set var="startRow" value="${startRow + 1 }"></c:set>				
+				 </c:forEach>
+             </tbody>   
+          </table>
               <div class="row mt-8" style="width:100%;">
 					<div class="d-flex justify-content-center" style="margin-top:12px">
                 <nav aria-label="Page navigation example">

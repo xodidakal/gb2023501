@@ -26,6 +26,49 @@
 	border-top: 1px solid #dfdfdf;
 }
 </style>
+<script type="text/javascript">
+	// combo box 변경
+	function changeLg() {
+		var lg_num = $('select[name="lgTitle"]').val();
+		location.href = "/educator/learnGroupJoinList?lg_num="+lg_num;
+	}
+	
+	// 가입 승인
+	function clickApproval() {
+		// 체크 수 = 0일 때
+		if($('input[name="checkbox"]:checked').length == 0){
+			alert("학습자를 선택해주세요.");
+			
+		// 체크 수 = 0 아닐 때만 동작
+		} else {
+			if(confirm("승인하시겠습니까?")){
+				$('input[name="checkbox"]:checked').each(function(){
+					// index 정의
+					var index = $(this).val();
+					
+					$.ajax(
+							{
+								/* type : "DELETE", */
+								url : "/educator/learnGroupJoinApproval",
+								data : {lg_num : ${learnGrpDTO.learnGrp.lgNum },
+										m_num : $('#mmNum'+index).val()},
+								dataType : 'text',
+								success : function(data){
+									if(data == "1"){
+										alert("승인 완료되었습니다.");
+										location.reload();
+									} else {
+										alert("승인 실패하였습니다. 다시 시도해주세요.");
+										location.reload();
+									}
+								}
+							}
+					)
+				})
+			}
+		}
+	}
+</script>
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->
@@ -42,15 +85,24 @@
 	    <table class="subTable">
 			<tr>
 				<th>학습그룹명</th>
-				<td>ㅇㅇㅇ</td>
+				<td>
+					<select id="lgTitle" name="lgTitle" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da; margin:0 auto;"
+							onchange="changeLg()">
+						<c:forEach var="learnGrpsAll" items="${learnGrpsAll }">
+							<option value="${learnGrpsAll.learnGrp.lgNum }" <c:if test="${learnGrpsAll.learnGrp.lgNum eq learnGrpDTO.learnGrp.lgNum }"> selected </c:if>>
+								${learnGrpsAll.learnGrp.lgTitle }
+							</option>
+						</c:forEach>
+					</select>
+				</td>
 				<th>게임콘텐츠명</th>
-				<td>ㅇㅇㅇ</td>
+				<td>${learnGrpDTO.learnGrp.game.ggTitle}</td>
 			</tr>
 			<tr>
 				<th>수용 가능 인원</th>
-				<td>ㅇㅇㅇ</td>
+				<td>${learnGrpDTO.learnGrp.lgTo }명</td>
 				<th>가입 승인 인원</th>
-				<td>ㅇㅇㅇ</td>
+				<td>${learnGrpDTO.mmCnt }명</td>
 			</tr>
 	    </table>
 	    
@@ -60,35 +112,40 @@
 				<tr>
 					<th>No.</th>
 					<th>이름</th>
-					<th>연락처</th>
+					<th>휴대전화</th>
 					<th>가입신청일자</th>
 					<th>선택</th>
 				</tr>
 			</thead>
 			<tbody>
-<%-- 					 <c:forEach var="" items=""> --%>
-			 	<tr>
-			 		<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
-				</tr>
-				
-				<tr>
-			 		<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td><input class="form-check-input" type="checkbox" name="em_type" id="flexRadioDefault1" ></td>
-				</tr>
-				
-<%-- 					 </c:forEach> --%>
+				<c:choose>
+			 		<c:when test="${empty members}">
+			 			<tr>
+			 				<td colspan="5">가입 신청자가 없습니다.</td>
+			 			</tr>
+			 		</c:when>
+			 		
+			 		<c:otherwise>
+			 			<c:forEach var="members" items="${members }" varStatus="status">
+						 	<tr>
+						 		<td>No.</td>
+								<td>${members.member.mmName }</td>
+								<td>${members.member.phone }</td>
+								<td><fmt:formatDate value="${members.lgjJoindate }" pattern="yyyy-MM-dd"/></td>
+								<td>
+									<input class="form-check-input" type="checkbox" name="checkbox" id="checkbox${status.index }" value="${status.index }" >
+									<input type="hidden" id="mmNum${status.index }" value="${members.member.mmNum }" >
+								</td>
+							</tr>
+			 			</c:forEach>
+			 		</c:otherwise>
+			 	</c:choose>
 			</tbody>   
        	</table>
        	
 		<div class="d-grid gap-2 d-md-flex justify-content-center" >
-			<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="가입 승인">
+			<input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;"
+				   value="가입 승인" onclick="clickApproval()">
 		</div>
 		
 	</div>

@@ -22,7 +22,7 @@ public class HrRepositoryImpl implements HrRepository {
 	// 교육자마당 > 내학습그룹 (SELECT / JPA)
 	// 교육자마당 > 학습그룹 상세 (SELECT / JPA) - 학습그룹 정보
 	@Override
-	public List<LearnGrpDTO> learnGroupList(int lg_num, String sort, String type, String keyword) {
+	public List<LearnGrpDTO> learnGroupList(int mNum, int lg_num, String sort, String type, String keyword) {
 		System.out.println("HrRepositoryImpl learnGroupList() start..");
 		
 ////	기본값 조회
@@ -86,7 +86,8 @@ public class HrRepositoryImpl implements HrRepository {
 																							     "AND    lj2.lgjApproval = 1) as mmNumCnt) " +
 								 "FROM LearnGrp learnGrp " +
 								 "LEFT JOIN learnGrp.lgJoin lj ";
-			String queryWhere = "";
+			String queryWhere1 = "WHERE learnGrp.member.mmNum = "+mNum;
+			String queryWhere2 = "";
 			String queryGroupBy = "GROUP BY learnGrp ";
 			String queryOrderBy = "";
 
@@ -113,7 +114,7 @@ public class HrRepositoryImpl implements HrRepository {
 			// 검색어 : X
 			if(keyword == null || type == null) {
 				System.out.println("검색어 : X");
-				queryWhere = "";
+				queryWhere2 = "";
 				
 			// 검색어 : O
 			} else {
@@ -122,17 +123,17 @@ public class HrRepositoryImpl implements HrRepository {
 				// 검색유형 : 학습그룹명
 				if(type.equals("typeLgTitle")) {
 					System.out.println("검색유형 : 학습그룹명");
-					queryWhere = "WHERE learnGrp.lgTitle LIKE '%"+keyword+"%' ";
+					queryWhere2 = "WHERE learnGrp.lgTitle LIKE '%"+keyword+"%' ";
 					
 				// 검색유형 : 게임콘텐츠명
 				} else if(type.equals("typeGgTitle")) {
 					System.out.println("검색유형 : 게임콘텐츠명");
-					queryWhere = "WHERE learnGrp.game.ggTitle = '%"+keyword+"%' ";
+					queryWhere2 = "WHERE learnGrp.game.ggTitle LIKE '%"+keyword+"%' ";
 				}
 			}
 
 			// QUERY 통합
-			String query = queryCommon + queryWhere + queryGroupBy + queryOrderBy;
+			String query = queryCommon + queryWhere1 + queryWhere2 + queryGroupBy + queryOrderBy;
 			System.out.println("HrRepositoryImpl learnGroupList() query -> "+query);
 						
 			learnGrps = em.createQuery(query, LearnGrpDTO.class)
@@ -159,6 +160,7 @@ public class HrRepositoryImpl implements HrRepository {
 										"FROM LearnGrp learnGrp " +
 										"LEFT JOIN learnGrp.lgJoin lj " +
 										"WHERE learnGrp.lgNum = " + lg_num + 
+										"AND learnGrp.member.mmNum = " + mNum +
 										"GROUP BY learnGrp ", LearnGrpDTO.class)
 						  .getResultList();		
 		}
@@ -167,6 +169,20 @@ public class HrRepositoryImpl implements HrRepository {
 		
 		System.out.println("HrRepositoryImpl learnGroupList() end..");
 		return learnGrps;
+	}
+	
+	// 교육자마당 > 내학습그룹 (DELETE / JPA)
+	@Override
+	public void learnGroupListDelete(int lg_num) {
+		System.out.println("HrRepositoryImpl learnGroupListDelete() start..");
+		
+		em.createQuery("DELETE FROM LearnGrp lg " + 
+					   "WHERE lg.lgNum = :lgNum "
+					   )
+		  .setParameter("lgNum", lg_num)
+		  .executeUpdate();
+		
+		System.out.println("HrRepositoryImpl learnGroupListDelete() end..");
 	}
 
 	// 교육자마당 > 학습그룹 등록 - 실행 (INSERT / JPA)
@@ -196,18 +212,55 @@ public class HrRepositoryImpl implements HrRepository {
 	public List<MemberDTO> joinedMemberList(int lg_num) {
 		System.out.println("HrRepositoryImpl joinedMemberList() start..");
 		
-		List<MemberDTO> members = em.createQuery("SELECT new com.choongang.gb2023501.model.MemberDTO(m, lj.lgjAppdate) " + 
+		List<MemberDTO> members = em.createQuery("SELECT new com.choongang.gb2023501.model.MemberDTO(m, lj.lgjAppdate, lj.lgjJoindate) " + 
 												 "FROM   LgJoin lj " + 
 												 "JOIN   lj.member m " + 
-												 "WHERE  lj.learnGrp.lgNum = :lgNum "
+												 "WHERE  lj.learnGrp.lgNum = :lgNum " + 
+												 "AND    lj.lgjApproval = 1 "
+												 , MemberDTO.class)
+									.setParameter("lgNum", lg_num)
+									.getResultList();
+		
+		System.out.println("HrRepositoryImpl joinedMemberList() members.size() -> "+members.size());
+
+		System.out.println("HrRepositoryImpl joinedMemberList() end..");
+		return members;
+	}
+
+	// 교육자마당 > 학습그룹 가입 승인 - 화면 (SELECT / JPA) - 신청자 명단
+	@Override
+	public List<MemberDTO> joiningMemberList(int lg_num) {
+		System.out.println("HrRepositoryImpl joiningMemberList() start..");
+		
+		List<MemberDTO> members = em.createQuery("SELECT new com.choongang.gb2023501.model.MemberDTO(m, lj.lgjAppdate, lj.lgjJoindate) " + 
+												 "FROM   LgJoin lj " + 
+												 "JOIN   lj.member m " + 
+												 "WHERE  lj.learnGrp.lgNum = :lgNum " +
+												 "AND    lj.lgjApproval = 0 "
 												 , MemberDTO.class)
 									.setParameter("lgNum", lg_num)
 									.getResultList();
 		
 		System.out.println("HrRepositoryImpl learnGroupList() members.size() -> "+members.size());
 
-		System.out.println("HrRepositoryImpl joinedMemberList() end..");
+		System.out.println("HrRepositoryImpl joiningMemberList() end..");
 		return members;
+	}
+
+	// 교육자마당 > 학습그룹 가입 승인 - 실행 (UPDATE / JPA)
+	@Override
+	public void learnGroupJoinApproval(int lg_num, int m_num) {
+		System.out.println("HrRepositoryImpl learnGroupJoinApproval() start..");
+		
+		em.createQuery("UPDATE LgJoin lj " + 
+					   "SET    lgjApproval = 1, lgjAppdate = sysdate " + 
+					   "WHERE  lj.learnGrp.lgNum = :lg_num AND lj.member.mmNum = :m_num "
+					   )
+		  .setParameter("lg_num", lg_num)
+		  .setParameter("m_num", m_num)
+		  .executeUpdate();
+		
+		System.out.println("HrRepositoryImpl learnGroupJoinApproval() end..");
 	}
 	
 }
