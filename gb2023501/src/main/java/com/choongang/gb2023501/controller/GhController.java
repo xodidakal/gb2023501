@@ -2,6 +2,7 @@ package com.choongang.gb2023501.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,7 +62,8 @@ public class GhController {
 	public String boardList(Model model, String b_category, 	Board board 
 							,@RequestParam(defaultValue = "1") 	String currentPage
 							,@RequestParam(defaultValue = "10") int rowPage
-							,String search_type, String search_keyword) {
+							,String search_type, String search_keyword
+							,BoardComment boardComment) {
 		System.out.println("GhController boardList Start...");
 //		System.out.println("b_category->"+b_category); 
 //		System.out.println("board.getB_category();->"+board.getB_category());
@@ -74,8 +77,11 @@ public class GhController {
 		model.addAttribute("member", member);
 		
 		// 게시물 count
+		// -----------------------------------------------------
 		int bdCount = boardService.selectBoardListCnt(b_category);
+		// -----------------------------------------------------
 		System.out.println("GhController selectBoardListCnt bdCount->"+bdCount);
+		
 		// 페이징 작업
 		// bdCount를 list.size로 바꿀방법?
 		Paging page = new Paging(bdCount, currentPage, rowPage);
@@ -86,6 +92,12 @@ public class GhController {
 		// 검색작업
 		board.setSearch_type(search_type);
 		board.setSearch_keyword(search_keyword);
+		
+		// 답변 여부 (1이면 답변 없음 / 2면 답변 있음)
+		// -----------------------------------------------------
+		int answerCheck = boardService.selectAnswerCnt(boardComment);
+		// -----------------------------------------------------
+		model.addAttribute("answerCheck", answerCheck);
 		
 		// 게시판 list + 댓글 숫자
 		// -----------------------------------------------------
@@ -115,7 +127,7 @@ public class GhController {
 	
 	/* 게시물 상세 */
 	@RequestMapping(value = "customer/boardDetail")
-	public String boardDetail(Model model, int b_num) {
+	public String boardDetail(Model model, int b_num, BoardComment boardComment) {
 		System.out.println("GhController boardDetail Start...");
 		System.out.println("board.getB_num()->"+b_num);
 		
@@ -127,13 +139,13 @@ public class GhController {
 		// -----------------------------------------------------
 		Board BdDetail = boardService.selectBoard(b_num);
 		// -----------------------------------------------------
-		model.addAttribute("BdDetail",BdDetail);
+		model.addAttribute("BdDetail", BdDetail);
 		
 		// 답글 눌렀을 때 원글 게시물 상세(board 모든정보)
 		// -----------------------------------------------------
 		Board BdOriDetail = boardService.selectOriBoard(b_num);
 		// -----------------------------------------------------
-		model.addAttribute("BdOriDetail",BdOriDetail);
+		model.addAttribute("BdOriDetail", BdOriDetail);
 		
 		// 조회수 증가
 		// -----------------------------------------------------
@@ -141,9 +153,11 @@ public class GhController {
 		// -----------------------------------------------------
 		System.out.println("boardCount->"+boardCount);
 		
-		// 댓글 조회
-//		List<BoardComment> commentList = boardService.selectCommentList(b_num);
-//		model.addAttribute("commentList",commentList);
+		// 답변 여부 (1이면 답변 없음 / 2면 답변 있음)
+		// -----------------------------------------------------
+		int answerCheck = boardService.selectAnswerCnt(boardComment);
+		// -----------------------------------------------------
+		model.addAttribute("answerCheck", answerCheck);
 		
 		return "gh/boardDetail";
 	}
@@ -307,7 +321,7 @@ public class GhController {
 	
 	/* 게시글 삭제 */
 	@RequestMapping(value = "customer/boardDelete")
-	public String deleteBoard(Board board, BoardComment boardComment, Model model) {
+	public String deleteBoard(Board board, BoardComment boardComment, HttpServletResponse response) throws IOException {
 		System.out.println("GhController deleteBoard Start...");
 		System.out.println("GhController deleteBoard boardComment.getBc_num()->"+boardComment.getBc_num());
 		System.out.println("GhController deleteBoard boardComment.getB_num()->"+boardComment.getB_num());
@@ -317,9 +331,17 @@ public class GhController {
 		
 		if(answerCheck > 1) {
 			System.out.println("답글 있음 -> 삭제불가");
-			model.addAttribute("msg", "삭제가 불가능 합니다. 답변글이 존재합니다.");
-    		model.addAttribute("url", "/customer/boardDetail?b_num="+board.getB_num());
-    		return "alert";
+//			model.addAttribute("msg", "삭제가 불가능 합니다. 답변글이 존재합니다.");
+//    		model.addAttribute("url", "/customer/boardDetail?b_num="+board.getB_num());
+//    		return "alert";
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('삭제가 불가능합니다. 답변글이 존재합니다.');");
+			out.println("window.location.href='/customer/boardDetail?b_num=" + board.getB_num() + "';");
+			out.println("</script>");
+			out.close();
 		} else {
 			System.out.println("답글 없음 -> 바로 삭제");
 			// 게시글 삭제
@@ -331,6 +353,23 @@ public class GhController {
 			}
 			System.out.println("삭제 성공");
 		}
+		return "redirect:/customer/boardList?b_category="+board.getB_category();
+	}
+	
+	/* 게시글 답변 삭제용 */
+	@RequestMapping(value = "customer/boardAnswerDelete")
+	public String deleteAnswerBoard(Board board, BoardComment boardComment) {
+		System.out.println("GhController deleteAnswerBoard Start...");
+		
+		// 게시글 삭제
+		// -----------------------------------------------------
+		int BdDelete = boardService.deleteBoard(boardComment);
+		// -----------------------------------------------------
+		if(BdDelete < 0) {
+			System.out.println("삭제 실패");
+		}
+		System.out.println("삭제 성공");
+		
 		return "redirect:/customer/boardList?b_category="+board.getB_category();
 	}
 	

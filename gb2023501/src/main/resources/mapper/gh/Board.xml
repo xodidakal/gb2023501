@@ -261,8 +261,8 @@
 			   b_content = #{b_content},
 			   b_regi_date = #{b_regi_date},
 			   b_modi_date = sysdate,
-			   b_attach_name = #{b_attach_name},
-			   b_attach_path = #{b_attach_path}
+			   b_attach_name = #{b_attach_name, jdbcType = VARCHAR},
+			   b_attach_path = #{b_attach_path, jdbcType = VARCHAR}
 		WHERE  b_num = #{b_num}
 	</update>
 	

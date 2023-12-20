@@ -45,7 +45,7 @@
 	}
 	
 	function answerUpdateSubmit() {
-	//	alert("클릭");
+		alert("클릭");
 		document.answerUpdateForm.submit();
 	}
 	
@@ -221,7 +221,7 @@
     			dataType	: 'text',
     			success		: function(data) {
     				if(data = "success") {
-    					alert("업로드 파일 삭제 성공");
+    					alert("업로드 파일 삭제");
     				} else {
     					alert("삭제 실패");
     				}
@@ -727,19 +727,13 @@
 	                		<a onclick="deleteQuestion()"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
 						</c:if>
 					</div>
-	      
-			
-			</form>
-		</div>
-
-
-		<form action="/customer/updateBoard" method="post" enctype="multipart/form-data" name="answerUpdateForm">
-			<div class="row g-3">
+      </form>
 	                <!-- 답변 수정 -->
                		<hr>
 	                
 	                <h4 class="display-7 mb-4">답변 수정</h4>
 	             
+	                <form action="/customer/updateBoard" method="post" enctype="multipart/form-data" name="answerUpdateForm">
 	                <table id="formTable">
 	                	<tr>
 	                		<td>
@@ -792,6 +786,7 @@
 			                
 		                </tr>
 	                </table>
+	                </form>
 	                
 	                <!-- Q&A or FAQ이면서 운영자면 작성 버튼 노출 -->
 	                <div class="d-grid gap-2 d-md-flex justify-content-center" >
@@ -816,11 +811,11 @@
                 		<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="작성">
                 	</c:if>
 				</div> --%>
-			
+                
 			</div>
-		</form>
+		<!-- </form> -->
 	</div>
-
+</div>
 <%@ include file="../common/footerFo.jsp" %>
 </body>
 </html>

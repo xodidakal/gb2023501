@@ -206,11 +206,15 @@ public class GbController {
 		Long myHomeworkCnt = jms.myHomeworkcountBy(hwsend);
 		
 		// 나의 숙제 목록 가져오기
-		List<com.choongang.gb2023501.domain.HwSend> myHomeworkList = jms.selectMyHomeworkList(m_num);
+		List<com.choongang.gb2023501.domain.HwSend> myHomeworkList = jms.selectMyHomeworkList(hwsend);
 		System.out.println("GbController selectMyHomeworkList myHomeworkList ->"+myHomeworkList.size());
+		if(hwsend.getSearchType() != null) {
+			myHomeworkCnt = (long) myHomeworkList.size();
+		}
 		
 		model.addAttribute("myHomeworkList", myHomeworkList);
 		model.addAttribute("startRow", 1);
+		model.addAttribute("hwsend", hwsend);
 		model.addAttribute("myHomeworkCnt", myHomeworkCnt);
 		return "gb/myHomeworkList";
 	}
@@ -255,5 +259,21 @@ public class GbController {
 		int h_num = hwrecord.getH_num();
 		
 		return "redirect:myHomeworkDetail?h_num="+h_num+"&result="+result;
+	}
+	
+	// 내 숙제 제출화면으로 이동
+	@RequestMapping("/educator/homeworkEval")
+	public String selectHomeworkEval(Model model) {
+		System.out.println("GbController selectHomeworkEval start...");
+		// 교육자 번호를 담는다.
+		int m_num = ms.selectMmNumById();
+		
+		// 교육자의 숙제 목록 조회
+		
+		
+		// 학습자가 제출한 숙제
+		
+		
+		return "gb/homeworkEval";
 	}
 }

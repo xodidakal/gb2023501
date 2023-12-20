@@ -19,7 +19,7 @@ public class JpaHomeworkRepositoryImpl implements JpaHomeworkRepository {
 	private final EntityManager em;
 	
 	@Override
-	public List<HwSend> selectMyHomeworkList(int m_num) {
+	public List<HwSend> selectMyHomeworkList(HwSend hwsend) {
 		System.out.println("JpaHomeworkRepositoryImpl selectMyHomeworkList start...");
 		List<HwSend> myHomeworkList = null;
 		
@@ -29,9 +29,6 @@ public class JpaHomeworkRepositoryImpl implements JpaHomeworkRepository {
 //			String sql = "SELECT hs, hm.mmName "
 //					   + "FROM HwSend hs join hs.homework h join hs.member hsm join h.member hm "
 //					   + "WHERE hsm.mmNum = : mmNum";
-			String sql = "SELECT hs "
-					   + "FROM HwSend hs "
-					   + "WHERE hs.member.mmNum = : mmNum";
 //			String sql = "SELECT new com.choongang.gb2023501.model.HomeworkDTO(hs, (SELECT max(hr1.hrLevel) "
 //																				 + "FROM HwRecord hr1 "
 //																				 + "WHERE hr1.hwsend = hs ) as hrMaxLevel) "
@@ -41,8 +38,28 @@ public class JpaHomeworkRepositoryImpl implements JpaHomeworkRepository {
 //					   + "GROUP BY hs";
 			// createQuery(실행할 쿼리, 반환값을 담을 domain)
 			// setParameter(쿼리에서 받을 파라미터명, 실제 파라미터값이 담겨있는 변수명)
-			// getResultList() -> 쿼리 결과값을 리스트로 반환
-			myHomeworkList = em.createQuery(sql, HwSend.class).setParameter("mmNum", m_num).getResultList();
+			// getResultList() -> 쿼리 결과값을 리스트로 반환			
+			
+			String sql = "SELECT hs "
+					   + "FROM HwSend hs "
+					   + "WHERE hs.member.mmNum = : mmNum ";
+			
+			System.out.println("여기서 값이 있으면 검색 조건을 탄다. hwsend.getSearchType() -> "+hwsend.getSearchType());
+			// 검색조건이 있을 경우
+			if(hwsend.getSearchType() != null) {
+				// 숙제명으로 검색했을 때
+				if(hwsend.getSearchType().equals("title")) {
+					System.out.println("검색 조건 숙제명 -> "+hwsend.getSearchKeyword());
+					sql += "AND hs.homework.hhTitle Like '%"+ hwsend.getSearchKeyword() + "%'";
+				}
+				// 교육자로 검색했을 때
+				else if(hwsend.getSearchType().equals("teacher")) {
+					System.out.println("검색 조건 교육자 -> "+hwsend.getSearchKeyword());
+					sql += "AND hs.homework.member.mmName Like '%"+ hwsend.getSearchKeyword() + "%'";
+				}
+			}
+
+			myHomeworkList = em.createQuery(sql, HwSend.class).setParameter("mmNum", hwsend.getMember().getMmNum()).getResultList();
 			System.out.println("JpaHomeworkRepositoryImpl selectMyHomeworkList myHomeworkList -> "+myHomeworkList.size());
 			
 		} catch (Exception e) {

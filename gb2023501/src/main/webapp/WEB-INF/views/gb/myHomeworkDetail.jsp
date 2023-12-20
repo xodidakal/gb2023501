@@ -83,9 +83,7 @@
 					<tr>	
 						<th style="width:45%; text-align: center;">숙제 내용</th>	
 						<th style="text-align: center;">제출 내용</th>		
-						<th style="width:10%; text-align: center;">
-							<input class="form-check-input" type="checkbox" name="em_type" id="checkAll">
-						</th>
+						<th style="width:10%; text-align: center;">제출/수정</th>
 					</tr>
 				</thead>
 				<c:choose>
@@ -103,7 +101,7 @@
 							                	내 진도 : <input type="hidden" id="hr_level${totalRow}" name="hr_level" value="${myHomeworkDetail.hrLevel }">
 							                	${myHomeworkDetail.hrLevel } 레벨
 							                </td>
-							                <td id="borderLeft" rowspan="5">
+							                <td id="borderLeft" rowspan="5" style="padding-left: 0px; text-align:center;">
 												<input type="hidden" id="h_num${totalRow}" name="h_num1" value="${myHomeworkDetail.homework.hhNum }">
 							                    <input class="btn rounded py-2 px-3" type="button" onclick="myHomeworkSubmit(${totalRow})" style="background: #263d94; color: white;" value="수정 ">
 							                   <%--  <input class="form-check-input" type="checkbox" name="h_num" value="${myHomeworkDetail.homework.hhNum }" id="flexRadioDefault1" > --%>
@@ -113,7 +111,7 @@
 											<td id="borderRight">교육자 : ${myHomeworkDetail.homework.member.mmName }</td>
 											<td rowspan="2"> 
 												금번학습내용 :<br>
-												<textarea rows="5" cols="45" id="hr_content${totalRow}" name="hr_content">${myHomeworkDetail.hrContent }</textarea> 
+												<textarea rows="5" cols="40" id="hr_content${totalRow}" name="hr_content">${myHomeworkDetail.hrContent }</textarea> 
 							            	</td>
 										</tr>
 										<tr>
@@ -122,7 +120,7 @@
 										<tr>
 											<td id="borderRight">숙제 진도 : ${myHomeworkDetail.homework.hhLevel}</td>
 											<td rowspan="2">
-												추가질의내용 : <br><textarea rows="3" cols="45" id="hr_question${totalRow}" name="hr_question" >${myHomeworkDetail.hrQuestion }</textarea>
+												추가질의내용 : <br><textarea rows="3" cols="40" id="hr_question${totalRow}" name="hr_question" >${myHomeworkDetail.hrQuestion }</textarea>
 											</td>
 										</tr>
 										<tr>
@@ -142,7 +140,7 @@
 					                	내 진도 : 
 					                	<input type="hidden" id="hr_level${totalRow}" name="hr_level" value="${totalRow }">${totalRow } 레벨
 					                </td>
-					                <td id="borderLeft" rowspan="5">
+					                <td id="borderLeft" rowspan="5" style="padding-left: 0px; text-align:center;">
 										<input type="hidden" id="h_num${totalRow}" name="h_num" value="${myHomework.hhNum }">
 					                    <input class="btn rounded py-2 px-3" type="button" onclick="myHomeworkSubmit(${totalRow})" style="background: #263d94; color: white;" value="제출 ">
 					                </td>
@@ -151,7 +149,7 @@
 									<td id="borderRight">교육자 : ${myHomework.member.mmName }</td>
 									<td rowspan="2"> 
 										금번학습내용 :<br>
-										<textarea rows="5" id="hr_content${totalRow}" cols="45" name="hr_content"></textarea> 
+										<textarea rows="5" id="hr_content${totalRow}" cols="40" name="hr_content"></textarea> 
 					            	</td>
 								</tr>
 								<tr>
@@ -160,7 +158,7 @@
 								<tr>
 									<td id="borderRight">숙제 진도 : ${myHomework.hhLevel}</td>
 									<td rowspan="2">
-										추가질의내용 : <br><textarea rows="3" cols="45" id="hr_question${totalRow}" name="hr_question"></textarea>
+										추가질의내용 : <br><textarea rows="3" cols="40" id="hr_question${totalRow}" name="hr_question"></textarea>
 									</td>
 								</tr>
 								<tr>
@@ -179,7 +177,7 @@
 					                	내 진도 : 
 					                	<input type="hidden" id="hr_level${totalRow}" name="hr_level" value="${totalRow }">${totalRow } 레벨
 					                </td>
-					                <td id="borderLeft" rowspan="5">
+					                <td id="borderLeft" rowspan="5" style="padding-left: 0px; text-align:center;">
 										<input type="hidden" id="h_num${totalRow}" name="h_num1" value="${myHomework.hhNum }">
 					                    <input class="btn rounded py-2 px-3" type="button" onclick="myHomeworkSubmit(${totalRow})" style="background: #263d94; color: white;" value="제출 ">
 					                </td>
@@ -188,7 +186,7 @@
 									<td id="borderRight">교육자 : ${myHomework.member.mmName }</td>
 									<td rowspan="2"> 
 										금번학습내용 :<br>
-										<textarea rows="5" cols="45" id="hr_content${totalRow}" name="hr_content"></textarea> 
+										<textarea rows="5" cols="40" id="hr_content${totalRow}" name="hr_content"></textarea> 
 					            	</td>
 								</tr>
 								<tr>
@@ -197,7 +195,7 @@
 								<tr>
 									<td id="borderRight">숙제 진도 : ${myHomework.hhLevel}</td>
 									<td rowspan="2">
-										추가질의내용 : <br><textarea id="hr_question${totalRow}" rows="3" cols="45" name="hr_question"></textarea>
+										추가질의내용 : <br><textarea id="hr_question${totalRow}" rows="3" cols="40" name="hr_question"></textarea>
 									</td>
 								</tr>
 								<tr>
@@ -211,7 +209,6 @@
                </table>
                <div class="d-grid gap-2 d-md-flex justify-content-center" >
 				<a href="myhomeworkList?m_num=${mmNum }"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
-				<input class="btn rounded py-2 px-3" type="button" onclick="myHomeworkSubmit()" style="background: #263d94; color: white;" value="숙제 제출 ">
 			</div>
                
 		</div>
