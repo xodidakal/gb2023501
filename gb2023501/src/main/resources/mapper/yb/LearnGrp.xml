@@ -3,26 +3,31 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 	<mapper namespace="com.choongang.gb2023501.LearnGrpsMapper">
-		<select id="selectLgpListByTitle" parameterType="LearnGrp" resultType="LearnGrp">			
-			 SELECT g.g_attach_name, lg.lg_title, m.m_name, lg.lg_sdate, lg.lg_edate, lg.lg_to, lg.lg_num, g.g_title, (lg.lg_to - (count(lj.lgj_approval))) remainningTo
-			 From   game g, learn_grp lg, member m, lg_join lj
-			 where  lg.g_num = g.g_num 
-			 and    lg.m_num = m.m_num 
-			 and    lg.lg_num = lj.lg_num(+)
-			 and    sysdate between lg_sdate and ROUND(to_date(lg_sdate)+(((to_date(lg_edate) - TO_DATE(lg_sdate))/2)))
-			 <if test="searchType == 'lg_title' and lg_title != null and lg_title != '' and lg_title != 'reload'">
-			 	and    lg.lg_title = #{lg_title} 			 
-			 </if>
-			 <if test="searchType == 'mmName' and mmName != null and mmName != '' and mmName != 'reload'">
-			 and    lg.m_num = #{mmName}
-			 </if>
-			 and    lj.lg_num NOT IN (SELECT lg_num
-                        FROM lg_join
-                        WHERE m_num = #{m_num})        
-			 group by g.g_attach_name, lg.lg_title, m.m_name, lg.lg_sdate, lg.lg_edate, lg.lg_to, lg.lg_num, g.g_title
-			 ORDER BY lg.lg_sdate
+				
+		<select id="selectLgpListByTitle" parameterType="LearnGrp" resultType="LearnGrp">	
+			SELECT g.g_attach_name, lg.lg_title, m.m_name, lg.lg_sdate, lg.lg_edate, lg.lg_to, lg.lg_num, g.g_title, (lg.lg_to - (count(lj.lgj_approval))) remainningTo
+				 From   game g, learn_grp lg, member m, lg_join lj
+				 where  lg.g_num = g.g_num 
+				 and    lg.m_num = m.m_num 
+				 and    lg.lg_num = lj.lg_num(+)
+				 and    sysdate between lg_sdate and ROUND(to_date(lg_sdate)+(((to_date(lg_edate) - TO_DATE(lg_sdate))/2)))
+				 <if test="searchType == 'lgTitle' and lg_title != 'reload'">
+			 	 and    lg.lg_title = #{lg_title} 			 
+				 </if>
+				 <if test="searchType == 'mmName' and mmName != 'reload'">
+				 and    lg.m_num = #{mmName}
+				 </if>
+				 and    lj.lg_num NOT IN  (SELECT lg_num
+	                        FROM  lg_join lj
+	                        WHERE m_num = #{m_num} 
+	                        and   lg.g_num  IN (SELECT g_num
+	                                               FROM   lg_join lj, learn_grp lg
+	                                               where  lj.lg_num = lg.lg_num 
+	                                               AND    lg.lg_edate >= sysdate
+	                                               ))        
+				 group by g.g_attach_name, lg.lg_title, m.m_name, lg.lg_sdate, lg.lg_edate, lg.lg_to, lg.lg_num, g.g_title
+				 ORDER BY lg.lg_sdate
 		</select>
-		
 		
 		<select id="selectLgpListByTitleCnt" parameterType="map" resultType="int">
 			SELECT COUNT(*) 

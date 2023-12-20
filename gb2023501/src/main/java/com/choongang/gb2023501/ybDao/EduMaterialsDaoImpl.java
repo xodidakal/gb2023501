@@ -58,7 +58,7 @@ public class EduMaterialsDaoImpl implements EduMaterialsDao {
 		}
 		return selectLgpListByTitle;
 	}
-	// 학습그룹 검색 리스트 개수
+//	// 학습그룹 검색 리스트 개수
 //	@Override
 //	public int selectLgpListByTitleCnt(String lgTitle, int mmNum) {
 //		System.out.println("YbController EduMaterialsDaoImpl selectLgpListByTitleCnt start...");

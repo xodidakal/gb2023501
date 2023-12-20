@@ -42,7 +42,7 @@ function selectType() {
     }
 }
 function reload() {
-	 var lgTitle = document.getElementById("lgTitle").value;
+	 var lgTitle = document.getElementById("searchType").value;
 	 
 	 if(lgTitle == "") {
 		 location.href="/learning/learnGrpJoinForm";
@@ -100,7 +100,7 @@ function signUp() {
 						
 						<!-- 카테고리 검색 -->
 						<select id="mmName" name="mmName" class="w-17 rounded" style="margin-right: 5px; border-color: #ced4da; display: none; height: 40px;" >
-							<option value="0">전체보기</option>
+							<option value="reload">전체보기</option>
 							<c:forEach var="selectLGpList" items="${selectLGpList }">
 								<option value="${selectLGpList.member.mmNum }">${selectLGpList.member.mmName }</option>
 `							</c:forEach>

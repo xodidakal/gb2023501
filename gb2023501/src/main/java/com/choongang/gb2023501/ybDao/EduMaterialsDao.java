@@ -25,4 +25,6 @@ public interface EduMaterialsDao {
 
 	int 						selectListCnt(Date s_date, Date e_date);
 
+	
+
 }
