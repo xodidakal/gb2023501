@@ -15,12 +15,14 @@ public interface EduMaterialsDao {
 
 	List<LearnGrp> 				selectLgpListByTitle(com.choongang.gb2023501.model.LearnGrp learnGrp);
 
-	int 						selectLgpListByTitleCnt(String lgTitle, int mmNum);
+//	int 						selectLgpListByTitleCnt(String lgTitle, int mmNum);
 
 	int							findTotal(Date s_date, Date e_date);
 
 	List<Game> 					selectGameList(Game game);
 
 	int 						insertLgJoin(int lg_num, int m_num);
+
+	int 						selectListCnt(Date s_date, Date e_date);
 
 }

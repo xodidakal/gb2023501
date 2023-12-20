@@ -6,6 +6,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+	
+	function mname(){    
+		if($('input:radio[id=g_dele_status1]').is(':checked')){ 
+      		$('#g_dele_status_view').show();    
+		}else if($('input:radio[id=g_dele_status2]').is(':checked')){
+			$('#g_dele_status_view').show();    
+		}else{
+			$('#g_dele_status_view').hide();
+		}
+	}
+</script>
 </head>
 <body>
 
@@ -20,12 +33,16 @@
 						<th>주문하실 상품</th>
 						<td colspan="3"></td>
 					</tr>
-					<tr>	
-						<th>구매 상품명</th>
-						<td colspan="3">
-		                    <input type="text" class="form-control" name=",g_Title" id="g_Title">
-		            	</td>
-					</tr>
+					<c:set var="i" value="0"/>
+					<c:forEach var="game" items="${gamelist}" varStatus="status">
+						<tr>	
+							<c:if test="${i eq 0}"><th rowspan="${gamelist.size() }">구매 상품명</th></c:if>
+							<td colspan="3">
+			                    ${game.g_title}
+			            	</td>
+						</tr>
+						<c:set var="i" value="1"/>
+					</c:forEach>   
 					<tr bgcolor="#EAEAEA">
 						<th>구매자 정보</th>
 						<td colspan="3"></td>
@@ -33,17 +50,23 @@
 					 <tr>
 						<th>구매자명</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="emTitle" id="emTitle" >
+		                	${member.mmName}
 		            	</td>
 					</tr>
 					<tr>
-						<th>연락처</th>
+						<th id="phone">연락처</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="emTitle" id="emTitle" >
+							${phone}
 		            	</td>
 					</tr>
 					<tr bgcolor="#EAEAEA">
 						<th>주문합계</th>
+						<td colspan="3">
+							<fmt:formatNumber value="${gamesum}" groupingUsed="true"/>원
+						</td>
+					</tr>
+					<tr>
+						<th></th>
 						<td colspan="3"></td>
 					</tr>
 					<tr bgcolor="#EAEAEA">
@@ -52,24 +75,24 @@
 					</tr>
 	                <tr>
 						<td width="150px;">
-		                    <input class="form-check-input" type="radio" name="g_dele_status" id="g_dele_status" value="1">
+		                    <input class="form-check-input" type="radio" name="g_dele_status" id="g_dele_status1" value="1" onchange="mname()">
 		                    <label>무통장입금</label>
 		                </td>
 		                <td width="150px;">
-		                    <input class="form-check-input" type="radio" name="g_dele_status" id="g_dele_status" value="2">
+		                    <input class="form-check-input" type="radio" name="g_dele_status" id="g_dele_status2" value="2" onchange="mname()">
 		                    <label>계좌이체</label>
 						</td>
 						<td width="150px;">
-		                    <input class="form-check-input" type="radio" name="g_dele_status" id="g_dele_status" value="3">
+		                    <input class="form-check-input" type="radio" name="g_dele_status" id="g_dele_status3" value="3" onchange="mname()">
 		                    <label>카카오페이</label>
 						</td>
 					</tr>
-					<tr>	
+					<tr id="g_dele_status_view" style="display:none;">
 						<th>입금자명</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name=",g_Title" id="g_Title">
+		                    <input type="text" class="form-control" name="go_depositor" id="g_dele_status_view" placeholder="입금자명을 입력해주세요.">
 		            	</td>
-					</tr>    
+					</tr>
                 </table>
                 <div class="d-grid gap-2 d-md-flex justify-content-center" >
 					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="결제하기">

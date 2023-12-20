@@ -1,6 +1,7 @@
 package com.choongang.gb2023501.dhService;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -85,10 +86,15 @@ public class GameOrderServiceImpl implements GameOrderService {
 	}
 
 	@Override
-	public int insertGameOrder(Game game) {
+	public List<Game> selectGameOrder(Map<String, Object> map) {
+		List<Game> game = god.selectGameOrder(map);
+		return game;
+	}
+
+	@Override
+	public int gamesum(Map<String, Object> map) {
 		int result = 0;
-		result = god.insertGameOrder(game);
-		
+		result = god.gamesum(map);
 		return result;
 	}
 

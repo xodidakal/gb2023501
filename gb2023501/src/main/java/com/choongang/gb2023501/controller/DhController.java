@@ -1,15 +1,18 @@
 package com.choongang.gb2023501.controller;
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.choongang.gb2023501.dhService.GameOrderService;
 import com.choongang.gb2023501.dhutils.FileUploadDeleteUtil;
+import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.gbService.Paging;
 import com.choongang.gb2023501.jhService.MemberService;
 import com.choongang.gb2023501.model.Game;
@@ -22,6 +25,7 @@ public class DhController {
 	
 	private final GameOrderService gos;
 	private final MemberService ms;
+	private final JhController jc;
 	
 	
 	// 게임 콘텐츠 목록 조회
@@ -53,25 +57,34 @@ public class DhController {
 	}
 	
 	// 게임콘텐츠 구독신청
-		@RequestMapping(value = "subscribe/gameOrderInsertResult")
-		public String gameOrderInsertResult(Game game, Model model) {
-			int result = 0;
-			try {
-				System.out.println("dhController gameOrderInsertResult() start..");
-				result = gos.insertGameOrder(game);
-				
-			} catch (Exception e) {
-				System.out.println("dhController gameOrderInsertResult()) ->"+e.getMessage());
-			} finally {
-				System.out.println("dhController gameOrderInsertResult() end..");
-			}
-				if (result > 0) {
-					return "redirect:myGameOrderList";
-				} else {
-					model.addAttribute("msg", "등록에 실패하였습니다.");
-					return "forward:gameOrderInsert";
-				}
-			}
+	@RequestMapping(value = "subscribe/gameOrderInsertResult")
+	public String gameOrderInsertResult(@RequestParam(value="g_num") List<Integer> g_num, Model model) {
+			
+		System.out.println("dhController insertGameOrder start...");
+			
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("g_num", g_num);
+		
+		List<Game> gamelist = gos.selectGameOrder(map);
+		int gamesum = gos.gamesum(map);
+		
+		System.out.println("dhController insertGameOrder gamelist->"+gamelist.size());
+		Member member = jc.aboutMember();
+		String phone = phone_format(member.getPhone());
+		System.out.println("phone->"+phone);
+		
+		model.addAttribute("gamelist", gamelist);
+		model.addAttribute("member", member);
+		model.addAttribute("gamesum", gamesum);
+		model.addAttribute("phone",phone);
+		
+		return "forward:gameOrderInsert";
+	}
+	
+	public String phone_format(String number) {
+	      String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
+	      return number.replaceAll(regEx, "$1-$2-$3");
+	}
 		
 		@RequestMapping(value = "subscribe/gameOrderInsert")
 		public String gameOrderInsert(Model model) {
@@ -185,7 +198,6 @@ public class DhController {
 				return "forward:gameInsertForm";
 			}
 		}
-	
 	@RequestMapping(value = "operate/gameInsertForm")
 	public String gameinsertForm(Model model) {
 		try {
@@ -197,6 +209,7 @@ public class DhController {
 		}
 		return "dh/gameForm";
 	}
+	
 	// 게임콘텐츠 수정
 	@RequestMapping(value = "operate/gameUpdate")
 	public String spotUpdate(int g_num, int m_num, Model model) {
