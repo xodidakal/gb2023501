@@ -42,11 +42,19 @@ public class JhController {
 	private final MemberService ms;
 	private final JavaMailSender mailSender;
 	
+	public String phone_format(String number) {
+	      String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
+	      return number.replaceAll(regEx, "$1-$2-$3");
+	}
+	
 	public Member aboutMember() {
 		Optional<Member> memberOptional = ms.selectUserById();
 		Member member = null;
 		if(memberOptional.isPresent()) {
 			member = memberOptional.get();
+			String phone = member.getPhone();
+			phone = phone_format(phone);
+			member.setPhone(phone);
 			System.out.println("로그인 회원 정보 -> " + member);
 			System.out.println("member name -> " + member.getMmName());
 		}
@@ -118,7 +126,7 @@ public class JhController {
 		
 	    // data에는 클라이언트가 전송한 JSON 데이터가 Map으로 변환되어 들어옴
 	    // 예: {"name": "John", "phone": "123-456-7890", "email": "john@example.com"}
-	    String name = data.get("name");
+	    String name  = data.get("name");
 	    String phone = data.get("phone");
 	    String email = data.get("email");
 	    System.out.println("name -> " + name);
@@ -127,11 +135,6 @@ public class JhController {
 	    
 	    String result = null;
 	    
-//	public void joinAgree(HttpServletRequest request, Model model) {
-		
-//		Object name = request.getAttribute("name");
-//		Object phone = request.getAttribute("phone");
-//		Object email = request.getAttribute("email");
 		
 		
 		Optional<Member> currentUser = null;
@@ -163,41 +166,12 @@ public class JhController {
 				
 			} else{
 			
+				int emailResult = emailVarification(email, name, session);
 				
-				try {
-					String title = "한국바둑기원 회원가입 인증번호 입니다.";
-					String toEmail = (String) email;
-					String setFrom= "alphago5012@gmail.com";
-					
-					//Mime 전자우편 Internet 표준 Format
-					MimeMessage message = mailSender.createMimeMessage();
-					MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-					
-					//messageHelper를 통해 메일정보 세팅
-					messageHelper.setFrom(setFrom);		//보내는 사람 이메일
-					messageHelper.setTo(toEmail);		//받는 사람 이메일
-					messageHelper.setSubject(title);
-					
-					 // 안전한 난수 생성 (6자리의 임시 비밀번호를 생성)
-	                SecureRandom secureRandom = new SecureRandom();
-	                int tempPassword = 100000 + secureRandom.nextInt(900000);
-					//String tempPassword = (int) (Math.random() * 999999) + 1 + "";
-					
-					
-					messageHelper.setText("인증번호 입니다 : " + tempPassword); //메일내용
-					System.out.println("인증번호 입니다 : " +tempPassword);
-					mailSender.send(message);
-					//session.setAttribute("check", 1); //정상 전달
-					session.setAttribute("name", name);
-					session.setAttribute("email", email);
-					session.setAttribute("tempPassword", tempPassword);
-					
-					result = "3"; // 가입 인증번호 전송 성공
-					
-				} catch (Exception e) {
-					System.out.println("JhController joinAgree mailTransport e.getMessage() -> " + e.getMessage());
-					//session.setAttribute("check", 2); //메일 전달 실패
-					result = "4"; // 가입 인증번호 전송 실패
+				if (emailResult > 0) {
+					result = "3";
+				} else {
+					result = "4";
 				}
 			}
 		}
@@ -207,24 +181,66 @@ public class JhController {
 		
 	}
 	
+	//이메일 인증번호 전송
+	private int emailVarification(String email, String name, HttpSession session) {
+		
+		int result = 0;
+		try {
+			String title = "한국바둑기원 회원가입 인증번호 입니다.";
+			String toEmail = (String) email;
+			String setFrom= "alphago5012@gmail.com";
+			
+			//Mime 전자우편 Internet 표준 Format
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+			
+			//messageHelper를 통해 메일정보 세팅
+			messageHelper.setFrom(setFrom);		//보내는 사람 이메일
+			messageHelper.setTo(toEmail);		//받는 사람 이메일
+			messageHelper.setSubject(title);
+			
+			 // 안전한 난수 생성 (6자리의 임시 비밀번호를 생성)
+            SecureRandom secureRandom = new SecureRandom();
+            int tempPassword = 100000 + secureRandom.nextInt(900000);
+			//String tempPassword = (int) (Math.random() * 999999) + 1 + "";
+			
+			
+			messageHelper.setText("인증번호 입니다 : " + tempPassword); //메일내용
+			System.out.println("인증번호 입니다 : " +tempPassword);
+			mailSender.send(message);
+			//session.setAttribute("check", 1); //정상 전달
+			session.setAttribute("name", name);
+			session.setAttribute("email", email);
+			session.setAttribute("tempPassword", tempPassword);
+			
+			result = 1; // 가입 인증번호 전송 성공
+			
+		} catch (Exception e) {
+			System.out.println("JhController joinAgree mailTransport e.getMessage() -> " + e.getMessage());
+			//session.setAttribute("check", 2); //메일 전달 실패
+			result = 0; // 가입 인증번호 전송 실패
+		}
+		return result;
+	}
+	
 	
 	//메일 인증번호 받은 후 맞는지 확인
 	@ResponseBody
 	@PostMapping(value = "info/varification")
-	public String varification(@RequestParam int verificationNum, HttpSession session ) {
+	public String varification(@RequestParam int varificationNum, HttpSession session ) {
 		System.out.println("JhController varification Start...");
 		int tempPassword = (int) session.getAttribute("tempPassword");
 		System.out.println("JhController varification tempPassword -> " + tempPassword);
-		System.out.println("JhController varification verificationNum -> " + verificationNum);
+		System.out.println("JhController varification varificationNum -> " + varificationNum);
 		
 		String result = null;
 //		비밀번호나 인증 번호와 같은 값의 비교는 == 연산자보다는 equals 메서드를 사용하는 것이 안전
 //		equals는 객체 간의 내용 비교를 수행하는 반면, ==는 참조 비교를 수행
-		if(Integer.valueOf(verificationNum).equals(tempPassword)) {
-		//	if(verificationNum == tempPassword) {
+		if(Integer.valueOf(varificationNum).equals(tempPassword)) {
+		//	if(varificationNum == tempPassword) {
 			result = "1";
 		} else {
-			result = "2";
+			result = "0";
 		}
 		//한번 응답 받고나면 인증번호 재 사용 못하게 삭제
 		session.removeAttribute("tempPassword");
@@ -302,8 +318,148 @@ public class JhController {
 	//아이디/비번 찾기 페이지
 	@RequestMapping(value = "info/idPwInquiry")
 	public String idPwInquiry() {
-		
+		System.out.println("JhController idPwInquiry Start...");
 		return "jh/idPwInquiry";
+	}
+	
+	//아이디 찾기
+	@PostMapping(value = "info/idInquiry")
+	@ResponseBody
+	public String idInquiry(@RequestBody Map<String, String> data, HttpSession session ) {
+		System.out.println("JhController idInquiry Start...");
+		
+		String name = data.get("name");
+		String phone = data.get("phone");
+		String email = data.get("email");
+	    System.out.println("name -> " + name);
+	    System.out.println("phone -> " + phone);
+	    System.out.println("email -> " + email);
+	    
+		
+		String result = null;
+		
+		Optional<Member> currentUser = null;
+		Member user = null;
+		
+		//휴대폰 인증
+		if(phone != null) {
+			//기존 사용자인지 비교 먼저하고 결과 반환하기 
+			currentUser = ms.findByNameAndPhone(name, phone);
+			
+			if(currentUser.isPresent()) {
+				System.out.println("JhController joinAgree currentUser -> " + currentUser);
+				user = currentUser.get();
+				String id = user.getMmId();
+				result = id;
+			} else{
+				System.out.println("JhController 유저 없음 ");
+				result = "0"; // 신규 가입자, 폼 이동 필요
+			}
+			
+//			model.addAttribute("phone",phone);
+			
+		//메일 인증	
+		} else if (email != null) {
+			//기존 사용자인지 비교 먼저하고 결과 반환하기 
+			currentUser = ms.findByNameAndEmail(name, email);
+			
+			if(currentUser.isPresent()) {
+				System.out.println("JhController joinAgree currentUser -> " + currentUser);
+				int emailResult = emailVarification(email, name, session);
+				if (emailResult > 0) {
+					result = "1"; //메일전송 성공
+				} else {
+					result = ""; //전송 실패
+				}
+				
+			} else{
+				result = "0"; // 신규 가입자, 폼 이동 필요
+				
+			}
+		}
+		
+		
+		return result;
+	}
+	
+	@PostMapping(value = "info/idInquiryByEmail")
+	@ResponseBody
+	public String idInquiryByEmail(@RequestParam int varificationNum, HttpSession session) {
+		System.out.println("JhController idInquiryByEmail Start...");
+		
+		String result = null;
+		try {
+			result = varification(varificationNum, session);
+			if(result != "0") {
+				String name = (String) session.getAttribute("name");
+				String email = (String) session.getAttribute("email");
+				Optional<Member> currentUser =  ms.findByNameAndEmail(name, email);
+				Member user = currentUser.get();
+				result = user.getMmId();
+			} else {
+				result = "0";
+			} 
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return result;
+	}
+	
+	@PostMapping(value = "info/pswdInquiry")
+	@ResponseBody
+	public String pswdInquiry(@RequestBody Map<String, String> data, HttpSession session ) {
+		System.out.println("JhController pswdInquiry Start...");
+		String name = data.get("name");
+		String id = data.get("id");
+		String phone = data.get("phone");
+		String email = data.get("email");
+
+		String result = null;
+		
+		Optional<Member> currentUser = null;
+		Member user = null;
+		
+		//휴대폰 인증
+		if(phone != null) {
+			//기존 사용자인지 비교 먼저하고 결과 반환하기 
+			currentUser = ms.findByNameAndPhone(name, phone);
+			
+			if(currentUser.isPresent()) {
+				System.out.println("JhController joinAgree currentUser -> " + currentUser);
+				user = currentUser.get();
+				String pswd = user.getMmPswd();
+				result = pswd;
+			} else{
+				System.out.println("JhController 유저 없음 ");
+				result = "0"; // 신규 가입자, 폼 이동 필요
+			}
+			
+//			model.addAttribute("phone",phone);
+			
+		//메일 인증	
+		} else if (email != null) {
+			//기존 사용자인지 비교 먼저하고 결과 반환하기 
+			currentUser = ms.findByNameAndEmail(name, email);
+			
+			if(currentUser.isPresent()) {
+				System.out.println("JhController joinAgree currentUser -> " + currentUser);
+				int emailResult = emailVarification(email, name, session);
+				if (emailResult > 0) {
+					result = "1"; //메일전송 성공
+				} else {
+					result = ""; //전송 실패
+				}
+				
+			} else{
+				result = "0"; // 신규 가입자, 폼 이동 필요
+				
+			}
+		}
+		
+		
+		return result;
 	}
 	
 	
@@ -312,16 +468,21 @@ public class JhController {
 	public String memberList() {
 		System.out.println("JhController memberList Start...");
 		//테스트 삼아 찍어본 것
-		int mmNum = ms.selectMmNumById();
-		System.out.println("회원번호 int " + mmNum);
-		String mmId = ms.getLoggedInId();
-		log.info("getLoggedInId:{}", mmId);
-		Optional<Member> memberOptional = ms.selectUserById();
-		if(memberOptional.isPresent()) {
-			Member member = memberOptional.get();
-			System.out.println("회원 이름" + member.getMmName());
-			System.out.println("회원 번호" + member.getMmNum());
-		}
+//		int mmNum = ms.selectMmNumById();
+		
+//		System.out.println("회원번호 int " + mmNum);
+//		String mmId = ms.getLoggedInId();
+//		log.info("getLoggedInId:{}", mmId);
+//		Optional<Member> memberOptional = ms.selectUserById();
+//		if(memberOptional.isPresent()) {
+//			Member member = memberOptional.get();
+//			System.out.println("회원 이름" + member.getMmName());
+//			System.out.println("회원 번호" + member.getMmNum());
+//		}
+		
+		Member member = aboutMember();
+		
+		System.out.println("회원정보  " + member);
 		return "jh/memberList";
 	}
 	
