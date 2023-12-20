@@ -41,7 +41,7 @@ public class HwSend {
 
 	// 조회용	
 	@Transient					// 테이블과 매핑시키지 않는 변수 및 메소드를 선언하는 어노테이션
-	private int searchType;		// 검색조건
+	private String searchType;		// 검색조건
 	
 	@Transient
 	private String searchKeyword;	// 검색어

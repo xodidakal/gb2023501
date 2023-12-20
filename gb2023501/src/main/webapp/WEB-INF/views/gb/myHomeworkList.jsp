@@ -6,6 +6,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+	// 검색 함수
+	function searchMyHw(){
+		var search_type = $('#search_type').val();
+		var search_keyword = $('#search_keyword').val();
+		
+		location.href="/learning/myhomeworkList?searchType="+search_type+"&searchKeyword="+search_keyword;
+		
+	}
+
+</script>
 </head>
 <body>
 <!-- 	<div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;"> -->
@@ -29,12 +41,13 @@
 			</select>
 			<!-- 카테고리 검색 -->
 			<select id="search_type" class="w-17 rounded" style="border-color: #ced4da">
-				<option value="title">숙제명</option>
-				<option value="writer">교육자</option>
+				<option value="title" <c:if test="${hwsend.searchType eq 'title' }">selected</c:if>>숙제명</option>
+				<option value="teacher" <c:if test="${hwsend.searchType eq 'teacher' }">selected</c:if>>교육자</option>
 			</select>&nbsp;&nbsp;
-            <input id = "search_keyword" class="form-control rounded" type="search" placeholder="내용을 입력해주세요" style="width: 160px;">
+            <input id = "search_keyword" class="form-control rounded" type="search" placeholder="내용을 입력해주세요" 
+            	   style="width: 160px;" onkeypress="if( event.keyCode == 13 ){searchMyHw();}" value="${hwsend.searchKeyword }">
           	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
-         		<a href="#!"><i class="bi bi-search mt-2"></i></a>
+         		<a onclick="searchMyHw()"><i class="bi bi-search mt-2"></i></a>
           	</div>
 	    </div>
 	    

@@ -29,10 +29,10 @@ public class JpaHomeworkServiceImpl implements JpaHomeworkService {
 	
 	// 내 숙제 목록 가져오기
 	@Override
-	public List<HwSend> selectMyHomeworkList(int m_num) {
+	public List<HwSend> selectMyHomeworkList(HwSend hwsend) {
 		System.out.println("JpaHomeworkServiceImpl selectMyHomeworkList start...");
 		// JPQL 사용
-		List<HwSend> myHomeworkList = jhr.selectMyHomeworkList(m_num);
+		List<HwSend> myHomeworkList = jhr.selectMyHomeworkList(hwsend);
 		
 		// JPA에서 제공하는 메소드 사용
 		// List<HwSend> myHomeworkList = jihr.findByMemberMmNum(m_num);
@@ -46,7 +46,17 @@ public class JpaHomeworkServiceImpl implements JpaHomeworkService {
 	public Long myHomeworkcountBy(HwSend hwsend) {
 		System.out.println("JpaHomeworkServiceImpl myHomeworkcountBy start...");
 		System.out.println("hwsend.getMember().getMmNum() -> "+hwsend.getMember().getMmNum());
-		Long myHomeworkCnt = jihsr.countByMemberMmNum(hwsend.getMember().getMmNum());
+		
+		int mmNum = hwsend.getMember().getMmNum();
+		
+		Long myHomeworkCnt = jihsr.countByMemberMmNum(mmNum);
+		
+//		if(hwsend.getSearchType() != null) {
+//			myHomeworkCnt = jihsr.countByMemberMmNumAndSearchTypeAndSearchKeyword(mmNum, hwsend.getSearchType(), hwsend.getSearchKeyword());
+//		}else {
+//			myHomeworkCnt = jihsr.countByMemberMmNum(mmNum);
+//		}
+		
 		return myHomeworkCnt;
 	}
 
