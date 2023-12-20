@@ -59,20 +59,20 @@ public class EduMaterialsDaoImpl implements EduMaterialsDao {
 		return selectLgpListByTitle;
 	}
 	// 학습그룹 검색 리스트 개수
-	@Override
-	public int selectLgpListByTitleCnt(String lgTitle, int mmNum) {
-		System.out.println("YbController EduMaterialsDaoImpl selectLgpListByTitleCnt start...");
-		int selectLgpListByTitleCnt = 0;
-		HashMap<String, Object> setAbout = new HashMap<>();
-		try {			
-			setAbout.put("lgTitle", lgTitle);
-			setAbout.put("mmNum", mmNum);
-			selectLgpListByTitleCnt = session.selectOne("selectLgpListByTitleCnt", lgTitle);
-		} catch (Exception e) {
-			System.out.println("YbController EduMaterialsDaoImpl selectLgpListByTitleCnt Exception -> " + e.getMessage());
-		}
-		return selectLgpListByTitleCnt;
-	}
+//	@Override
+//	public int selectLgpListByTitleCnt(String lgTitle, int mmNum) {
+//		System.out.println("YbController EduMaterialsDaoImpl selectLgpListByTitleCnt start...");
+//		int selectLgpListByTitleCnt = 0;
+//		HashMap<String, Object> setAbout = new HashMap<>();
+//		try {			
+//			setAbout.put("lgTitle", lgTitle);
+//			setAbout.put("mmNum", mmNum);
+//			selectLgpListByTitleCnt = session.selectOne("selectLgpListByTitleCnt", lgTitle);
+//		} catch (Exception e) {
+//			System.out.println("YbController EduMaterialsDaoImpl selectLgpListByTitleCnt Exception -> " + e.getMessage());
+//		}
+//		return selectLgpListByTitleCnt;
+//	}
 	// 매출 검색 총 액
 	@Override
 	public int findTotal(Date s_date, Date e_date) {
@@ -118,5 +118,22 @@ public class EduMaterialsDaoImpl implements EduMaterialsDao {
 			System.out.println("YbController EduMaterialsDaoImpl insertLgJoin Exception -> " + e.getMessage());
 		}
 		return insertLgJoin;
+	}
+	@Override
+	public int selectListCnt(Date s_date, Date e_date) {
+		System.out.println("YbController EduMaterialsDaoImpl selectListCnt start...");
+		System.out.println("YbController EduMaterialsDaoImpl selectListCnt s_date -> " + s_date);
+		System.out.println("YbController EduMaterialsDaoImpl selectListCnt e_date -> " + e_date);
+		int selectListCnt = 0;
+		try {
+			HashMap<String, Object> setCnt = new HashMap<>();
+			setCnt.put("s_date", s_date);
+			setCnt.put("e_date", e_date);
+			selectListCnt = session.selectOne("selectListCnt", setCnt);
+		} catch (Exception e) {
+			System.out.println("YbController EduMaterialsDaoImpl selectListCnt Exception -> " + e.getMessage());
+		}
+		return selectListCnt;
+		
 	}
 }

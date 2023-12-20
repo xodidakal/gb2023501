@@ -40,12 +40,12 @@ public class EduMaterialsServiceImpl implements EduMaterialsService {
 		return selecLgpListByTitle;
 	}
 	// 학습그룹 검색 리스트 개수
-	@Override
-	public int selectLgpListByTitleCnt(String lgTitle, int mmNum) {
-		System.out.println("YbController EduMaterialsServiceImpl selectLgpListByTitleCnt start...");
-		int selectEduMaterialsListCnt = ed.selectLgpListByTitleCnt(lgTitle, mmNum);
-		return selectEduMaterialsListCnt;
-	}
+//	@Override
+//	public int selectLgpListByTitleCnt(String lgTitle, int mmNum) {
+//		System.out.println("YbController EduMaterialsServiceImpl selectLgpListByTitleCnt start...");
+//		int selectEduMaterialsListCnt = ed.selectLgpListByTitleCnt(lgTitle, mmNum);
+//		return selectEduMaterialsListCnt;
+//	}
 	@Override
 	public List<GameOrder> selectSalesDetailList(GameOrder gameOrder) {
 		System.out.println("YbController EduMaterialsServiceImpl selectSalesDetailList start...");
@@ -69,6 +69,13 @@ public class EduMaterialsServiceImpl implements EduMaterialsService {
 		System.out.println("YbController EduMaterialsServiceImpl insertLgJoin start...");
 		int insertLgJoin = ed.insertLgJoin(lg_num, m_num);
 		return insertLgJoin;
+	}
+	// 매출 조건 검색 후 리스트 개수 
+	@Override
+	public int selectListCnt(Date s_date, Date e_date) {
+		System.out.println("YbController EduMaterialsServiceImpl insertLgJoin start...");
+		int selectListCnt = ed.selectListCnt(s_date, e_date);
+		return selectListCnt;
 	}
 
 

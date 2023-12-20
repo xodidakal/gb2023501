@@ -19,6 +19,8 @@ public class LearnGrp {
 	private String	m_name;			// 회원 이름
 	private int     remainningTo;	// 잔여 인원
 	private String  g_title;
+	private String  mmName;
+	private String  searchType;
 	
 	// 페이징
 	private String 	pageNum;			// 페이징번호
