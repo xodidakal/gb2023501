@@ -263,15 +263,21 @@ public class GbController {
 	
 	// 내 숙제 제출화면으로 이동
 	@RequestMapping("/educator/homeworkEval")
-	public String selectHomeworkEval(Model model) {
+	public String selectHomeworkEval(com.choongang.gb2023501.domain.HwSend hwsend, Model model) {
 		System.out.println("GbController selectHomeworkEval start...");
 		// 교육자 번호를 담는다.
 		int m_num = ms.selectMmNumById();
+		Member member = new Member();
+		member.setMmNum(m_num);
+		hwsend.setMember(member);
 		
-		// 교육자의 숙제 목록 조회
-		
+		// 학습자의 제출이력이 있는 교육자의 숙제 목록 조회
+		List<com.choongang.gb2023501.domain.Homework> homeworkList = jms.selectHomeworkList(hwsend);
+		System.out.println("GbController selectHomeworkEval homeworkList -> "+homeworkList.size());
 		
 		// 학습자가 제출한 숙제
+		
+		model.addAttribute("homeworkList", homeworkList);
 		
 		
 		return "gb/homeworkEval";

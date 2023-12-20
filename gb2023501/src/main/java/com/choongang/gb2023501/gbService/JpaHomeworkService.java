@@ -9,12 +9,14 @@ import com.choongang.gb2023501.model.HomeworkDTO;
 
 public interface JpaHomeworkService {
 
-	List<HwSend> selectMyHomeworkList(HwSend hwsend); 
+	List<HwSend> 		selectMyHomeworkList(HwSend hwsend); 
 
-	Long myHomeworkcountBy(HwSend hwsend);
+	Long 				myHomeworkcountBy(HwSend hwsend);
 
-	List<HwRecord> selectMyHomeworkDetail(int m_num, int h_num);
+	List<HwRecord> 		selectMyHomeworkDetail(int m_num, int h_num);
 
-	Homework selectMyHomework(int h_num); 
+	Homework 			selectMyHomework(int h_num);
+
+	List<Homework> 		selectHomeworkList(HwSend hwsend); 
 
 }
