@@ -26,7 +26,7 @@
         var smonthInput = document.getElementById("sMonth");
         var emonthInput = document.getElementById("eMonth");
 
-        if (selectValue === "date") {
+        if (selectValue === "date1") {
             dateInput.style.display = "block";
             endDateInput.style.display = "block";
             smonthInput.style.display = "none";
@@ -59,8 +59,10 @@
         
         window.open(url, name, 'width='+popupW+',height='+popupH+',left='+left+',top='+top);
 	}
-	function saleInquiryChart(sDate, eDate, date) {
-		alert(selectDate);
+    
+	function saleInquiryChart(sDate, eDate) {
+		var date = document.getElementById('selectDate1').value
+		alert(date);
 		var popupW = 1000;
 		var popupH = 500;
 		var left = Math.ceil((window.screen.width - popupW)/2);
@@ -81,7 +83,7 @@
 	         <c:if test="${not empty s_date }">
 	    	 	<span>기간 : <fmt:formatDate value="${s_date }" pattern="yyyy년MM월dd일"/> ~ <fmt:formatDate value="${e_date }" pattern="yyyy년MM월dd일"/></span></p>
 	         </c:if>
-	         <p style="margin-bottom: 35px;"><span style="margin-right: 20px;">총 ${selectSaleList.size() } 건</span>
+	        <p style="margin-bottom: 35px;"><span style="margin-right: 20px;">총 ${selectListCnt } 건</span>   
 	         <span>총 매출액 : <fmt:formatNumber value="${selectTotal }" pattern="#,###" />원</span></p>
 	    </div>
 	   
@@ -89,7 +91,7 @@
 	    <form action="/operate/searchSalesInquiry" method="post" role="search"> 
          	<div style="display: flex; ">
 	         	<select id="selectDate" name="selectDate" class="w-17 rounded" style="border-color: #ced4da" onchange="toggleInput()">
-					<option value="date">일단위</option>
+					<option value="date1">일단위</option>
 					<option value="month">월단위</option>
 				</select>&nbsp;&nbsp;
 <!-- 				<div style="margin-right: 20px;"><input type="radio" name="selectCondition" id="date">일 단위</div>  -->
@@ -101,20 +103,20 @@
 				
 				<button type="submit" class="btn btn-light rounded py-2 px-2">검색</button>
 				<button type="button" class="btn btn-light rounded py-2 px-2" style="margin-left: 660px;" 
-						onclick="saleInquiryChart(<fmt:formatDate value="${s_date }" pattern="yyyyMMdd"/>, <fmt:formatDate value="${e_date }" pattern="yyyyMMdd"/>, ${selectDate })">그래프 보기</button>
-						<input type="text" value="${selectDate }" name="selectDate" id="selectDate">
+						onclick="saleInquiryChart(<fmt:formatDate value="${s_date }" pattern="yyyyMMdd"/>, <fmt:formatDate value="${e_date }" pattern="yyyyMMdd"/>)">그래프 보기</button>
+						
 						
 			</div>
 		</form>
-		
+		<input type="hidden" value="${selectDate1 }" name="selectDate1" id="selectDate1">
 	    </div>
-<%-- 	    <c:if test="${selectSaleList.size() == 0 && selectSaleList1.size() == 0 }">			 --%>
-<!-- 	 		<div class="row" style="height: 100px"> -->
-<!-- 				<div class="center-text mt-14 md-14"> -->
-<!-- 					기간을 선택해주세요.<p><p> -->
-<!-- 				</div> -->
-<!-- 			</div>	 	 -->
-<%-- 		</c:if> --%>
+	    <c:if test="${selectSaleList.size() == 0 && selectSaleList1.size() == 0 }">			
+	 		<div class="row" style="height: 100px">
+				<div class="center-text mt-14 md-14">
+					기간을 선택해주세요.<p><p>
+				</div>
+			</div>	 	
+		</c:if>
  	<c:if test="${selectSaleList.size() != 0 || selectSaleList1.size() != 0 }">	
        	<table class="listTable" style="text-align: center;">
        		<thead>
