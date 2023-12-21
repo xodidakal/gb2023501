@@ -6,17 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">            
-	.center-text {
-	  text-align: center; /* 텍스트 가운데 정렬 */
-	  position: absolute;
-	  top: 55%;
-	  left: 48%;
-	  font-weight: bold;
-	  color:black;
-	  transform: translate(-50%, -50%); /* 가운데 정렬을 위한 변환 */
-	}
-</style>
 </head>
 <script>
     function toggleInput() {
@@ -81,14 +70,14 @@
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">매출 조회</h2>
 	         <c:if test="${not empty s_date }">
-	    	 	<span>기간 : <fmt:formatDate value="${s_date }" pattern="yyyy/MM/dd/"/> ~ <fmt:formatDate value="${e_date }" pattern="yyyy/MM/dd"/></span></p>
+	    	 	<span>기간 : <fmt:formatDate value="${s_date }" pattern="yyyy-MM-dd"/> ~ <fmt:formatDate value="${e_date }" pattern="yyyy-MM-dd"/></span></p>
 	         </c:if>
 	        <p style="margin-bottom: 35px;"><span style="margin-right: 20px;">총 ${selectListCnt } 건</span>   
 	         <span>총 매출액 : <fmt:formatNumber value="${selectTotal }" pattern="#,###" />원</span></p>
 	    </div>
 	   
 	    <div class="mb-1">
-	    <form action="/operate/searchSalesInquiry" method="post" role="search"> 
+	    <form action="/operate/searchSalesInquiry" method="post" role="search" class="mb-3"> 
          	<div style="display: contents;">
          	<div style="display: inline-flex;">
 	         	<select id="selectDate" name="selectDate" class="w-17 rounded" style="border-color: #ced4da" onchange="toggleInput()">
@@ -111,14 +100,9 @@
 		</form>
 		<input type="hidden" value="${selectDate1 }" name="selectDate1" id="selectDate1">
 	    </div>
-	    <c:if test="${selectListCnt == 0 }">			
-	 		<div class="row" style="height: 100px">
-				<div class="center-text mt-14 md-14">
-					기간을 선택해주세요.<p><p>
-				</div>
-			</div>	 	
-		</c:if>
- 	<c:if test="${selectListCnt != 0 }">	
+	   
+		
+ 	
        	<table class="listTable" style="text-align: center;">
        		<thead>
 				<tr>
@@ -129,47 +113,54 @@
 					<th width="100px;"></th>				
 				</tr>
 			</thead>
-			<tbody>
-				<c:if test="${selectSaleList.size() != 0  }">
-				 <c:forEach var="selectSaleList" items="${selectSaleList }">
-				 	<tr>
-				 		<td>${StartRow +1}</td>
-						<td>
-							<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyy/MM/dd"/>
-						</td>
-						<td>${selectSaleList.salesCnt } 건</td>
-						<td>
-							<fmt:formatNumber value="${selectSaleList.salesSum }" pattern="#,###" /> 원
+			<c:if test="${selectListCnt == 0 }">
+			    <tr>			
+							<td colspan="5">기간을 선택해주세요.</td>
+				</tr>
+			</c:if>
+			<c:if test="${selectListCnt != 0 }">	
+				<tbody>
+					<c:if test="${selectSaleList.size() != 0  }">
+					 <c:forEach var="selectSaleList" items="${selectSaleList }">
+					 	<tr>
+					 		<td>${StartRow +1}</td>
+							<td>
+								<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyy-MM-dd"/>
+							</td>
+							<td>${selectSaleList.salesCnt } 건</td>
+							<td>
+								<fmt:formatNumber value="${selectSaleList.salesSum }" pattern="#,###" /> 원
+								
+							</td>
+							<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" type="button" style="background: #263d94; color: white;" 
+													   onclick="searchSalesInquiryDetail(<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyyMMdd"/>)">상세</button></td>
+											
+						</tr>
+						<c:set var="StartRow" value="${StartRow +1}"/>
+					 </c:forEach>				 
+					</c:if>
+					<c:if test="${selectSaleList1.size() != 0 }">
+					 <c:forEach var="selectSaleList" items="${selectSaleList1 }">
+					 	<tr>
+					 		<td>${StartRow +1}</td>
+							<td>
+								<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyy-MM"/>
 							
-						</td>
-						<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" type="button" style="background: #263d94; color: white;" 
-												   onclick="searchSalesInquiryDetail(<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyyMMdd"/>)">상세</button></td>
-										
-					</tr>
-					<c:set var="StartRow" value="${StartRow +1}"/>
-				 </c:forEach>				 
-				</c:if>
-				<c:if test="${selectSaleList1.size() != 0 }">
-				 <c:forEach var="selectSaleList" items="${selectSaleList1 }">
-				 	<tr>
-				 		<td>${StartRow +1}</td>
-						<td>
-							<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyy/MM"/>
-						
-						</td>
-						<td>${selectSaleList.salesCnt } 건</td>
-						<td>
-							<fmt:formatNumber value="${selectSaleList.salesSum }" pattern="#,###" /> 원
-						</td>
-						<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" type="button" style="background: #263d94; color: white;" 
-												   onclick="searchSalesInquiryDetail(<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyyMM"/>)">상세</button></td>
-					</tr>
-					<c:set var="StartRow" value="${StartRow +1}"/>
-				 </c:forEach>
-				</c:if>
-             </tbody>   
+							</td>
+							<td>${selectSaleList.salesCnt } 건</td>
+							<td>
+								<fmt:formatNumber value="${selectSaleList.salesSum }" pattern="#,###" /> 원
+							</td>
+							<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" type="button" style="background: #263d94; color: white;" 
+													   onclick="searchSalesInquiryDetail(<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyyMM"/>)">상세</button></td>
+						</tr>
+						<c:set var="StartRow" value="${StartRow +1}"/>
+					 </c:forEach>
+					</c:if>
+	             </tbody>
+             </c:if>   
 		</table>
-	</c:if>
+	
 </div>
 <%@ include file="../common/footerFo.jsp" %>
 </body>

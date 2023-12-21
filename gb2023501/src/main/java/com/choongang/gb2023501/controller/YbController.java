@@ -29,6 +29,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -227,11 +228,11 @@ public class YbController {
 	
 	// 학습자료 리스트  jpa
 	@RequestMapping(value = "/operate/eduMaterialsList")
-	public String JpaEduResourceList(EduMaterials eduMaterials, Model model) {
+	public String JpaEduResourceList(@ModelAttribute("eduMaterials") com.choongang.gb2023501.domain.EduMaterials eduMaterials, Model model ){
 		log.info("ybController operate/eduMaterialsList start...");
-		
+
 		// 학습자료 리스트
-		List<com.choongang.gb2023501.domain.EduMaterials> selectEduMaterialsList = js.getListAllEduMaterials();
+		List<com.choongang.gb2023501.domain.EduMaterials> selectEduMaterialsList = js.getListAllEduMaterials(eduMaterials);
 
 		model.addAttribute("selectEduMaterialsList", selectEduMaterialsList);
 		
@@ -251,9 +252,37 @@ public class YbController {
 			selectEduMaterialsList = js.findByEduMaterialsContaining(keyword);
 			System.out.println("selectEduMaterialsList.size() -> " + selectEduMaterialsList.size());
 		}
-		
+		model.addAttribute("type", type);
+		model.addAttribute("keyword", keyword);
 		model.addAttribute("selectEduMaterialsList", selectEduMaterialsList);
 		return "yb/eduMaterialsList";
+	}
+	
+	@RequestMapping(value = "/operate/selectSearchType")
+	public String selectSearchType(String typeSelect1, String typeSelect2, String typeSelect3, 
+								   com.choongang.gb2023501.domain.EduMaterials eduMaterials, Model model, RedirectAttributes redirect) {
+		System.out.println("ybController /operate/selectSearchType start...");
+		System.out.println("typeSelect1 -> " + typeSelect1);
+		System.out.println("typeSelect2 -> " + typeSelect2);
+		System.out.println("typeSelect3 -> " + typeSelect3);
+		int typeIntSelect1 =Integer.parseInt(typeSelect1);
+		int typeIntSelect2 =Integer.parseInt(typeSelect2);
+		int typeIntSelect3 =Integer.parseInt(typeSelect3);
+		
+		eduMaterials.setEmCategory(typeIntSelect1);
+		eduMaterials.setEmType(typeIntSelect2);
+		eduMaterials.setEmPayment(typeIntSelect3);
+		
+		System.out.println("emCategory -> " + eduMaterials.getEmCategory());
+		List<com.choongang.gb2023501.domain.EduMaterials> selectEduMaterialsList = js.getListAllEduMaterials(eduMaterials);
+		System.out.println("emCategory -> " + eduMaterials.getEmCategory());
+		model.addAttribute("selectEduMaterialsList", selectEduMaterialsList);
+		model.addAttribute("typeSelect1", typeIntSelect1);
+		model.addAttribute("typeSelect2", typeIntSelect2);
+		model.addAttribute("typeSelect3", typeIntSelect3);
+		redirect.addFlashAttribute("eduMaterials", eduMaterials);
+		
+		return "redirect:/operate/eduMaterialsList";
 	}
 	// 학습자료 삭제
 	@RequestMapping(value = "/operate/deleteEduMaterials")
@@ -492,12 +521,12 @@ public class YbController {
 		// 월 검색일 때
 		if(date.equals("month")) {
 			selectSaleList = js.selectSaleList(s_date, e_date);
-			dateFormat = new SimpleDateFormat("yyyy/MM");
+			dateFormat = new SimpleDateFormat("yyyy-MM");
 		} 
 		// 일 별 검색
 		else {
 			selectSaleList = js.findBySalesContaining(s_date, e_date);
-			dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+			dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		}
 		System.out.println("ybController /operate/saleInquiryChart selectSaleList.get(0).toString() -> " + selectSaleList.get(0).getGoOrderDate());
 		System.out.println("ybController /operate/saleInquiryChart selectSaleList.get(0).toString() -> " + selectSaleList.get(0).getSalesSum());
@@ -530,7 +559,7 @@ public class YbController {
 		return "yb/saleInquiryChart";
 	}
 
-
+	
 
 	
 	

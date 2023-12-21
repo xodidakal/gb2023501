@@ -67,7 +67,7 @@
 	        <div class="row g-3">
 		        <h2 class="display-7 mb-4">학습 자료 상세</h2>
 		        <hr class="my-3">
-	        	<small>등록일 : <fmt:formatDate value="${eduMaterials.emRegiDate }" pattern="yyyy/MM/dd"/></small>			                  
+	        	<small>등록일 : <fmt:formatDate value="${eduMaterials.emRegiDate }" pattern="yyyy-MM-dd"/></small>			                  
 	        	<table id="table" style="margin-top: 0px;">
 					<tr>
 						<th>게임 콘텐츠</th>

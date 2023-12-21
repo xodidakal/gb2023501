@@ -39,7 +39,7 @@
    <div class="mb-6">
       <header class="top">
          <h1 class="infoTit">
-           	매출 상세 <fmt:formatDate value="${date }" pattern="yyyy/MM/dd"/>
+           	매출 상세 <fmt:formatDate value="${date }" pattern="yyyy-MM-dd"/>
          </h1>
       </header>
    </div>

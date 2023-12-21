@@ -65,11 +65,20 @@ public class YbRepositoryImpl implements YbRepository {
 	}
 	// 학습자료 리스트 조회
 	@Override
-	public List<EduMaterials> findAll() {
-		System.out.println("YbRepositoryImpl List<EduMaterials> findAll start...");
-
-		List<EduMaterials> selectEduMaterialsList = em.createQuery("select e from EduMaterials e order by e.emRegiDate desc", EduMaterials.class)
-									   .getResultList();
+	public List<EduMaterials> findAll(EduMaterials eduMaterials) {
+		int category = eduMaterials.getEmCategory();
+		int type = eduMaterials.getEmType();
+		int payment = eduMaterials.getEmPayment();
+		
+		List<EduMaterials> selectEduMaterialsList = em.createQuery("select e from EduMaterials e "
+																  + "WHERE (:category = 0 OR e.emCategory =: category) "
+																  + "AND (:type = 0 OR e.emType =: type) "
+																  + "AND (:payment = 0 OR e.emPayment =: payment) "
+																  + "order by e.emRegiDate desc", EduMaterials.class)
+													  .setParameter("category", category)
+													  .setParameter("type", type)
+													  .setParameter("payment", payment)
+													  .getResultList();
 		return selectEduMaterialsList;
 	}
 	// 학습자료 키워드 리스트 조회
