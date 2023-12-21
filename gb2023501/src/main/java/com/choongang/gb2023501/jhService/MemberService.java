@@ -25,6 +25,13 @@ public interface MemberService {
 	// 입력한 ID와 같은 아이디가 있는지 확인
 	public boolean existsByMmId(String id);
 
+	//회원가입
 	public Member join(@Valid Member member);
+
+	//아이디, 이름,폰으로 유저 찾기
+	public Optional<Member> findByMmIdAndPhoneAndName(String id, String phone, String name);
+
+	//아이디, 이름,이메일로 유저 찾기
+	public Optional<Member> findByMmIdAndEmailAndName(String id, String email, String name);
 
 }

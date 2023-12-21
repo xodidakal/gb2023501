@@ -23,6 +23,12 @@ import com.choongang.gb2023501.domain.Member;
 
 	// 입력한 ID와 같은 아이디가 있는지 확인
     boolean existsByMmId(String mmId);
+
+    //아이디, 이름,폰으로 유저 찾기
+	Optional<Member> findByMmIdAndPhoneAndMmName(String id, String phone, String name);
+
+	//아이디, 이름,이메일로 유저 찾기
+	Optional<Member> findByMmIdAndEmailAndMmName(String id, String email, String name);
 	
 
 	//public Member findByUsername(String username); 

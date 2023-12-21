@@ -3,6 +3,7 @@ package com.choongang.gb2023501.controller;
 import java.security.SecureRandom;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,10 +39,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class JhController {
 
-	//private final MemberRepository mr;
-	//서비스 -> 레파지토리 이므로 여기선 mr 안 씀
+	private final MemberRepository mr;
+	//서비스 -> 레파지토리 이므로 여기선 mr 안 씀 -> 사용자 정보 업데이트할 때 사용
 	private final MemberService ms;
 	private final JavaMailSender mailSender;
+	private final PasswordEncoder passwordEncoder;
 	
 	public String phone_format(String number) {
 	      String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
@@ -386,6 +389,7 @@ public class JhController {
 		
 		String result = null;
 		try {
+			//인증번호 검증 메서드 호출
 			result = varification(varificationNum, session);
 			if(result != "0") {
 				String name = (String) session.getAttribute("name");
@@ -421,7 +425,7 @@ public class JhController {
 		//휴대폰 인증
 		if(phone != null) {
 			//기존 사용자인지 비교 먼저하고 결과 반환하기 
-			currentUser = ms.findByNameAndPhone(name, phone);
+			currentUser = ms.findByMmIdAndPhoneAndName(id, phone, name);
 			
 			if(currentUser.isPresent()) {
 				System.out.println("JhController joinAgree currentUser -> " + currentUser);
@@ -438,12 +442,13 @@ public class JhController {
 		//메일 인증	
 		} else if (email != null) {
 			//기존 사용자인지 비교 먼저하고 결과 반환하기 
-			currentUser = ms.findByNameAndEmail(name, email);
+			currentUser = ms.findByMmIdAndEmailAndName(id, email, name);
 			
 			if(currentUser.isPresent()) {
 				System.out.println("JhController joinAgree currentUser -> " + currentUser);
 				int emailResult = emailVarification(email, name, session);
 				if (emailResult > 0) {
+					session.setAttribute("id", id);
 					result = "1"; //메일전송 성공
 				} else {
 					result = ""; //전송 실패
@@ -459,7 +464,57 @@ public class JhController {
 		return result;
 	}
 	
+	@PostMapping(value = "info/pswdInquiryByEmail")
+	@ResponseBody
+	public String pswdInquiryByEmail(@RequestParam int varificationNum, HttpSession session) {
+		System.out.println("JhController idInquiryByEmail Start...");
+		
+		String result = null;
+		try {
+			//인증번호 검증 메서드 호출
+			result = varification(varificationNum, session);
+			if(result != "0") {
+				System.out.println("임시비번 발급 Start...");
+				String name = (String) session.getAttribute("name");
+				String email = (String) session.getAttribute("email");
+				String id = (String) session.getAttribute("id");
+				System.out.println("JhController pswdInquiryByEmail 유저정보..." + name+ email+ id);
+				
+				Optional<Member> currentUser = ms.findByMmIdAndEmailAndName(id, email, name);
+				Member user = currentUser.get();
+				System.out.println("JhController pswdInquiryByEmail 유저..." + user);
+				String temporaryPswd = generateTemporaryPassword();
+				user.setMmPswd(temporaryPswd);
+				mr.save(user);
+				result = temporaryPswd;
+				System.out.println("JhController pswdInquiryByEmail 임시비번..." + temporaryPswd);
+			} else {
+				result = "0";
+			} 
+			
+		} catch (Exception e) {
+			System.out.println("JhController pswdInquiryByEmail e.getMessage()-> " + e.getMessage());
+		} 
+		
+		return result;
+	}
 	
+	// 임시비밀번호 생성
+	private String generateTemporaryPassword() {
+	    System.out.println("JhController 임시비번 generateTemporaryPassword Start...");
+	    String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
+
+	    Random random = new SecureRandom();
+	    StringBuilder password = new StringBuilder();
+
+	    for (int i = 0; i < 8; i++) {
+	        int randomIndex = random.nextInt(CHARACTERS.length());
+	        password.append(CHARACTERS.charAt(randomIndex));
+	    }
+
+	    // 생성된 임시 비밀번호 반환 (해시하지 않음)
+	    return password.toString();
+	}
 	//회원 목록 관리 페이지
 	@RequestMapping(value = "operate/memberList")
 	public String memberList(Model model) {

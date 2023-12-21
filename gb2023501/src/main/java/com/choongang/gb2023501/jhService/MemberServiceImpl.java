@@ -121,6 +121,24 @@ public class MemberServiceImpl implements MemberService {
 		return savedMember;
 	}
 
+	//아이디, 이름,폰으로 유저 찾기
+	@Override
+	public Optional<Member> findByMmIdAndPhoneAndName(String id, String phone, String name) {
+		System.out.println("MemberServiceImpl findByMmIdAndPhoneAndName Start...");
+		Optional<Member> currentUser = mr.findByMmIdAndPhoneAndMmName(id, phone, name);
+		
+		
+		return currentUser;
+	}
+
+	//아이디, 이름,이메일로 유저 찾기
+	@Override
+	public Optional<Member> findByMmIdAndEmailAndName(String id, String email, String name) {
+		System.out.println("MemberServiceImpl findByMmIdAndEmailAndName Start...");
+		Optional<Member> currentUser = mr.findByMmIdAndEmailAndMmName(id, email, name);
+		return currentUser;
+	}
+
 
 
 

@@ -9,6 +9,7 @@ $(document).ready(function () {
 
     // 페이지 로딩 시 버튼 숨기기(원래  style="display: none;"로 안보였어야 하는데 보여서 추가함)
     $("#varificationButton, #pwVarificationButton").hide();
+   // $("#pwVarificationNumInput, #varificationNumInput").hide();
 
     // 인증수단에 따른 유효성 검증 함수 실행
     $('#varificationInput').on('input', function () {
@@ -198,7 +199,8 @@ function submitVarificationForm() {
        	    		success: function (response) {
        	    			//alert("서버 응답: " + response);
        	    			if(response === "0"){
-       	    				location.href="/info/loginForm";
+       	    				alert("가입되지 않은 회원입니다. 회원가입을 먼저 해주세요!")
+       	    				location.href="/info/joinAgreeForm";
        	    			}else if(response ===""){
        	    				alert("메일 전송에 실패했습니다.")
        	    			}else if(response ==="1"){
@@ -283,7 +285,8 @@ function pwSubmitVarificationForm() {
             success: function (response) {
                 alert("response" + response);
                 if (response === "0") {
-                    location.href = "/info/loginForm";
+                	alert("가입되지 않은 회원입니다. 회원가입을 먼저 해주세요!");
+                    location.href = "/info/joinAgreeForm";
                 } else if (response === "") {
                     alert("메일 전송에 실패했습니다.");
                 } else if (response === "1") {
@@ -292,9 +295,10 @@ function pwSubmitVarificationForm() {
                     // 추가: 인증 번호 입력 필드 보이기
                     $("#pwVarificationNumInput").show();
                     $("#pwVarificationButton").show();
-                } else {
+                } 
+                /* else {
                     alert("비밀번호는 " + response + " 입니다!");
-                }
+                } */
             },
             error: function (error) {
                 alert("에러 발생!");
@@ -303,7 +307,27 @@ function pwSubmitVarificationForm() {
     }
 }
 
-
+function pwSubmitVarificationNum(){
+	var pVarificationNum = parseInt(document.getElementById("pwVarificationNumInput").value);
+    alert("pVarificationNum : " + pVarificationNum);
+    
+    
+    $.ajax({
+    	url 	 : "/info/pswdInquiryByEmail",
+    	type 	 : "POST",
+    	data 	 : {varificationNum : pVarificationNum},
+    	dataType : "text",
+    	success  : function(data){
+		        		//alert("result -> " + data);
+		        		if(data === "0"){
+		        			alert("인증번호가 맞지 않습니다. 다시 입력해 주세요!");
+		        		} else {
+       	    				 alert("임시비밀번호는 "+data+ " 입니다!")
+		        		}
+    	}
+    });
+	
+}
 	
 	//var id	 = $('#id').val;
 </script>
@@ -396,7 +420,7 @@ function pwSubmitVarificationForm() {
                                         <th></th>
                                         <td colspan="2">
                                             <input type="tel" class="form-control" id="pwVarificationInput" name="phone" placeholder="(-)없이 휴대폰 번호를 입력하세요" required maxlength="11">
-    										<input type="text" class="form-control mt-2" id=pwVarificationNumInput" name="varificationNum" placeholder="인증 번호를 입력하세요" style="display: none;">
+    										<input type="text" class="form-control mt-2" id="pwVarificationNumInput" name="varificationNum" placeholder="인증 번호를 입력하세요" style="display: none;">
                                         </td>
                                     </tr>
                                     <tr style="height: 5px;" id="pwValidationMessageTr">
@@ -410,7 +434,7 @@ function pwSubmitVarificationForm() {
                             </form>
                         <div class="d-grid gap-2 d-md-flex justify-content-center">
                     <input id="pwVarificationNumButton" class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="인증번호전송" onclick="pwSubmitVarificationForm()">
-                    <input id="pwVarificationButton" class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="인증확인" onclick="pwSubmitVarificationNum()">
+                    <input id="pwVarificationButton" class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="인증확인2" onclick="pwSubmitVarificationNum()">
                 </div>
                         
                      </div>
