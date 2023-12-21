@@ -14,6 +14,7 @@ public class GameOrder {
 	private String	go_depositor;
 	
 	// 조회용
+	private String	g_title;
 	private String searchType;
 	private String keyword;
 	private String pageNum;
