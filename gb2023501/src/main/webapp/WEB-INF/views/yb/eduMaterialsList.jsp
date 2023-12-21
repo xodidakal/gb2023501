@@ -46,14 +46,13 @@
 			<!-- 카테고리 검색 -->
 			<select id="type" name="type" class="w-17 rounded" style="border-color: #ced4da">
 				<option value="em_title">자료명</option>
-				<option value="writer">교육</option>
 			</select>&nbsp;&nbsp;
-	            <input id="search" name="keyword" class="form-control rounded" type="search" placeholder="검색해라" style="width: 160px;">
+	            <input id="search" name="keyword" class="form-control rounded" type="search" placeholder="내용을 입력해주세요" style="width: 160px;">
 	         		<button class="btn bi bi-search rounded"></button>
 			<div class="col">
 			<div class="d-flex align-items-center justify-content-end">
           		<div style="width: 65px;">
-	          		<a href="/operate/eduMaterialsForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="작성"></a>
+	          		<a href="/operate/eduMaterialsForm"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="등록"></a>
             	</div>
             </div>
 			</div>
@@ -116,24 +115,6 @@
   				   </tbody>
   				 
                </table>
-<!--              </form> -->
-             <div class="row mt-8" style="width:100%;">
- 					<div class="d-flex justify-content-center" style="margin-top:12px">
-		                <nav aria-label="Page navigation example">
-						  <ul class="pagination">
-						  	<c:if test="${page.startPage > page.pageLimit}">
-						  		<li class="page-item"><a class="page-link" href="eduMaterialsList?currentPage=${page.startPage-page.pageLimit}">이전</a></li>
-						  	</c:if>
-						    <c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
-						    	<li class="page-item"><a class="page-link" href="eduMaterialsList?currentPage=${i }">${i }</a></li>
-						    </c:forEach>
-						 	<c:if test="${page.endPage < page.totalPage}">
-						 		<li class="page-item"><a class="page-link" href="eduMaterialsList?currentPage=${page.startPage+page.pageLimit}">다음</a></li>
-						 	</c:if>
-						  </ul>
-						</nav>
-					</div>
-				</div>
 
 	</div>
 </div>

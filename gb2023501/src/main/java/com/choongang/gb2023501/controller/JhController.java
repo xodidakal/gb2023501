@@ -52,9 +52,6 @@ public class JhController {
 		Member member = null;
 		if(memberOptional.isPresent()) {
 			member = memberOptional.get();
-			String phone = member.getPhone();
-			phone = phone_format(phone);
-			member.setPhone(phone);
 			System.out.println("로그인 회원 정보 -> " + member);
 			System.out.println("member name -> " + member.getMmName());
 		}
@@ -465,7 +462,7 @@ public class JhController {
 	
 	//회원 목록 관리 페이지
 	@RequestMapping(value = "operate/memberList")
-	public String memberList() {
+	public String memberList(Model model) {
 		System.out.println("JhController memberList Start...");
 		//테스트 삼아 찍어본 것
 //		int mmNum = ms.selectMmNumById();
@@ -481,7 +478,9 @@ public class JhController {
 //		}
 		
 		Member member = aboutMember();
-		
+		String phone = member.getPhone();
+        phone = phone_format(phone);
+        model.addAttribute("phone", phone);
 		System.out.println("회원정보  " + member);
 		return "jh/memberList";
 	}

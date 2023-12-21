@@ -28,6 +28,8 @@ public interface EduMaterialsService {
 
 	int 						selectListCnt(Date s_date, Date e_date);
 
+	List<com.choongang.gb2023501.model.LearnGrp> 				selectMNameList(com.choongang.gb2023501.model.LearnGrp learnGrp);
+
 
 
 }
