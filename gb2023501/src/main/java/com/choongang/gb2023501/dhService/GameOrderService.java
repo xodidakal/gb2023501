@@ -20,4 +20,5 @@ public interface GameOrderService {
 	List<Game>		selectGameOrder(Map<String, Object> map);
 	int             gamesum(Map<String, Object> map);
 	int             insertGameOrder(GameOrder gameOrder);
+	Game            gameRead(int g_num);
 }

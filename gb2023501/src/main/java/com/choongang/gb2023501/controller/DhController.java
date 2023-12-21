@@ -164,18 +164,18 @@ public class DhController {
 		int m_num = ms.selectMmNumById();
 		game.setM_num(m_num);
 		
-		String pathDB = null;
-		String fileName = null;
+		String g_attach_name = null;
+		String g_attach_path = null;
 		
 		FileUploadDeleteUtil fileUpload = new FileUploadDeleteUtil();
 		
 		try {
 			System.out.println("gameupload File Start!!");
 			String[] uploadResult = fileUpload.uploadFile(file);
-			fileName = uploadResult[0];
-			pathDB = uploadResult[1];
-			System.out.println("gameupload fileName : {}"+ fileName);
-			System.out.println("gameupload pathDB : {}"+ pathDB);
+			g_attach_name = uploadResult[0];
+			g_attach_path = uploadResult[1];
+			System.out.println("gameupload g_attach_name : {}"+ g_attach_name);
+			System.out.println("gameupload g_attach_path : {}"+ g_attach_path);
 
 		} catch (Exception e) {
 			System.out.println("gameupload File upload error : {}" + e.getMessage());
@@ -183,7 +183,8 @@ public class DhController {
 			System.out.println("gameupload integratedboardInsert File End..");
 		}
 		
-		game.setG_attach_name(pathDB+fileName);
+		game.setG_attach_name(g_attach_path+g_attach_name);
+		game.setG_attach_path(g_attach_path);
 		
 		int result = 0;
 		
@@ -230,38 +231,57 @@ public class DhController {
 	}
 	
 	@RequestMapping(value = "operate/gameUpdateResult")
-	public String gameUpdateResult(Game game,int g_num, MultipartFile file, Model model) {
-		String pathDB = null;
-		String fileName = null;
+	public String gameUpdateResult(Game game, int g_num, MultipartFile file, Model model) {
+		String g_attach_name = null;
+		String g_attach_path = null;
+		FileUploadDeleteUtil fileUploadDeleteUtil = new FileUploadDeleteUtil();
+		int realName = file.getOriginalFilename().length();
 		
-		FileUploadDeleteUtil fileUpload = new FileUploadDeleteUtil();
-			
 		try {
-			System.out.println("gameupload File Start!!");
-			String[] uploadResult = fileUpload.uploadFile(file);
-			fileName = uploadResult[0];
-			pathDB = uploadResult[1];
-			System.out.println("gameupload fileName : {}"+ fileName);
-			System.out.println("gameupload pathDB : {}"+ pathDB);
+			System.out.println("gameupload realName : {}"+ realName);
+			
+			// DB에 저장 된 파일명 조회
+			Game deleteImageNameFind = gos.gameRead(game.getG_num());
+			System.out.println("gameupload getG_title filePart1 : {}"+ game.getG_title());
+			// DB에 저장 된 파일명 가져오기
+			g_attach_name = deleteImageNameFind.getG_attach_name();
+			
+			// 파일 값이 있으면 저장
+			if (realName > 0) {
+				System.out.println("gameupload File Start!!");
+				
+				String[] uploadResult = fileUploadDeleteUtil.uploadFile(file);
+				g_attach_name = uploadResult[0];
+				g_attach_path = uploadResult[1];
+				System.out.println("gameupload getG_title filePart3 : {}"+ game.getG_title());
+
+			} else {
+				System.out.println("gameupload File errer : {}"+"저장 할 파일이 없습니다.");
+				System.out.println("gameupload getG_title filePart4 : {}"+ game.getG_title());
+			}
+
 
 			} catch (Exception e) {
 				System.out.println("gameupload File upload error : {}" + e.getMessage());
 			} finally {
-				System.out.println("gameupload integratedboardInsert File End..");
+				System.out.println("gameupload gameupload File End..");
 			}
 		
-			game.setG_attach_name(pathDB+fileName);
-			
-		int result = 0;
+			game.setG_attach_name("..\\photos\\"+g_attach_name);
+			game.setG_attach_path(g_attach_path);
+		
+		int updateGame1  = 0;
 		try {
 			System.out.println("dhController gameUpdateResult() start..");
-			result = gos.updateGame(game);
+			
+				updateGame1 = gos.updateGame(game);
+				
 		} catch (Exception e) {
 			System.out.println("dhController gameUpdateResult() ->"+e.getMessage());
 		} finally {
 			System.out.println("dhController gameUpdateResult() end..");
 		}
-		if (result > 0) {
+		if (updateGame1 > 0) {
 			return "redirect:gameList";
 		} else {
 			model.addAttribute("g_num", game.getG_num());
@@ -272,4 +292,3 @@ public class DhController {
 	}
 	
 }
- 
