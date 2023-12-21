@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.choongang.gb2023501.model.Game;
+import com.choongang.gb2023501.model.GameOrder;
 
 import lombok.RequiredArgsConstructor;
 
@@ -148,6 +149,17 @@ public class GameOrderDaoImpl implements GameOrderDao {
 			result = session.selectOne("dhGameSum",map);
 		} catch (Exception e) {
 			System.out.println("GameOrderDaoImpl  gamesum->"+e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public int insertGameOrder(GameOrder gameOrder) {
+		int result = 0;
+		try {
+			result = session.insert("dhGameOrderInsert", gameOrder);
+		} catch (Exception e) {
+			System.out.println("GameOrderDaoImpl insertGameOrder->"+e.getMessage());
 		}
 		return result;
 	}

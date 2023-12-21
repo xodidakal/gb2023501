@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.choongang.gb2023501.model.Game;
+import com.choongang.gb2023501.model.GameOrder;
 
 public interface GameOrderService {
 
@@ -16,6 +17,7 @@ public interface GameOrderService {
 	int         	insertGame(Game game);
 	Game        	selectGame(int g_num, int m_num);
 	int         	updateGame(Game game);
-	List<Game>      selectGameOrder(Map<String, Object> map);
+	List<Game>		selectGameOrder(Map<String, Object> map);
 	int             gamesum(Map<String, Object> map);
+	int             insertGameOrder(GameOrder gameOrder);
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.choongang.gb2023501.dhDao.GameOrderDao;
 import com.choongang.gb2023501.model.Game;
+import com.choongang.gb2023501.model.GameOrder;
 
 import lombok.RequiredArgsConstructor;
 
@@ -95,6 +96,14 @@ public class GameOrderServiceImpl implements GameOrderService {
 	public int gamesum(Map<String, Object> map) {
 		int result = 0;
 		result = god.gamesum(map);
+		return result;
+	}
+
+	@Override
+	public int insertGameOrder(GameOrder gameOrder) {
+		int result = 0;
+		result = god.insertGameOrder(gameOrder);
+		
 		return result;
 	}
 

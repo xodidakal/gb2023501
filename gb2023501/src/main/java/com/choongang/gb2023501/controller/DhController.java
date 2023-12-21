@@ -16,6 +16,7 @@ import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.gbService.Paging;
 import com.choongang.gb2023501.jhService.MemberService;
 import com.choongang.gb2023501.model.Game;
+import com.choongang.gb2023501.model.GameOrder;
 
 import lombok.RequiredArgsConstructor;
 
@@ -87,13 +88,16 @@ public class DhController {
 	}
 		
 		@RequestMapping(value = "subscribe/gameOrderInsert")
-		public String gameOrderInsert(Model model) {
+		public String gameOrderInsert(GameOrder gameOrder, Model model) {
+			int result = 0;
+			
 			try {
-				System.out.println("dhController gameOrderInsert() start..");
+				System.out.println("dhController gameOrderInsertResult() start..");
+				result = gos.insertGameOrder(gameOrder);
 			} catch (Exception e) {
-				System.out.println("dhController gameOrderInsert() ->"+e.getMessage());
+				System.out.println("dhController gameOrderInsertResult() ->"+e.getMessage());
 			} finally {
-				System.out.println("dhController gameOrderInsert() end..");
+				System.out.println("dhController gameOrderInsertResult() end..");
 			}
 			return "dh/gameOrderForm";
 		}

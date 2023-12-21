@@ -46,9 +46,11 @@
    		</foreach>	
    </select>
 	
-	<insert id="dhGameOrderInsert" parameterType="Game">
-   		INSERT INTO game(g_num, m_num, g_title,g_step, g_period, g_to, g_price, discount, g_sell_price, g_content,g_attach_name, g_attach_path,g_dele_status)
-   		VALUES(game_g_num_seq.nextval,#{m_num},#{g_title},#{g_step},#{g_period},#{g_to},#{g_price},#{discount},#{g_sell_price},#{g_content},#{g_attach_name},#{g_attach_path},#{g_dele_status})
+	<insert id="dhGameOrderInsert" parameterType="java.util.Map" >
+   		INSERT INTO game_order(go_num, g_num, m_num, go_order_type,go_payment,go_depositor,go_order_date)
+   		<foreach collection="g_num" item="g_num" open="(" separator="," close=")">
+   		VALUES(game_order_seq.nextval,#{g_num},#{m_num},#{go_order_type},#{go_payment},#{go_depositor},sysdate)
+   		</foreach>
    </insert>
 	
 	<select id="dhGameOrderList2" resultType="Game" parameterType="Game">
