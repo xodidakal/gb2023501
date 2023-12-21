@@ -13,15 +13,19 @@
 		var type;
 		var keyword;
 		
+		// keyword를 포함하는 화면이면 (= 검색을 통해 이동한 화면이면)
+		// 해당 keyword와 type을 계속 갖고 이동하라
 		if('${keyword}' != null){
 			var keyword = '${keyword}';
 			var type    = '${type}';
-		} else {
-			var keyword = $('#keyword').val();
-			var type    = $('#type').val();
-		}
+			
+			location.href = "/educator/learnGroupList?sort="+sort+"&type="+type+"&keyword="+keyword;
 		
-		location.href = "/educator/learnGroupList?sort="+sort+"&type="+type+"&keyword="+keyword;
+		// keyword를 미포함하는 화면이면 (= 최초 진입 화면이면)
+		// keyword와 type없이 이동하라
+		} else {
+			location.href = "/educator/learnGroupList?sort="+sort;
+		}
 	}
 	
 	// 삭제
@@ -98,7 +102,7 @@
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">내 학습 그룹</h2>
 	         <p style="margin-bottom: 35px;">총 ${size }건</p>
-	         <c:if test="${keyword ne null}">
+	         <c:if test="${keyword ne null and !empty keyword}">
 		         <h6 style="margin-top: 35px;margin-bottom: 35px;">
 		         	'
 		         	<c:choose>
@@ -113,14 +117,18 @@
 
 		<form action="/educator/learnGroupList">
 			<div class="input-group col-md-5 mb-3"> 
-				<!-- 카테고리 분류 -->
+				<!-- 정렬 -->
 				<select id="sort" name="sort" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da"
 						onchange="changeSort()">
-					<option value="sortLgTitle">학습그룹명순</option>
-					<option value="sortGgTitle">게임콘텐츠명순</option>
+					<option value="sortLgTitle" <c:if test="${sort eq 'sortLgTitle'}"> selected </c:if>>
+						학습그룹명순
+					</option>
+					<option value="sortGgTitle" <c:if test="${sort eq 'sortGgTitle'}"> selected </c:if>>
+						게임콘텐츠명순
+					</option>
 				</select>
-				<!-- 카테고리 검색 -->
 				
+				<!-- 검색 -->
 				<select id="type" name="type" class="w-17 rounded" style="border-color: #ced4da">
 					<option value="typeLgTitle">학습그룹명</option>
 					<option value="typeGgTitle">게임콘텐츠명</option>

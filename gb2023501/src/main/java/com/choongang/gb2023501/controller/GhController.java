@@ -78,7 +78,7 @@ public class GhController {
 		
 		// 게시물 count
 		// -----------------------------------------------------
-		int bdCount = boardService.selectBoardListCnt(b_category);
+		int bdCount = boardService.selectBoardListCnt(board);
 		// -----------------------------------------------------
 		System.out.println("GhController selectBoardListCnt bdCount->"+bdCount);
 		
@@ -108,7 +108,7 @@ public class GhController {
 		// 게시판 카테고리
 		model.addAttribute("BoardCategory", b_category);
 		// 게시판 카테고리 별 count
-		model.addAttribute("BoardCount", list.size());
+		model.addAttribute("BoardCount", bdCount);
 		// 게시판 b_num 정렬
 		model.addAttribute("StartRow",page.getStart());
 		// 게시판 숫자표시
@@ -185,8 +185,7 @@ public class GhController {
 							  ) throws IOException {
 		System.out.println("GhController insertBoard Start...");
 		System.out.println("GhController insertBoard b_regi_date->"+b_regi_date);
-		System.out.println("GhController insertBoard board.getB_num()->"+board.getB_num());
-		System.out.println("GhController insertBoard board.getB_ref_num()->"+board.getB_ref_num()); // 이게 문제임
+		System.out.println("GhController insertBoard board.getB_flag()->"+board.getB_flag());
 		
 		if(!file1.isEmpty()) {
 			// file Upload
@@ -204,7 +203,7 @@ public class GhController {
 			String saveName = uploadFile(file1.getOriginalFilename(), file1.getBytes(), uploadPath);  // 저장되는 파일명 
 			log.info("saveName: " + saveName);
 			
-			board.setB_attach_name(file1.getOriginalFilename());	
+			board.setB_attach_name(saveName);	
 			board.setB_attach_path(attach_path);
 		}
 		
@@ -242,11 +241,17 @@ public class GhController {
 	@RequestMapping(value = "customer/boardUpdate")
 	public String boardUpdate(Model model, Board board, int b_num) {
 		System.out.println("GhController boardUpdate Start...");
+
+		// 회원정보
+		Member member = aboutMember();
+		model.addAttribute("member", member);
+		
 		// 수정 정보 불러오기
 		// -----------------------------------------------------
 		Board BdDetail = boardService.selectBoard(b_num);
 		// -----------------------------------------------------
 		model.addAttribute("BdDetail",BdDetail);
+		
 		
 		return "gh/boardUpdate";
 	}
@@ -258,6 +263,7 @@ public class GhController {
 		System.out.println("GhController updateBoard Start...");
 		System.out.println("GhController updateBoard b_title->"+board.getB_title());
 		System.out.println("GhController updateBoard board.getB_num()->"+board.getB_num());
+		System.out.println("GhController updateBoard board.getB_category()->"+board.getB_category());
 		
 		if(!file1.isEmpty()) {
 			// file Upload

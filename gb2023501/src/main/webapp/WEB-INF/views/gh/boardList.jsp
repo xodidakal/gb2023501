@@ -62,12 +62,15 @@
 			 	<c:when test="${BoardCategory == 2}"><h2 style="margin-bottom: 15px;">Q&A</h2></c:when>
 	 			<c:otherwise><h2 style="margin-bottom: 15px;">FAQ</h2></c:otherwise>
 			</c:choose>
-		 		<p style="margin-bottom: 35px;">총 ${BoardCount}</p>	         
+			<c:choose>
+				<c:when test="${not empty search_keyword}"><p style="margin-bottom: 35px;">총 ${BoardCount}건</p></c:when>
+				<c:when test="${search_keyword eq null or search_keyword eq ''}"><p style="margin-bottom: 35px;">총 ${BoardCount}건</p></c:when>
+				<c:otherwise></c:otherwise>
+			</c:choose>
 	    </div>
-
+	    
 		<div class="input-group col-md-5 mb-3"> 
 			<!-- 카테고리 분류 -->
-			
 			<select id="count_type" name="count_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
 				<c:if test="${not empty rowPage}">
 					<option hidden="" value="${rowPage}">${rowPage} 개씩</option>
@@ -80,10 +83,8 @@
 				
 			<!-- 카테고리 검색 -->
 			<select name="search_type" id="search_type" style="border-color: #ced4da">
-				<%-- <option value="s_title_content" <c:if test="${search_type eq s_title_content}">selected</c:if> >제목 + 내용</option>
-				<option value="s_writer" <c:if test="${search_type eq s_writer}">selected</c:if> >작성자</option> --%>
-				<option value="s_title_content">제목 + 내용</option>
-				<option value="s_writer" >작성자</option>
+				<option value="s_title_content" <c:if test="${search_type eq 's_title_content'}">selected</c:if> >제목 + 내용</option>
+				<option value="s_writer" <c:if test="${search_type eq 's_writer'}">selected</c:if> >작성자</option>
 			</select>&nbsp;&nbsp;
             <input id = "search_keyword" name="search_keyword" class="form-control rounded" 
             	   type="search" value="<c:if test="${not empty search_keyword}">${search_keyword}</c:if>" placeholder="search" style="width: 160px;">
@@ -94,12 +95,12 @@
 			<div class="col">
 			<div class="d-flex align-items-center justify-content-end">
           		<div style="width: 65px;">
-          			<!-- Q&A, FAQ이면서 회원이면 글 작성 -->
-          			<c:if test="${(BoardCategory eq '2' or BoardCategory eq '3') and not empty member.category}">
+          			<!-- Q&A이면서 회원이면 글 작성 -->
+          			<c:if test="${(BoardCategory eq '2') and not empty member.category}">
           				<a href="/customer/boardForm?b_category=${BoardCategory}"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="작성"></a>
           			</c:if>
-          			<!-- 공지사항이면서 운영자면 글 작성 -->
-          			<c:if test="${(BoardCategory eq '1') and member.category eq '4'}">
+          			<!-- 공지사항, FAQ이면서 운영자면 글 작성 -->
+          			<c:if test="${(BoardCategory eq '1' or BoardCategory eq '3') and member.category eq '4'}">
           				<a href="/customer/boardForm?b_category=${BoardCategory}"><input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="작성"></a>
           			</c:if>
             	</div>
@@ -133,12 +134,12 @@
 							<td style="text-align: left;">
 								<!-- 상단 표시 -->
 								<div>
-								<c:if test="${Blist.b_flag eq '0'}"><img src="/assets/img/notice_icon.png" style="margin-bottom:4px"></c:if>
+								<c:if test="${Blist.b_flag eq '1'}"><img src="/assets/img/notice_icon.png" style="margin-bottom:4px"></c:if>
 								<!-- 댓글 표시 -->
 								<c:if test="${Blist.b_title.contains('[답변]')}"><img src="/assets/img/reply.png" style="margin-bottom:4px"></c:if>
 								${Blist.b_title} &nbsp;
 								<!-- 댓글 표시 -->
-								<c:if test="${Blist.b_category eq '1'}"><label style="color: orange;">[${Blist.comment_count}]</label></c:if>
+								<c:if test="${Blist.b_category eq '1' and Blist.comment_count > 0}"><label style="color: orange;">[${Blist.comment_count}]</label></c:if>
 								</div>
 							</td>
 							<td>${Blist.m_name}</td>

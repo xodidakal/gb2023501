@@ -101,12 +101,13 @@ function signUp() {
 						<!-- 카테고리 검색 -->
 						<select id="mmName" name="mmName" class="w-17 rounded" style="margin-right: 5px; border-color: #ced4da; display: none; height: 40px;" >
 							<option value="reload">전체보기</option>
-							<c:forEach var="selectLGpList" items="${selectLGpList }">
-								<option value="${selectLGpList.member.mmNum }">${selectLGpList.member.mmName }</option>
-`							</c:forEach>
+							<c:forEach var="selectMNameList" items="${selectMNameList }">
+			            		<option value="${selectMNameList.m_num }">${selectMNameList.m_name }</option>
+			            	</c:forEach>
 						</select>&nbsp;&nbsp;
 		            	<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="조회" onsubmit="chk reload()">
 	            </form>
+
 	            </div>
 				<div class="col">
 				

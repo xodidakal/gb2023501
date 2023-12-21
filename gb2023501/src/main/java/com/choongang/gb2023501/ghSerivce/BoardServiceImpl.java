@@ -17,9 +17,21 @@ public class BoardServiceImpl implements BoardService {
 	private final BoardDao boardDao;
 	
 	@Override
-	public int selectBoardListCnt(String b_category) {
+	public int selectBoardListCnt(Board board) {
 		System.out.println("BoardServiceImpl selectBoardListCnt Start...");
-		int result = boardDao.selectBoardListCnt(b_category);
+		int result = 0;
+		
+		if(board.getSearch_keyword() != null) {
+			if(!board.getSearch_keyword().equals("")) {
+				System.out.println("검색어로 count");
+				// 검색 건수
+				result = boardDao.searchBoardListCnt(board);
+				System.out.println("BoardServiceImpl selectBoardListCnt result->"+result);
+				return result;
+			}
+		}
+		//총 건수
+		result = boardDao.selectBoardListCnt(board);
 		
 		return result;
 	}
