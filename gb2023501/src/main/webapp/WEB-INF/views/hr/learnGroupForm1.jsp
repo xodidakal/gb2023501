@@ -20,22 +20,25 @@
 	})
 	
 	// 정렬기준 변경
-		function changeSort() {
+	function changeSort() {
 		var sort = $('#sort').val();
 		var type;
 		var keyword;
 		
+		// keyword를 포함하는 화면이면 (= 검색을 통해 이동한 화면이면)
+		// 해당 keyword와 type을 계속 갖고 이동하라
 		if('${keyword}' != null){
 			var keyword = '${keyword}';
 			var type    = '${type}';
-		} else {
-			var keyword = $('#keyword').val();
-			var type    = $('#type').val();
-		}
+			
+			location.href = "/educator/learnGroupForm1?sort="+sort+"&type="+type+"&keyword="+keyword;
 		
-		location.href = "/educator/learnGroupForm1?sort="+sort+"&type="+type+"&keyword="+keyword;
+		// keyword를 미포함하는 화면이면 (= 최초 진입 화면이면)
+		// keyword와 type없이 이동하라
+		} else {
+			location.href = "/educator/learnGroupForm1?sort="+sort;
+		}
 	}
-
 </script>
 </head>
 <body>
@@ -45,7 +48,7 @@
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">학습 그룹 등록</h2>
 	         <h5 style="margin-top: 35px;margin-bottom: 35px;">콘텐츠 선택</h5>
-	         <c:if test="${keyword ne null}">
+	         <c:if test="${keyword ne null and !empty keyword}">
 		         <h6 style="margin-top: 35px;margin-bottom: 35px;">
 		         	'
 		         	<c:choose>
@@ -58,14 +61,20 @@
 
 		<form action="/educator/learnGroupForm1">
 			<div class="input-group col-md-5 mb-3"> 
-				<!-- 카테고리 분류 -->
+				<!-- 정렬 -->
 				<select id="sort" name="sort" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da"
 						onchange="changeSort()">
-					<option value="sortGgTitle">게임콘텐츠명순</option>
-					<option value="remainingPeriod">잔여기간순</option>
-					<option value="remainingTo">잔여인원순</option>
+					<option value="sortGgTitle" <c:if test="${sort eq 'sortGgTitle'}"> selected </c:if>>
+						게임콘텐츠명순
+					</option>
+					<option value="remainingPeriod" <c:if test="${sort eq 'remainingPeriod'}"> selected </c:if>>
+						잔여기간순
+					</option>
+					<option value="remainingTo" <c:if test="${sort eq 'remainingTo'}"> selected </c:if>>
+						잔여인원순
+					</option>
 				</select>
-				<!-- 카테고리 검색 -->
+				<!-- 검색 -->
 				<select id="type" name="type" class="w-17 rounded" style="border-color: #ced4da">
 					<option value="typeGgTitle">게임콘텐츠명</option>
 				</select>&nbsp;&nbsp;
