@@ -24,4 +24,6 @@ public interface JpaHomeworkService {
 
 	List<String> 		selectHomeworkNameList(HwSend hwsend);
 
+	int updateHomeworkEval(Map<String, Object> map);
+
 }

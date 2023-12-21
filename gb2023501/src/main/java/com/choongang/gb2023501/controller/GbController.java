@@ -319,7 +319,7 @@ public class GbController {
 		map.put("hrLevelList", hrLevelList); 	// 학습자 숙제 진도 리스트
 		map.put("hrEvalList", hrEvalList); 		// 숙제평가 리스트
 		
-		// result = jms.updateHomeworkEval(map);
+		result = jms.updateHomeworkEval(map);
 		
 		return "redirect:homeworkEval";
 	}

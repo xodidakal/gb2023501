@@ -48,17 +48,14 @@
 						HTML += "<td><select id='Eval' name='hrEval' class='w-17 rounded' style='margin-right: 20%; border-color: #ced4da'>"; // 숙제 평가
 						if(this.hrEval != null){			// 작성한 평가가 있는 경우
 							if(this.hrEval == 1){			// 작성한 평가가 우수일 때
-								HTML += "<option id='hrEval0' value='0'></option>";
 								HTML += "<option id='hrEval1' value='1' selected>우수</option>";
 								HTML += "<option id='hrEval2' value='2'>보통</option>";
 								HTML += "<option id='hrEval3' value='3'>미흡</option>";
 							}else if(this.hrEval == 2){		// 작성한 평가가 보통일 때
-								HTML += "<option id='hrEval0' value='0'></option>";
 								HTML += "<option id='hrEval1' value='1'>우수</option>";
 								HTML += "<option id='hrEval2' value='2' selected>보통</option>";
 								HTML += "<option id='hrEval3' value='3'>미흡</option>";
 							} else {						// 작성한 평가가 미흡일 때
-								HTML += "<option id='hrEval0' value='0'></option>";
 								HTML += "<option id='hrEval1' value='1'>우수</option>";
 								HTML += "<option id='hrEval2' value='2'>보통</option>";
 								HTML += "<option id='hrEval3' value='3' selected>미흡</option>";

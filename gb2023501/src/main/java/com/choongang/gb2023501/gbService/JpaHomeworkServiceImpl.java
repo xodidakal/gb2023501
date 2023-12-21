@@ -1,6 +1,11 @@
 package com.choongang.gb2023501.gbService;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -102,7 +107,7 @@ public class JpaHomeworkServiceImpl implements JpaHomeworkService {
 		return homeworkNameList;
 	}
 	
-		// 숙제평가에서 숙제를 클릭하면 조회되는 학습 제출 이력
+	// 숙제평가에서 숙제를 클릭하면 조회되는 학습 제출 이력
 	@Override
 	public List<HwRecord> selectHwrecordList(int hhNum) {
 		System.out.println("JpaHomeworkServiceImpl selectHwrecordList start...");
@@ -112,8 +117,40 @@ public class JpaHomeworkServiceImpl implements JpaHomeworkService {
 		
 		return hwrecordList;
 	}
-	
-	
+
+	// 평가한 숙제  update
+	@Override
+	public int updateHomeworkEval(Map<String, Object> map) {
+		System.out.println("JpaHomeworkServiceImpl updateHomeworkEval start...");
+		
+		int result = 0;
+		
+		int[] hhNumList = (int[]) map.get("hhNumList");
+		int[] mmNumList = (int[]) map.get("mmNumList");
+		int[] hrLevelList = (int[]) map.get("hrLevelList");
+		Integer[] hrEvalList = (Integer[]) map.get("hrEvalList");
+		
+		try {
+			for(int i=0; i<hhNumList.length; i++) {
+				if(!String.valueOf(hrEvalList[i]).equals("0")) {
+					// Optional 객체를 사용하면 결과값이 null일 경우 자동으로 예외처리를 한다.
+					Optional<HwRecord> hwrecord = jihrr.findByHomeworkHhNumAndMemberMmNumAndHrLevel(hhNumList[i],mmNumList[i],hrLevelList[i]);
+					// 숙제이력이 존재한다면
+					if(hwrecord.isPresent()) {
+						hwrecord.get().setHrEval(hrEvalList[i]);
+						hwrecord.get().setHrEvalDate(LocalDateTime.now());
+						jihrr.save(hwrecord.get());
+						result = 1;
+					}
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("JpaHomeworkServiceImpl updateHomeworkEval Exception -> "+e.getMessage());
+			result = 0;
+		}
+		
+		return result;
+	}
 	
 	
 }
