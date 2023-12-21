@@ -725,6 +725,7 @@
 	                
 	                <!-- 수정, 삭제, 목록 버튼 -->
 					<div class="d-grid gap-2 d-md-flex justify-content-center" >
+						<p>
 						<a href="boardList?b_category=${BdDetail.b_category}"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
 						
 	                	<!-- 답변 달린글은 운영자만 삭제 버튼 노출 -->
