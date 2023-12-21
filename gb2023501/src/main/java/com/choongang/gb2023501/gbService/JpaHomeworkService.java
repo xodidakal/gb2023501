@@ -1,6 +1,7 @@
 package com.choongang.gb2023501.gbService;
 
 import java.util.List;
+import java.util.Map;
 
 import com.choongang.gb2023501.domain.Homework;
 import com.choongang.gb2023501.domain.HwRecord;
@@ -17,6 +18,12 @@ public interface JpaHomeworkService {
 
 	Homework 			selectMyHomework(int h_num);
 
-	List<Homework> 		selectHomeworkList(HwSend hwsend); 
+	List<Homework> 		selectHomeworkList(HwSend hwsend);
+
+	List<HwRecord> 		selectHwrecordList(int hhNum);
+
+	List<String> 		selectHomeworkNameList(HwSend hwsend);
+
+	int updateHomeworkEval(Map<String, Object> map);
 
 }

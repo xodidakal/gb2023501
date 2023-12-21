@@ -21,7 +21,7 @@ public interface YbRepository {
 
 	int 						updateByEduMaterials(EduMaterials eduMaterials);
 
-	List<EduMaterials> 			findAll();
+	List<EduMaterials> 			findAll(EduMaterials eduMaterials);
 
 	List<GameOrder> 			findAllSales();
 

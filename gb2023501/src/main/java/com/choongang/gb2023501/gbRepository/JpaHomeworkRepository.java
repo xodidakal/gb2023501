@@ -12,4 +12,6 @@ public interface JpaHomeworkRepository {
 
 	List<Homework> 		selectHomeworkList(HwSend hwsend);
 
+	List<String> selectHomeworkNameList(HwSend hwsend);
+
 }

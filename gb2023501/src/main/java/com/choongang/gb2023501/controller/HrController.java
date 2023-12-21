@@ -44,6 +44,7 @@ public class HrController {
 
 		// model 저장
 		model.addAttribute("learnGrps", learnGrps);
+		model.addAttribute("sort", sort);
 		model.addAttribute("type", type);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("size", learnGrps.size());
@@ -89,14 +90,14 @@ public class HrController {
 			LearnGrpDTO learnGrpDTO = learnGrps.get(0);
 			
 			model.addAttribute("learnGrpDTO", learnGrpDTO);
-			model.addAttribute("lg_num", lg_num);
+			model.addAttribute("lg_num", learnGrpDTO.getLearnGrp().getLgNum());	// 대표값(index=0)의 lg_num
 			
 			// 학습그룹 목록 (for ComboBox)
 			List<LearnGrpDTO> learnGrpsAll = lgService.learnGroupList(mNum, 0, "", "", "");
 			model.addAttribute("learnGrpsAll", learnGrpsAll);
 			
-			// 학습자 명단
-			List<MemberDTO> members = lgService.joinedMemberList(lg_num);
+			// 학습자 명단											// 대표값(index=0)의 lg_num
+			List<MemberDTO> members = lgService.joinedMemberList(learnGrpDTO.getLearnGrp().getLgNum());
 			System.out.println("HrController learnGroupList() members.size() -> "+members.size());
 			
 			// 휴대전화 하이픈 추가
@@ -144,6 +145,7 @@ public class HrController {
 		System.out.println("HrController learnGroupForm1() gameList.size() -> "+ gameList.size());		
 		
 		model.addAttribute("gameList", gameList);
+		model.addAttribute("sort", searchDTO.getSort());
 		model.addAttribute("type", searchDTO.getType());
 		model.addAttribute("keyword", searchDTO.getKeyword());
 
@@ -249,14 +251,14 @@ public class HrController {
 			LearnGrpDTO learnGrpDTO = learnGrps.get(0);
 			
 			model.addAttribute("learnGrpDTO", learnGrpDTO);
-			model.addAttribute("lg_num", lg_num);
+			model.addAttribute("lg_num", learnGrpDTO.getLearnGrp().getLgNum());	// 대표값(index=0)의 lg_num
 			
 			// 학습그룹 목록 (for ComboBox)
 			List<LearnGrpDTO> learnGrpsAll = lgService.learnGroupList(mNum, 0, "", "", "");
 			model.addAttribute("learnGrpsAll", learnGrpsAll);
 
-			// 신청자 명단
-			List<MemberDTO> members = lgService.joiningMemberList(lg_num);
+			// 신청자 명단											  // 대표값(index=0)의 lg_num
+			List<MemberDTO> members = lgService.joiningMemberList(learnGrpDTO.getLearnGrp().getLgNum());
 			System.out.println("HrController learnGroupJoinList() members.size() -> "+members.size());
 			
 			// 휴대전화 하이픈 추가

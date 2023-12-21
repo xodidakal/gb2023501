@@ -8,7 +8,7 @@ import com.choongang.gb2023501.model.BoardComment;
 public interface BoardService {
 	
 
-	int 				selectBoardListCnt(String b_category);
+	int 				selectBoardListCnt(Board board);
 	List<Board> 		selectBoardList(Board board);
 	Board       		selectBoard(int b_num);
 	int       			updateBoardCnt(int b_num);

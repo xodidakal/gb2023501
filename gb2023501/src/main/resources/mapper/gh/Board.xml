@@ -4,18 +4,15 @@
 
 <mapper namespace="com.choongang.gb2023501.BoardMapper">
 	
-	<select id="mkhSelectBoardCnt" resultType="int">
-		<![CDATA[
+	<select id="mkhSelectBoardCnt" resultType="int" parameterType="board">
 			SELECT count(*)
 			FROM   board
 			WHERE  b_category = #{b_category}
-			AND	   b_regi_date < TRUNC(sysdate) + 1
-		]]>
+<![CDATA[	AND	   b_regi_date < TRUNC(sysdate) + 1	]]>
 	</select>
 	
-	<!-- ori. -->
-	<select id="mkhSelectBoardList" parameterType="board" resultType="board">			
-		<![CDATA[
+	<!-- ori. 최선 -->
+	<select id="mkhSelectBoardList" parameterType="board" resultType="board">
 			SELECT *
 		    FROM
 		    (
@@ -31,39 +28,24 @@
 				       FROM  	board b, member m
 				       WHERE 	m.m_num = b.m_num
 				       AND 	 	b.b_category = #{b_category}
-				       AND		b.b_regi_date < TRUNC(sysdate) + 1
-			    	   ORDER BY b.b_flag asc, b.b_ref_num desc, b.b_regi_date DESC
+	<![CDATA[		   AND		b.b_regi_date < TRUNC(sysdate) + 1	]]>
+				       ORDER BY 
+				       			<choose>
+				       				<when test="b_category == 1">
+				       					 b.b_flag desc
+				       					,b.b_regi_date desc
+				       					,b.b_ref_num desc 
+				       					,b.b_step asc 
+				       				</when>
+				       				<otherwise>
+				       					b.b_ref_num desc 
+				       					,b.b_step asc
+				       				</otherwise>
+				       			</choose>
 			    ) a
 		    )
 		    WHERE rn BETWEEN #{start} AND #{end}
-		]]>
 	</select>
-	
-	<!-- var2. -->
-	<!-- <select id="mkhSelectBoardList" parameterType="board" resultType="board">			
-		<![CDATA[
-			SELECT *
-		    FROM
-		    (
-		        SELECT rownum rn, a.*
-			    FROM
-			    (
-				       SELECT 	b.*, m.m_name,
-					       		(
-					       		 SELECT count(*)
-					       		 FROM   board_comment
-					       		 WHERE  b_num = b.b_num
-					       		 ) comment_count
-				       FROM  	board b, member m
-				       WHERE 	m.m_num = b.m_num
-				       AND 	 	b.b_category = #{b_category}
-				       AND		b.b_regi_date < TRUNC(sysdate) + 1
-				       ORDER BY b.b_flag asc, b.b_ref_num desc, b.b_ref_indent asc
-			    ) a
-		    )
-		    WHERE rn BETWEEN #{start} AND #{end}
-		]]>
-	</select> -->
 	
 	<select id="mkhSelectBoard" parameterType="int" resultType="board">
 		SELECT b.*, m.*
@@ -81,29 +63,13 @@
 	                                  WHERE  b_num = #{b_num})
 	</select>
 	
-	<!-- <update id="updateBoard" parameterType="int">
-	    UPDATE board
-	    SET
-	    <choose>
-	        <when test="b_count == null">b_count = 0</when>
-	        <otherwise>b_count = b_count + 1</otherwise>
-	    </choose>
-	    WHERE b_num = #{b_num}
-	</update> -->
-	
 	<update id="mkhUpdateBdCount" parameterType="int">
 		UPDATE board
 		SET	   b_count = b_count + 1
 		WHERE  b_num = #{b_num}
 	</update>
 	
-	<!-- <insert id="mkhInsertBoard" parameterType="board">
-		INSERT 
-		INTO   board(b_num,  				b_category, 	b_notie_type, 	b_flag, 	m_num, 		b_title, 	b_content, 		b_regi_date, 		b_modi_date, 					b_count, 	b_attach_name, 	b_attach_path, 		b_ref_num)
-		VALUES 	(seq_board_b_num.nextval, #{b_category}, #{b_notie_type}, 	#{b_flag},	1,			#{b_title}, #{b_content}, 	#{b_regi_date}, 	#{b_modi_date, jdbcType = DATE}, 		0	, #{b_attach_name}, #{b_attach_path}, #{b_ref_num})
-	</insert> -->
 	
-	<!-- ver1 -->
 	<insert id="mkhInsertBoard" parameterType="board">
 		INSERT INTO board
 		VALUES (
@@ -113,8 +79,15 @@
 				#{b_flag},	
 				#{m_num},			
 				#{b_title}, 
-				#{b_content}, 	
-				#{b_regi_date}, 	
+				#{b_content},
+				<choose>
+					<when test="b_regi_date == null">
+						sysdate,
+					</when>
+					<otherwise>
+						#{b_regi_date},
+					</otherwise>
+				</choose>
 				#{b_modi_date, jdbcType = DATE}, 		
 				0, 
 				#{b_attach_name}, 
@@ -128,123 +101,68 @@
 					<otherwise>
 						#{b_ref_num}
 					</otherwise>
-				</choose>
+				</choose>,
+				#{b_step}
 				)
 	</insert>
 	
-	<!-- ver2 -->
-	<!-- <insert id="mkhInsertBoard" parameterType="board">
-		INSERT INTO board
-		VALUES (
-				board_seq.nextval, 
-				#{b_category}, 
-				#{b_notie_type}, 	
-				#{b_flag},	
-				1,			
-				#{b_title}, 
-				#{b_content}, 	
-				#{b_regi_date}, 	
-				#{b_modi_date, jdbcType = DATE}, 		
-				0, 
-				#{b_attach_name}, 
-				#{b_attach_path},
-				<choose>
-					<when test="b_ref_num == 1">
-						board_seq.nextval
-					</when>
-					<otherwise>
-						null
-					</otherwise>
-				</choose>
-				,0
-				)
-	</insert> -->
 	
-	<!-- <insert id="mkhInsertBoard" parameterType="board">
-		INSERT INTO board
-		VALUES 	(
-				<c:choose>
-					<c:when test="b_num == null">
-						board_seq.nextval
-					</c:when>
-					<otherwise>
-						board_seq.nextval
-					</otherwise>
-				</c:choose>
-				, #{b_category}, #{b_notie_type}, 	#{b_flag},	1,			#{b_title}, #{b_content}, 	#{b_regi_date}, 	#{b_modi_date, jdbcType = DATE}, 		0	, #{b_attach_name}, #{b_attach_path}, #{b_ref_num})
-	</insert> -->
-	
-	<!-- <select id="mkhSearchBoardList" parameterType="board" resultType="board">
-		<![CDATA[
-			SELECT *
-			FROM
-			(
-			    SELECT rownum rn, a.*
-			    FROM
-			    (
-			        SELECT  b.*, m.m_name,
-			                (
-			                    SELECT count(*)
-			                    FROM   board_comment
-			                    WHERE  b_num = b.b_num
-			                ) comment_count
-			        FROM    board b, member m
-			        WHERE   m.m_num = b.m_num
-			        AND     b.b_category = #{b_category}
-			        <if test="search_type == 's_title_content'">
-			            AND (
-		            		b.b_regi_date < TRUNC(sysdate) + 1 
-		            		AND (b.b_title || b.b_content) LIKE '%' || #{search_keyword} || '%'
-		            		)
-			        </if>
-			        <if test="search_type == 's_writer'">
-			        	AND (
-			        		b.b_regi_date < TRUNC(sysdate) + 1 
-			            	AND m.m_name LIKE '%' || #{search_keyword} || '%'
-			            	)
-			        </if>
-			        ORDER BY b.b_flag asc
-			    ) a
-			)
-			WHERE rn BETWEEN #{start} AND #{end}
-		]]>
-	</select> -->
-	
-	<!-- 미완성 (먼저쓴날짜 나옴) -->
 	<select id="mkhSearchBoardList" parameterType="board" resultType="board">
 		SELECT *
-		FROM
-		(
-		    SELECT rownum rn, a.*
 		    FROM
 		    (
-		        SELECT  b.*, m.m_name,
-		                (
-		                    SELECT count(*)
-		                    FROM   board_comment
-		                    WHERE  b_num = b.b_num
-		                ) comment_count
-		        FROM    board b, member m
-		        WHERE   m.m_num = b.m_num
-		        AND     b.b_category = #{b_category}
-		        AND
-		        <if test="search_type == 's_title_content'">
-		            (b.b_title || b.b_content) LIKE '%' || #{search_keyword} || '%'
-		        </if>
-		        <if test="search_type == 's_writer'">
-		            m.m_name LIKE '%' || #{search_keyword} || '%'
-		        </if>
-		        ORDER BY b.b_flag asc, b.b_regi_date desc
-		    ) a
-		)
-		WHERE rn BETWEEN #{start} AND #{end}
+		        SELECT rownum rn, a.*
+			    FROM
+			    (
+				       SELECT 	b.*, m.m_name,
+					       		(
+					       		 SELECT count(*)
+					       		 FROM   board_comment
+					       		 WHERE  b_num = b.b_num
+					       		 ) comment_count
+				       FROM  	board b, member m
+				       WHERE 	m.m_num = b.m_num
+				       AND 	 	b.b_category = #{b_category}
+	<![CDATA[		   AND		b.b_regi_date < TRUNC(sysdate) + 1	]]>
+					   AND
+				       <if test="search_type == 's_title_content'">
+				            	(b.b_title || b.b_content) LIKE '%' || #{search_keyword} || '%'
+				       </if>
+				       <if test="search_type == 's_writer'">
+				            	m.m_name LIKE '%' || #{search_keyword} || '%'
+				       </if>
+				       ORDER BY 
+				       			<choose>
+				       				<when test="b_category == 1">
+				       					 b.b_flag desc
+				       					,b.b_regi_date desc
+				       					,b.b_ref_num desc 
+				       					,b.b_step asc 
+				       				</when>
+				       				<otherwise>
+				       					b.b_ref_num desc 
+				       					,b.b_step asc
+				       				</otherwise>
+				       			</choose>
+			    ) a
+		    )
+		    WHERE rn BETWEEN #{start} AND #{end}
 	</select>
 	
-	<!-- <update id="mkhUpdateParentNum" parameterType="board">
-		UPDATE board
-		SET	   b_ref_num
-		WHERE  b_num
-	</update> -->
+	<select id="mkhSearchBoardListCnt" parameterType="board" resultType="int">
+			SELECT count(*)
+			FROM   board b, member m
+			WHERE  m.m_num = b.m_num
+			AND    b.b_category = #{b_category}
+<![CDATA[	AND	   b.b_regi_date < TRUNC(sysdate) + 1	]]>
+			AND
+	       <if test="search_type == 's_title_content'">
+	            	(b.b_title || b.b_content) LIKE '%' || #{search_keyword} || '%'
+	       </if>
+	       <if test="search_type == 's_writer'">
+	            	m.m_name LIKE '%' || #{search_keyword} || '%'
+	       </if>
+	</select>
 	
 	<delete id="mkhDeleteBoard" parameterType="boardComment">
 		DELETE board

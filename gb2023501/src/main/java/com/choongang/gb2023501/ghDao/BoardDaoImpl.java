@@ -17,11 +17,12 @@ public class BoardDaoImpl implements BoardDao {
 	private final SqlSession sqlSession;
 	
 	@Override
-	public int selectBoardListCnt(String b_category) {
+	public int selectBoardListCnt(Board board) {
 		System.out.println("BoardDaoImpl boardCount start...");
 		int result = 0;
 		try {
-			result = sqlSession.selectOne("mkhSelectBoardCnt", b_category);
+			result = sqlSession.selectOne("mkhSelectBoardCnt", board);
+			System.out.println("BoardDaoImpl selectBoardListCnt result->"+result);
 		} catch (Exception e) {
 			System.out.println("BoardDaoImpl boardCount Exception->"+e.getMessage());
 		}
@@ -221,8 +222,20 @@ public class BoardDaoImpl implements BoardDao {
 		} catch (Exception e) {
 			System.out.println("BoardDaoImpl selectAnswerCnt Exception->"+e.getMessage());
 		}
-		
 		return result;
+	}
+
+	@Override
+	public int searchBoardListCnt(Board board) {
+		System.out.println("BoardDaoImpl searchBoardListCnt start...");
+		int result = 0;
+		try {
+			result = sqlSession.selectOne("mkhSearchBoardListCnt", board);
+			System.out.println("BoardDaoImpl searchBoardListCnt result->"+result);
+		} catch (Exception e) {
+			System.out.println("BoardDaoImpl searchBoardListCnt Exception->"+e.getMessage());
+		}
+		return result;		
 	}
 	
 

@@ -56,9 +56,9 @@ public class JpaEduMaterialsService {
 		return result;
 	}
 	// 학습자료 리스트
-	public List<EduMaterials> getListAllEduMaterials() {
+	public List<EduMaterials> getListAllEduMaterials(EduMaterials eduMaterials) {
 		log.info("YbJpaEduMaterialsService getListAllEduMaterials start...");
-		List<EduMaterials> listEduMaterials = yr.findAll();
+		List<EduMaterials> listEduMaterials = yr.findAll(eduMaterials);
 		log.info("YbJpaEduMaterialsService getListAllEduMaterials listEduMaterials.size() -> " + listEduMaterials.size());
 
 		return listEduMaterials;

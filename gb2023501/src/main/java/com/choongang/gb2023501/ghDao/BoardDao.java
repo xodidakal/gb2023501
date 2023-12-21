@@ -8,7 +8,7 @@ import com.choongang.gb2023501.model.BoardComment;
 public interface BoardDao {
 	
 
-	int         		selectBoardListCnt(String b_category);
+	int         		selectBoardListCnt(Board board);
 	List<Board> 		selectBoardList(Board board);
 	Board       		selectBoard(int b_num);
 	int         		updateBoardCnt(int b_num);
@@ -24,6 +24,7 @@ public interface BoardDao {
 	int deleteBoardComment(BoardComment boardComment);
 	Board selectOriBoard(int b_num);
 	int selectAnswerCnt(BoardComment boardComment);
+	int searchBoardListCnt(Board board);
 	
 //	int 				selectBdCommentListCnt(BoardComment boardComment);
 

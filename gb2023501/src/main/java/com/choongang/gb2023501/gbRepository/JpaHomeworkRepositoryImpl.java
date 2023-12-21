@@ -85,7 +85,10 @@ public class JpaHomeworkRepositoryImpl implements JpaHomeworkRepository {
 			String sql2 = "SELECT h "
 						+ "FROM Homework h "
 						+ "WHERE h.hhNum IN :hhNumList "
-						+ "AND h.member.mmNum = :mmNum";
+						+ "AND h.member.mmNum = :mmNum ";
+			if(hwsend.getSearchKeyword() != null) {
+				sql2 += "AND h.hhTitle LIKE '%"+hwsend.getSearchKeyword()+"%'";
+			}
 			homeworkList = em.createQuery(sql2, Homework.class)
 											.setParameter("hhNumList", hhNumList)
 											.setParameter("mmNum", hwsend.getMember().getMmNum())
@@ -96,6 +99,30 @@ public class JpaHomeworkRepositoryImpl implements JpaHomeworkRepository {
 		
 		
 		return homeworkList;
+	}
+
+	@Override
+	public List<String> selectHomeworkNameList(HwSend hwsend) {
+		System.out.println("JpaHomeworkRepositoryImpl selectHomeworkNameList start...");
+		List<String> homeworkNameList = null;
+		try {
+			String sql = "SELECT hr.homework.hhNum "
+					   + "FROM HwRecord hr "
+					   + "GROUP BY hr.homework.hhNum";
+			List<Integer> hhNumList = em.createQuery(sql, Integer.class).getResultList();
+			String sql2 = "SELECT h.hhTitle "
+						+ "FROM Homework h "
+						+ "WHERE h.hhNum IN :hhNumList "
+						+ "AND h.member.mmNum = :mmNum";
+			homeworkNameList = em.createQuery(sql2, String.class)
+											.setParameter("hhNumList", hhNumList)
+											.setParameter("mmNum", hwsend.getMember().getMmNum())
+											.getResultList();
+		} catch (Exception e) {
+			System.out.println("JpaHomeworkRepositoryImpl selectHomeworkNameList Exception -> "+ e.getMessage());
+		}
+
+		return homeworkNameList;
 	}
 
 }

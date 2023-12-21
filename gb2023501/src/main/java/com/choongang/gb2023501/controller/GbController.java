@@ -261,7 +261,7 @@ public class GbController {
 		return "redirect:myHomeworkDetail?h_num="+h_num+"&result="+result;
 	}
 	
-	// 내 숙제 제출화면으로 이동
+	// 숙제평가 화면으로 이동
 	@RequestMapping("/educator/homeworkEval")
 	public String selectHomeworkEval(com.choongang.gb2023501.domain.HwSend hwsend, Model model) {
 		System.out.println("GbController selectHomeworkEval start...");
@@ -275,11 +275,53 @@ public class GbController {
 		List<com.choongang.gb2023501.domain.Homework> homeworkList = jms.selectHomeworkList(hwsend);
 		System.out.println("GbController selectHomeworkEval homeworkList -> "+homeworkList.size());
 		
-		// 학습자가 제출한 숙제
+		// 학습자의 제출이력이 있는 교육자의 숙제명 목록 조회
+		List<String> homeworkNameList = jms.selectHomeworkNameList(hwsend);
 		
+		model.addAttribute("hwsend", hwsend);
 		model.addAttribute("homeworkList", homeworkList);
-		
+		model.addAttribute("homeworkNameList", homeworkNameList);
 		
 		return "gb/homeworkEval";
 	}
+	
+	// 숙제평가에서 숙제를 클릭했을 때 해당 숙제에 대한 제출 이력
+	@ResponseBody
+	@RequestMapping("/educator/homeworkEval/homeworkClick")
+	public List<HwRecord> selectHomeworkEvalClick(int hhNum){
+		System.out.println("GbController selectHomeworkEval start...");
+		List<HwRecord> hwrecordList = jms.selectHwrecordList(hhNum);
+		System.out.println("GbController selectHomeworkEval hwrecordList -> "+hwrecordList.size());
+		
+		return hwrecordList;
+	}
+	
+	// 숙제 평가 진행
+	@RequestMapping("/educator/homeworkEvalAction")
+	public String UpdateHomeworkEval(@RequestParam(value = "hhNum") int[] hhNumList,
+									 @RequestParam(value = "mmNum") int[] mmNumList,
+									 @RequestParam(value = "hrLevel") int[] hrLevelList,
+									 @RequestParam(value = "hrEval") Integer[] hrEvalList) {
+		System.out.println("GbController UpdateHomeworkEval start...");
+		
+		int result = 0;
+		
+		for(int i = 0; i<hhNumList.length ; i++) {
+			System.out.println("hhNumList -> "+hhNumList[i]);
+			System.out.println("mmNumList -> "+mmNumList[i]);
+			System.out.println("hrEvalList -> "+hrEvalList[i]);
+		}
+		
+		// 숙제번호, 학습자 번호, 평가정보를 map에 각각 담는다.
+		Map<String, Object> map = new HashMap<String, Object>(); 
+		map.put("hhNumList", hhNumList); 		// 숙제번호 리스트
+		map.put("mmNumList", mmNumList); 		// 학습자번호 리스트
+		map.put("hrLevelList", hrLevelList); 	// 학습자 숙제 진도 리스트
+		map.put("hrEvalList", hrEvalList); 		// 숙제평가 리스트
+		
+		result = jms.updateHomeworkEval(map);
+		
+		return "redirect:homeworkEval";
+	}
+	
 }

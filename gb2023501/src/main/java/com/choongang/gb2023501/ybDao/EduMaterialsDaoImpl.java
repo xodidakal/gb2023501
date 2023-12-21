@@ -136,4 +136,16 @@ public class EduMaterialsDaoImpl implements EduMaterialsDao {
 		return selectListCnt;
 		
 	}
+	@Override
+	public List<LearnGrp> selectMNameList(LearnGrp learnGrp) {
+		System.out.println("YbController EduMaterialsDaoImpl selectMNameList start...");		
+		List<LearnGrp> selectMNameList = null;
+		try {
+			selectMNameList = session.selectList("selectMNameList", learnGrp);
+		} catch (Exception e) {
+			System.out.println("YbController EduMaterialsDaoImpl selectListCnt Exception -> " + e.getMessage());
+		}
+		return selectMNameList;
+	}
+
 }

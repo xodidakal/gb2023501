@@ -1,6 +1,8 @@
 package com.choongang.gb2023501.domain;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,7 +50,7 @@ public class HwRecord {
 	private Integer hrEval;			// 숙제 교육자 평가
 	
 	@Column(name="hr_eval_date")
-	private Date hrEvalDate;		// 숙제 교육자 평가일시
+	private LocalDateTime hrEvalDate;		// 숙제 교육자 평가일시
 	
 	@Transient	
 	private int hrMaxLevel;		// 학습자의 현재 최고 레벨

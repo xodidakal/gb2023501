@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.choongang.gb2023501.model.Game;
+import com.choongang.gb2023501.model.GameOrder;
 
 import lombok.RequiredArgsConstructor;
 
@@ -121,13 +122,14 @@ public class GameOrderDaoImpl implements GameOrderDao {
 
 	@Override
 	public int updateGame(Game game) {
-		int result = 0;
+		int updateGame1 = 0;
 		try {
-			result = session.update("dhGameUpdate",game);
+				System.out.println("GameOrderDaoImpl updateGame normal Start!!");				
+				updateGame1 = session.update("updateGame2", game);
 		} catch (Exception e) {
 			System.out.println("GameOrderDaoImpl  updateGame->"+e.getMessage());
 		}
-		return result;
+		return updateGame1;
 		}
 
 	@Override
@@ -150,6 +152,36 @@ public class GameOrderDaoImpl implements GameOrderDao {
 			System.out.println("GameOrderDaoImpl  gamesum->"+e.getMessage());
 		}
 		return result;
+	}
+
+	@Override
+	public int insertGameOrder(GameOrder gameOrder) {
+		int result = 0;
+		try {
+			result = session.insert("dhGameOrderInsert", gameOrder);
+		} catch (Exception e) {
+			System.out.println("GameOrderDaoImpl insertGameOrder->"+e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public Game gameRead(int g_num) {
+		Game game = null;
+		
+		try {
+			System.out.println("GameOrderDaoImpl gameRead Start!!");
+			
+			game = session.selectOne("gameImageRead", g_num);
+			System.out.println("GameOrderDaoImpl gameRead getG_title : {}"+ game.getG_title());
+			
+		} catch (Exception e) {
+			System.out.println("GameOrderDaoImpl gameReadException : {}"+ e.getMessage());
+		} finally {
+			System.out.println("GameOrderDaoImpl gameRead End..");			
+		}
+		
+		return game;
 	}
 
 }
