@@ -161,27 +161,6 @@ public class YbController {
 		
 		return "redirect:/operate/eduMaterialsList";
 	}
-	// 학습자료 리스트
-//	@RequestMapping(value = "/operate/eduMaterialsList")
-//	public String eduResourceList(EduMaterials eduMaterials, Model model, String currentPage) {
-//		System.out.println("ybController operate/eduMaterialsList start...");
-//		
-//		int selectEduMaterialsListCnt = es.selectEduMaterialsListCnt(eduMaterials);
-//		
-//		Paging page = new Paging(selectEduMaterialsListCnt, currentPage, 10);
-//		eduMaterials.setStart(page.getStartRow());
-//		eduMaterials.setEnd(page.getEndRow());
-//		// 학습자료 리스트
-//		List<EduMaterials> selectEduMaterialsList = es.selectEduMaterialsList(eduMaterials);
-//		
-//		model.addAttribute("selectEduMaterialsListCnt", selectEduMaterialsListCnt);
-//		model.addAttribute("StartRow",page.getStartRow());
-//		model.addAttribute("page", page);
-//		model.addAttribute("selectEduMaterialsList", selectEduMaterialsList);
-//		
-//		return "yb/eduMaterialsList";
-//	}
-	
 
 	// 학습자료 상세 화면 JPA
 	@GetMapping(value = "/operate/eduMaterialsDetail")
@@ -291,7 +270,12 @@ public class YbController {
 	@RequestMapping(value = "/operate/salesInquiryDetail")
 	public String salesInquiryDetail(Model model, String selectDate, Pageable pageable) {
 		System.out.println("ybController /operate/salesInquiryDetail start...");
-
+		Date s_date = null;
+		Date e_date = null;
+		int selectTotal = es.findTotal(s_date, e_date);
+		int selectListCnt = es.selectListCnt(s_date, e_date);
+		model.addAttribute("selectListCnt", selectListCnt);
+		model.addAttribute("selectTotal", selectTotal);
 		return "yb/salesInquiryDetail";
 	}
 	// 매출 조회 화면 jpa
@@ -430,25 +414,18 @@ public class YbController {
     	System.out.println("ybController /learning/learnGrpJoin searchType -> " + searchType);
     	Member member = jh.aboutMember();
     	List<LearnGrp> selectLGpList = js.selectLGpList();
-//    	int m_num = 0;
-//    	if(searchType.equals("mmName")) {
-//    		member.setMmName(mmName);
-//    		m_num = member.getMmNum();
-//    	}
-//    	System.out.println("ybController /learning/learnGrpJoin searchType_m_num -> " + m_num);
-//    	System.out.println("ybController /learning/learnGrpJoin searchType -> " + m_num);
+    	List<com.choongang.gb2023501.model.LearnGrp> selectMNameList = es.selectMNameList(learnGrp);
     	System.out.println("ybController /learning/learnGrpJoin selectLGpList.size() -> " + selectLGpList.size());
     	int mmNum = ms.selectMmNumById();
     	learnGrp.setM_num(mmNum);
     	List<LearnGrp> selectLgpListByTitle = es.selecLgpListByTitle(learnGrp);
-//    	int selectLgpListByTitleCnt = es.selectLgpListByTitleCnt(lgTitle, mmNum);
     	System.out.println("ybController /learning/learnGrpJoin selectLgpListByTitle.size() -> " + selectLgpListByTitle.size());
-//    	System.out.println("ybController /learning/learnGrpJoin selectLgpListByTitleCnt.size() -> " + selectLgpListByTitleCnt);
     	
-//    	model.addAttribute("selectLgpListByTitleCnt", selectLgpListByTitleCnt);
     	
     	model.addAttribute("selectLgpListByTitle", selectLgpListByTitle);
-    	model.addAttribute("selectLGpList", selectLGpList);	    	
+    	model.addAttribute("selectLGpList", selectLGpList);
+    	model.addAttribute("selectMNameList", selectMNameList);
+
     	return "yb/learnGrpJoinForm";
     }
     // 학습 그룹 조건 검색
@@ -459,9 +436,9 @@ public class YbController {
 		System.out.println("ybController /learning/searchGrpList searchType -> " + searchType);
 		
 		List<LearnGrp> selectLGpList = js.selectLGpList();
+		List<com.choongang.gb2023501.model.LearnGrp> selectMNameList = es.selectMNameList(learnGrp);
 		int mmNum = ms.selectMmNumById();
     	
-//		int selectLgpListByTitleCnt = es.selectLgpListByTitleCnt(lgTitle, mmNum);
 		List<LearnGrp> selectLgpListByTitle = null;
 		if(searchType.equals("lgTitle")) {
 			System.out.println("ybController /learning/searchGrpList lgTitle -> " + lgTitle);
@@ -470,12 +447,13 @@ public class YbController {
 			selectLgpListByTitle = es.selecLgpListByTitle(learnGrp);
 		} else {
 			System.out.println("ybController /learning/searchGrpList mmName -> " + mmName);
+			learnGrp.setM_num(mmNum);
 			learnGrp.setM_name(mmName);
 			
 			selectLgpListByTitle = es.selecLgpListByTitle(learnGrp);
 		} 
+		model.addAttribute("selectMNameList",selectMNameList);
 		model.addAttribute("selectLGpList", selectLGpList);
-//		model.addAttribute("selectLgpListByTitleCnt", selectLgpListByTitleCnt);
 		model.addAttribute("selectLgpListByTitle", selectLgpListByTitle);
     	return "yb/learnGrpJoinForm";
 	}
@@ -510,13 +488,16 @@ public class YbController {
 		 System.out.println("ybController /operate/saleInquiryChart e_date -> " + e_date);
 		
 		List<SalesInquiryDTO> selectSaleList = null;
+		SimpleDateFormat dateFormat = null;
 		// 월 검색일 때
 		if(date.equals("month")) {
 			selectSaleList = js.selectSaleList(s_date, e_date);
+			dateFormat = new SimpleDateFormat("yyyy/MM");
 		} 
 		// 일 별 검색
 		else {
 			selectSaleList = js.findBySalesContaining(s_date, e_date);
+			dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		}
 		System.out.println("ybController /operate/saleInquiryChart selectSaleList.get(0).toString() -> " + selectSaleList.get(0).getGoOrderDate());
 		System.out.println("ybController /operate/saleInquiryChart selectSaleList.get(0).toString() -> " + selectSaleList.get(0).getSalesSum());
@@ -524,7 +505,7 @@ public class YbController {
 		// selectSaleList에서 날짜 뽑아서 형식 변환
 		for(int i=0; i<selectSaleList.size(); i++) {
 			Date  goOrderDate1 = selectSaleList.get(i).getGoOrderDate();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			
             String formattedDate = dateFormat.format(goOrderDate1);
 
 			dateList.add(formattedDate);

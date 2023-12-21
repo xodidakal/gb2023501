@@ -41,4 +41,11 @@
 			FROM   game_order
 			WHERE  go_order_date BETWEEN #{s_date} AND #{e_date}
 		</select>
+		
+		<select id="selectMNameList" parameterType="LearnGrp" resultType="LearnGrp">
+			SELECT 	 DISTINCT m.m_name, m.m_num
+			FROM   	 member m, learn_grp lg
+			WHERE  	 m.m_num = lg.m_num
+			ORDER BY m.m_name
+		</select>
 	</mapper>

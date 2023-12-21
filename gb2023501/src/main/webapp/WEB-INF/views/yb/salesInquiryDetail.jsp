@@ -11,7 +11,7 @@
 	  text-align: center; /* 텍스트 가운데 정렬 */
 	  position: absolute;
 	  top: 55%;
-	  left: 55%;
+	  left: 48%;
 	  font-weight: bold;
 	  color:black;
 	  transform: translate(-50%, -50%); /* 가운데 정렬을 위한 변환 */
@@ -81,7 +81,7 @@
 	         <!-- heading -->
 	         <h2 style="margin-bottom: 15px;">매출 조회</h2>
 	         <c:if test="${not empty s_date }">
-	    	 	<span>기간 : <fmt:formatDate value="${s_date }" pattern="yyyy년MM월dd일"/> ~ <fmt:formatDate value="${e_date }" pattern="yyyy년MM월dd일"/></span></p>
+	    	 	<span>기간 : <fmt:formatDate value="${s_date }" pattern="yyyy/MM/dd/"/> ~ <fmt:formatDate value="${e_date }" pattern="yyyy/MM/dd"/></span></p>
 	         </c:if>
 	        <p style="margin-bottom: 35px;"><span style="margin-right: 20px;">총 ${selectListCnt } 건</span>   
 	         <span>총 매출액 : <fmt:formatNumber value="${selectTotal }" pattern="#,###" />원</span></p>
@@ -89,7 +89,8 @@
 	   
 	    <div class="mb-1">
 	    <form action="/operate/searchSalesInquiry" method="post" role="search"> 
-         	<div style="display: flex; ">
+         	<div style="display: contents;">
+         	<div style="display: inline-flex;">
 	         	<select id="selectDate" name="selectDate" class="w-17 rounded" style="border-color: #ced4da" onchange="toggleInput()">
 					<option value="date1">일단위</option>
 					<option value="month">월단위</option>
@@ -100,24 +101,24 @@
 				<input class="form-control" type="date" id="startDate" name="startDate" required="required" style="width: 130px;"><div class="mt-2">~</div>					
 				<input class="form-control" type="date" id="endDate" name="endDate" required="required" style="width: 130px;">
 				<input class="form-control" type="month" id="eMonth" name="eMonth" style="width: 130px; display: none;">
-				
-				<button type="submit" class="btn btn-light rounded py-2 px-2">검색</button>
-				<button type="button" class="btn btn-light rounded py-2 px-2" style="margin-left: 660px;" 
+				&nbsp;&nbsp;
+				<button type="submit" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white">검색</button>
+				</div>
+				<button type="button" class="btn btn-light rounded py-2 px-2" style="background: #263d94; color: white; float: right;"
 						onclick="saleInquiryChart(<fmt:formatDate value="${s_date }" pattern="yyyyMMdd"/>, <fmt:formatDate value="${e_date }" pattern="yyyyMMdd"/>)">그래프 보기</button>
-						
-						
+		
 			</div>
 		</form>
 		<input type="hidden" value="${selectDate1 }" name="selectDate1" id="selectDate1">
 	    </div>
-	    <c:if test="${selectSaleList.size() == 0 && selectSaleList1.size() == 0 }">			
+	    <c:if test="${selectListCnt == 0 }">			
 	 		<div class="row" style="height: 100px">
 				<div class="center-text mt-14 md-14">
 					기간을 선택해주세요.<p><p>
 				</div>
 			</div>	 	
 		</c:if>
- 	<c:if test="${selectSaleList.size() != 0 || selectSaleList1.size() != 0 }">	
+ 	<c:if test="${selectListCnt != 0 }">	
        	<table class="listTable" style="text-align: center;">
        		<thead>
 				<tr>
@@ -134,7 +135,7 @@
 				 	<tr>
 				 		<td>${StartRow +1}</td>
 						<td>
-							<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyy년MM월dd일"/>
+							<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyy/MM/dd"/>
 						</td>
 						<td>${selectSaleList.salesCnt } 건</td>
 						<td>
@@ -153,7 +154,7 @@
 				 	<tr>
 				 		<td>${StartRow +1}</td>
 						<td>
-							<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyy년MM월"/>
+							<fmt:formatDate value="${selectSaleList.goOrderDate }" pattern="yyyy/MM"/>
 						
 						</td>
 						<td>${selectSaleList.salesCnt } 건</td>

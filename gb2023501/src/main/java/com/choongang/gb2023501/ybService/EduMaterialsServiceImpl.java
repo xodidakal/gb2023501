@@ -64,6 +64,7 @@ public class EduMaterialsServiceImpl implements EduMaterialsService {
 		List<Game> selectGameList = ed.selectGameList(game);
 		return selectGameList;
 	}
+	// 학습그룹 가입
 	@Override
 	public int insertLgJoin(int lg_num, int m_num) {
 		System.out.println("YbController EduMaterialsServiceImpl insertLgJoin start...");
@@ -76,6 +77,13 @@ public class EduMaterialsServiceImpl implements EduMaterialsService {
 		System.out.println("YbController EduMaterialsServiceImpl insertLgJoin start...");
 		int selectListCnt = ed.selectListCnt(s_date, e_date);
 		return selectListCnt;
+	}
+	@Override
+	public List<com.choongang.gb2023501.model.LearnGrp> selectMNameList(
+			com.choongang.gb2023501.model.LearnGrp learnGrp) {
+		System.out.println("YbController EduMaterialsServiceImpl selectMNameList start...");
+		List<com.choongang.gb2023501.model.LearnGrp> selectMNameList = ed.selectMNameList(learnGrp);
+		return selectMNameList;
 	}
 
 

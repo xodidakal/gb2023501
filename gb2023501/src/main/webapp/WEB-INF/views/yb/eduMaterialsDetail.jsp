@@ -63,21 +63,17 @@
 	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
 		<form action="/operate/updateEduMaterials" method="post" enctype="multipart/form-data">
 			<input type="hidden" value="${eduMaterials.emNum }" name="em_num" id="em_num">
-<%-- 			<input type="text" value="${m_num }" name="mNum" id="mNum"> --%>
-<%-- 			<input type="text" value="${eduMaterials.ggNum }" name="ggNum" id="ggNum"> --%>
-<%-- 			<input type="text" value="${eduMaterials.emAttachPath }" name="emAttachPath" id="emAttachPath"> --%>
 
 	        <div class="row g-3">
 		        <h2 class="display-7 mb-4">학습 자료 상세</h2>
 		        <hr class="my-3">
-	        	<small>작성일 : <fmt:formatDate value="${eduMaterials.emRegiDate }" pattern="yyyy년MM월dd일"/></small>			                  
-<%-- 	        	<input type="hidden" value="${eduMaterials.emRegiDate }" name="emRegiDate" id="emRegiDate"> --%>
+	        	<small>등록일 : <fmt:formatDate value="${eduMaterials.emRegiDate }" pattern="yyyy/MM/dd"/></small>			                  
 	        	<table id="table" style="margin-top: 0px;">
 					<tr>
 						<th>게임 콘텐츠</th>
 						<td><input type="hidden" value="${eduMaterials.ggNum }" id="ggNum" name="ggNum">
 							<select id="gNum" name="gNum" class="w-17 rounded" style="border-color: #ced4da; height: 30px;">
-								<option value="0"></option>
+								<option value="0">미선택</option>
 								<c:forEach items="${selectGameList }" var="selectGameList">
 									<option value="${selectGameList.g_num }" 
 										<c:if test="${selectGameList.g_num eq eduMaterials.ggNum }"> selected="selected" </c:if>>

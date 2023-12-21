@@ -23,6 +23,7 @@
 	        			<th>게임 컨텐츠</th>
 	        			<td>
 	        			<select id="ggNum" name="ggNum" class="w-17 rounded" style="border-color: #ced4da; height: 30px;">
+	        				<option value="0">미선택</option>
 							<c:forEach items="${selectGameList }" var="selectGameList">
 								<option value="${selectGameList.g_num }">${selectGameList.g_title }</option>
 							</c:forEach>	
@@ -87,33 +88,33 @@
 		            <tr>
 						<th>자료명</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="emTitle" id="emTitle" placeholder="Subject" required>
+		                    <input type="text" class="form-control" name="emTitle" id="emTitle" required>
 <!-- 		                    <label for="subject">자료명</label> -->
 		            	</td>
 					</tr>
 					<tr>
 						<th>내용</th>
 						<td colspan="3">
-		                   	<textarea class="form-control" placeholder="Leave a message here" name="emContent" id="emContent" style="height: 200px" required></textarea>
+		                   	<textarea class="form-control" name="emContent" id="emContent" style="height: 200px" required></textarea>
 <!-- 		                       <label for="message">내용</label> -->
 						</td>
 					</tr>
 		            <tr>
 						<th>자료주소</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" id="emDataAddr" name="emDataAddr" placeholder="Subject" required>
+		                    <input type="text" class="form-control" id="emDataAddr" name="emDataAddr" required>
 		                </td>
 					</tr>
 	                <tr>
 	                	<th>썸네일</th>
 						<td colspan="3">
-		                    <input type="file" class="form-control" name="file1" id="file1" placeholder="Subject" required>
+		                    <input type="file" class="form-control" name="file1" id="file1" required>
 		                </td>
 	                </tr>    
                 </table>
-                <div class="d-grid gap-2 d-md-flex justify-content-center" >
-					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="등록하기">
-					<a href="/operate/eduResourceList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록가기</button></a>
+                <div class="d-grid gap-2 d-flex justify-content-center" >
+					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="등록">
+					<a href="/operate/eduMaterialsList"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">목록</button></a>
 				</div>
                 
 			</div>

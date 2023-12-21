@@ -68,7 +68,7 @@ public class YbRepositoryImpl implements YbRepository {
 	public List<EduMaterials> findAll() {
 		System.out.println("YbRepositoryImpl List<EduMaterials> findAll start...");
 
-		List<EduMaterials> selectEduMaterialsList = em.createQuery("select e from EduMaterials e", EduMaterials.class)
+		List<EduMaterials> selectEduMaterialsList = em.createQuery("select e from EduMaterials e order by e.emRegiDate desc", EduMaterials.class)
 									   .getResultList();
 		return selectEduMaterialsList;
 	}
