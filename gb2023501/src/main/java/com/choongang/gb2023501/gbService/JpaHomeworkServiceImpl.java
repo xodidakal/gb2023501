@@ -23,9 +23,9 @@ import lombok.RequiredArgsConstructor;
 public class JpaHomeworkServiceImpl implements JpaHomeworkService {
 	
 	private final JpaHomeworkRepository jhr; 		// JPQL 사용 Repository
-	private final JpaInterHwSendRepository jihsr;	// JPA에서 제공하는 메소드 사용 Repository
-	private final JpaInterHwRecordRepository jihrr;
-	private final JpaInterHomeworkRepository jihr;
+	private final JpaInterHwSendRepository jihsr;	// JPA에서 제공하는 메소드 사용 HwSend Repository
+	private final JpaInterHwRecordRepository jihrr; // JPA에서 제공하는 메소드 사용 HwRecord Repository
+	private final JpaInterHomeworkRepository jihr; 	// JPA에서 제공하는 메소드 사용 Homework Repository
 	
 	// 내 숙제 목록 가져오기
 	@Override
@@ -70,7 +70,7 @@ public class JpaHomeworkServiceImpl implements JpaHomeworkService {
 		return myHomeworkDetailList;
 	}
 	
-	// 클릭한 숙제정보 가져오기
+	// 내숙제 메뉴에서 클릭한 숙제정보 가져오기
 	@Override
 	public Homework selectMyHomework(int h_num) {
 		System.out.println("JpaHomeworkServiceImpl selectMyHomework start...");
@@ -79,7 +79,8 @@ public class JpaHomeworkServiceImpl implements JpaHomeworkService {
 		
 		return myHomework;
 	}
-
+	
+	// 숙제평가에서 교육자가 생성한 숙제 중에 학습자가 제출이력이 있는 숙제만 조회
 	@Override
 	public List<Homework> selectHomeworkList(HwSend hwsend) {
 		System.out.println("JpaHomeworkServiceImpl selectHomeworkList start...");
@@ -89,6 +90,30 @@ public class JpaHomeworkServiceImpl implements JpaHomeworkService {
 		
 		return homeworkList;
 	}
+	
+	// 숙제평가에서 교육자가 생성한 숙제 중에 학습자가 제출이력이 있는 숙제명 리스트 조회
+	@Override
+	public List<String> selectHomeworkNameList(HwSend hwsend) {
+		System.out.println("JpaHomeworkServiceImpl selectHomeworkNameList start...");
+		
+		List<String> homeworkNameList = jhr.selectHomeworkNameList(hwsend);
+		System.out.println("JpaHomeworkServiceImpl selectHomeworkNameList homeworkNameList -> "+homeworkNameList.size());
+		
+		return homeworkNameList;
+	}
+	
+		// 숙제평가에서 숙제를 클릭하면 조회되는 학습 제출 이력
+	@Override
+	public List<HwRecord> selectHwrecordList(int hhNum) {
+		System.out.println("JpaHomeworkServiceImpl selectHwrecordList start...");
+		
+		List<HwRecord> hwrecordList = jihrr.findByHomeworkHhNum(hhNum);
+		System.out.println("JpaHomeworkServiceImpl selectHwrecordList hwrecordList -> "+hwrecordList.size());
+		
+		return hwrecordList;
+	}
+	
+	
 	
 	
 }
