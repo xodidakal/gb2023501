@@ -22,6 +22,7 @@ public class Board {
 	private String 		b_attach_name;	// 첨부파일명
 	private String 		b_attach_path;	// 첨부파일경로
 	private String 		b_ref_num;		// 답글의 원글번호
+	private int			b_step;			// 답글의 순서
 	
 	// 조회용
 	private String      m_name;			// 이름

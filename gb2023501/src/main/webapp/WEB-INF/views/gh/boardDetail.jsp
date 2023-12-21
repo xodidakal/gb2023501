@@ -309,7 +309,7 @@
 		                <tr>
 		                	<th>첨부파일</th>
 							<td colspan="3">
-		                		<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="test">${BdDetail.b_attach_name}</a></label>
+		                		<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="${BdDetail.b_attach_name}">${BdDetail.b_attach_name}</a></label>
 			                </td>
 		                </tr>
 	                </table>
@@ -330,7 +330,7 @@
 								<td colspan="3">
 									<div class="d-grid gap-2 d-md-flex justify-content-right" >
 										<button class="btn rounded py-2 px-3" type="button" onclick="insertComment()" style="background: #263d94; color: white;">댓글 등록</button>
-									</div>
+									 </div>
 								</td>
 							</tr>
 		                </table>
@@ -363,7 +363,9 @@
 				<!-- Q&A + FAQ -->
 				
 				<!-- Q&A와 FAQ이면서 비회원 + 회원이고 [답변]이 아니면 원글만 보기 -->
-				<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and (empty member.category or member.category eq '1' or '2' or '3')and not BdDetail.b_title.contains('[답변]')}">
+				<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') 
+						and (empty member.category or member.category eq '1' or member.category eq '2' or member.category eq '3')
+						and not BdDetail.b_title.contains('[답변]')}">
                		<!-- 원글 -->
                		<hr class="my-3">
 	        		
@@ -413,7 +415,7 @@
 		                <tr>
 		                	<th>첨부파일</th>
 							<td colspan="3">
-		                		<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="test">${BdDetail.b_attach_name}</a></label>
+		                		<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="${BdDetail.b_attach_name}">${BdDetail.b_attach_name}</a></label>
 			                </td>
 		                </tr>
 	                </table>
@@ -434,7 +436,9 @@
 	            </c:if>
 	            
                	<!-- Q&A와 FAQ이면서 비회원 + 회원이고 [답변]이면 원글+답글 조회 -->
-               	<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and (empty member.category or member.category eq '1' or '2' or '3') and BdDetail.b_title.contains('[답변]')}">
+               	<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') 
+               			and (empty member.category or member.category eq '1' or member.category eq '2' or member.category eq '3') 
+               			and BdDetail.b_title.contains('[답변]')}">
                		
                		<!-- 원글 -->
                		<hr class="my-3">
@@ -485,7 +489,7 @@
 		                <tr>
 		                	<th>첨부파일</th>
 							<td colspan="3">
-		                		<label><a href="/upload/gh/${BdOriDetail.b_attach_name}" download="test">${BdOriDetail.b_attach_name}</a></label>
+		                		<label><a href="/upload/gh/${BdOriDetail.b_attach_name}" download="${BdOriDetail.b_attach_name}">${BdOriDetail.b_attach_name}</a></label>
 			                </td>
 		                </tr>
 	                </table>
@@ -534,7 +538,7 @@
 		                	
 			                <td colspan="3">
 							<c:if test="${BdDetail.b_attach_path ne null}">
-                				<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="test">${BdDetail.b_attach_name}</a></label>
+                				<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="${BdDetail.b_attach_name}">${BdDetail.b_attach_name}</a></label>
 							</c:if>
 		                </td>
 			                
@@ -593,7 +597,7 @@
 		                <tr>
 		                	<th>첨부파일</th>
 							<td colspan="3">
-		                		<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="test">${BdDetail.b_attach_name}</a></label>
+		                		<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="${BdDetail.b_attach_name}">${BdDetail.b_attach_name}</a></label>
 			                </td>
 		                </tr>
 	                </table>
@@ -618,8 +622,9 @@
 	                			<input type="hidden" name="m_num" 			value="${member.mmNum}">
 	                			<input type="hidden" name="b_category" 		value="${BdDetail.b_category}">
 	                			<input type="hidden" name="b_notie_type" 	value="${BdDetail.b_notie_type}">
-	                			<input type="hidden" name="b_flag" 			value="1">
+	                			<input type="hidden" name="b_flag" 			value="0">
 	                			<input type="hidden" name="b_ref_num" 		value="${BdDetail.b_num}">
+	                			<input type="hidden" name="b_step" 			value="2">
 	                			
 	                		</td>
 	                	</tr>
@@ -639,7 +644,7 @@
 						<tr>
 							<th>내용</th>
 							<td colspan="3">
-			                   	<textarea class="form-control" placeholder="Leave a message here" id="message" name="b_content" style="height: 200px"></textarea>    
+			                   	<textarea class="form-control" placeholder="Leave a message here" id="message" name="b_content" style="height: 200px" required="required"></textarea>    
 							</td>
 						</tr>
 						<tr></tr>
@@ -713,7 +718,7 @@
 		                <tr>
 		                	<th>첨부파일</th>
 							<td colspan="3">
-		                		<label><a href="/upload/gh/${BdOriDetail.b_attach_name}" download="test">${BdOriDetail.b_attach_name}</a></label>
+		                		<label><a href="/upload/gh/${BdOriDetail.b_attach_name}" download="${BdOriDetail.b_attach_name}">${BdOriDetail.b_attach_name}</a></label>
 			                </td>
 		                </tr>
 	                </table>
@@ -727,14 +732,16 @@
 	                		<a onclick="deleteQuestion()"><button class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;">삭제</button></a>
 						</c:if>
 					</div>
+				</c:if>
 	      
 			
 			</form>
 		</div>
 
-
 		<form action="/customer/updateBoard" method="post" enctype="multipart/form-data" name="answerUpdateForm">
 			<div class="row g-3">
+				<c:if test="${(BdDetail.b_category eq '2' or BdDetail.b_category eq '3') and member.category eq 4 and BdDetail.b_title.contains('[답변]')}">
+			
 	                <!-- 답변 수정 -->
                		<hr>
 	                
@@ -767,7 +774,7 @@
 						<tr>
 							<th>내용</th>
 							<td colspan="3">
-			                   	<textarea class="form-control" placeholder="Leave a message here" id="ans_b_content" name="b_content" style="height: 200px">${BdDetail.b_content}</textarea>    
+			                   	<textarea class="form-control" placeholder="Leave a message here" id="ans_b_content" name="b_content" style="height: 200px" required="required">${BdDetail.b_content}</textarea>    
 							</td>
 						</tr>
 						<tr></tr>
@@ -778,7 +785,7 @@
 		                	
 	                		<div id="idAttachFile">
 								<c:if test="${BdDetail.b_attach_path ne null}">
-	                				<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="test">${BdDetail.b_attach_name}</a></label>
+	                				<label><a href="/upload/gh/${BdDetail.b_attach_name}" download="${BdDetail.b_attach_name}">${BdDetail.b_attach_name}</a></label>
 									&nbsp;&nbsp;<input type="button" onclick="deleteFile()" style="border-color:white; border:none; color: orange;" value="x">
 								</c:if>	
 							</div>												

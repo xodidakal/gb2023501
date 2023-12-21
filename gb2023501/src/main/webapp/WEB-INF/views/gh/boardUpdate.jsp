@@ -22,23 +22,44 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
 
-	//공지 등록 여부
+	
 	$(function() {
-		$('#check_b_flag').click(function() {
-			var checkboxValue = document.getElementById('check_b_flag').value;
-			var checked = $(this).is(':checked');
-			if(checked) {
-				$(this).val("0");
-				$('input[name=b_flag]').val("0");
-				alert('Checkbox Value: ' + checkboxValue);
-			}
-			else {
-				$(this).val("1");
-				$('input[name=B_flag]').val("1");
-				alert('Checkbox Value: ' + checkboxValue);
-			}
-		});
+		// 게시구분이 Q&A이면 상단글, 게시일자 필드 사라짐
+		if ($("#b_category").val() == 2 || $("#b_category").val() == 3) {
+	        // 숨길 요소들 숨기기
+	        $("#check_bflag, #radio_date").hide();
+	    }
+
+	    // b_category의 값이 변경될 때의 이벤트 처리
+	    $("#b_category").change(function() {
+	        // b_category의 값이 2인 경우
+	        if ($(this).val() == 2 || $("#b_category").val() == 3) {
+	            // 숨길 요소들 숨기기
+	            $("#check_bflag, #radio_date").hide();
+	        } else {
+	            // b_category의 값이 2가 아닌 경우
+	            // 숨겼던 요소들 다시 보이기
+	            $("#check_bflag, #radio_date").show();
+	        }
+	    });
 	});
+	
+	// 공지 등록 여부
+	function updateValue() {
+        // 체크박스 요소 가져오기
+        var checkbox = document.getElementById("b_flag");
+
+        // b_flag의 값 업데이트
+        if (checkbox.checked) {
+            // 체크되었을 때
+            checkbox.value = "1";
+            alert("checkbox.value->"+checkbox.value);
+        } else {
+            // 체크되지 않았을 때
+            checkbox.value = "0";
+            alert("checkbox.value->"+checkbox.value);
+        }
+    }
 	
 	// 업로드 파일 삭제
 	function deleteFile(b_num) {
@@ -145,7 +166,7 @@
 	<div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
 		<form action="/customer/updateBoard" method="post" enctype="multipart/form-data" id="boardForm">
 	        <div class="row g-3">
-	        <input type="hidden" id="b_num" name=b_num value="${BdDetail.b_num}">
+	        <input type="hidden" id="b_num" name="b_num" value="${BdDetail.b_num}">
 	        <c:choose>
 			 	<c:when test="${BdDetail.b_category == 1}"><h2 class="display-7 mb-4">공지사항</h2></c:when>
 			 	<c:when test="${BdDetail.b_category == 2}"><h2 class="display-7 mb-4">Q&A</h2></c:when>
@@ -160,10 +181,10 @@
 							<td width="150px;">
 			                    <select id="b_category" name="b_category" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
 			                    	<c:choose>
-			                    		<c:when test="${member.category == 4}">
-			                    			<option value="1">공지사항</option>
-											<option value="2">Q&A</option>
-											<option value="3">FAQ</option>
+			                    		<c:when test="${member.category eq '4'}">
+			                    			<option value="1" <c:if test="${BdDetail.b_category == 1}">selected</c:if>>공지사항</option>
+											<option value="2" <c:if test="${BdDetail.b_category == 2}">selected</c:if>>Q&A</option>
+											<option value="3" <c:if test="${BdDetail.b_category == 3}">selected</c:if>>FAQ</option>
 			                    		</c:when>
 			                    		<c:otherwise>
 			                    			<option value="2">Q&A</option>
@@ -174,7 +195,7 @@
 							
 						<th>게시 분류</th>
 							<td width="150px;">
-						 		<select id="b_category" name="b_category" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
+						 		<select id="b_notie_type" name="b_notie_type" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
 								 	<option value="1" <c:if test="${BdDetail.b_notie_type == 1}">selected</c:if>>공통</option>
 								 	<option value="2" <c:if test="${BdDetail.b_notie_type == 2}">selected</c:if>>이벤트</option>
 								 	<option value="3" <c:if test="${BdDetail.b_notie_type == 3}">selected</c:if>>업데이트</option>
@@ -182,11 +203,10 @@
 								</select>
 							</td>
 					</tr>
-					<tr>
-						<th>상단글로 노출</th>
+					<tr id="check_bflag">
+		                <th>상단글로 노출</th>
 						<td width="150px;">
-							<input type="hidden" name="b_flag" value="1">
-		                    <input class="form-check-input" type="checkbox" name="check_b_flag" id="check_b_flag" value="0" <c:if test="${BdDetail.b_flag == 0}">checked</c:if>>
+    						<input class="form-check-input" type="checkbox" id="b_flag" name="b_flag" value="0" onchange="updateValue()" <c:if test="${BdDetail.b_flag == 1}">checked</c:if>>
 		                </td>
 					</tr>
 					<tr>
@@ -195,7 +215,7 @@
 							<input type="text" class="form-control" name="b_title" placeholder="Subject" value="${BdDetail.b_title}" required="required">
 						</td>
 					</tr>
-					<tr>
+					<tr id="radio_date">
 						<th>게시 일자</th>
 						<td width="150px;">
 							<input type="radio" name="b_regi_date" id="nowTimeRadio" required="required">

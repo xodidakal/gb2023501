@@ -24,23 +24,44 @@
 <script type="text/javascript">
 
 	
-	// 공지 등록 여부
+	
 	$(function() {
-		$('#check_b_flag').click(function() {
-			var checkboxValue = document.getElementById('check_b_flag').value;
-			var checked = $(this).is(':checked');
-			if(checked) {
-				$(this).val("0");
-				$('input[name=b_flag]').val("0");
-				alert('Checkbox Value: ' + checkboxValue);
-			}
-			else {
-				$(this).val("1");
-				$('input[name=b_flag]').val("1");
-				alert('Checkbox Value: ' + checkboxValue);
-			}
-		});
+		// 게시구분이 Q&A이면 상단글, 게시일자 필드 사라짐
+		if ($("#b_category").val() == 2 || $("#b_category").val() == 3) {
+	        // 숨길 요소들 숨기기
+	        $("#check_bflag, #radio_date").hide();
+	    }
+
+	    // b_category의 값이 변경될 때의 이벤트 처리
+	    $("#b_category").change(function() {
+	        // b_category의 값이 2인 경우
+	        if ($(this).val() == 2 || $("#b_category").val() == 3) {
+	            // 숨길 요소들 숨기기
+	            $("#check_bflag, #radio_date").hide();
+	        } else {
+	            // b_category의 값이 2가 아닌 경우
+	            // 숨겼던 요소들 다시 보이기
+	            $("#check_bflag, #radio_date").show();
+	        }
+	    });
 	});
+	
+	// 공지 등록 여부
+	function updateValue() {
+        // 체크박스 요소 가져오기
+        var checkbox = document.getElementById("b_flag");
+
+        // b_flag의 값 업데이트
+        if (checkbox.checked) {
+            // 체크되었을 때
+            checkbox.value = "1";
+            alert("checkbox.value->"+checkbox.value);
+        } else {
+            // 체크되지 않았을 때
+            checkbox.value = "0";
+            alert("checkbox.value->"+checkbox.value);
+        }
+    }
 	
 	// 게시일자 Radio버튼
 	document.addEventListener("DOMContentLoaded", function () {
@@ -143,16 +164,19 @@
 					<tr>
 						<th>게시 구분</th>
 							<td width="150px;">
-								<input type="hidden" name="m_num" value="${member.mmNum}">		                			
+								<input type="hidden" name="m_num" 		value="${member.mmNum}">		                			
+		                		<input type="hidden" name="b_ref_num" 	value="1">
+		                		<input type="hidden" name="b_step" 		value="1">
+		                		
 			                    <select id="b_category" name="b_category" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da">
 			                    	<c:choose>
 			                    		<c:when test="${member.category eq 4}">
-			                    			<option value="1">공지사항</option>
-											<option value="2">Q&A</option>
-											<option value="3">FAQ</option>
+			                    			<option value="1" <c:if test="${BoardCategory == 1}">selected</c:if>>공지사항</option>
+											<option value="2" <c:if test="${BoardCategory == 2}">selected</c:if>>Q&A</option>
+											<option value="3" <c:if test="${BoardCategory == 3}">selected</c:if>>FAQ</option>
 			                    		</c:when>
 			                    		<c:otherwise>
-			                    			<option value="2">Q&A</option>
+			                    			<option value="2" <c:if test="${BoardCategory == 2}">selected</c:if>>Q&A</option>
 			                    		</c:otherwise>
 			                    	</c:choose>
 								</select>
@@ -167,33 +191,31 @@
 								</select>							
 							</td>
 					</tr>
-					<tr>
-						<th>상단글로 노출</th>
+					<tr id="check_bflag">
+		                <th>상단글로 노출</th>
 						<td width="150px;">
-							<input type="hidden" name="b_flag" value="1">
-		                    <input class="form-check-input" type="checkbox" name="check_b_flag" id="check_b_flag" value="1">
+    						<input class="form-check-input" type="checkbox" id="b_flag" name="b_flag" value="0" onchange="updateValue()">
 		                </td>
 					</tr>
 		            <tr>
 						<th>제목</th>
 						<td colspan="3">
-		                	<input type="hidden" name="b_ref_num" 	value="1">
 		                    <input type="text" class="form-control" id="b_title" name="b_title" placeholder="Subject" required="required">
 <!-- 		                    <label for="subject">자료명</label> -->
 		            	</td>
 					</tr>
-					<tr>
+					<tr id="radio_date">
 						<th>게시 일자</th>
 						<td width="150px;">
-							<input type="radio" name="b_regi_date" id="nowTimeRadio" required="required">
+							<input type="radio" name="b_regi_date" id="nowTimeRadio">
 							<label class="form-check-label">등록 즉시 게시</label>
 						</td>
 						<td width="150px;">
-							<input type="radio" name="b_regi_date" value="notNowTime" id="notNowTimeRadio" required="required">
+							<input type="radio" name="b_regi_date" value="notNowTime" id="notNowTimeRadio">
 							<label class="form-check-label">게시 일자 선택</label>
 						</td>
 						<td width="150px;">
-							<input type="date" id="selectedDate" name="b_regi_date" style="display: none;" required="required">
+							<input type="date" id="selectedDate" name="b_regi_date" style="display: none;">
 							<!-- <input type="date" name="b_regi_date"> -->
 						</td>
 					</tr>
