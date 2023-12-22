@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -146,6 +148,14 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public List<Member> findAll() {
 		List<Member> memberList = mr.findAll();
+		return memberList;
+	}
+	
+	
+	//회원목록 전체 조회(페이지네이션)
+	@Override
+	public Page<Member> findAll(Pageable pageable) {
+		Page<Member> memberList = mr.findAll(pageable);
 		return memberList;
 	}
 

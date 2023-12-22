@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.choongang.gb2023501.domain.Member;
 
 public interface MemberService {
@@ -35,8 +38,11 @@ public interface MemberService {
 	//아이디, 이름,이메일로 유저 찾기
 	public Optional<Member> findByMmIdAndEmailAndName(String id, String email, String name);
 
-	//회원목록 전체 조회
+	//회원목록 전체 조회 ->삭제예정
 	public List<Member> findAll();
+
+	//회원목록 전체 조회(페이지네이션)
+	public Page<Member> findAll(Pageable pageable);
 
 
 }

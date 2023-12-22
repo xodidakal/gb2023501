@@ -12,6 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
@@ -520,7 +525,9 @@ public class JhController {
 	
 	//회원 전체 목록 조회 - 회원 관리 메인 페이지
 	@RequestMapping(value = "operate/memberList")
-	public String memberList( Model model) {
+	public String memberList(@PageableDefault(size = 10, sort = "regiDate", direction = Sort.Direction.DESC ) Pageable pageable
+							, @RequestParam(name = "page", defaultValue = "1") int page
+							, Model model) {
 //		public String memberList(Member member,  Model model) {
 		System.out.println("JhController memberList Start...");
 		
@@ -537,11 +544,19 @@ public class JhController {
 //		System.out.println("category -> " + category);
 //		System.out.println("mshipType -> " + mshipType);
 //		
-		
-		List<Member> memberList = ms.findAll();
-		System.out.println("memberList.size() -> " + memberList.size());
-		
+		// 직접 Pageable 객체 생성하여 시작 페이지 번호 조정
+	    Pageable adjustedPageable = PageRequest.of(page - 1, pageable.getPageSize(), pageable.getSort());
+		Page<Member> memberList = ms.findAll(adjustedPageable);
+		System.out.println("memberList.size() -> " + memberList.getSize());
+		// 전체 회원 수
+	    long totalMembers = memberList.getTotalElements();
+
+	    // 현재 페이지의 첫 번째 회원 번호 계산
+	    long startNumber = totalMembers - (adjustedPageable.getPageNumber() * adjustedPageable.getPageSize());
+
 		model.addAttribute("memberList", memberList);
+		 model.addAttribute("startNumber", startNumber);
+		model.addAttribute("totalMembers", totalMembers);
 		
 		return "jh/memberList";
 	}
