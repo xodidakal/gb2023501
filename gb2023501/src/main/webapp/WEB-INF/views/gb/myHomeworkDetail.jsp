@@ -54,6 +54,23 @@
 		if(result > 0){
 			alert("숙제가 정상적으로 제출되었습니다.");
 		}
+		
+		// 만약 제출기한이 오늘날짜 기준으로 지난날일 떄는 수정 및 제출 버튼이 안보이도록 설정
+		let today = new Date();							// Mon Dec 22 2023 11:03:22 GMT+0900 (한국 표준시)
+		today = today.toISOString().substring(0,10);	// 2023-08-07
+		let hhDeadline = new Date('${myHomework.hhDeadline}'); // 제출기한을 날짜형식으로 변경
+		hhDeadline = hhDeadline.toISOString().substring(0,10); // 2023-08-07 형식으로 포맷
+		
+		// today = today.toISOString().substring(0,10)	// 2023-08-07
+		// var hhDeadline = ${myHomework.hhDeadline};
+		
+		
+		if(hhDeadline < today){	// 오늘날짜와 비교하여 제출기한이 지났다면 실행
+			// 여러개를 한번에 변경하고 싶다면 class 나 name으로 불러와야 함.
+			$('.submitBtn').attr('style', "display:none;");
+		}
+			
+		
 	});
 	
 	function myHomeworkSubmit(pIndex){
@@ -83,7 +100,7 @@
 					<tr>	
 						<th style="width:45%; text-align: center;">숙제 내용</th>	
 						<th style="text-align: center;">제출 내용</th>		
-						<th style="width:10%; text-align: center;">제출/수정</th>
+						<th class="submitBtn" style="width:10%; text-align: center;">제출/수정</th>
 					</tr>
 				</thead>
 				<c:choose>
@@ -101,10 +118,9 @@
 							                	내 진도 : <input type="hidden" id="hr_level${totalRow}" name="hr_level" value="${myHomeworkDetail.hrLevel }">
 							                	${myHomeworkDetail.hrLevel } 레벨
 							                </td>
-							                <td id="borderLeft" rowspan="5" style="padding-left: 0px; text-align:center;">
+							                <td id="borderLeft" class="submitBtn" rowspan="5" style="padding-left: 0px; text-align:center;">
 												<input type="hidden" id="h_num${totalRow}" name="h_num1" value="${myHomeworkDetail.homework.hhNum }">
 							                    <input class="btn rounded py-2 px-3" type="button" onclick="myHomeworkSubmit(${totalRow})" style="background: #263d94; color: white;" value="수정 ">
-							                   <%--  <input class="form-check-input" type="checkbox" name="h_num" value="${myHomeworkDetail.homework.hhNum }" id="flexRadioDefault1" > --%>
 							                </td>
 										</tr>
 							            <tr>
@@ -140,7 +156,7 @@
 					                	내 진도 : 
 					                	<input type="hidden" id="hr_level${totalRow}" name="hr_level" value="${totalRow }">${totalRow } 레벨
 					                </td>
-					                <td id="borderLeft" rowspan="5" style="padding-left: 0px; text-align:center;">
+					                <td id="borderLeft" class="submitBtn" rowspan="5" style="padding-left: 0px; text-align:center;">
 										<input type="hidden" id="h_num${totalRow}" name="h_num" value="${myHomework.hhNum }">
 					                    <input class="btn rounded py-2 px-3" type="button" onclick="myHomeworkSubmit(${totalRow})" style="background: #263d94; color: white;" value="제출 ">
 					                </td>
@@ -177,7 +193,7 @@
 					                	내 진도 : 
 					                	<input type="hidden" id="hr_level${totalRow}" name="hr_level" value="${totalRow }">${totalRow } 레벨
 					                </td>
-					                <td id="borderLeft" rowspan="5" style="padding-left: 0px; text-align:center;">
+					                <td id="borderLeft" class="submitBtn" rowspan="5" style="padding-left: 0px; text-align:center;">
 										<input type="hidden" id="h_num${totalRow}" name="h_num1" value="${myHomework.hhNum }">
 					                    <input class="btn rounded py-2 px-3" type="button" onclick="myHomeworkSubmit(${totalRow})" style="background: #263d94; color: white;" value="제출 ">
 					                </td>

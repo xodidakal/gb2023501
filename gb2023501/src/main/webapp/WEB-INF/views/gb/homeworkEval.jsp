@@ -128,7 +128,8 @@
 							<th style="width: 20%;">숙제명</th>
 							<th style="width: 40%;">숙제내용</th>
 							<th>진도</th>
-							<th>제출기한</th>			
+							<th>제출기한</th>
+							<th>평가완료</th>			
 						</tr>
 					</thead>
 					 <tbody>
