@@ -103,7 +103,7 @@
 			 <tbody>
 			 <c:forEach var="member" items="${memberList.content}" varStatus="iterStat">
 			 	<tr>
-			 		<td>${totalMembers - (page * size) - iterStat.count + 1}</td>
+			 		<td>${startNumber - iterStat.count + 1}</td>
 			 		<td>
 			 			<c:if test="${member.category == 1 }">교육자</c:if> 
 			 			<c:if test="${member.category == 2 }">학습자</c:if> 
