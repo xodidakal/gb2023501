@@ -23,5 +23,8 @@ public class Member {
 	private int 	m_econsent;		//이메일 수신동의
 	private int 	m_sconsent;		//SMS 수신동의
 	private int 	m_dele_status;	//삭제여부
+	
+	//검색 조회용
+	private String 	SearchCriteria;		//조건 검색
 
 }
