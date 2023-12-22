@@ -1,5 +1,6 @@
 package com.choongang.gb2023501.jhService;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -33,5 +34,9 @@ public interface MemberService {
 
 	//아이디, 이름,이메일로 유저 찾기
 	public Optional<Member> findByMmIdAndEmailAndName(String id, String email, String name);
+
+	//회원목록 전체 조회
+	public List<Member> findAll();
+
 
 }

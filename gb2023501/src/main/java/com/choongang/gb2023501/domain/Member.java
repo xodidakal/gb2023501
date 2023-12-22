@@ -146,7 +146,15 @@ public class Member {
     @Transient // 데이터베이스에 저장하지 않음
     private Role role;  
 
-	
+	//검색 조회용
+    @Transient
+	private String 	searchType;		//조건 검색 타입
+    @Transient
+	private String 	SearchCriteria;	//조건 검색
+    @Transient
+	private String 	startDate;		//시작 날짜
+    @Transient
+	private String 	endDate;		//종료 날짜
 	
 	
 

@@ -1,6 +1,7 @@
 package com.choongang.gb2023501.controller;
 
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
@@ -515,28 +516,33 @@ public class JhController {
 	    // 생성된 임시 비밀번호 반환 (해시하지 않음)
 	    return password.toString();
 	}
-	//회원 목록 관리 페이지
+	
+	
+	//회원 전체 목록 조회 - 회원 관리 메인 페이지
 	@RequestMapping(value = "operate/memberList")
-	public String memberList(Model model) {
+	public String memberList( Model model) {
+//		public String memberList(Member member,  Model model) {
 		System.out.println("JhController memberList Start...");
-		//테스트 삼아 찍어본 것
-//		int mmNum = ms.selectMmNumById();
 		
-//		System.out.println("회원번호 int " + mmNum);
-//		String mmId = ms.getLoggedInId();
-//		log.info("getLoggedInId:{}", mmId);
-//		Optional<Member> memberOptional = ms.selectUserById();
-//		if(memberOptional.isPresent()) {
-//			Member member = memberOptional.get();
-//			System.out.println("회원 이름" + member.getMmName());
-//			System.out.println("회원 번호" + member.getMmNum());
-//		}
+//		String startDate 		= member.getStartDate();
+//		String endDate	 		= member.getEndDate();
+//		String searchType		= member.getSearchType();
+//		String SearchCriteria	= member.getSearchCriteria();
+//		int	   category			= member.getCategory();
+//		int    mshipType		= member.getMshipType();
+//		System.out.println("startDate -> " + startDate);
+//		System.out.println("endDate -> " + endDate);
+//		System.out.println("searchType -> " + searchType);
+//		System.out.println("SearchCriteria -> " + SearchCriteria);
+//		System.out.println("category -> " + category);
+//		System.out.println("mshipType -> " + mshipType);
+//		
 		
-		Member member = aboutMember();
-		String phone = member.getPhone();
-        phone = phone_format(phone);
-        model.addAttribute("phone", phone);
-		System.out.println("회원정보  " + member);
+		List<Member> memberList = ms.findAll();
+		System.out.println("memberList.size() -> " + memberList.size());
+		
+		model.addAttribute("memberList", memberList);
+		
 		return "jh/memberList";
 	}
 	

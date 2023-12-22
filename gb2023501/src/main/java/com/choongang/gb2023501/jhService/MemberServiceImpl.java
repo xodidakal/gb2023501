@@ -1,5 +1,6 @@
 package com.choongang.gb2023501.jhService;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.choongang.gb2023501.domain.Member;
+import com.choongang.gb2023501.jhRepository.CustomMemberRepository;
 import com.choongang.gb2023501.jhRepository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberServiceImpl implements MemberService {
 	
 	private final MemberRepository mr;
+	
 	
 	
 	//로그인된 id가져오기 /없을 경우 null반환
@@ -138,6 +141,22 @@ public class MemberServiceImpl implements MemberService {
 		Optional<Member> currentUser = mr.findByMmIdAndEmailAndMmName(id, email, name);
 		return currentUser;
 	}
+
+	//회원목록 전체 조회
+	@Override
+	public List<Member> findAll() {
+		List<Member> memberList = mr.findAll();
+		return memberList;
+	}
+
+	//회원목록 조회 (검색 조건 포함)
+//	@Override
+//	public List<Member> selectMemberList(Member member) {
+//		System.out.println("MemberServiceImpl findByMmIdAndEmailAndName Start...");
+//		List<Member> memberList = mr.selectMemberList(member);
+//		
+//		return memberList;
+//	}
 
 
 
