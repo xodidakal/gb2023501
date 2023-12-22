@@ -30,6 +30,16 @@
 		if(result != ""){
 			alert("정상적으로 처리되었습니다.");
 		}
+		
+		// 제출기한은 오늘날짜 이전은 선택되지 않도록 오늘날짜를 불러온다.
+		
+		let today = new Date();						// Mon Dec 22 2023 11:03:22 GMT+0900 (한국 표준시)
+
+		console.log(today.toISOString()); 			// 2023-08-07T02:08:44.315Z
+
+		today = today.toISOString().substring(0,10)	// 2023-08-07
+
+		$('#h_deadline').attr("min", today);
 	});
 
 	// 숙제 목록에서 행 클릭 시 입력 태그로 값 가져가기
@@ -49,6 +59,8 @@
 		$('#h_deadline').val(h_deadline);
 	}
 	
+	
+	
 </script>
 </head>
 <body>
@@ -64,11 +76,8 @@
 		         <!-- heading -->
 		         <h2 style="margin-bottom: 15px;">숙제 생성</h2>
 		         <div id="hwForm">
+		         	<input type="hidden" readonly="readonly" class="form-control" id="h_num" name="h_num" value=0>
 		         	<table>
-		         		<tr>
-		         			<td id="hwFormtd">숙제코드</td>
-		         			<td><input type="text" readonly="readonly" class="form-control" id="h_num" name="h_num" value=0></td>
-		         		</tr>
 		         		<tr>
 		         			<td id="hwFormtd">숙제명</td>
 		         			<td><input type="text" class="form-control" id="h_title" name="h_title" required="required"></td>

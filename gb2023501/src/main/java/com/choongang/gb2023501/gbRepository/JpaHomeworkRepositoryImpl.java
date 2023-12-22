@@ -60,6 +60,8 @@ public class JpaHomeworkRepositoryImpl implements JpaHomeworkRepository {
 					sql += "AND hs.homework.member.mmName Like '%"+ hwsend.getSearchKeyword() + "%'";
 				}
 			}
+			// 숙제 전송일자 최신
+			sql += "ORDER BY hs.homework.hhDeadline";
 
 			myHomeworkList = em.createQuery(sql, HwSend.class).setParameter("mmNum", hwsend.getMember().getMmNum()).getResultList();
 			System.out.println("JpaHomeworkRepositoryImpl selectMyHomeworkList myHomeworkList -> "+myHomeworkList.size());
