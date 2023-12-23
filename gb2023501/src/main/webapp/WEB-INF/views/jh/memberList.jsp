@@ -31,6 +31,7 @@
 
         <div class="row justify-content-center">
             <div class="col-md-9 ">
+            <form action="/operate/SearchMemberList" method="GET" >
                 <table class="formTable" id="searchForm">
                     <tr>
                         <th>기간</th>
@@ -44,13 +45,14 @@
                             <input class="form-control" type="date" id="endDate" name="endDate">
                         </td>
                     </tr>
-                    <tr>
+                   <!--  <tr>
                         <th>조건 검색</th>
                         <td>
-                            <select id="searchType" class="form-select" style="border-color: #ced4da">
-                                <option value="title">아이디</option>
-                                <option value="writer">이름</option>
-                                <option value="writer">휴대폰</option>
+                            <select id="searchType" name="searchType" class="form-select" style="border-color: #ced4da">
+                                <option value="null">검색조건</option>
+                                <option value="mmId">아이디</option>
+                                <option value="mmName">이름</option>
+                                <option value="phone">휴대폰</option>
                             </select>
                         </td>
                         <td></td>
@@ -62,6 +64,7 @@
                         <th>회원구분</th>
                         <td>
                             <select id="categorySelect" class="form-select" name="category">
+                                <option value="0">회원구분</option>
                                 <option value="1">교육자</option>
                                 <option value="2">학습자</option>
                                 <option value="3">일반인</option>
@@ -71,20 +74,21 @@
                         <th class="text-center">자격</th>
                         <td>
                             <select id="search_type" class="form-select" name="mshipType">
-                                <option value="null"></option>
+                                <option value="0">회원 자격</option>
                                 <option value="1">무료</option>
                                 <option value="2">유료</option>
                             </select>
                         </td>
-                    </tr>
+                    </tr> -->
                 </table>
             </div>
             
             <div class="col-md-1 mt-auto" id="searchBtn">
                 <div class="col-md-2" style="margin-left: 10px; width: 65px; margin-top: 6px;">
-                    <a href="#!"><i class="bi bi-search mt-2"></i></a>
+                    <button type="submit"><i class="bi bi-search mt-2"></i></a>
                 </div>
             </div>
+            </form>
         </div>
 
        	<table class="listTable">
