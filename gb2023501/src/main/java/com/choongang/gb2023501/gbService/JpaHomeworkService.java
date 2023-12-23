@@ -7,6 +7,7 @@ import com.choongang.gb2023501.domain.Homework;
 import com.choongang.gb2023501.domain.HwRecord;
 import com.choongang.gb2023501.domain.HwSend;
 import com.choongang.gb2023501.model.HomeworkDTO;
+import com.choongang.gb2023501.model.MyHomeworkDTO;
 
 public interface JpaHomeworkService {
 
@@ -18,12 +19,14 @@ public interface JpaHomeworkService {
 
 	Homework 			selectMyHomework(int h_num);
 
-	List<Homework> 		selectHomeworkList(HwSend hwsend);
+	List<HomeworkDTO> 		selectHomeworkList(HwSend hwsend);
 
 	List<HwRecord> 		selectHwrecordList(int hhNum);
 
 	List<String> 		selectHomeworkNameList(HwSend hwsend);
 
 	int updateHomeworkEval(Map<String, Object> map);
+
+	int insertUpdateMyHomework(HwRecord hwrecord);
 
 }

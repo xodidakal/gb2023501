@@ -12,11 +12,19 @@
 	function searchMyHw(){
 		var search_type = $('#search_type').val();
 		var search_keyword = $('#search_keyword').val();
+		var searchSubmit = $('#search_submit').val();
 		
-		location.href="/learning/myhomeworkList?searchType="+search_type+"&searchKeyword="+search_keyword;
+		location.href="/learning/myhomeworkList?searchType="+search_type+"&searchKeyword="+search_keyword+"&searchSubmit="+searchSubmit;
 		
 	}
 
+	function searchSubmit(){
+		var search_type = $('#search_type').val();
+		var search_keyword = $('#search_keyword').val();
+		var searchSubmit = $('#search_submit').val();
+		
+		location.href="/learning/myhomeworkList?searchType="+search_type+"&searchKeyword="+search_keyword+"&searchSubmit="+searchSubmit;
+	}
 </script>
 </head>
 <body>
@@ -34,10 +42,10 @@
 
 		<div class="input-group col-md-5 mb-3"> 
 			<!-- 카테고리 분류 -->
-			<select id="search_submit" class="w-17 rounded" style="margin-right: 15%; border-color: #ced4da">
-				<option value="title">전체</option>
-				<option value="writer">제출완료</option>
-				<option value="writer">미제출</option>
+			<select id="search_submit" class="w-17 rounded" style="margin-right: 15%; border-color: #ced4da" onchange="searchSubmit();">
+				<option value="0">전체</option>
+				<option value="1" <c:if test="${hwsend.searchSubmit == 1 }">selected</c:if>>제출완료</option>
+				<option value="2" <c:if test="${hwsend.searchSubmit == 2 }">selected</c:if>>미제출</option>
 			</select>
 			<!-- 카테고리 검색 -->
 			<select id="search_type" class="w-17 rounded" style="border-color: #ced4da">

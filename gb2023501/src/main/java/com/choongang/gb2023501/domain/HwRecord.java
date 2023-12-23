@@ -41,10 +41,10 @@ public class HwRecord {
 	private String hrQuestion;		// 추가 질의 내용
 	
 	@Column(name="hr_subm_date")
-	private Date hrSubmDate;		// 숙제 제출 일시
+	private LocalDateTime hrSubmDate;		// 숙제 제출 일시
 	
 	@Column(name="hr_modi_date")
-	private Date hrModiDate;		// 숙제 수정 일시
+	private LocalDateTime hrModiDate;		// 숙제 수정 일시
 	
 	@Column(name="hr_eval")
 	private Integer hrEval;			// 숙제 교육자 평가
@@ -52,7 +52,10 @@ public class HwRecord {
 	@Column(name="hr_eval_date")
 	private LocalDateTime hrEvalDate;		// 숙제 교육자 평가일시
 	
+	// 조회용
+	
 	@Transient	
 	private int hrMaxLevel;		// 학습자의 현재 최고 레벨
 	
+
 }
