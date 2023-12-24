@@ -36,6 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.jhRepository.MemberRepository;
 import com.choongang.gb2023501.jhService.MemberService;
+import com.choongang.gb2023501.model.MemberSearchCriteriaDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -524,7 +525,7 @@ public class JhController {
 	
 	
 	//회원 전체 목록 조회 - 회원 관리 메인 페이지
-	@RequestMapping(value = "operate/memberList")
+	@GetMapping(value = "operate/memberList")
 	public String memberList(@PageableDefault(size = 10, sort = "regiDate", direction = Sort.Direction.DESC ) Pageable pageable
 							, @RequestParam(name = "page", defaultValue = "1") int page
 							, Model model) {
@@ -545,6 +546,7 @@ public class JhController {
 //		System.out.println("mshipType -> " + mshipType);
 //		
 		// 직접 Pageable 객체 생성하여 시작 페이지 번호 조정
+		//Pageable의 기본 시작번호는 0부터지만 웹에선 1부터 시작이므로 조정
 	    Pageable adjustedPageable = PageRequest.of(page - 1, pageable.getPageSize(), pageable.getSort());
 		Page<Member> memberList = ms.findAll(adjustedPageable);
 		System.out.println("memberList.size() -> " + memberList.getSize());
@@ -561,5 +563,32 @@ public class JhController {
 		return "jh/memberList";
 	}
 	
-	
+	@GetMapping(value = "operate/SearchMemberList")
+	public String SearchMemberList(MemberSearchCriteriaDTO searchCriteria
+								 //, @PageableDefault(size = 10, sort = "regiDate", direction = Sort.Direction.DESC ) Pageable pageable
+								 , @RequestParam(name = "page", defaultValue = "1") int page
+								 , Model model
+								 , HttpSession session) {
+		//Pageable adjustedPageable = PageRequest.of(page - 1 , pageable.getPageSize());
+		int pageSize = 10; // 페이지당 아이템 수
+		Sort sort = Sort.by("regiDate").descending(); // 정렬 조건: regiDate 필드를 기준으로 내림차순 정렬
+
+		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
+
+			//회원 리스트
+		Page<Member> memberList = ms.SearchMemberList(searchCriteria, pageable);
+		
+		// 전체 회원 수
+	    long totalMembers = memberList.getTotalElements();
+	    // 현재 페이지의 첫 번째 회원 번호 계산
+	    long startNumber = totalMembers - (pageable.getPageNumber() * pageable.getPageSize());
+	    
+		model.addAttribute("memberList", memberList);
+		model.addAttribute("startNumber", startNumber);
+		model.addAttribute("totalMembers", totalMembers);
+		
+//		long tototalMembers = memberList.
+		
+		return "jh/memberList";
+	}
 }

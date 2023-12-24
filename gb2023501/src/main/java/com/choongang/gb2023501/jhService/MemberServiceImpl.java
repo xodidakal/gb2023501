@@ -1,12 +1,17 @@
 package com.choongang.gb2023501.jhService;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +23,7 @@ import org.springframework.stereotype.Service;
 import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.jhRepository.CustomMemberRepository;
 import com.choongang.gb2023501.jhRepository.MemberRepository;
+import com.choongang.gb2023501.model.MemberSearchCriteriaDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -144,7 +150,7 @@ public class MemberServiceImpl implements MemberService {
 		return currentUser;
 	}
 
-	//회원목록 전체 조회
+	//회원목록 전체 조회 -> 삭제 예정
 	@Override
 	public List<Member> findAll() {
 		List<Member> memberList = mr.findAll();
@@ -155,9 +161,83 @@ public class MemberServiceImpl implements MemberService {
 	//회원목록 전체 조회(페이지네이션)
 	@Override
 	public Page<Member> findAll(Pageable pageable) {
+		System.out.println("MemberServiceImpl findAll Start...");
 		Page<Member> memberList = mr.findAll(pageable);
 		return memberList;
 	}
+
+	//검색조건 있는 회원 목록 조회
+	@Override
+	public Page<Member> SearchMemberList(MemberSearchCriteriaDTO criteria, Pageable pageable) {
+//		Map<String, Object> searchKeys = new HashMap<>();
+//		
+		// 회원 폰번호
+//		String phone = criteria.getPhone();
+		//회원 구분(교육자/학습자/일반인/운영자)
+		Integer category = criteria.getCategory();	
+		//회원 자격(유/무료)
+		Integer mshipType = criteria.getMshipType();	
+		 // 회원명 검색 조건
+//		String mmName = criteria.getMmName();
+	    // 회원 아이디 검색 조건
+//	    String mmId = criteria.getMmId();
+	    // 검색 시작일
+	    String startDate = criteria.getStartDate();
+	    // 검색 종료일
+	    String endDate = criteria.getEndDate();
+	    
+	    String searchCriteria = criteria.getSearchCriteria();
+	    
+	    String	searchType = criteria.getSearchType();
+	    
+	    Specification<Member> spec = Specification.where(null);
+
+	    //날짜만 조절하면 됨
+//        if (criteria.getStartDate() != null && criteria.getEndDate() != null) {
+//            spec = spec.and(MemberSpecification.searchByPeriod(criteria));
+//        }
+
+        if (criteria.getSearchType() != null && criteria.getSearchCriteria() != null) {
+            switch (criteria.getSearchType()) {
+                case "mmId":
+                    spec = spec.and(MemberSpecification.searchById(criteria));
+                    break;
+                case "mmName":
+                    spec = spec.and(MemberSpecification.searchByName(criteria));
+                    break;
+                case "phone":
+                    spec = spec.and(MemberSpecification.searchByPhon(criteria));
+                    break;
+                // Add other cases as needed
+            }
+        }
+
+        if (criteria.getCategory() != 0) {
+            spec = spec.and(MemberSpecification.searchByCategory(criteria));
+        }
+
+        if (criteria.getMshipType() != 0) {
+            spec = spec.and(MemberSpecification.searchByMshipType(criteria));
+        }
+
+        return mr.findAll(spec, pageable);
+	}
+	//여기서 null 조건 확인해서 로직짜기 
+//	    
+//	    if(phone != null) searchKeys.put("phone", phone);
+//	    if(category != null) searchKeys.put("category", category);
+//	    if(mshipType != null) searchKeys.put("mshipType", mshipType);
+//	    if(mmId != null) searchKeys.put("mmId", mmId);
+//	    if(endDate != null) searchKeys.put("endDate", endDate);
+//		
+//		return mr.findAll(MemberSpecification.searchMemberList(searchKey), pageable)
+//				 .stream().map()
+//				 .collect(Collectors.toList())
+//				;
+		
+		// MemberSpecification을 이용하여 검색 조건을 생성
+        //MemberSpecification spec = new MemberSpecification(searchCriteria);
+		//Page<Member> memberList = mr.findAll(spec, pageable);
 
 	//회원목록 조회 (검색 조건 포함)
 //	@Override

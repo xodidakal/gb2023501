@@ -33,7 +33,7 @@
             <div class="col-md-9 ">
             <form action="/operate/SearchMemberList" method="GET" >
                 <table class="formTable" id="searchForm">
-                    <tr>
+                    <!-- <tr>
                         <th>기간</th>
                         <td style="width: 150px;">
                             <input class="form-control" type="date" id="startDate" name="startDate">
@@ -44,8 +44,8 @@
                         <td style="width: 150px;">
                             <input class="form-control" type="date" id="endDate" name="endDate">
                         </td>
-                    </tr>
-                   <!--  <tr>
+                    </tr> -->
+                    <tr>
                         <th>조건 검색</th>
                         <td>
                             <select id="searchType" name="searchType" class="form-select" style="border-color: #ced4da">
@@ -79,7 +79,7 @@
                                 <option value="2">유료</option>
                             </select>
                         </td>
-                    </tr> -->
+                    </tr> 
                 </table>
             </div>
             
