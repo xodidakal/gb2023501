@@ -30,12 +30,6 @@
 		//alert("category " +category);
 	    mshipType = $('#mshipType').val() ;
 		//alert("mshipType " +mshipType);
-	/*     startDate = $('#startDate').val() || '';
-	    endDate = $('#endDate').val() || '';
-	    searchType = $('#searchType').val() || 'null';
-	    searchValue = $('#searchValue').val() || '';
-	    category = $('#category').val() || '0';
-	    mshipType = $('#mshipType').val() || '0'; */
 	
 	    if (
 	        startDate === '' &&
@@ -80,28 +74,6 @@
 	    	location.href = "/operate/memberDetail?startDate="+startDate+"&endDate="+endDate+"&searchType="+searchType+"&searchValue="+searchValue+"&category="+category+"&mshipType="+mshipType+"&mmNum=" + pMmNum+"&page="+page;
 	    	
 	    } 
-/* 	    if (
-		        startDate === '' &&
-		        endDate === '' &&
-		        searchType === 'null' &&
-		        searchValue === '' &&
-		        category === '0' &&
-		        mshipType === '0' &&
-		        page === undefined
-		    ) {
-	    	alert("pMmNum" +pMmNum);
-	    	location.href = "/operate/memberDetail?mmNum=" + pMmNum;
-	    } else if(
-	    		startDate === '' &&
-		        endDate === '' &&
-		        searchType === 'null' &&
-		        searchValue === '' &&
-		        category === '0' &&
-		        mshipType === '0'
-	    ) {
-	    	location.href = "/operate/memberDetail?mmNum=" + pMmNum+"&page="+page;
-	    	
-	    } */
 	}
 </script> 
 </head>
