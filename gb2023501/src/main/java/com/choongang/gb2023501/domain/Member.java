@@ -147,15 +147,15 @@ public class Member {
     private Role role;  
 
 	//검색 조회용
-    @Transient
-	private String 	searchType;		//조건 검색 타입
-    @Transient
-	private String 	SearchCriteria;	//조건 검색
-    @Transient
-	private String 	startDate;		//시작 날짜
-    @Transient
-	private String 	endDate;		//종료 날짜
-	
+//    @Transient
+//	private String 	searchType;		//조건 검색 타입
+//    @Transient
+//	private String 	SearchCriteria;	//조건 검색
+//    @Transient
+//	private String 	startDate;		//시작 날짜
+//    @Transient
+//	private String 	endDate;		//종료 날짜
+//	
 	
 
 }

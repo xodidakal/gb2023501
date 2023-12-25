@@ -48,5 +48,8 @@ public interface MemberService {
 	//검색조건 있는 회원 목록 조회
 	public Page<Member> SearchMemberList(MemberSearchCriteriaDTO searchCriteria, Pageable pageable);
 
+	//회원번호로 회원정보 가져오기
+	public Member findByMmNum(int mmNum);
+
 
 }

@@ -566,6 +566,7 @@ public class JhController {
 	    model.addAttribute("startPage", startPage);
 	    model.addAttribute("endPage", endPage);
 	    model.addAttribute("totalPage", totalPage);
+	    model.addAttribute("page", page);
 		
 		return "jh/memberList";
 	}
@@ -623,9 +624,56 @@ public class JhController {
 	    model.addAttribute("startPage", startPage);
 	    model.addAttribute("endPage", endPage);
 	    model.addAttribute("totalPage", totalPage);
+	    model.addAttribute("page", page);
 		
 //		long tototalMembers = memberList.
 		
 		return "jh/memberList";
+	}
+	
+	@GetMapping(value = "operate/memberDetail")
+	public String memberDetail(@RequestParam(name = "mmNum", required = true) int mmNum
+							 , Integer page
+							 , MemberSearchCriteriaDTO searchCriteria
+							 , Model model
+							 ) {
+		System.out.println("JhController memberDetail Start...");
+		System.out.println("mmNum -> " + mmNum);
+		System.out.println("page -> " + page);
+		System.out.println("searchCriteria -> " + searchCriteria);
+		
+		Member member = ms.findByMmNum(mmNum);
+		System.out.println("회원정보 member -> " + member);
+		
+		
+		model.addAttribute("page", page);
+		model.addAttribute("criteria", searchCriteria);
+		model.addAttribute("member", member);
+		model.addAttribute("mmNum", mmNum);
+		return "jh/memberDetail";
+		
+	}
+	
+	@GetMapping(value = "operate/memberUpdateForm")
+	public String memberUpdateForm(@RequestParam(name = "mmNum", required = true) int mmNum
+								 , Integer page
+								 , MemberSearchCriteriaDTO searchCriteria
+								 , Model model) {
+		System.out.println("JhController memberUpdateForm Start...");
+		System.out.println("mmNum -> " + mmNum);
+		System.out.println("page -> " + page);
+		System.out.println("searchCriteria -> " + searchCriteria);
+		
+		Member member = ms.findByMmNum(mmNum);
+		System.out.println("회원정보 member -> " + member);
+		
+		
+		model.addAttribute("page", page);
+		model.addAttribute("criteria", searchCriteria);
+		model.addAttribute("member", member);
+		model.addAttribute("mmNum", mmNum);
+		
+		return "jh/memberUpdateForm";
+		
 	}
 }

@@ -33,6 +33,9 @@ import com.choongang.gb2023501.domain.Member;
 	//아이디, 이름,이메일로 유저 찾기
 	Optional<Member> findByMmIdAndEmailAndMmName(String id, String email, String name);
 
+	//회원번호로 회원정보 가져오기
+	Optional<Member> findByMmNum(int mmNum);
+
 	//CustomMemberRepository 상속받을 때 사용하려 했던 것
 //	List<Member> selectMemberList(Member member);
 	

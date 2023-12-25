@@ -222,6 +222,19 @@ public class MemberServiceImpl implements MemberService {
         return mr.findAll(spec, pageable);
 	}
 
+	//회원번호로 회원정보 가져오기
+	@Override
+	public Member findByMmNum(int mmNum) {
+		
+		Optional<Member> memberOptional = mr.findByMmNum(mmNum);
+		
+		Member member = null;
+		if(memberOptional.isPresent()) {
+			member = memberOptional.get();
+		}
+		return member;
+	}
+
 
 
 

@@ -20,39 +20,89 @@
 
 </style>
 <script type="text/javascript">
-function pageMove(pPageNum) {
-	//검색 조건 선택 x하면 null이 아니라 빈문자열''이 됨
-    startDate = $('#startDate').val() ;
-    endDate = $('#endDate').val() ;
-    searchType = $('#searchType').val() ;
-    searchValue = $('#searchValue').val() ;
-    category = $('#categorySelect').val() ;
-	alert("category " +category);
-    mshipType = $('#mshipType').val() ;
-	alert("mshipType " +mshipType);
-/*     startDate = $('#startDate').val() || '';
-    endDate = $('#endDate').val() || '';
-    searchType = $('#searchType').val() || 'null';
-    searchValue = $('#searchValue').val() || '';
-    category = $('#category').val() || '0';
-    mshipType = $('#mshipType').val() || '0'; */
-
-    if (
-        startDate === '' &&
-        endDate === '' &&
-        searchType === 'null' &&
-        searchValue === '' &&
-        category === '0' &&
-        mshipType === '0'
-    ) {
-        location.href = "/operate/memberList?page=" + pPageNum;
-    } else {
-    	location.href = "/operate/SearchMemberList?startDate="+startDate+"&endDate="+endDate+"&searchType="+searchType+"&searchValue="+searchValue+"&category="+category+"&mshipType="+mshipType+"&page="+pPageNum;
-    }
-    // 이하 코드는 그대로 유지
-}
-
-		//operate/SearchMemberList?startDate=&endDate=&searchType=null&searchValue=&category=0&mshipType=0
+	function pageMove(pPageNum) {
+		//검색 조건 선택 x하면 null이 아니라 빈문자열''이 됨
+	    startDate = $('#startDate').val() ;
+	    endDate = $('#endDate').val() ;
+	    searchType = $('#searchType').val() ;
+	    searchValue = $('#searchValue').val() ;
+	    category = $('#categorySelect').val() ;
+		//alert("category " +category);
+	    mshipType = $('#mshipType').val() ;
+		//alert("mshipType " +mshipType);
+	/*     startDate = $('#startDate').val() || '';
+	    endDate = $('#endDate').val() || '';
+	    searchType = $('#searchType').val() || 'null';
+	    searchValue = $('#searchValue').val() || '';
+	    category = $('#category').val() || '0';
+	    mshipType = $('#mshipType').val() || '0'; */
+	
+	    if (
+	        startDate === '' &&
+	        endDate === '' &&
+	        searchType === 'null' &&
+	        searchValue === '' &&
+	        category === '0' &&
+	        mshipType === '0'
+	    ) {
+	        location.href = "/operate/memberList?page=" + pPageNum;
+	    } else {
+	    	location.href = "/operate/SearchMemberList?startDate="+startDate+"&endDate="+endDate+"&searchType="+searchType+"&searchValue="+searchValue+"&category="+category+"&mshipType="+mshipType+"&page="+pPageNum;
+	    }
+	    // 이하 코드는 그대로 유지
+	}
+	
+	function memberDetail(pMmNum){
+		startDate = $('#startDate').val() ;
+	    endDate = $('#endDate').val() ;
+	    searchType = $('#searchType').val() ;
+	    searchValue = $('#searchValue').val() ;
+	    category = $('#categorySelect').val() ;
+		//alert("category " +category);
+	    mshipType = $('#mshipType').val() ;
+	    page = ${page};
+		alert("page " +page);
+		//alert("pMmNum " +pMmNum);
+	    
+	    
+	    if (
+	    		startDate === '' &&
+		        endDate === '' &&
+		        searchType === 'null' &&
+		        searchValue === '' &&
+		        category === '0' &&
+		        mshipType === '0'
+		    ) {
+	    	alert("pMmNum" +pMmNum);
+	    	location.href = "/operate/memberDetail?mmNum=" + pMmNum+"&page="+page;
+	    } else  {
+	    	alert("검색 유");
+	    	location.href = "/operate/memberDetail?startDate="+startDate+"&endDate="+endDate+"&searchType="+searchType+"&searchValue="+searchValue+"&category="+category+"&mshipType="+mshipType+"&mmNum=" + pMmNum+"&page="+page;
+	    	
+	    } 
+/* 	    if (
+		        startDate === '' &&
+		        endDate === '' &&
+		        searchType === 'null' &&
+		        searchValue === '' &&
+		        category === '0' &&
+		        mshipType === '0' &&
+		        page === undefined
+		    ) {
+	    	alert("pMmNum" +pMmNum);
+	    	location.href = "/operate/memberDetail?mmNum=" + pMmNum;
+	    } else if(
+	    		startDate === '' &&
+		        endDate === '' &&
+		        searchType === 'null' &&
+		        searchValue === '' &&
+		        category === '0' &&
+		        mshipType === '0'
+	    ) {
+	    	location.href = "/operate/memberDetail?mmNum=" + pMmNum+"&page="+page;
+	    	
+	    } */
+	}
 </script> 
 </head>
 <body>
@@ -188,7 +238,7 @@ function pageMove(pPageNum) {
 			 		<td>
 				 		<fmt:formatDate value="${member.regiDate }" pattern="yyyy-MM-dd"></fmt:formatDate>
 			 		</td>
-					<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
+					<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;" onclick="memberDetail(${member.mmNum})">상세</button></a></td>
 				</tr>
 				<c:set var="num" value="${num - 1 }"></c:set>
 				
@@ -202,7 +252,6 @@ function pageMove(pPageNum) {
 	        <c:if test="${startPage > pageBlock}">
 	            <li class="page-item">
 	                <a class="page-link" onclick="pageMove(${startPage - pageBlock})" href="?page=${startPage - pageBlock}" aria-label="Previous">
-<%-- 	                <a class="page-link"  href="?page=${startPage - pageBlock}" aria-label="Previous"> --%>
 	                    <span aria-hidden="true">&laquo;</span>
 	                </a>
 	            </li>
@@ -210,22 +259,19 @@ function pageMove(pPageNum) {
             <c:forEach begin="${startPage}" end="${endPage}" var="pageIndex">
             	<c:if test="${page == pageIndex}">
 	                <li class="page-item active">
-	                    <a class="page-link" onclick="pageMove(${pageIndex})"><b class="text-primary">${pageIndex}</b></a>
-<%-- 	                    <a class="page-link" href="?page=${pageIndex}"><b class="text-primary">${pageIndex}</b></a> --%>
+	                    <a class="page-link"  onclick="pageMove(${pageIndex})">${pageIndex}</a>
 	                </li>
             	</c:if>
             	
             	<c:if test="${page != pageIndex}">
 	                <li class="page-item">
 	                    <a class="page-link" onclick="pageMove(${pageIndex})">${pageIndex}</a>
-<%-- 	                    <a class="page-link" href="?page=${pageIndex}">${pageIndex}</a> --%>
 	                </li>
             	</c:if>
             </c:forEach>
             <c:if test="${endPage < totalPage}">
 	            <li class="page-item ">
 	                <a class="page-link" onclick="pageMove(${endPage + 1})" aria-label="Next">
-<%-- 	                <a class="page-link" href="?page=${endPage + 1}" aria-label="Next"> --%>
 	                    <span aria-hidden="true">&raquo;</span>
 	                </a>
 	            </li>
