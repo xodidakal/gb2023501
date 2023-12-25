@@ -229,32 +229,6 @@ public class MemberServiceImpl implements MemberService {
 
         return mr.findAll(spec, pageable);
 	}
-	//여기서 null 조건 확인해서 로직짜기 
-//	    
-//	    if(phone != null) searchKeys.put("phone", phone);
-//	    if(category != null) searchKeys.put("category", category);
-//	    if(mshipType != null) searchKeys.put("mshipType", mshipType);
-//	    if(mmId != null) searchKeys.put("mmId", mmId);
-//	    if(endDate != null) searchKeys.put("endDate", endDate);
-//		
-//		return mr.findAll(MemberSpecification.searchMemberList(searchKey), pageable)
-//				 .stream().map()
-//				 .collect(Collectors.toList())
-//				;
-		
-		// MemberSpecification을 이용하여 검색 조건을 생성
-        //MemberSpecification spec = new MemberSpecification(searchCriteria);
-		//Page<Member> memberList = mr.findAll(spec, pageable);
-
-	//회원목록 조회 (검색 조건 포함)
-//	@Override
-//	public List<Member> selectMemberList(Member member) {
-//		System.out.println("MemberServiceImpl findByMmIdAndEmailAndName Start...");
-//		List<Member> memberList = mr.selectMemberList(member);
-//		
-//		return memberList;
-//	}
-
 
 
 

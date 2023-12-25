@@ -309,6 +309,8 @@ public class JhController {
 		System.out.println("JhController join Start...");
 		System.out.println("memeber -> " + member);
 		Member savedMember = null;
+		
+		member.setMshipType(1);
 		savedMember =  ms.join(member);
 		String result = null;
 		
@@ -528,44 +530,42 @@ public class JhController {
 	@GetMapping(value = "operate/memberList")
 	public String memberList(
 							 @RequestParam(name = "page", defaultValue = "1") int page
-							//, @PageableDefault(size = 10, sort = "regiDate", direction = Sort.Direction.DESC ) Pageable pageable
 							, Model model) {
-//		public String memberList(Member member,  Model model) {
 		System.out.println("JhController memberList Start...");
 		
-//		String startDate 		= member.getStartDate();
-//		String endDate	 		= member.getEndDate();
-//		String searchType		= member.getSearchType();
-//		String SearchCriteria	= member.getSearchCriteria();
-//		int	   category			= member.getCategory();
-//		int    mshipType		= member.getMshipType();
-//		System.out.println("startDate -> " + startDate);
-//		System.out.println("endDate -> " + endDate);
-//		System.out.println("searchType -> " + searchType);
-//		System.out.println("SearchCriteria -> " + SearchCriteria);
-//		System.out.println("category -> " + category);
-//		System.out.println("mshipType -> " + mshipType);
-//		
 		
 		int pageSize = 10; // 페이지당 아이템 수
 		Sort sort = Sort.by("regiDate").descending(); // 정렬 조건: regiDate 필드를 기준으로 내림차순 정렬
 		// 직접 Pageable 객체 생성하여 시작 페이지 번호 조정
 		//Pageable의 기본 시작번호는 0부터지만 웹에선 1부터 시작이므로 조정
 		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
+		
+		//회원 리스트
 		Page<Member> memberList = ms.findAll(pageable);
 		System.out.println("memberList.size() -> " + memberList.getSize());
+		
 		// 전체 회원 수
 	    long totalMembers = memberList.getTotalElements();
 
 	    // 현재 페이지의 첫 번째 회원 번호 계산
 	    //long startNumber = totalMembers - (adjustedPageable.getPageNumber() * adjustedPageable.getPageSize());
-	    int startNumber = (page - 1) * pageSize + 1;
+//	    int startNumber = (page - 1) * pageSize + 1;
+	    long startNumber = pageable.getOffset();
+	    
+	    // 페이지 블록 계산
 	    int pageBlock = 10;
+	    int startPage = (int) (Math.floor((double) (page - 1) / pageBlock) * pageBlock) + 1; //시작 페이지 번호
+	    int endPage = Math.min(startPage + pageBlock - 1, memberList.getTotalPages());		 //끝 페이지 번호
+	    int totalPage = memberList.getTotalPages();	//전체 페이지 수
+
 
 		model.addAttribute("memberList", memberList);
 		 model.addAttribute("startNumber", startNumber);
 		model.addAttribute("totalMembers", totalMembers);
 		model.addAttribute("pageBlock", pageBlock);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPage", totalPage);
 		
 		return "jh/memberList";
 	}
@@ -594,7 +594,6 @@ public class JhController {
 		
 		int pageSize = 10; // 페이지당 아이템 수
 		Sort sort = Sort.by("regiDate").descending(); // 정렬 조건: regiDate 필드를 기준으로 내림차순 정렬
-
 		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
 
 		//회원 리스트
@@ -602,16 +601,28 @@ public class JhController {
 		
 		// 전체 회원 수
 	    long totalMembers = memberList.getTotalElements();
+	    
 	    // 현재 페이지의 첫 번째 회원 번호 계산
 //	    long startNumber = totalMembers - (pageable.getPageNumber() * pageable.getPageSize());
-	    int startNumber = (page - 1) * pageSize + 1;
+	    //int startNumber = (page - 1) * pageSize + 1;
+	    long startNumber = pageable.getOffset(); //시작행 번호
+	    
+	    // 페이지 블록 계산
 	    int pageBlock = 10;
+	    int startPage = (int) (Math.floor((double) (page - 1) / pageBlock) * pageBlock) + 1;
+	    int endPage = Math.min(startPage + pageBlock - 1, memberList.getTotalPages());
+	    int totalPage = memberList.getTotalPages();
+
+	    
 	    
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("startNumber", startNumber);
 		model.addAttribute("totalMembers", totalMembers);
 		model.addAttribute("searchCriteria", searchCriteria);
 		model.addAttribute("pageBlock", pageBlock);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPage", totalPage);
 		
 //		long tototalMembers = memberList.
 		

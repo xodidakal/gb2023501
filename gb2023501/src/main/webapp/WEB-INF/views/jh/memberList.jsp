@@ -18,7 +18,41 @@
 }
 
 
-</style> 
+</style>
+<script type="text/javascript">
+function pageMove(pPageNum) {
+    startDate = $('#startDate').val() ;
+    endDate = $('#endDate').val() ;
+    searchType = $('#searchType').val() ;
+    searchValue = $('#searchValue').val() ;
+    category = $('#categorySelect').val() ;
+	alert("category " +category);
+    mshipType = $('#mshipType').val() ;
+	alert("mshipType " +mshipType);
+/*     startDate = $('#startDate').val() || '';
+    endDate = $('#endDate').val() || '';
+    searchType = $('#searchType').val() || 'null';
+    searchValue = $('#searchValue').val() || '';
+    category = $('#category').val() || '0';
+    mshipType = $('#mshipType').val() || '0'; */
+
+    if (
+        startDate === '' &&
+        endDate === '' &&
+        searchType === 'null' &&
+        searchValue === '' &&
+        category === '0' &&
+        mshipType === '0'
+    ) {
+        location.href = "/operate/memberList?page=" + pPageNum;
+    } else {
+    	location.href = "/operate/SearchMemberList?startDate="+startDate+"&endDate="+endDate+"&searchType="+searchType+"&searchValue="+searchValue+"&category="+category+"&mshipType="+mshipType+"&page="+pPageNum;
+    }
+    // 이하 코드는 그대로 유지
+}
+
+		//operate/SearchMemberList?startDate=&endDate=&searchType=null&searchValue=&category=0&mshipType=0
+</script> 
 </head>
 <body>
 <div class="row g-0 justify-content-center">
@@ -63,7 +97,7 @@
                         <th>조건 검색</th>
                         <td>
                             <select id="searchType" name="searchType" class="form-select" style="border-color: #ced4da">
-                                <option value="null">검색조건</option>
+                                <option value="null" <c:if test="${searchCriteria.searchType eq 'null' }">	selected="selected"</c:if>>검색조건</option>
                                 <option value="mmId" <c:if test="${searchCriteria.searchType eq 'mmId' }">	selected="selected"</c:if>>아이디</option>
                                 <option value="mmName" <c:if test="${searchCriteria.searchType eq 'mmName' }">	selected="selected"</c:if>>이름</option>
                                 <option value="phone" <c:if test="${searchCriteria.searchType eq 'phone' }">	selected="selected"</c:if>>휴대폰</option>
@@ -91,7 +125,7 @@
                         		</c:otherwise>
                         	</c:choose> --%>
                             <select id="categorySelect" class="form-select" name="category">
-                                <option value="0">회원구분</option>
+                                <option value="0" <c:if test="${searchCriteria.category == 0 }">	selected="selected"</c:if>>회원구분</option>
                                 <option value="1" <c:if test="${searchCriteria.category == 1 }">	selected="selected"</c:if>>교육자</option>
                                 <option value="2" <c:if test="${searchCriteria.category == 2 }">	selected="selected"</c:if>>학습자</option>
                                 <option value="3" <c:if test="${searchCriteria.category == 3 }">	selected="selected"</c:if>>일반인</option>
@@ -100,8 +134,8 @@
                         </td>
                         <th class="text-center">자격</th>
                         <td>
-                            <select id="search_type" class="form-select" name="mshipType">
-                                <option value="0">회원 자격</option>
+                            <select id="mshipType" class="form-select" name="mshipType">
+                                <option value="0" <c:if test="${searchCriteria.mshipType == 0 }">	selected="selected"</c:if>>회원 자격</option>
                                 <option value="1" <c:if test="${searchCriteria.mshipType == 1 }">	selected="selected"</c:if>>무료</option>
                                 <option value="2" <c:if test="${searchCriteria.mshipType == 2 }">	selected="selected"</c:if>>유료</option>
                             </select>
@@ -132,7 +166,8 @@
 				</tr>
 			</thead>
 			 <tbody>
-			 <c:set var="num" value="${totalMembers - startNumber +1}"></c:set>
+			 <c:set var="num" value="${totalMembers - startNumber}"></c:set>
+<%-- 			 <c:set var="num" value="${totalMembers - startNumber +1}"></c:set> --%>
 			 <c:forEach var="member" items="${memberList.content}" varStatus="iterStat">
 			 	<tr>
 			 		<td>${num}</td>
@@ -163,21 +198,37 @@
     <div class="d-flex justify-content-center" style="margin-top: 12px">
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="?page=${page - 1}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <c:forEach begin="0" end="${memberList.totalPages - 1}" var="pageIndex">
-                <li class="page-item" id="${pageIndex + 1}">
-                    <a class="page-link" href="?page=${pageIndex + 1}">${pageIndex + 1}</a>
-                </li>
+	        <c:if test="${startPage > pageBlock}">
+	            <li class="page-item">
+	                <a class="page-link" onclick="pageMove(${startPage - pageBlock})" href="?page=${startPage - pageBlock}" aria-label="Previous">
+<%-- 	                <a class="page-link"  href="?page=${startPage - pageBlock}" aria-label="Previous"> --%>
+	                    <span aria-hidden="true">&laquo;</span>
+	                </a>
+	            </li>
+	        </c:if>
+            <c:forEach begin="${startPage}" end="${endPage}" var="pageIndex">
+            	<c:if test="${page == pageIndex}">
+	                <li class="page-item active">
+	                    <a class="page-link" onclick="pageMove(${pageIndex})"><b class="text-primary">${pageIndex}</b></a>
+<%-- 	                    <a class="page-link" href="?page=${pageIndex}"><b class="text-primary">${pageIndex}</b></a> --%>
+	                </li>
+            	</c:if>
+            	
+            	<c:if test="${page != pageIndex}">
+	                <li class="page-item">
+	                    <a class="page-link" onclick="pageMove(${pageIndex})">${pageIndex}</a>
+<%-- 	                    <a class="page-link" href="?page=${pageIndex}">${pageIndex}</a> --%>
+	                </li>
+            	</c:if>
             </c:forEach>
-            <li class="page-item">
-                <a class="page-link" href="?page=${page + 1}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
+            <c:if test="${endPage < totalPage}">
+	            <li class="page-item ">
+	                <a class="page-link" onclick="pageMove(${endPage + 1})" aria-label="Next">
+<%-- 	                <a class="page-link" href="?page=${endPage + 1}" aria-label="Next"> --%>
+	                    <span aria-hidden="true">&raquo;</span>
+	                </a>
+	            </li>
+	        </c:if>
         </ul>
     </nav>
 </div>
