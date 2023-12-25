@@ -152,6 +152,32 @@
 	    return isValid;
 	}
 
+	function myUpdate() {
+		alert("마이 정보 수정");
+		// 폼 제출 전에 유효성 검사 수행
+		if (!isFormValid()) {
+		alert("필수항목 누락 -> ");
+        	return; // 필수 항목이 비어있으면 폼 제출 중단
+		}
+		 
+        // 모든 검사가 통과되었는지 확인
+ 		if ($('#pswdValidationMessage').text() !== '' ||
+ 	        $('#emailValidationMessage').text() !== '' ||
+ 	        $('#phoneValidationMessage').text() !== '' ||
+ 	        $('#telValidationMessage').text() !== '' 
+ 	    ) {
+ 			alert('입력 정보를 확인해 주세요!')
+ 			return;
+ 		  }
+		alert("수정시작 -> ");
+
+	    // 폼을 선택하고 action, method 설정 후 submit 메서드 호출
+	    var form = document.getElementById("memberUpdateForm");
+	    form.action = "/info/myUpdate"; // 수정된 부분
+	    form.method = "post"; // 수정된 부분
+	    form.submit();
+		
+	}
 	function memberUpdate(){
 	    var startDate = "${criteria.startDate == null ? '' : criteria.startDate}";
 	    var endDate = "${criteria.endDate == null ? '' : criteria.endDate}";
@@ -181,96 +207,12 @@
  		  }
 		alert("수정시작 -> ");
 		
-		/* //var confirm = confirm("챌린지를 수정하시겠습니까?");
-		var formData = $("#memberUpdateForm").serialize();
-			    
-				$.ajax({
-					url		 : '/operate/memberUpdate',
-					type	 : 'POST',
-					data	 : formData,
-					contentType: 'application/x-www-form-urlencoded', // 기본 폼 데이터 형식
-					async: false, // 동기적으로 처리
-					dataType : 'text',
-					success	 : function(data){
-								alert("result -> " + data);
-								if(data === "1"){
-									alert("수정이 완료되었습니다!");
-									 if (
-										        startDate === '' &&
-										        endDate === '' &&
-										        searchType === '' &&
-										        searchValue === '' &&
-										        category === '' &&
-										        mshipType === ''
-										    ) {
-										        alert("검색 무");
-										        location.href = "/operate/memberDetail?mmNum=" + mmNum +"&page="+page;
-										    } else {
-										        alert("검색 유");
-										        location.href = "/operate/memberDetail?startDate="+startDate+"&endDate="+endDate+"&searchType="+searchType+"&searchValue="+searchValue+"&category="+category+"&mshipType="+mshipType+"&mmNum=" + mmNum+"&page="+page;
-										    }
-								} else{
-									alert("수정이 완료되지 않았습니다. 작성내용을 확인해 주세요!");
-								}
-					}
-					
-				});
-		 */
+		var form = document.getElementById("memberUpdateForm");
+	    form.action = "/operate/memberUpdate"; // 수정된 부분
+	    form.method = "post"; // 수정된 부분
+	    form.submit();
 	}
 
-	/*  
-	function joinChk(){
-		//alert("formData -> " + formData);
-		
-		 // 폼 제출 전에 유효성 검사 수행
-            if (!isFormValid()) {
-                return; // 필수 항목이 비어있으면 폼 제출 중단
-            }
-		
-		// 아이디 중복 확인이 이루어졌는지 확인
-	    var idValidationMessage = $('#idValidationMessage').text();
-	    if (idValidationMessage === '사용불가능한 아이디입니다.') {
-	    	alert('다른 아이디를 사용해 주세요!')
-	        return;
-	    } else if(idValidationMessage !== '사용 가능한 아이디입니다.'){
-	        alert("아이디 중복확인을 먼저 진행해주세요.");
-	        return;
-	    }
-	    
-
-	    
-	 // 모든 검사가 통과되었는지 확인
-		  if ($('#pswdValidationMessage').text() !== '' ||
-	        $('#emailValidationMessage').text() !== '' ||
-	        $('#phoneValidationMessage').text() !== '' ||
-	        $('#telValidationMessage').text() !== '' 
-	    ) {
-			  alert('입력 정보를 확인해 주세요!')
-			  return;
-		  }
-	    
-		var formData = $("#joinForm").serialize();
-	    
-		$.ajax({
-			url		 : '/info/join',
-			type	 : 'POST',
-			data	 : formData,
-			contentType: 'application/x-www-form-urlencoded', // 기본 폼 데이터 형식
-			async: false, // 동기적으로 처리
-			dataType : 'text',
-			success	 : function(data){
-						alert("result -> " + data);
-						if(data === "1"){
-							alert("회원가입이 완료되었습니다!");
-							location.href="/";
-						} else{
-							alert("회원가입이 완료되지 않았습니다. 작성내용을 확인해 주세요!");
-						}
-			}
-			
-		});
-		
-	}  */
 	
 	function memberList() {
 		//startDate 등 검색 x하고 상세페이지 올 경우 criteria.startDate가 null인경우 ''로 치환하기 위해 전부 ""로 감쌈
@@ -315,9 +257,8 @@
                <h2 class="display-7 mb-4">회원정보 수정</h2>
 
                <hr class="my-3">
-               <form id="memberUpdateForm" action="/operate/memberUpdate" method="post" onsubmit="memberUpdate()" >
+	               <form id="memberUpdateForm"  >
                <input type="hidden" id="mmNum" name="mmNum" value="${member.mmNum }">
-               <input type="hidden" id="mmPswd" name="mmPswd" value="${member.mmPswd }">
                <input type="hidden" id="regiDate" name=regiDate value="${member.regiDate }">
                <input type="hidden" id="page" name="page" value="${page }">
                <input type="hidden" id="startDate" name="startDate" value="${criteria.startDate }">
@@ -338,7 +279,7 @@
 		            <tr>
 						<th>아이디</th>
 						<td colspan="3">
-						<input type="hidden" v class="form-control" id="mmId" name="mmId" value=" ${member.mmId }" required>
+						<input type="hidden" v class="form-control" id="mmId" name="mmId" value="${member.mmId }" required>
 							${member.mmId }
 						</td>
 					</tr>
@@ -453,6 +394,7 @@
 							</tr>
 						</c:when>
 						<c:otherwise>
+			               <input type="hidden" id="mmPswd" name="mmPswd" value="${member.mmPswd }">
 						</c:otherwise>
 					</c:choose>
 		            
@@ -495,8 +437,15 @@
 
                 </table>
                 <div class="d-grid gap-2 d-md-flex justify-content-center" >
-					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="수정하기" >
-					<input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="목록" onclick="memberList()">
+                <c:choose>
+                	<c:when test="${my == 1 }">
+						<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="수정하기2" onclick="myUpdate()">
+                	</c:when>
+                	<c:otherwise>
+						<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="수정하기" onclick="memberUpdate()" >
+						<input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="목록" onclick="memberList()">
+                	</c:otherwise>
+                </c:choose>
 				</div>
 			</form>
                 

@@ -728,4 +728,48 @@ public class JhController {
 		return result;
 	}
 	
+	@GetMapping(value = "info/myDetail")
+	public String myDetail(String mmId , Model model){
+		System.out.println("JhController myDetail Start...");
+
+		Optional<Member> memberOptional = ms.selectUserById();
+		Member member = memberOptional.get();
+		
+		String my = "1";
+		System.out.println("회원정보 member -> " + member);
+		model.addAttribute("member", member);
+		model.addAttribute("my", my);
+		return "jh/memberDetail";
+	}
+	
+	@GetMapping(value = "info/myUpdateForm")
+	public String myUpdateForm(@RequestParam(name = "mmNum", required = true) int mmNum, Model model) {
+		System.out.println("JhController myUpdateForm Start...");
+		Optional<Member> memberOptional = ms.selectUserById();
+		Member member = memberOptional.get();
+		
+		String my = "1";
+		System.out.println("회원정보 member -> " + member);
+		model.addAttribute("member", member);
+		model.addAttribute("my", my);
+		return "jh/memberUpdateForm";
+	}
+	
+	
+	@PostMapping(value = "info/myUpdate")
+	public String memberUpdate(Member member
+							 , Model model) {
+		System.out.println("JhController memberUpdate Start...");
+		
+		String mmId = member.getMmId();
+		System.out.println("member -> " + member);
+//		System.out.println("mmId -> " + mmId);
+		System.out.println("가입일 -> " + member.getRegiDate());
+		
+		//회원정보 수정
+		ms.join(member);
+		
+		return "redirect:/info/myDetail?mmId="+mmId;
+	}
+
 }

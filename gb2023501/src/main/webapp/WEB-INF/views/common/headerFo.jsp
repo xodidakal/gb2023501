@@ -105,7 +105,7 @@
 	           	 	  <c:otherwise>
  	                  	
  	                  	<div class="ps-3">            	 			
-	                       <h6 class="mb-0"><a href="/">${pageContext.request.userPrincipal.name}</a></h6>
+	                       <h6 class="mb-0"><a href="/info/myDetail?mmId=${pageContext.request.userPrincipal.name}">${pageContext.request.userPrincipal.name}</a></h6>
 	                    </div>
 	                    <div class="ps-3"> 
 	                       <h6 class="mb-0"><a href="/logout">로그아웃</a></h6>

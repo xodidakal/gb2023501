@@ -66,6 +66,10 @@
 		        location.href = "/operate/memberUpdateForm?mmNum="+pMmNum+"&startDate=" + startDate + "&endDate=" + endDate + "&searchType=" + searchType + "&searchValue=" + searchValue + "&category=" + category + "&mshipType=" + mshipType + "&page=" + page;
 		    }
 	}
+	
+	function myUpdateForm(pMmNum){
+		location.href = "/info/myUpdateForm?mmNum="+pMmNum;
+	}
 
 </script>
 <body>
@@ -164,8 +168,15 @@
                 </table>
                 </form>
                 <div class="d-grid gap-2 d-md-flex justify-content-center" >
-					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="수정" onclick="memberUpdateForm(${mmNum})">
-					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="목록" onclick="memberList()">
+                	<c:choose>
+	                	<c:when test="${my == 1 }">
+							<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="수정" onclick="myUpdateForm(${member.mmNum})">
+	                	</c:when>
+	                	<c:otherwise>
+						<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="수정" onclick="memberUpdateForm(${mmNum})">
+						<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="목록" onclick="memberList()">
+	                	</c:otherwise>
+                	</c:choose>
 				</div>
                 
 			</div>
