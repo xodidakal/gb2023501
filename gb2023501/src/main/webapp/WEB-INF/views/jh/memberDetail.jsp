@@ -102,16 +102,24 @@
 					</tr>
 		            <tr>
 						<th>전화 번호</th>
-						<td  width="150px;">
+						<td colspan="3">
 							${member.tel }
 		            	</td>
-						<th style="padding-left: 40px;">회원구분</th>
+					</tr>
+					<tr>
+						<th>회원구분</th>
 						<td   width="150px;">
 							<c:if test="${member.category == 1}">교육자</c:if>
 							<c:if test="${member.category == 2}">학습자</c:if>
 							<c:if test="${member.category == 3}">일반인</c:if>
 							<c:if test="${member.category == 4}">운영자</c:if>
 		            	</td>
+		            	<th  style="padding-left: 40px;">회원자격</th>
+						<td  width="150px;">
+							<c:if test="${member.mshipType == 1}">무료회원</c:if>
+							<c:if test="${member.mshipType == 2}">유료회원</c:if>
+						
+						</td>
 					</tr>
 		            <tr>
 						<th>생년월일</th>

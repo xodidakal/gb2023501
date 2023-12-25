@@ -305,12 +305,10 @@
 					<tr>
 						<th>회원구분</th>
 						<td   width="150px;">
-							<select id="categorySelect" class="form-select" name="category">
-                                <option value="1" <c:if test="${member.category == 1 }">	selected="selected"</c:if>>교육자</option>
-                                <option value="2" <c:if test="${member.category == 2 }">	selected="selected"</c:if>>학습자</option>
-                                <option value="3" <c:if test="${member.category == 3 }">	selected="selected"</c:if>>일반인</option>
-                                <option value="4" <c:if test="${member.category == 4 }">	selected="selected"</c:if>>운영자</option>
-							</select>
+							<c:if test="${member.category == 1 }">교육자<input type="hidden" value="${member.category}" id="category" class="form-control" name="category" ></c:if>
+							<c:if test="${member.category == 2 }">학습자<input type="hidden" value="${member.category}" id="category" class="form-control" name="category" ></c:if>
+							<c:if test="${member.category == 3 }">일반인<input type="hidden" value="${member.category}" id="category" class="form-control" name="category" ></c:if>
+							<c:if test="${member.category == 4 }">운영자<input type="hidden" value="${member.category}" id="category" class="form-control" name="category" ></c:if>
 		            	</td>
 						<th  style="padding-left: 40px;">회원자격</th>
 						<td  width="150px;">
