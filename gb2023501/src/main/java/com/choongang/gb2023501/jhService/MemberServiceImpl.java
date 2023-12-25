@@ -170,36 +170,28 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Page<Member> SearchMemberList(MemberSearchCriteriaDTO criteria, Pageable pageable) {
 		System.out.println("MemberServiceImpl SearchMemberList Start...");
-//		Map<String, Object> searchKeys = new HashMap<>();
-//		
-		// 회원 폰번호
-//		String phone = criteria.getPhone();
-		//회원 구분(교육자/학습자/일반인/운영자)
-//		Integer category = criteria.getCategory();	
-//		//회원 자격(유/무료)
-//		Integer mshipType = criteria.getMshipType();	
-//		 // 회원명 검색 조건
-////		String mmName = criteria.getMmName();
-//	    // 회원 아이디 검색 조건
-////	    String mmId = criteria.getMmId();
-//	    // 검색 시작일
-//	    String startDate = criteria.getStartDate();
-//	    // 검색 종료일
-//	    String endDate = criteria.getEndDate();
-//	    
-//	    String searchCriteria = criteria.getSearchValue();
-//	    
-//	    String	searchType = criteria.getSearchType();
 	    
 	    Specification<Member> spec = Specification.where(null);
 
-	    //!=만으로는 null체크를 못함 isEmpty까지 해야함
+	    //!=만으로는 null체크를 못함 isEmpty까지 해야함->url로 파라미터 들어올 때 null이 아니라 빈문자열''로 들어오므로 null로 체크 못함
         if (criteria.getStartDate() != null && !criteria.getStartDate().isEmpty() && criteria.getEndDate() != null && !criteria.getEndDate().isEmpty()) {
-        	System.out.println("날짜 검색 " + criteria.getSearchValue());
+        	System.out.println("날짜 검색 " + criteria.getStartDate() + "~" + criteria.getEndDate());
             spec = spec.and(MemberSpecification.searchByPeriod(criteria));
         }
 
-        if (criteria.getSearchType() != null && criteria.getSearchValue() != null) {
+        if("null".equals(criteria.getSearchType())  && criteria.getSearchValue() != null) {
+        	System.out.println("타입 무선택 " + criteria.getSearchType());
+        	System.out.println("타입 무 검색값 " + criteria.getSearchValue());
+        	
+        	spec = spec.or(MemberSpecification.searchById(criteria));
+        	spec = spec.or(MemberSpecification.searchByName(criteria));
+        	spec = spec.or(MemberSpecification.searchByPhon(criteria));
+        	
+        }
+        
+        if (criteria.getSearchType() != "null" && criteria.getSearchValue() != null) {
+        	System.out.println("타입 선택 " + criteria.getSearchType());
+        	System.out.println("타입 선택 검색값 " + criteria.getSearchValue());
             switch (criteria.getSearchType()) {
                 case "mmId":
                 	System.out.println("아이디 검색 " + criteria.getSearchValue());

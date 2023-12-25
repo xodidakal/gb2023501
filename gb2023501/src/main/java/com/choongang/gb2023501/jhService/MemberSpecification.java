@@ -37,16 +37,19 @@ public class MemberSpecification {
 	}
 
     public static Specification<Member> searchById(MemberSearchCriteriaDTO criteria) {
+    	System.out.println("아이디로 찾기"+criteria);
     	return (root, query, criteriaBuilder) ->
         		criteriaBuilder.like(root.get("mmId"), "%" + criteria.getSearchValue()+"%");
 	}
     
     public static Specification<Member> searchByName(MemberSearchCriteriaDTO criteria) {
+    	System.out.println("이름으로 찾기"+criteria);
     	return (root, query, criteriaBuilder) ->
     	criteriaBuilder.like(root.get("mmName"), "%" + criteria.getSearchValue()+"%");
     }
     
     public static Specification<Member> searchByPhon(MemberSearchCriteriaDTO criteria) {
+    	System.out.println("폰으로 찾기"+criteria);
     	return (root, query, criteriaBuilder) ->
     	criteriaBuilder.like(root.get("phone"), "%" + criteria.getSearchValue()+"%");
     }

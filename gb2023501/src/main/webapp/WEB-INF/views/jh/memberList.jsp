@@ -21,6 +21,7 @@
 </style>
 <script type="text/javascript">
 function pageMove(pPageNum) {
+	//검색 조건 선택 x하면 null이 아니라 빈문자열''이 됨
     startDate = $('#startDate').val() ;
     endDate = $('#endDate').val() ;
     searchType = $('#searchType').val() ;
