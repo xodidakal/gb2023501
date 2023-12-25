@@ -189,7 +189,7 @@ public class MemberServiceImpl implements MemberService {
         	
         }
         
-        if (criteria.getSearchType() != "null" && criteria.getSearchValue() != null) {
+        if (!"null".equals(criteria.getSearchType()) && criteria.getSearchType() != "null" && criteria.getSearchValue() != null) {
         	System.out.println("타입 선택 " + criteria.getSearchType());
         	System.out.println("타입 선택 검색값 " + criteria.getSearchValue());
             switch (criteria.getSearchType()) {

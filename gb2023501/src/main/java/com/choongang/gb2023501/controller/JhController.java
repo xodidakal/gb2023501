@@ -1,5 +1,7 @@
 package com.choongang.gb2023501.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
@@ -590,7 +592,7 @@ public class JhController {
 		System.out.println("조건 회원구분 -> " + searchCriteria.getCategory());
 		System.out.println("조건 자격 -> " + searchCriteria.getMshipType());
 		System.out.println("페이지 번호-> " + page);
-		
+		System.out.println("searchCriteria -> " + searchCriteria);
 		
 		
 		int pageSize = 10; // 페이지당 아이템 수
@@ -676,4 +678,54 @@ public class JhController {
 		return "jh/memberUpdateForm";
 		
 	}
+	
+	@PostMapping(value = "operate/memberUpdate")
+	public String memberUpdate(Member member
+							 , MemberSearchCriteriaDTO searchCriteria
+							 , Integer page
+							 , Model model) {
+		System.out.println("JhController memberUpdate Start...");
+		
+		int mmNum = member.getMmNum();
+		System.out.println("member -> " + member);
+		System.out.println("page -> " + page);
+		int pageNum = page;
+		System.out.println("pageNum -> " + pageNum);
+		System.out.println("searchCriteria -> " + searchCriteria);
+		System.out.println("가입일 -> " + member.getRegiDate());
+		
+		//회원정보 수정
+		ms.join(member);
+
+
+		String result = null;
+		if(searchCriteria == null) {
+			result = "redirect:/operate/memberDetail?mmNum=" + mmNum + "&page=" + page; 
+		} else if (searchCriteria != null) {
+			try {
+	            // MemberSearchCriteriaDTO의 각 필드값 가져오기
+	            String searchType = searchCriteria.getSearchType();
+	            String searchValue = URLEncoder.encode(searchCriteria.getSearchValue(), "UTF-8");
+	            Integer category = searchCriteria.getCategory();
+	            Integer mshipType = searchCriteria.getMshipType();
+	            String startDate = searchCriteria.getStartDate();
+	            String endDate = searchCriteria.getEndDate();
+
+	            result = "redirect:/operate/memberDetail?startDate=" + startDate +
+	                    "&endDate=" + endDate +
+	                    "&searchType=" + searchType +
+	                    "&searchValue=" + searchValue +
+	                    "&category=" + category +
+	                    "&mshipType=" + mshipType +
+	                    "&mmNum=" + mmNum +
+	                    "&page=" + page;
+	        } catch (UnsupportedEncodingException e) {
+	            // 예외 처리
+	            e.printStackTrace();
+	        }
+		}
+		
+		return result;
+	}
+	
 }

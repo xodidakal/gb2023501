@@ -9,11 +9,11 @@ import javax.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import java.sql.Date;
+//import java.sql.Date;
 //import java.text.ParseException;
 //import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-//import java.util.Date;
+import java.util.Date;
 //import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,10 +27,11 @@ public class MemberSpecification {
 	                //Date startDate = new SimpleDateFormat("yy/MM/dd").parse(criteria.getStartDate());
 	                //Date endDate = new SimpleDateFormat("yy/MM/dd").parse(criteria.getEndDate());
 	    			//디비에 저장된 형식은 YY/MM/DD인데 문자열은 yyyy-MM-dd형식이라 비교가 제대로 안됐었음
-	                Date startDate 	= Date.valueOf(criteria.getStartDate());
-	                Date endDate 	= Date.valueOf(criteria.getEndDate());
-	                System.out.println("시작 날짜 " + startDate);
-	                System.out.println("끝 날짜 " + endDate);
+		            Date startDate =java.sql.Date.valueOf(criteria.getStartDate()); 
+		            Date endDate =java.sql.Date.valueOf(criteria.getEndDate()); 
+		            
+	                System.out.println("Specification 시작 날짜 " + startDate);
+	                System.out.println("Specification 끝 날짜 " + endDate);
 	                Predicate predicate = criteriaBuilder.between(root.get("regiDate"), startDate, endDate);
 	                return predicate;
 	    };

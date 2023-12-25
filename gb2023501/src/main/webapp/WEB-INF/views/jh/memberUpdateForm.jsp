@@ -134,34 +134,13 @@
         
 	});	
 	
-	function duplicateChk(){
-		var pId = $('#mmId').val();
-		//alert("pId -> " + pId);
-		
-		$.ajax({
-			url	 	 : "/info/idDuplicateCheck",
-			type 	 : "POST",
-			data 	 : {id : pId},
-			dataType : "text",
-			success	 : function(data){
-							//alert("result -> " + data);
-							if(data ==="1"){
-								$('#idValidationMessage').text('사용불가능한 아이디입니다.').css('color', 'red');
-							} else{
-								$('#idValidationMessage').text('사용 가능한 아이디입니다.').css('color', 'blue');
-							}
-			}
-			
-		});
-		
-	}
 	
 	
 	function isFormValid() {
 	    var isValid = true;
 
 	    // 각 필수 필드 확인
-	    $("#joinForm [required]").each(function () {
+	    $("#memberUpdateForm [required]").each(function () {
 	        if (!$(this).val()) {
 	            isValid = false;
 	            // 검증 오류 처리 (예: 메시지 표시)
@@ -173,6 +152,71 @@
 	    return isValid;
 	}
 
+	function memberUpdate(){
+	    var startDate = "${criteria.startDate == null ? '' : criteria.startDate}";
+	    var endDate = "${criteria.endDate == null ? '' : criteria.endDate}";
+	    var searchType = "${criteria.searchType}";
+	    var searchValue = "${criteria.searchValue}";
+	    var category = "${criteria.category}";
+	    var mshipType = "${criteria.mshipType}";
+	    var page = "${page}";
+	    var mmNum = ${member.mmNum};
+	    
+		alert("formData -> ");
+
+		// 폼 제출 전에 유효성 검사 수행
+		if (!isFormValid()) {
+		alert("필수항목 누락 -> ");
+        	return; // 필수 항목이 비어있으면 폼 제출 중단
+		}
+		 
+        // 모든 검사가 통과되었는지 확인
+ 		if ($('#pswdValidationMessage').text() !== '' ||
+ 	        $('#emailValidationMessage').text() !== '' ||
+ 	        $('#phoneValidationMessage').text() !== '' ||
+ 	        $('#telValidationMessage').text() !== '' 
+ 	    ) {
+ 			alert('입력 정보를 확인해 주세요!')
+ 			return;
+ 		  }
+		alert("수정시작 -> ");
+		
+		/* //var confirm = confirm("챌린지를 수정하시겠습니까?");
+		var formData = $("#memberUpdateForm").serialize();
+			    
+				$.ajax({
+					url		 : '/operate/memberUpdate',
+					type	 : 'POST',
+					data	 : formData,
+					contentType: 'application/x-www-form-urlencoded', // 기본 폼 데이터 형식
+					async: false, // 동기적으로 처리
+					dataType : 'text',
+					success	 : function(data){
+								alert("result -> " + data);
+								if(data === "1"){
+									alert("수정이 완료되었습니다!");
+									 if (
+										        startDate === '' &&
+										        endDate === '' &&
+										        searchType === '' &&
+										        searchValue === '' &&
+										        category === '' &&
+										        mshipType === ''
+										    ) {
+										        alert("검색 무");
+										        location.href = "/operate/memberDetail?mmNum=" + mmNum +"&page="+page;
+										    } else {
+										        alert("검색 유");
+										        location.href = "/operate/memberDetail?startDate="+startDate+"&endDate="+endDate+"&searchType="+searchType+"&searchValue="+searchValue+"&category="+category+"&mshipType="+mshipType+"&mmNum=" + mmNum+"&page="+page;
+										    }
+								} else{
+									alert("수정이 완료되지 않았습니다. 작성내용을 확인해 주세요!");
+								}
+					}
+					
+				});
+		 */
+	}
 
 	/*  
 	function joinChk(){
@@ -230,13 +274,13 @@
 	
 	function memberList() {
 		//startDate 등 검색 x하고 상세페이지 올 경우 criteria.startDate가 null인경우 ''로 치환하기 위해 전부 ""로 감쌈
-	    startDate = "${criteria.startDate == null ? '' : criteria.startDate}";
-	    endDate = "${criteria.endDate == null ? '' : criteria.endDate}";
-	    searchType = "${criteria.searchType}";
-	    searchValue = "${criteria.searchValue}";
-	    category = "${criteria.category}";
-	    mshipType = "${criteria.mshipType}";
-	    page = "${page}";
+	    var startDate = "${criteria.startDate == null ? '' : criteria.startDate}";
+	    var endDate = "${criteria.endDate == null ? '' : criteria.endDate}";
+	    var searchType = "${criteria.searchType}";
+	    var searchValue = "${criteria.searchValue}";
+	    var category = "${criteria.category}";
+	    var mshipType = "${criteria.mshipType}";
+	    var page = "${page}";
 	
 	    alert("startDate " + startDate);
 	    alert("endDate " + endDate);
@@ -271,24 +315,37 @@
                <h2 class="display-7 mb-4">회원정보 수정</h2>
 
                <hr class="my-3">
-               <form id="joinForm">
+               <form id="memberUpdateForm" action="/operate/memberUpdate" method="post" onsubmit="memberUpdate()" >
+               <input type="hidden" id="mmNum" name="mmNum" value="${member.mmNum }">
+               <input type="hidden" id="mmPswd" name="mmPswd" value="${member.mmPswd }">
+               <input type="hidden" id="regiDate" name=regiDate value="${member.regiDate }">
+               <input type="hidden" id="page" name="page" value="${page }">
+               <input type="hidden" id="startDate" name="startDate" value="${criteria.startDate }">
+               <input type="hidden" id="endDate" name="endDate" value="${criteria.endDate }">
+               <input type="hidden" id="searchType" name="searchType" value="${criteria.searchType }">
+               <input type="hidden" id="searchValue" name="searchValue" value="${criteria.searchValue }">
+               <%-- <input type="hidden" id="category" name="category" value="${criteria.category }">
+               <input type="hidden" id="mshipType" name="mshipType" value="${criteria.mshipType }"> --%>
 	        	<table class="formTable">
 		            <tr>
 						<th>이름</th>
 						<td colspan="3">
+						<input type="hidden" v class="form-control" id="mmName" name="mmName" value="${member.mmName }" required>
+						
 		                    ${member.mmName }
 		            	</td>
 					</tr>
 		            <tr>
 						<th>아이디</th>
 						<td colspan="3">
+						<input type="hidden" v class="form-control" id="mmId" name="mmId" value=" ${member.mmId }" required>
 							${member.mmId }
 						</td>
 					</tr>
 		            <tr id="phoneInputTr">
 						<th>휴대폰 번호</th>
 						<td colspan="3">
-		                    <input value="${member.phone}" type="tel" class="form-control" id="phoneInput" name="phone" placeholder="(-)없이 입력하세요"  maxlength="11">
+		                    <input value="${member.phone}" type="tel" class="form-control" id="phoneInput" name="phone" placeholder="(-)없이 입력하세요"  maxlength="11" required>
 		            	</td>
 		            </tr>
 		            <tr style="height: 5px;" id="phoneValidationMessageTr">
@@ -300,16 +357,25 @@
 					</tr>
 					<tr>
 						<th>전화 번호</th>
-						<td  width="150px;">
+						<td colspan="3">
 		                    <input type="tel"  value="${member.tel}" class="form-control" id="telInput" name="tel" placeholder="(-)없이 입력하세요" maxlength="11">
 		            	</td>
-						<th style="padding-left: 40px;">회원구분</th>
+		            </tr>
+					<tr>
+						<th>회원구분</th>
 						<td   width="150px;">
 							<select id="categorySelect" class="form-select" name="category">
                                 <option value="1" <c:if test="${member.category == 1 }">	selected="selected"</c:if>>교육자</option>
                                 <option value="2" <c:if test="${member.category == 2 }">	selected="selected"</c:if>>학습자</option>
                                 <option value="3" <c:if test="${member.category == 3 }">	selected="selected"</c:if>>일반인</option>
                                 <option value="4" <c:if test="${member.category == 4 }">	selected="selected"</c:if>>운영자</option>
+							</select>
+		            	</td>
+						<th  style="padding-left: 40px;">회원자격</th>
+						<td  width="150px;">
+		                    <select id="mshipType" class="form-select" name="mshipType">
+                                <option value="1" <c:if test="${member.mshipType == 1 }">	selected="selected"</c:if>>무료회원</option>
+                                <option value="2" <c:if test="${member.mshipType == 2 }">	selected="selected"</c:if>>유료회원</option>
 							</select>
 		            	</td>
 					</tr>
@@ -357,7 +423,7 @@
 		            <tr id="emailInputTr">
 						<th>이메일</th>
 						<td colspan="3">
-		                    <input type="email" value="${member.email}" class="form-control" id="emailInput" name="email">
+		                    <input type="email" value="${member.email}" class="form-control" id="emailInput" name="email" required>
 		            	</td>
 					</tr>
 					<tr style="height: 5px;" id="emailValidationMessageTr">
@@ -428,14 +494,13 @@
 
 
                 </table>
-                </form>
                 <div class="d-grid gap-2 d-md-flex justify-content-center" >
-					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="수정하기" onclick="memberUpdate()">
-					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="목록" onclick="memberList()">
+					<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="수정하기" >
+					<input class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="목록" onclick="memberList()">
 				</div>
+			</form>
                 
 			</div>
-		</form>
 	</div>
 </div>
                
