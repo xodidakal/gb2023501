@@ -41,7 +41,7 @@
 			<select id="searchType" name="searchType" class="w-17 rounded" style="border-color: #ced4da">
 				<option value="title">게임명</option>
 			</select>&nbsp;&nbsp;
-            <input id="keyword" name="keyword" class="form-control rounded" placeholder="검색어를 입력하세요." type="text" style="width: 160px;">
+            <input id="keyword" name="keyword" class="form-control rounded" value="${game.keyword}" placeholder="검색어를 입력하세요." type="text" style="width: 160px;">
           	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
          		<a onclick="gameOrderList()"><i class="bi bi-search mt-2"></i></a>
           	
