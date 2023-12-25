@@ -80,7 +80,7 @@
 		var hr_question = $('#hr_question'+pIndex).val();
 
 		
-		location.href = "/learning/myHomeworkSubmitAction?h_num="+h_num+"&hr_level="+hr_level+"&hr_content="+hr_content+"&hr_question="+hr_question;
+		location.href = "/learning/myHomeworkSubmitAction?homework.hhNum="+h_num+"&hrLevel="+hr_level+"&hrContent="+hr_content+"&hrQuestion="+hr_question;
 	}
 
 </script>

@@ -46,6 +46,9 @@ public class HwSend {
 	@Transient
 	private String searchKeyword;	// 검색어
 	
+	@Transient
+	private int searchSubmit;	// 검색어
+	
 	@Transient	
 	private int hrMaxLevel;		// 학습자의 현재 최고 레벨
 }

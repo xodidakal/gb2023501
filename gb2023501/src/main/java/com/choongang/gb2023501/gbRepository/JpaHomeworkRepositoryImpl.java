@@ -8,8 +8,10 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 import com.choongang.gb2023501.domain.Homework;
+import com.choongang.gb2023501.domain.HwRecord;
 import com.choongang.gb2023501.domain.HwSend;
 import com.choongang.gb2023501.model.HomeworkDTO;
+import com.choongang.gb2023501.model.MyHomeworkDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -60,6 +62,24 @@ public class JpaHomeworkRepositoryImpl implements JpaHomeworkRepository {
 					sql += "AND hs.homework.member.mmName Like '%"+ hwsend.getSearchKeyword() + "%'";
 				}
 			}
+			
+			// 제출한 숙제이력을 검색할 때
+			if(hwsend.getSearchSubmit() > 0) {
+				// 제출한 숙제이력이 있는 숙제만 검색
+				if(hwsend.getSearchSubmit() == 1) {
+					sql += "AND hs.homework.hhNum IN ( SELECT hr.homework.hhNum "
+													+ "FROM HwRecord hr "
+													+ "WHERE hr.member.mmNum = : mmNum "
+													+ "GROUP BY hr.homework.hhNum )";
+				}
+				// 제출한 숙제이력이 없는 숙제만 검색
+				else {
+					sql += "AND hs.homework.hhNum NOT IN ( SELECT hr.homework.hhNum "
+														+ "FROM HwRecord hr "
+														+ "WHERE hr.member.mmNum = : mmNum "
+														+ "GROUP BY hr.homework.hhNum )";
+				}
+			}
 			// 숙제 전송일자 최신
 			sql += "ORDER BY hs.homework.hhDeadline";
 
@@ -75,26 +95,46 @@ public class JpaHomeworkRepositoryImpl implements JpaHomeworkRepository {
 	
 	// 숙제 평가 목록 가져오기
 	@Override
-	public List<Homework> selectHomeworkList(HwSend hwsend) {
+	public List<HomeworkDTO> selectHomeworkList(HwSend hwsend) {
 		System.out.println("JpaHomeworkRepositoryImpl selectHomeworkList start...");
-		List<Homework> homeworkList = null;
+		List<HomeworkDTO> homeworkList = null;
 		
 		try {
-			String sql = "SELECT hr.homework.hhNum "
+//			String sql = "SELECT hr.homework.hhNum "
+//					   + "FROM HwRecord hr "
+//					   + "GROUP BY hr.homework.hhNum";
+//			List<Integer> hhNumList = em.createQuery(sql, Integer.class).getResultList();
+//			String sql2 = "SELECT h "
+//						+ "FROM Homework h "
+//						+ "WHERE h.hhNum IN :hhNumList "
+//						+ "AND h.member.mmNum = :mmNum ";
+//			if(hwsend.getSearchKeyword() != null) {
+//				sql2 += "AND h.hhTitle LIKE '%"+hwsend.getSearchKeyword()+"%'";
+//			}
+//			homeworkList = em.createQuery(sql2, Homework.class)
+//											.setParameter("hhNumList", hhNumList)
+//											.setParameter("mmNum", hwsend.getMember().getMmNum())
+//											.getResultList();
+			String sql = "SELECT new com.choongang.gb2023501.model.HomeworkDTO(hr.homework, "
+																			+ "count(hr.homework.hhNum) as hrTotalCount, "
+																			+ "(SELECT count(hr2.homework.hhNum) "
+																			 + "FROM HwRecord hr2 "
+																			 + "WHERE hr2.hrEval IS NOT NULL "
+																			 + "AND hr.homework.hhNum = hr2.homework.hhNum "
+																			 + "GROUP BY hr2.homework.hhNum) as hrEvalCount)"
 					   + "FROM HwRecord hr "
-					   + "GROUP BY hr.homework.hhNum";
-			List<Integer> hhNumList = em.createQuery(sql, Integer.class).getResultList();
-			String sql2 = "SELECT h "
-						+ "FROM Homework h "
-						+ "WHERE h.hhNum IN :hhNumList "
-						+ "AND h.member.mmNum = :mmNum ";
+					   + "WHERE hr.homework.hhNum IN ( SELECT hr.homework.hhNum "
+					   								 + "FROM HwRecord hr "
+					   								 + "GROUP BY hr.homework.hhNum) "
+					   + "AND hr.homework.member.mmNum = :mmNum ";
 			if(hwsend.getSearchKeyword() != null) {
-				sql2 += "AND h.hhTitle LIKE '%"+hwsend.getSearchKeyword()+"%'";
+				sql += "AND hr.homework.hhTitle LIKE '%"+hwsend.getSearchKeyword()+"%' ";
 			}
-			homeworkList = em.createQuery(sql2, Homework.class)
-											.setParameter("hhNumList", hhNumList)
-											.setParameter("mmNum", hwsend.getMember().getMmNum())
-											.getResultList();
+			sql += "GROUP BY hr.homework";
+			
+			homeworkList = em.createQuery(sql, HomeworkDTO.class)
+							 .setParameter("mmNum", hwsend.getMember().getMmNum())
+							 .getResultList();
 		} catch (Exception e) {
 			System.out.println("JpaHomeworkRepositoryImpl selectHomeworkList Exception -> "+ e.getMessage());
 		}

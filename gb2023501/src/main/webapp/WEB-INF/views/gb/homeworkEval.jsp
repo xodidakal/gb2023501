@@ -139,17 +139,24 @@
 					 		onmouseout="this.style.backgroundColor=''"
 					 		onclick="homeworkClick(${status.index})">
 							<td>
-								<input type="hidden" id="hhNum${status.index }" value="${homework.hhNum }">
+								<input type="hidden" id="hhNum${status.index }" value="${homework.homework.hhNum }">
 								${i }
 							</td>
-							<td>${homework.hhTitle }</td>
-							<td>${homework.hhContent }</td>
-							<td>${homework.hhLevel }</td>
-							<td>${homework.hhDeadline }</td>
+							<td>${homework.homework.hhTitle }</td>
+							<td>${homework.homework.hhContent }</td>
+							<td>${homework.homework.hhLevel }</td>
+							<td>${homework.homework.hhDeadline }</td>
+							<c:choose>
+								<c:when test="${homework.hrEvalCount > 0}">
+									<td>${homework.hrEvalCount}&nbsp;/&nbsp;${homework.hrTotalCount }</td>
+								</c:when>
+								<c:otherwise>
+									<td>0&nbsp;/&nbsp;${homework.hrTotalCount }</td>
+								</c:otherwise>
+							</c:choose>
 						</tr>
 						<c:set var="i" value="${i+1 }"/>	
-					 </c:forEach>
-					 				
+					 </c:forEach>		 				
 	                 </tbody>   
                 </table>
                 <!-- 숙제목록 페이징 -->

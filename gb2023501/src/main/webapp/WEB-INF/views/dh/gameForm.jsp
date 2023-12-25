@@ -25,7 +25,7 @@
 					 <tr>
 						<th>학습난이도</th>
 						<td colspan="3">
-							<select id="g_step" name="g_step" class="w-100 rounded" style="margin-right: 20%; border-color: #ced4da">
+							<select id="g_step" name="g_step" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da; width: 100px">
 								<option value="1">초급</option>
 								<option value="2">중급</option>
 								<option value="3">고급</option>
@@ -35,7 +35,7 @@
 					 <tr>
 						<th>구독기간</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_period" id="g_period" >개월
+		                    <input type="text" class="form-control" name="g_period" id="g_period"style="width: 100px"><label>개월</label>
 		            	</td>
 					</tr>
 					 <tr>
@@ -77,7 +77,7 @@
 	                <tr>
 						<th>전시여부</th>
 						<td width="150px;">
-		                    <input class="form-check-input" type="radio" name="g_dele_status" id="g_dele_status" value="0">
+		                    <input class="form-check-input" type="radio" name="g_dele_status" id="g_dele_status" value="0" checked="checked">
 		                    <label>전시</label>
 		                </td>
 		                <td width="150px;">

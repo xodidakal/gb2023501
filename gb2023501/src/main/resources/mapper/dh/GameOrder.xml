@@ -11,8 +11,9 @@
 				<if test="keyword != null and keyword != ''">
 			 	and   g_title like '%' || #{keyword} || '%'
 			 	</if>
-				) a
+				ORDER BY g_regi_date desc ) a
 		WHERE rn BETWEEN #{start} AND #{end}
+		
 		
 	</select>
 	
@@ -23,6 +24,7 @@
 		<if test="keyword != null and keyword != ''">
 		and  g_title like '%' || #{keyword} || '%'
 		</if>
+		
 	</select>
 	
 	<!-- 구독신청 -->
@@ -69,7 +71,7 @@
             	 <if test="keyword != null and keyword != ''">
 			 	 and 	g_title like '%' || #{keyword} || '%'
 			 	 </if>
-			    ) a
+			    ORDER BY g_regi_date desc) a
 		 )
 	WHERE rn BETWEEN #{start} and #{end}
 	</select>
@@ -97,7 +99,7 @@
 			 	<if test="g_dele_status != null and g_dele_status != ''">
 			 	and g_dele_status = #{g_dele_status}
 			 	</if>
-				) a
+				ORDER BY g_regi_date desc ) a
 		WHERE rn BETWEEN #{start} AND #{end}
 		
 	</select>
@@ -128,7 +130,7 @@
    
    <update id="updateGame2" parameterType="Game">
    		UPDATE 	game	
-   		SET		g_title = #{g_title}, g_step = #{g_step}, g_period = #{g_period}, g_to = #{g_to}, g_price = #{g_price}, g_content = #{g_content},g_attach_name = #{g_attach_name}, g_dele_status = #{g_dele_status}
+   		SET		g_title = #{g_title}, g_step = #{g_step}, g_period = #{g_period}, g_to = #{g_to}, g_price = #{g_price}, g_content = #{g_content},g_attach_name = #{g_attach_name}, g_dele_status = #{g_dele_status}, g_modi_date = sysdate
    		WHERE	g_num = #{g_num}
    		AND     m_num = #{m_num}	
    </update>

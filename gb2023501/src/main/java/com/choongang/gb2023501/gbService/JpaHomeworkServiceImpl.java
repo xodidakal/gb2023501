@@ -19,6 +19,7 @@ import com.choongang.gb2023501.gbRepository.JpaInterHomeworkRepository;
 import com.choongang.gb2023501.gbRepository.JpaInterHwSendRepository;
 import com.choongang.gb2023501.gbRepository.JpaInterHwRecordRepository;
 import com.choongang.gb2023501.model.HomeworkDTO;
+import com.choongang.gb2023501.model.MyHomeworkDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -87,10 +88,10 @@ public class JpaHomeworkServiceImpl implements JpaHomeworkService {
 	
 	// 숙제평가에서 교육자가 생성한 숙제 중에 학습자가 제출이력이 있는 숙제만 조회
 	@Override
-	public List<Homework> selectHomeworkList(HwSend hwsend) {
+	public List<HomeworkDTO> selectHomeworkList(HwSend hwsend) {
 		System.out.println("JpaHomeworkServiceImpl selectHomeworkList start...");
 		
-		List<Homework> homeworkList = jhr.selectHomeworkList(hwsend);
+		List<HomeworkDTO> homeworkList = jhr.selectHomeworkList(hwsend);
 		System.out.println("JpaHomeworkServiceImpl selectHomeworkList homeworkList -> "+homeworkList.size());
 		
 		return homeworkList;
@@ -147,6 +148,42 @@ public class JpaHomeworkServiceImpl implements JpaHomeworkService {
 		} catch (Exception e) {
 			System.out.println("JpaHomeworkServiceImpl updateHomeworkEval Exception -> "+e.getMessage());
 			result = 0;
+		}
+		
+		return result;
+	}
+	
+	// 내 숙제 제출하기
+	@Override
+	public int insertUpdateMyHomework(HwRecord hwrecord) {
+		System.out.println("JpaHomeworkServiceImpl insertUpdateMyHomework start... ");
+		int result = 0;
+		try {
+			
+			int hhNum = hwrecord.getHomework().getHhNum();
+			int mmNum = hwrecord.getMember().getMmNum();
+			int hrLevel = hwrecord.getHrLevel();
+			
+			Optional<HwRecord> hwrecord1 = jihrr.findByHomeworkHhNumAndMemberMmNumAndHrLevel(hhNum, mmNum, hrLevel);
+			// 이미 제출한 숙제이력이 있다면
+			if(hwrecord1.isPresent()) {
+				System.out.println("숙제 제출 후 수정일 경우");
+				hwrecord1.get().setHrContent(hwrecord.getHrContent());
+				hwrecord1.get().setHrQuestion(hwrecord.getHrQuestion());
+				hwrecord1.get().setHrModiDate(LocalDateTime.now());
+				jihrr.save(hwrecord1.get());
+				result = 1;				
+			}
+			// 제출한 숙제이력이 없다면
+			else {
+				System.out.println("숙제 제출 처음일 경우");
+				hwrecord.setHrSubmDate(LocalDateTime.now());
+				jihrr.save(hwrecord);
+				result = 1;
+			}
+		} catch (Exception e) {
+			System.out.println("JpaHomeworkServiceImpl insertUpdateMyHomework Exception -> "+e.getMessage());
+			result = 0;	
 		}
 		
 		return result;

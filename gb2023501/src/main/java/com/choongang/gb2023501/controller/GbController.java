@@ -21,6 +21,7 @@ import com.choongang.gb2023501.gbService.Paging;
 import com.choongang.gb2023501.jhService.MemberService;
 import com.choongang.gb2023501.model.Homework;
 import com.choongang.gb2023501.model.HomeworkDTO;
+import com.choongang.gb2023501.model.MyHomeworkDTO;
 import com.choongang.gb2023501.model.HwSend;
 import com.choongang.gb2023501.model.LearnGrp;
 import com.choongang.gb2023501.model.LgJoin;
@@ -208,7 +209,7 @@ public class GbController {
 		// 나의 숙제 목록 가져오기
 		List<com.choongang.gb2023501.domain.HwSend> myHomeworkList = jms.selectMyHomeworkList(hwsend);
 		System.out.println("GbController selectMyHomeworkList myHomeworkList ->"+myHomeworkList.size());
-		if(hwsend.getSearchType() != null) {
+		if(hwsend.getSearchType() != null || hwsend.getSearchSubmit() > 0) {
 			myHomeworkCnt = (long) myHomeworkList.size();
 		}
 		
@@ -219,7 +220,7 @@ public class GbController {
 		return "gb/myHomeworkList";
 	}
 	
-	// 내 숙제 제출화면으로 이동
+	// 내 숙제 제출화면으로 이동(JPA/SELECT)
 	@RequestMapping("/learning/myHomeworkDetail")
 	public String selectMyHomeworkDetail(int h_num, String result, Model model) {
 		System.out.println("GbController selectMyHomeworkDetail start...");
@@ -246,22 +247,25 @@ public class GbController {
 		return "gb/myHomeworkDetail";
 	}
 	
-	// 내 숙제 제출
+	// 내 숙제 제출(JPA/SAVE)
 	@GetMapping("/learning/myHomeworkSubmitAction")
-	public String insertUpdateMyHomework(com.choongang.gb2023501.model.HwRecord hwrecord) {
+	public String insertUpdateMyHomework(HwRecord hwrecord) {
 		System.out.println("GbController insertUpdateMyHomework start...");
 		// 학습자 번호 담기
 		int m_num = ms.selectMmNumById();
-		hwrecord.setM_num(m_num);
+		Member member = new Member();
+		member.setMmNum(m_num);
+		hwrecord.setMember(member);
 		
-		String result = String.valueOf(hs.insertUpdateMyHomework(hwrecord));
+		// String result = String.valueOf(hs.insertUpdateMyHomework(hwrecord));
+		String result = String.valueOf(jms.insertUpdateMyHomework(hwrecord));
 		System.out.println("GbController insertUpdateMyHomework result ->"+result);
-		int h_num = hwrecord.getH_num();
+		int h_num = hwrecord.getHomework().getHhNum();
 		
 		return "redirect:myHomeworkDetail?h_num="+h_num+"&result="+result;
 	}
 	
-	// 숙제평가 화면으로 이동
+	// 숙제평가 화면으로 이동(JPA/SELECT)
 	@RequestMapping("/educator/homeworkEval")
 	public String selectHomeworkEval(com.choongang.gb2023501.domain.HwSend hwsend, Model model) {
 		System.out.println("GbController selectHomeworkEval start...");
@@ -272,7 +276,7 @@ public class GbController {
 		hwsend.setMember(member);
 		
 		// 학습자의 제출이력이 있는 교육자의 숙제 목록 조회
-		List<com.choongang.gb2023501.domain.Homework> homeworkList = jms.selectHomeworkList(hwsend);
+		List<HomeworkDTO> homeworkList = jms.selectHomeworkList(hwsend);
 		System.out.println("GbController selectHomeworkEval homeworkList -> "+homeworkList.size());
 		
 		// 학습자의 제출이력이 있는 교육자의 숙제명 목록 조회
@@ -285,7 +289,7 @@ public class GbController {
 		return "gb/homeworkEval";
 	}
 	
-	// 숙제평가에서 숙제를 클릭했을 때 해당 숙제에 대한 제출 이력
+	// 숙제평가에서 숙제를 클릭했을 때 해당 숙제에 대한 제출 이력(JPA/SELECT)
 	@ResponseBody
 	@RequestMapping("/educator/homeworkEval/homeworkClick")
 	public List<HwRecord> selectHomeworkEvalClick(int hhNum){
