@@ -33,50 +33,77 @@
             <div class="col-md-9 ">
             <form action="/operate/SearchMemberList" method="GET" >
                 <table class="formTable" id="searchForm">
-                    <!-- <tr>
+                    <tr>
                         <th>기간</th>
                         <td style="width: 150px;">
-                            <input class="form-control" type="date" id="startDate" name="startDate">
+                        	<c:choose>
+	                        	<c:when test="${searchCriteria.startDate == null || empty searchCriteria.startDate}">
+		                            <input class="form-control" type="date" id="startDate" name="startDate">
+	                        	</c:when>
+	                        	<c:otherwise>
+		                            <input class="form-control" type="date" id="startDate" name="startDate" value="${searchCriteria.startDate }">
+	                        	</c:otherwise>
+                        	</c:choose>
                         </td>
                         <td style="width: 150px;">
                             <div class="text-center">~</div>
                         </td>
                         <td style="width: 150px;">
-                            <input class="form-control" type="date" id="endDate" name="endDate">
+                        	<c:choose>
+	                        	<c:when test="${searchCriteria.endDate == null || empty  searchCriteria.endDate}">
+		                            <input class="form-control" type="date" id="endDate" name="endDate">
+	                        	</c:when>
+	                        	<c:otherwise>
+		                            <input class="form-control" type="date" id="endDate" name="endDate" value="${searchCriteria.endDate }">
+	                        	</c:otherwise>
+                        	</c:choose>
                         </td>
-                    </tr> -->
+                    </tr> 
                     <tr>
                         <th>조건 검색</th>
                         <td>
                             <select id="searchType" name="searchType" class="form-select" style="border-color: #ced4da">
                                 <option value="null">검색조건</option>
-                                <option value="mmId">아이디</option>
-                                <option value="mmName">이름</option>
-                                <option value="phone">휴대폰</option>
+                                <option value="mmId" <c:if test="${searchCriteria.searchType eq 'mmId' }">	selected="selected"</c:if>>아이디</option>
+                                <option value="mmName" <c:if test="${searchCriteria.searchType eq 'mmName' }">	selected="selected"</c:if>>이름</option>
+                                <option value="phone" <c:if test="${searchCriteria.searchType eq 'phone' }">	selected="selected"</c:if>>휴대폰</option>
                             </select>
                         </td>
                         <td></td>
                         <td>
-                            <input type="text" class="form-control" id="SearchCriteria" name="SearchCriteria">
+                        	<c:choose>
+                        		<c:when test="${searchCriteria.searchValue != null}">
+		                            <input type="text" class="form-control" id="searchValue" name="searchValue" value="${searchCriteria.searchValue }">
+                        		</c:when>
+                        		<c:otherwise>
+		                            <input type="text" class="form-control" id="searchValue" name="searchValue">
+                        		</c:otherwise>
+                        	</c:choose>
                         </td>
                     </tr>
                     <tr>
                         <th>회원구분</th>
                         <td>
+<%--                         	<c:choose>
+                        		<c:when test="${searchCriteria. }">
+                        		</c:when>
+                        		<c:otherwise>
+                        		</c:otherwise>
+                        	</c:choose> --%>
                             <select id="categorySelect" class="form-select" name="category">
                                 <option value="0">회원구분</option>
-                                <option value="1">교육자</option>
-                                <option value="2">학습자</option>
-                                <option value="3">일반인</option>
-                                <option value="4">운영자</option>
+                                <option value="1" <c:if test="${searchCriteria.category == 1 }">	selected="selected"</c:if>>교육자</option>
+                                <option value="2" <c:if test="${searchCriteria.category == 2 }">	selected="selected"</c:if>>학습자</option>
+                                <option value="3" <c:if test="${searchCriteria.category == 3 }">	selected="selected"</c:if>>일반인</option>
+                                <option value="4" <c:if test="${searchCriteria.category == 4 }">	selected="selected"</c:if>>운영자</option>
                             </select>
                         </td>
                         <th class="text-center">자격</th>
                         <td>
                             <select id="search_type" class="form-select" name="mshipType">
                                 <option value="0">회원 자격</option>
-                                <option value="1">무료</option>
-                                <option value="2">유료</option>
+                                <option value="1" <c:if test="${searchCriteria.mshipType == 1 }">	selected="selected"</c:if>>무료</option>
+                                <option value="2" <c:if test="${searchCriteria.mshipType == 2 }">	selected="selected"</c:if>>유료</option>
                             </select>
                         </td>
                     </tr> 
@@ -105,9 +132,10 @@
 				</tr>
 			</thead>
 			 <tbody>
+			 <c:set var="num" value="${totalMembers - startNumber +1}"></c:set>
 			 <c:forEach var="member" items="${memberList.content}" varStatus="iterStat">
 			 	<tr>
-			 		<td>${startNumber - iterStat.count + 1}</td>
+			 		<td>${num}</td>
 			 		<td>
 			 			<c:if test="${member.category == 1 }">교육자</c:if> 
 			 			<c:if test="${member.category == 2 }">학습자</c:if> 
@@ -121,10 +149,12 @@
 			 			<c:if test="${member.mshipType == 1 }">무료</c:if>
 			 			<c:if test="${member.mshipType == 2 }">유료</c:if>
 			 		</td>
-			 		<td>${member.regiDate }</td>
+			 		<td>
+				 		<fmt:formatDate value="${member.regiDate }" pattern="yyyy-MM-dd"></fmt:formatDate>
+			 		</td>
 					<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
 				</tr>
-				
+				<c:set var="num" value="${num - 1 }"></c:set>
 				
 			</c:forEach>				
                 </tbody>   

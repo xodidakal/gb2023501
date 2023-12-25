@@ -169,54 +169,61 @@ public class MemberServiceImpl implements MemberService {
 	//검색조건 있는 회원 목록 조회
 	@Override
 	public Page<Member> SearchMemberList(MemberSearchCriteriaDTO criteria, Pageable pageable) {
+		System.out.println("MemberServiceImpl SearchMemberList Start...");
 //		Map<String, Object> searchKeys = new HashMap<>();
 //		
 		// 회원 폰번호
 //		String phone = criteria.getPhone();
 		//회원 구분(교육자/학습자/일반인/운영자)
-		Integer category = criteria.getCategory();	
-		//회원 자격(유/무료)
-		Integer mshipType = criteria.getMshipType();	
-		 // 회원명 검색 조건
-//		String mmName = criteria.getMmName();
-	    // 회원 아이디 검색 조건
-//	    String mmId = criteria.getMmId();
-	    // 검색 시작일
-	    String startDate = criteria.getStartDate();
-	    // 검색 종료일
-	    String endDate = criteria.getEndDate();
-	    
-	    String searchCriteria = criteria.getSearchCriteria();
-	    
-	    String	searchType = criteria.getSearchType();
+//		Integer category = criteria.getCategory();	
+//		//회원 자격(유/무료)
+//		Integer mshipType = criteria.getMshipType();	
+//		 // 회원명 검색 조건
+////		String mmName = criteria.getMmName();
+//	    // 회원 아이디 검색 조건
+////	    String mmId = criteria.getMmId();
+//	    // 검색 시작일
+//	    String startDate = criteria.getStartDate();
+//	    // 검색 종료일
+//	    String endDate = criteria.getEndDate();
+//	    
+//	    String searchCriteria = criteria.getSearchValue();
+//	    
+//	    String	searchType = criteria.getSearchType();
 	    
 	    Specification<Member> spec = Specification.where(null);
 
-	    //날짜만 조절하면 됨
-//        if (criteria.getStartDate() != null && criteria.getEndDate() != null) {
-//            spec = spec.and(MemberSpecification.searchByPeriod(criteria));
-//        }
+	    //!=만으로는 null체크를 못함 isEmpty까지 해야함
+        if (criteria.getStartDate() != null && !criteria.getStartDate().isEmpty() && criteria.getEndDate() != null && !criteria.getEndDate().isEmpty()) {
+        	System.out.println("날짜 검색 " + criteria.getSearchValue());
+            spec = spec.and(MemberSpecification.searchByPeriod(criteria));
+        }
 
-        if (criteria.getSearchType() != null && criteria.getSearchCriteria() != null) {
+        if (criteria.getSearchType() != null && criteria.getSearchValue() != null) {
             switch (criteria.getSearchType()) {
                 case "mmId":
+                	System.out.println("아이디 검색 " + criteria.getSearchValue());
                     spec = spec.and(MemberSpecification.searchById(criteria));
                     break;
                 case "mmName":
+                	System.out.println("이름 검색 " + criteria.getSearchValue());
                     spec = spec.and(MemberSpecification.searchByName(criteria));
                     break;
                 case "phone":
+                	System.out.println("폰 검색 " + criteria.getSearchValue());
                     spec = spec.and(MemberSpecification.searchByPhon(criteria));
                     break;
                 // Add other cases as needed
             }
         }
 
-        if (criteria.getCategory() != 0) {
+        if (criteria.getCategory() != 0 && criteria.getCategory() != null) {
+        	System.out.println("회원구분 검색 " + criteria.getCategory());
             spec = spec.and(MemberSpecification.searchByCategory(criteria));
         }
 
-        if (criteria.getMshipType() != 0) {
+        if (criteria.getMshipType() != 0 && criteria.getMshipType() != null) {
+        	System.out.println("회원자격 검색 " + criteria.getMshipType());
             spec = spec.and(MemberSpecification.searchByMshipType(criteria));
         }
 

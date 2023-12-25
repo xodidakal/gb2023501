@@ -13,7 +13,7 @@ import lombok.Data;
 public class MemberSearchCriteriaDTO {
 	//검색 조건
 	private String searchType;	
-	private String SearchCriteria;	
+	private String searchValue;	
 	
 	
 //	// 회원 폰번호
