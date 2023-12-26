@@ -128,7 +128,7 @@
     
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s" style="background: #263d94;" >
    
-        <a href="#" class="navbar-brand ms-3 d-lg-none">MENU</a>
+        <a href="/" class="navbar-brand ms-3 d-lg-none">MENU</a>
         <button type="button" class="navbar-toggler me-3" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>

@@ -11,25 +11,24 @@
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="text-light mb-4">(주)거민시스템</h5>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>경기도 하남시 미사대로 424 트레비타워 1003~1004호</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>031 793 4108</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>alphago5012@gmail.com</p>
-                    <!-- <div class="d-flex pt-2">
+                    <h5 class="text-light mb-4">Address</h5>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                    <div class="d-flex pt-2">
                         <a class="btn btn-square btn-outline-secondary rounded-circle me-1" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-square btn-outline-secondary rounded-circle me-1" href=""><i class="fab fa-facebook-f"></i></a>
                         <a class="btn btn-square btn-outline-secondary rounded-circle me-1" href=""><i class="fab fa-youtube"></i></a>
                         <a class="btn btn-square btn-outline-secondary rounded-circle me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div> -->
+                    </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="text-light mb-4">중앙 알파고</h5>
-                    <a class="btn btn-link" >이금비</a>
-                    <a class="btn btn-link" >유희라</a>
-                    <a class="btn btn-link" >민지혜</a>
-                    <a class="btn btn-link" >김용빈</a>
-                    <a class="btn btn-link" >기도희</a>
-                    <a class="btn btn-link" >문경훈</a>
+                    <h5 class="text-light mb-4">Quick Links</h5>
+                    <a class="btn btn-link" href="">About Us</a>
+                    <a class="btn btn-link" href="">Contact Us</a>
+                    <a class="btn btn-link" href="">Our Services</a>
+                    <a class="btn btn-link" href="">Terms & Condition</a>
+                    <a class="btn btn-link" href="">Support</a>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-light mb-4">Gallery</h5>
@@ -55,28 +54,20 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                <a href="" class="navbar-brand m-0 p-0">
-                    <img src="../assets/img/한국기원.png" alt="Logo">
-                </a><p>
-                    <p>게임하면서 쉽게 배우는 바둑!</p>
+                    <h5 class="text-light mb-4">Newsletter</h5>
+                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
                     <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent border-secondary w-100 py-3 ps-4 pe-5" type="text" placeholder="지금 바로 가입하세요" readonly>
-                        <button id="joinPageMove" type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">회원 가입</button>
+                        <input class="form-control bg-transparent border-secondary w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
                     </div>
                 </div>
             </div>
         </div>
-        <script type="text/javascript">
-	         document.getElementById("joinPageMove").addEventListener("click", function() {
-	             // 여기에 이동할 페이지 URL을 넣어주세요.
-	             window.location.href = "/info/joinAgreeForm";
-	         });
-        </script>
         <div class="container-fluid copyright">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a href="#">게임으로 배우는 바둑 교실</a>, All Right Reserved.
+                        &copy; <a href="#">Your Site Name</a>, All Right Reserved.
                     </div>
                     <div class="col-md-6 text-center text-md-end">
                         <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
