@@ -45,8 +45,8 @@ public class SecurityConfig {
 	@Autowired
 	private CustomAuthenticationSuccessHandler successHandler;
 	 
-	@Autowired
-	private  CustomAuthenticationProvider authProvider;
+//	@Autowired
+//	private  CustomAuthenticationProvider authProvider;
 	
 //	WebSecurityConfigurerAdapter는  Deprecated 되었으므로 사용하지 않고 아래와 같이 SecurityFilterChain을 Bean으로 등록하여 사용 
 	@Bean
@@ -99,7 +99,7 @@ public class SecurityConfig {
 //				})
 		
 		// Authentication Provider 등록. -> CustomAuthenticationProvider에서 실제 로그인 처리
-		http.authenticationProvider(authProvider);
+//		http.authenticationProvider(authProvider);
 		
 //		http.authorizeRequests() //인증, 인가가 필요한 URL 지정
 ////			.antMatchers("/user/**").authenticated() //authenticated() : 해당 URL에 진입하기 위해서 Authentication(인증, 로그인)이 필요 -> "/user/**"이런 주소로 들어오면 인증 필요

@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,8 +43,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 //	@RequiredArgsConstructor는 @RequiredArgsConstructor에 대한 생성자만 자동 생성
 	//비밀번호 암호화
 	//순환참조 발생해서 일단 암호화 보류
-//	@Autowired
-//	private PasswordEncoder passwordEncoder;
+//	@Autowired -> @RequiredArgsConstructor 있어서 final넣고 @Autowired는 빼버림
+//	@Lazy //순환참조 때문에 넣었던 건데 SecurityConfig에서 CustomAuthenticationProvider의존성 주입 삭제해서 순환참조 문제 해결해서 없앰
+	private final PasswordEncoder passwordEncoder; 
 	
 	//실제 인증 로직 이뤄짐
 	@Override
@@ -63,19 +65,30 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	        //Optional->  NPE(Null Pointer Exception)을 처리하기 위해 자바에서 제공하는 클래스
 	        //반환값이 Null이 발생할 수도 있는 메서드에 사용하면 Optional 의 메서드를 통해 Null이 발생했을 때 문제를 해결
             Member member = mr.findByMmId(mmId);
-
+            System.out.println("CustomAuthenticationProvider 로그인 회원"+member);
+            
             if (member == null) {
             	throw new BadCredentialsException("아이디가 일치하지 않습니다." + mmId);
             }
             
         	//Optional 객체에서 값 꺼내서 memeber에 저장
 //            Member member = memberOptional.get();
-
-            // 파라미터 mmPswd와 디비의 패스워드 비교
-            if (!mmPswd.equals(member.getMmPswd())) {
-            	throw new BadCredentialsException("비밀번호가 일치하지 않습니다." + mmPswd);
-            }
             
+            String loggedInPswd = member.getMmPswd();
+            System.out.println("CustomAuthenticationProvider 회원 비번 "+loggedInPswd);
+            System.out.println("CustomAuthenticationProvider 로그인 하려는 비번 "+mmPswd);
+            
+         // 패스워드를 암호화된 비밀번호와 비교
+            //암호화 안된 비번과 비교하려 하면 에러남
+            if (!passwordEncoder.matches(mmPswd, loggedInPswd )) {
+                throw new BadCredentialsException("비밀번호가 일치하지 않습니다." + mmPswd);
+            }
+//            
+//            // 파라미터 mmPswd와 디비의 패스워드 비교 ->암호화 x
+//            if (!mmPswd.equals(loggedInPswd)) {
+//            	throw new BadCredentialsException("비밀번호가 일치하지 않습니다." + mmPswd);
+//            }
+//            
             	
             //
 //	        Optional<Users> user = userService.getUserByEmail(username);

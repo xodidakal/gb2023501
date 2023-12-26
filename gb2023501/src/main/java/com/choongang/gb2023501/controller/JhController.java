@@ -310,10 +310,12 @@ public class JhController {
 	public String join( @Valid Member member) {
 		System.out.println("JhController join Start...");
 		System.out.println("memeber -> " + member);
-		Member savedMember = null;
 		
 		member.setMshipType(1);
-		savedMember =  ms.join(member);
+		
+		member = encodedPassword(member);
+		
+		Member savedMember = ms.join(member);
 		String result = null;
 		
 		if(savedMember != null) {
@@ -324,6 +326,17 @@ public class JhController {
 		return result;
 	}
 	
+	private Member encodedPassword (Member member) {
+		System.out.println("JhController encodedPassword Start... 비밀번호 인코딩");
+		// 비밀번호 암호화
+		//member 객체에서 비번 꺼내서 인코딩후 다시 멤버객체에 셋팅 후 멤버 리턴
+	    String encodedPassword = passwordEncoder.encode(member.getMmPswd());
+	    member.setMmPswd(encodedPassword);
+		
+		
+		return member;
+		
+	}
 	
 	
 	//아이디/비번 찾기 페이지
@@ -430,19 +443,28 @@ public class JhController {
 
 		String result = null;
 		
-		Optional<Member> currentUser = null;
-		Member user = null;
+		Optional<Member> currentMember = null;
+		Member member = null;
 		
 		//휴대폰 인증
 		if(phone != null) {
 			//기존 사용자인지 비교 먼저하고 결과 반환하기 
-			currentUser = ms.findByMmIdAndPhoneAndName(id, phone, name);
+			currentMember = ms.findByMmIdAndPhoneAndName(id, phone, name);
 			
-			if(currentUser.isPresent()) {
-				System.out.println("JhController joinAgree currentUser -> " + currentUser);
-				user = currentUser.get();
-				String pswd = user.getMmPswd();
-				result = pswd;
+			if(currentMember.isPresent()) {
+				System.out.println("JhController joinAgree currentUser -> " + currentMember);
+				member = currentMember.get();
+				//임시 비번 생성
+				String temporaryPswd = generateTemporaryPassword();
+				//임시비번 멤버에 셋팅
+				member.setMmPswd(temporaryPswd);
+				//세팅된 임시 비번 암호화
+				member = encodedPassword(member);
+				//암호화된 임시비번으로 디비에 업데이트
+				mr.save(member);
+				result = temporaryPswd;
+//				String pswd = member.getMmPswd(); 예전에 쓰던거
+//				result = pswd;
 			} else{
 				System.out.println("JhController 유저 없음 ");
 				result = "0"; // 신규 가입자, 폼 이동 필요
@@ -453,10 +475,10 @@ public class JhController {
 		//메일 인증	
 		} else if (email != null) {
 			//기존 사용자인지 비교 먼저하고 결과 반환하기 
-			currentUser = ms.findByMmIdAndEmailAndName(id, email, name);
+			currentMember = ms.findByMmIdAndEmailAndName(id, email, name);
 			
-			if(currentUser.isPresent()) {
-				System.out.println("JhController joinAgree currentUser -> " + currentUser);
+			if(currentMember.isPresent()) {
+				System.out.println("JhController joinAgree currentUser -> " + currentMember);
 				int emailResult = emailVarification(email, name, session);
 				if (emailResult > 0) {
 					session.setAttribute("id", id);
@@ -492,11 +514,17 @@ public class JhController {
 				System.out.println("JhController pswdInquiryByEmail 유저정보..." + name+ email+ id);
 				
 				Optional<Member> currentUser = ms.findByMmIdAndEmailAndName(id, email, name);
-				Member user = currentUser.get();
-				System.out.println("JhController pswdInquiryByEmail 유저..." + user);
+				Member member = currentUser.get();
+				System.out.println("JhController pswdInquiryByEmail 유저..." + member);
+				
 				String temporaryPswd = generateTemporaryPassword();
-				user.setMmPswd(temporaryPswd);
-				mr.save(user);
+				
+				//임시비번 멤버에 셋팅
+				member.setMmPswd(temporaryPswd);
+				//세팅된 임시 비번 암호화
+				member = encodedPassword(member);
+				//암호화된 임시비번으로 디비에 업데이트
+				mr.save(member);
 				result = temporaryPswd;
 				System.out.println("JhController pswdInquiryByEmail 임시비번..." + temporaryPswd);
 			} else {
@@ -760,7 +788,9 @@ public class JhController {
 	public String memberUpdate(Member member
 							 , Model model) {
 		System.out.println("JhController memberUpdate Start...");
-		
+		System.out.println("member 암호화 전 비번-> " + member.getMmPswd());
+		member = encodedPassword(member);
+		System.out.println("member 암호화 후 비번-> " + member.getMmPswd());
 		String mmId = member.getMmId();
 		System.out.println("member -> " + member);
 //		System.out.println("mmId -> " + mmId);
