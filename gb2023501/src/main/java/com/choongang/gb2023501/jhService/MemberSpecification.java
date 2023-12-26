@@ -9,10 +9,13 @@ import javax.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import java.text.ParseException;
 //import java.sql.Date;
+import java.text.SimpleDateFormat;
 //import java.text.ParseException;
 //import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 //import java.util.List;
 
@@ -27,12 +30,29 @@ public class MemberSpecification {
 	                //Date startDate = new SimpleDateFormat("yy/MM/dd").parse(criteria.getStartDate());
 	                //Date endDate = new SimpleDateFormat("yy/MM/dd").parse(criteria.getEndDate());
 	    			//디비에 저장된 형식은 YY/MM/DD인데 문자열은 yyyy-MM-dd형식이라 비교가 제대로 안됐었음
-		            Date startDate =java.sql.Date.valueOf(criteria.getStartDate()); 
-		            Date endDate =java.sql.Date.valueOf(criteria.getEndDate()); 
+	    			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    			
+	    			Date endDate = null;
+	    			Date startDate = null;
+					try {
+						endDate = sdf.parse(criteria.getEndDate());
+						startDate = sdf.parse(criteria.getStartDate());
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+	    	
+	    		    // endDate에 1일을 더하기
+	    	        Calendar calendar = Calendar.getInstance();
+	    	        calendar.setTime(endDate);
+	    	        calendar.add(Calendar.DATE, 1);
+	    	        Date endDatePlus = calendar.getTime();
+	    	        
+//		            Date startDate =java.sql.Date.valueOf(criteria.getStartDate()); 
+//		            Date endDate =java.sql.Date.valueOf(criteria.getEndDate()); 
 		            
-	                System.out.println("Specification 시작 날짜 " + startDate);
-	                System.out.println("Specification 끝 날짜 " + endDate);
-	                Predicate predicate = criteriaBuilder.between(root.get("regiDate"), startDate, endDate);
+	                System.out.println("MemberSpecification 시작 날짜 " + startDate);
+	                System.out.println("MemberSpecification 끝 날짜 " + endDate);
+	                Predicate predicate = criteriaBuilder.between(root.get("regiDate"), startDate, endDatePlus);
 	                return predicate;
 	    };
 	}

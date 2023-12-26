@@ -19,7 +19,7 @@ public interface GameOrderDao {
 	int         	updateGame(Game game);
 	List<Game> 		selectGameOrder(Map<String, Object> map);
 	int             gamesum(Map<String, Object> map);
-	int             insertGameOrder(GameOrder gameOrder);
+	int             insertGameOrder(Map<String, Object> map);
 	Game            gameRead(int g_num);
 
 }

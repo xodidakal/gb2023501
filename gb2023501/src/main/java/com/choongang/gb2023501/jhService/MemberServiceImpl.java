@@ -177,15 +177,16 @@ public class MemberServiceImpl implements MemberService {
         if (criteria.getStartDate() != null && !criteria.getStartDate().isEmpty() && criteria.getEndDate() != null && !criteria.getEndDate().isEmpty()) {
         	System.out.println("날짜 검색 " + criteria.getStartDate() + "~" + criteria.getEndDate());
             spec = spec.and(MemberSpecification.searchByPeriod(criteria));
+            System.out.println("날짜 검색 진행후");
         }
 
         if("null".equals(criteria.getSearchType())  && criteria.getSearchValue() != null) {
         	System.out.println("타입 무선택 " + criteria.getSearchType());
         	System.out.println("타입 무 검색값 " + criteria.getSearchValue());
         	
-        	spec = spec.or(MemberSpecification.searchById(criteria));
-        	spec = spec.or(MemberSpecification.searchByName(criteria));
-        	spec = spec.or(MemberSpecification.searchByPhon(criteria));
+        	 spec = spec.and(MemberSpecification.searchById(criteria) // or로 하면 날짜 검색이 있는 경우 or일때랑 and일때랑 쿼리문이 달라짐(콘솔에서 확인 가능)
+        	            .or(MemberSpecification.searchByName(criteria))
+        	            .or(MemberSpecification.searchByPhon(criteria)));
         	
         }
         

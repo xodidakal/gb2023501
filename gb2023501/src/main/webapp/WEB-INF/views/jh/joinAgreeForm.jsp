@@ -56,8 +56,28 @@
     			validateEmail();
     		}
     	});
+        
+        
+        //이름 유효성 검사 숫자 못들어가게
+        $('#name').on('input', function(){
+    		validateName();    	
+		});
+        
+        
 });
-
+		//이름 유효성 검사 숫자 못들어가게
+        function validateName(){
+        	var name = $('#name').val();
+        	var regex = /^[a-zA-Z가-힣]+$/; // 영문자 또는 한글만 허용하는 정규 표현식
+        	
+        	if(regex.test(name)){
+				$('#nameValidationMessage').text('');
+        	} else {
+				$('#nameValidationMessage').text('이름에 숫자를 포함할 수 없습니다!');
+				
+        	}
+        	
+        }
 //인증 수단 선택하기
  function toggleFields() {
 	    var phoneRadio = document.getElementById("phone");
@@ -199,7 +219,8 @@
 		    } else if (varificationInput.value.trim() === "") {
 		      	alert("인증수단을 선택하고 값을 입력해 주세요.");
 		      	varificationInput.focus();
-		    } else if($('#validationMessage').text() !== ''){
+		    } else if($('#validationMessage').text() !== '' ||
+		    		  $('#nameValidationMessage').text() !== ''){
 		    	alert('입력 정보를 확인해 주세요!')
 		    	return;
 		    }
@@ -362,13 +383,20 @@
                             <form action="joinForm" method="post" id="varificationForm">
                                 <table id="table" class="mx-auto formTable">
                                     <tr>
-                                        <th>이름</th>
+                                        <th>이름  <span style="color: red;">*</span></th>
                                         <td colspan="2">
                                             <input type="text" class="form-control" id="name" name="name" required>
                                         </td>
                                     </tr>
+                                    <tr style="height: 5px;" id="nameValidationTr">
+										<th>
+										</th>
+										<td colspan="3">
+						                    <div id="nameValidationMessage" style="color: red;"></div>
+						                </td>
+									</tr>
                                     <tr>
-                                        <th>인증수단</th>
+                                        <th>인증수단  <span style="color: red;">*</span></th>
                                         <td width="150px;">
                                             <input class="form-check-input" type="radio" name="varification" id="phone" checked onclick="toggleFields()">
                                             <label for="phone">휴대폰</label>
