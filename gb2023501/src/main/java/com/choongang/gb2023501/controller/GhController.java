@@ -281,7 +281,7 @@ public class GhController {
 			String saveName = uploadFile(file1.getOriginalFilename(), file1.getBytes(), uploadPath);  // 저장되는 파일명 
 			log.info("saveName: " + saveName);
 			
-			board.setB_attach_name(file1.getOriginalFilename());	
+			board.setB_attach_name(saveName);	
 			board.setB_attach_path(attach_path);
 		}
 
@@ -452,23 +452,13 @@ public class GhController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-//	/* 게시판 카운트 */
-//	@RequestMapping(value = "boardList")
-//	public String boardCount(Model model, String b_category) {
-//		System.out.println("GhController boardCount Start...");
-//		int result = boardService.boardCount(b_category);
-//		System.out.println("GhController boardCount result->"+result);
-//		
-//		model.addAttribute("BoardCount", result);
-//		
-//		return "gh/boardList";
-//	}
+	/* 이용안내 */
+	@RequestMapping(value = "userGuide")
+	public String userGuide() {
+		System.out.println("GhController userGuide Start...");
+		
+		return "gh/userGuide";
+	}
 	
 	
 
