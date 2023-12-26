@@ -15,9 +15,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.choongang.gb2023501.configuration.auth.CustomAuthenticationProvider;
 //import com.choongang.gb2023501.configuration.auth.PrincipalDetailsService;
+import com.choongang.gb2023501.jhService.MemberService;
+
+import lombok.RequiredArgsConstructor;
 
 
 
@@ -41,9 +45,18 @@ public class SecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 	
-
+	//로그인 성공 후 학습자인 경우 그룹에 가입 여부에 따라 그룹가입신청 페이지로 이동하도록 핸들러 만들고
+	//학습 그룹 가입여부 확인하기 위해 memberService를 파라미터로 주입해줌 그래야 @RequiredArgsConstructor로 생성자 생성가능 안그러면 에러남 
 	@Autowired
-	private CustomAuthenticationSuccessHandler successHandler;
+    private MemberService memberService;
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new CustomAuthenticationSuccessHandler(memberService);
+    }
+    
+    
+//	@Autowired
+//	private CustomAuthenticationSuccessHandler successHandler;
 	 
 //	@Autowired
 //	private  CustomAuthenticationProvider authProvider;
@@ -79,9 +92,9 @@ public class SecurityConfig {
                 .passwordParameter("mmPswd")	// login에 필요한 password 값  (default password)
                 .loginProcessingUrl("/login")	// login주소가 호출 되면 시큐리티가 낚아채서 대신 로그인 진행해줌
                 .failureUrl("/info/loginForm?error=true")
-                .successHandler(successHandler)
+                .successHandler(successHandler())
 //                .failureUrl("/loginFailure")
-				.defaultSuccessUrl("/")			// 로그인 성공시 이동할 URL (메이페이지로 이동)
+//				.defaultSuccessUrl("/")			// 로그인 성공시 이동할 URL (메이페이지로 이동) 이거 때문에 successHandler실행 안됨 
 			);
 		
 		// Logout 설정.

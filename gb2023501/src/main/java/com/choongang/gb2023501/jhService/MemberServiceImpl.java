@@ -20,8 +20,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.choongang.gb2023501.domain.LgJoin;
 import com.choongang.gb2023501.domain.Member;
-import com.choongang.gb2023501.jhRepository.CustomMemberRepository;
+//import com.choongang.gb2023501.jhRepository.CustomMemberRepository;
+import com.choongang.gb2023501.jhRepository.LgJoinRepository;
 import com.choongang.gb2023501.jhRepository.MemberRepository;
 import com.choongang.gb2023501.model.MemberSearchCriteriaDTO;
 
@@ -34,6 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberServiceImpl implements MemberService {
 	
 	private final MemberRepository mr;
+	private final LgJoinRepository lr;
 	
 	
 	
@@ -121,6 +124,7 @@ public class MemberServiceImpl implements MemberService {
 		return existsByMmId;
 	}
 
+	//회원가입 
 	@Override
 	public Member join(@Valid Member member) {
 		System.out.println("MemberServiceImpl join Start...");
@@ -226,7 +230,8 @@ public class MemberServiceImpl implements MemberService {
 	//회원번호로 회원정보 가져오기
 	@Override
 	public Member findByMmNum(int mmNum) {
-		
+		System.out.println("MemberServiceImpl findByMmNum Start...");
+
 		Optional<Member> memberOptional = mr.findByMmNum(mmNum);
 		
 		Member member = null;
@@ -234,6 +239,15 @@ public class MemberServiceImpl implements MemberService {
 			member = memberOptional.get();
 		}
 		return member;
+	}
+
+	//회원번호로 가입된 학습그룹 리스트 가져오기
+	@Override
+	public List<LgJoin> selectJoinedLearnGroupList(Member member) {
+		System.out.println("MemberServiceImpl selectJoinedLearnGroupList Start...");
+
+		List<LgJoin> joinedLearnGroup = lr.findByMember(member);
+		return joinedLearnGroup;
 	}
 
 

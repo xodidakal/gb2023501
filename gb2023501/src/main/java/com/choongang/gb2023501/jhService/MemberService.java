@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.choongang.gb2023501.domain.LgJoin;
 import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.model.MemberSearchCriteriaDTO;
 
@@ -50,6 +51,10 @@ public interface MemberService {
 
 	//회원번호로 회원정보 가져오기
 	public Member findByMmNum(int mmNum);
+
+	//회원번호로 가입된 학습그룹 리스트 가져오기
+	public List<LgJoin> selectJoinedLearnGroupList(Member member);
+
 
 
 }
