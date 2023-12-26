@@ -19,7 +19,7 @@
 		            <tr>
 						<th>게임명</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_title" id="g_title">
+		                    <input type="text" class="form-control" name="g_title" id="g_title" required>
 		            	</td>
 					</tr>
 					 <tr>
@@ -34,38 +34,39 @@
 					</tr>
 					 <tr>
 						<th>구독기간</th>
-						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_period" id="g_period"style="width: 100px"><label>개월</label>
-		            	</td>
+						<td>
+							<input type="number" class="form-control" name="g_period" id="g_period"style="width: 100px" required>
+		                </td>
+		                <td width="10px;">개월</td>
 					</tr>
 					 <tr>
 						<th>구독가능인원</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_to" id="g_to" >
+		                    <input type="number" class="form-control" name="g_to" id="g_to" required>
 		            	</td>
 					</tr>
 					 <tr>
 						<th>정가</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_price" id="g_price" >
+		                    <input type="number" class="form-control" name="g_price" id="g_price" required>
 		            	</td>
 					</tr>
 					 <tr>
 						<th>할인율</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="discount" id="discount" >
+		                    <input type="number" class="form-control" name="discount" id="discount" required >
 		            	</td>
 					</tr>
 					 <tr>
 						<th>판매가</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_sell_price" id="g_sell_price">
+		                    <input type="number" class="form-control" name="g_sell_price" id="g_sell_price" required>
 		            	</td>
 					</tr>
 					<tr>
 						<th>상품소개</th>
 						<td colspan="3">
-		                   	<textarea class="form-control" placeholder="상품에 대한 소개를 입력해주세요" name="g_content" id="g_content" style="height: 200px"></textarea>
+		                   	<textarea class="form-control" name="g_content" id="g_content" style="height: 200px" required></textarea>
 						</td>
 					</tr>
 	                <tr>

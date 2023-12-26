@@ -21,13 +21,13 @@
 		            <tr>
 						<th>게임명</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_title" value="${game.g_title}">
+		                    <input type="text" class="form-control" name="g_title" value="${game.g_title}" required>
 		            	</td>
 					</tr>
 					 <tr>
 						<th>학습난이도</th>
 						<td colspan="3">
-						<select id="g_step" name="g_step" class="w-100 rounded" style="margin-right: 20%; border-color: #ced4da">
+							<select id="g_step" name="g_step" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da; width: 100px">
 								<option value="1" <c:if test="${game.g_step == 1}">selected</c:if> >초급</option>
 								<option value="2" <c:if test="${game.g_step == 2}">selected</c:if> >중급</option>
 								<option value="3" <c:if test="${game.g_step == 3}">selected</c:if> >고급</option>
@@ -36,38 +36,39 @@
 					</tr>
 					 <tr>
 						<th>구독기간</th>
-						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_period" value="${game.g_period}" >개월
+						<td>
+		                    <input type="number" class="form-control" name="g_period" id="g_period"style="width: 100px" value="${game.g_period}" required >
 		            	</td>
+		            	<td width="10px;">개월</td>
 					</tr>
 					 <tr>
 						<th>구독가능인원</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_to" value="${game.g_to}" >
+		                    <input type="number" class="form-control" name="g_to" value="${game.g_to}" required >
 		            	</td>
 					</tr>
 					 <tr>
 						<th>정가</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_price" value="${game.g_price}" >
+		                    <input type="number" class="form-control" name="g_price" value="${game.g_price}" required>
 		            	</td>
 					</tr>
 					 <tr>
 						<th>할인율</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="discount" value="${game.discount}" >
+		                    <input type="number" class="form-control" name="discount" value="${game.discount}" required >
 		            	</td>
 					</tr>
 					 <tr>
 						<th>판매가</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_sell_price" value="${game.g_sell_price}">
+		                    <input type="number" class="form-control" name="g_sell_price" value="${game.g_sell_price}" required>
 		            	</td>
 					</tr>
 					<tr>
 						<th>상품소개</th>
 						<td colspan="3">
-		                   	<textarea class="form-control" name="g_content" style="height: 200px">${game.g_content}</textarea>
+		                   	<textarea class="form-control" name="g_content" style="height: 200px" required>${game.g_content}</textarea>
 						</td>
 					</tr>
 	               <tr>
