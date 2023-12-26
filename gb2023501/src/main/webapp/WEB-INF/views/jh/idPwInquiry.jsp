@@ -93,7 +93,7 @@ function validatePhone() {
 
     if (phoneInput !== validatePhone ) {
         $('#validationMessage').text('숫자만 입력해주세요');
-        varificationInput.val(phoneInput);
+        varificationInput.val(validatePhone);
     } else {
         if (phoneInput.length < 11) {
             $('#validationMessage').text('휴대폰 번호 11자리를 입력해주세요');
