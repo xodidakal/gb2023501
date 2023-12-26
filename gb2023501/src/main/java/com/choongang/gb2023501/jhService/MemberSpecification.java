@@ -9,11 +9,11 @@ import javax.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
 
-//import java.sql.Date;
+import java.sql.Date;
 //import java.text.ParseException;
 //import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+//import java.util.Date;
 //import java.util.List;
 
 @RequiredArgsConstructor
@@ -30,8 +30,8 @@ public class MemberSpecification {
 		            Date startDate =java.sql.Date.valueOf(criteria.getStartDate()); 
 		            Date endDate =java.sql.Date.valueOf(criteria.getEndDate()); 
 		            
-	                System.out.println("Specification 시작 날짜 " + startDate);
-	                System.out.println("Specification 끝 날짜 " + endDate);
+	                System.out.println("MemberSpecification 시작 날짜 " + startDate);
+	                System.out.println("MemberSpecification 끝 날짜 " + endDate);
 	                Predicate predicate = criteriaBuilder.between(root.get("regiDate"), startDate, endDate);
 	                return predicate;
 	    };
