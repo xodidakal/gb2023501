@@ -70,7 +70,31 @@ public class SecurityConfig {
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
 		
 		http.authorizeHttpRequests((requests) -> requests
-				//접근 제한 권한 설정은 마지막에
+				//구독서비스
+				.antMatchers("/subscribe/gameOrderForm").hasAnyRole("USER", "EDUCATOR")
+				.antMatchers("/subscribe/myGameOrderList").hasAnyRole("USER", "EDUCATOR")
+				.antMatchers("/subscribe/gameOrderList").hasAnyRole("USER", "EDUCATOR", "ADMIN")
+				
+				//학습서비스
+				.antMatchers("/learning/**").hasAnyRole("STUDENT")
+				
+				//교육자마당
+				.antMatchers("/educator/**").hasAnyRole("EDUCATOR")
+				
+				//운영자마당
+				.antMatchers("/operate/gameList").hasAnyRole("ADMIN")
+				.antMatchers("/operate/gameForm").hasAnyRole("ADMIN")
+				.antMatchers("/operate/gameUpdate").hasAnyRole("ADMIN")
+				.antMatchers("/operate/eduResourceForm").hasAnyRole("ADMIN")
+				.antMatchers("/operate/eduResourceList").hasAnyRole("ADMIN")
+				.antMatchers("/operate/salesInquiryDetail").hasAnyRole("ADMIN")
+				.antMatchers("/operate/memberList").hasAnyRole("ADMIN")
+				.antMatchers("/operate/eduResourceDetail").hasAnyRole("USER", "EDUCATOR", "ADMIN")
+				.antMatchers("/operate/memberDetail").hasAnyRole("ADMIN")
+				.antMatchers("/operate/memberUpdate").hasAnyRole("ADMIN")
+				
+//				.antMatchers("/operate/**").hasAnyRole("ADMIN")
+//				.antMatchers("/operate/").
 				//.antMatchers("/learning/**").hasAnyRole("STUDENT", "EDUCATOR", "ADMIN")
 				//.antMatchers("/educator/**").hasAnyRole( "EDUCATOR", "ADMIN")
 
