@@ -284,7 +284,7 @@
 						</td>
 					</tr>
 		            <tr id="phoneInputTr">
-						<th>휴대폰 번호</th>
+						<th>휴대폰 번호 <span style="color: red;">*</span></th>
 						<td colspan="3">
 		                    <input value="${member.phone}" type="tel" class="form-control" id="phoneInput" name="phone" placeholder="(-)없이 입력하세요"  maxlength="11" required>
 		            	</td>
@@ -303,14 +303,34 @@
 		            	</td>
 		            </tr>
 					<tr>
-						<th>회원구분</th>
+						<c:choose>
+							<c:when test="${my == 1 }">
+								<th>회원구분</th>	
+							</c:when>
+							<c:otherwise>
+								<th>회원구분 <span style="color: red;">*</span></th>
+							</c:otherwise>
+						</c:choose>
 						<td   width="150px;">
-							<c:if test="${member.category == 1 }">교육자<input type="hidden" value="${member.category}" id="category" class="form-control" name="category" ></c:if>
-							<c:if test="${member.category == 2 }">학습자<input type="hidden" value="${member.category}" id="category" class="form-control" name="category" ></c:if>
-							<c:if test="${member.category == 3 }">일반인<input type="hidden" value="${member.category}" id="category" class="form-control" name="category" ></c:if>
-							<c:if test="${member.category == 4 }">운영자<input type="hidden" value="${member.category}" id="category" class="form-control" name="category" ></c:if>
+							<c:choose>
+								<c:when test="${my == 1 }">
+									<c:if test="${member.category == 1 }">교육자<input type="hidden" value="${member.category}" id="category" class="form-control" name="category" ></c:if>
+									<c:if test="${member.category == 2 }">학습자<input type="hidden" value="${member.category}" id="category" class="form-control" name="category" ></c:if>
+									<c:if test="${member.category == 3 }">일반인<input type="hidden" value="${member.category}" id="category" class="form-control" name="category" ></c:if>
+									<c:if test="${member.category == 4 }">운영자<input type="hidden" value="${member.category}" id="category" class="form-control" name="category" ></c:if>
+								</c:when>
+								<c:otherwise>
+									<select id="categorySelect" class="form-select" name="category"> 
+		                                <option value="1" <c:if test="${member.category == 1 }">	selected="selected"</c:if>>교육자</option> 
+		                                <option value="2" <c:if test="${member.category == 2 }">	selected="selected"</c:if>>학습자</option> 
+		                                <option value="3" <c:if test="${member.category == 3 }">	selected="selected"</c:if>>일반인</option> 
+		                                <option value="4" <c:if test="${member.category == 4 }">	selected="selected"</c:if>>운영자</option> 
+									</select> 
+								</c:otherwise>
+							</c:choose>
+							
 		            	</td>
-						<th  style="padding-left: 40px;">회원자격</th>
+						<th  style="padding-left: 40px;">회원자격 <span style="color: red;">*</span></th>
 						<td  width="150px;">
 		                    <select id="mshipType" class="form-select" name="mshipType">
                                 <option value="1" <c:if test="${member.mshipType == 1 }">	selected="selected"</c:if>>무료회원</option>
@@ -326,12 +346,12 @@
 		                </td>
 					</tr>
 					<tr>
-						<th>생년월일</th>
+						<th>생년월일 <span style="color: red;">*</span></th>
 						<td>
 <!-- 						<td colspan="3"> -->
 		                    <input value="${member.birth}" type="date" class="form-control" id="birth" name="birth" required>
 		            	</td>
-		            	<th style="padding-left: 40px;">성별</th>
+		            	<th style="padding-left: 40px;">성별 <span style="color: red;">*</span></th>
                         <td width="180px">
 					        <c:choose>
 					        	<c:when test="${member.gender == 1}">
@@ -360,7 +380,7 @@
 					</tr>
 		            
 		            <tr id="emailInputTr">
-						<th>이메일</th>
+						<th>이메일 <span style="color: red;">*</span></th>
 						<td colspan="3">
 		                    <input type="email" value="${member.email}" class="form-control" id="emailInput" name="email" required>
 		            	</td>
@@ -374,11 +394,11 @@
 					<c:choose>
 						<c:when test="${member.mmId == pageContext.request.userPrincipal.name}">
 				            <tr>
-								<th>비밀번호</th>
+								<th>비밀번호 <span style="color: red;">*</span></th>
 								<td  width="150px;">
 				                    <input type="password" class="form-control" id="mmPswd" name="mmPswd" minlength="8" maxlength="10" required>
 				            	</td>
-								<th style="padding-left: 40px;" >비밀번호 확인</th>
+								<th style="padding-left: 40px;" >비밀번호 확인 <span style="color: red;">*</span></th>
 								<td  width="150px;">
 				                    <input type="password" class="form-control" id="mmPswdConfirm" minlength="8" maxlength="10" required>
 				            	</td>

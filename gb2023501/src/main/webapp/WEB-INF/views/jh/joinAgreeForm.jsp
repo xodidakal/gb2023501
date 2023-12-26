@@ -383,7 +383,7 @@
                             <form action="joinForm" method="post" id="varificationForm">
                                 <table id="table" class="mx-auto formTable">
                                     <tr>
-                                        <th>이름</th>
+                                        <th>이름  <span style="color: red;">*</span></th>
                                         <td colspan="2">
                                             <input type="text" class="form-control" id="name" name="name" required>
                                         </td>
@@ -396,7 +396,7 @@
 						                </td>
 									</tr>
                                     <tr>
-                                        <th>인증수단</th>
+                                        <th>인증수단  <span style="color: red;">*</span></th>
                                         <td width="150px;">
                                             <input class="form-check-input" type="radio" name="varification" id="phone" checked onclick="toggleFields()">
                                             <label for="phone">휴대폰</label>
