@@ -18,6 +18,13 @@
 		location.href = "myGameOrderList?keyword="+keyword;
 	}
 	
+	$(function() {
+		var result = ${result};
+		if(result.equals("1")){
+			alert("게임이 정상적으로 결제되었습니다.");	
+		}
+	})
+	
 </script>
 <body>
 <div class="row g-0 justify-content-center">
@@ -27,10 +34,10 @@
 	         <h2 style="margin-bottom: 15px;">내 구독상품</h2>
 	         <p style="margin-bottom: 35px;">총 <fmt:formatNumber value="${totalSearchGameOrder}" groupingUsed="true"/> 건</p>
 	    </div>
-	    <div class="input-group col-md-5 mb-3">
+	    <!-- <div class="input-group col-md-5 mb-3">
 	    	<input class="form-control" type="date" id="startDate" name="startDate" required="required" style="width: 130px; margin: 10px;"><div class="mt-3">~</div>					
 			<input class="form-control" type="date" id="endDate" name="endDate" required="required" style="width: 130px; margin: 10px;">
-		</div>
+		</div> -->
 		<div class="input-group col-md-5 mb-3">
 			<!-- 카테고리 검색 -->
 			<select id="searchType" name="searchType" class="w-17 rounded" style="border-color: #ced4da">
