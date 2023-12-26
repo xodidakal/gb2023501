@@ -136,14 +136,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav mx-auto me-auto p-3 p-lg-0 text-center">
                 <a href="/" class="nav-item nav-link active" style="color: white;">Home</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">이용안내</a>
-                    <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
-                        <a href="#!" class="dropdown-item">사이트 소개</a>
-                        <a href="#!" class="dropdown-item">이용 가이드</a>
-                        <a href="#!" class="dropdown-item">상품 소개</a>
-                    </div>
-                </div>
+                <a href="/userGuide" class="nav-item nav-link active" style="color: white;">이용안내</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">구독서비스</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
