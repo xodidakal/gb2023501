@@ -156,7 +156,7 @@
         //휴대폰 번호 유효성 검사
         function validatePhone(){
         	
-        	var phoneInput = $(this).val();
+        	var phoneInput = $('#phoneInput').val();
         	var validatePhone = phoneInput.replace(/\D/g, ''); // 숫자 이외의 문자 모두 제거
         	
             if (phoneInput.length === 0) {
@@ -166,7 +166,7 @@
         	if(phoneInput !== validatePhone){
         		$('#phoneValidationMessage').text('숫자만 입력해주세요');
         		//문자 입력한 건 다 지워지고 숫자만 남김
-        		$(this).val(validatePhone);
+        		$('#phoneInput').val(validatePhone);
         	} else{
         		if(phoneInput.length < 11){
         		$('#phoneValidationMessage').text('휴대폰 번호 11자리를 입력해주세요');
@@ -187,13 +187,13 @@
         //전화번호 유효성 검증
         function validateTel(){
         	
-        	var telInput = $(this).val();
+        	var telInput = $('#telInput').val();
         	var validateTel = telInput.replace(/\D/g, ''); // 숫자 이외의 문자 모두 제거
         	
         	if(telInput !== validateTel){
         		$('#telValidationMessage').text('숫자만 입력해주세요');
         		//문자 입력한 건 다 지워지고 숫자만 남김
-        		$(this).val(validateTel);
+        		$('#telInput').val(validateTel);
         	} else{
         		$('#telValidationMessage').text('');
         	}
