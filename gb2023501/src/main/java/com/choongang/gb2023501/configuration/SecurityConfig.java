@@ -1,11 +1,17 @@
 package com.choongang.gb2023501.configuration;
 
 
+import java.util.Arrays;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.access.vote.RoleHierarchyVoter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.choongang.gb2023501.configuration.auth.CustomAuthenticationProvider;
@@ -54,6 +61,8 @@ public class SecurityConfig {
         return new CustomAuthenticationSuccessHandler(memberService);
     }
     
+
+    
     
 //	@Autowired
 //	private CustomAuthenticationSuccessHandler successHandler;
@@ -82,17 +91,23 @@ public class SecurityConfig {
 				.antMatchers("/educator/**").hasAnyRole("EDUCATOR")
 				
 				//운영자마당
-				.antMatchers("/operate/gameList").hasAnyRole("ADMIN")
-				.antMatchers("/operate/gameForm").hasAnyRole("ADMIN")
-				.antMatchers("/operate/gameUpdate").hasAnyRole("ADMIN")
-				.antMatchers("/operate/eduResourceForm").hasAnyRole("ADMIN")
-				.antMatchers("/operate/eduResourceList").hasAnyRole("ADMIN")
-				.antMatchers("/operate/salesInquiryDetail").hasAnyRole("ADMIN")
-				.antMatchers("/operate/memberList").hasAnyRole("ADMIN")
-				.antMatchers("/operate/eduResourceDetail").hasAnyRole("USER", "EDUCATOR", "ADMIN")
-				.antMatchers("/operate/memberDetail").hasAnyRole("ADMIN")
-				.antMatchers("/operate/memberUpdate").hasAnyRole("ADMIN")
+				.antMatchers("/operate/**").hasAnyRole("ADMIN")
 				
+				//운영자마당 -> 다 운영자만 들어가게 바뀜
+//				.antMatchers("/operate/gameList").hasAnyRole("ADMIN")
+//				.antMatchers("/operate/gameForm").hasAnyRole("ADMIN")
+//				.antMatchers("/operate/gameUpdate").hasAnyRole("ADMIN")
+//				.antMatchers("/operate/eduResourceForm").hasAnyRole("ADMIN")
+//				.antMatchers("/operate/eduResourceList").hasAnyRole("ADMIN")
+//				.antMatchers("/operate/salesInquiryDetail").hasAnyRole("ADMIN")
+//				.antMatchers("/operate/memberList").hasAnyRole("ADMIN")
+//				.antMatchers("/operate/eduResourceDetail").hasAnyRole("USER", "EDUCATOR", "ADMIN")
+//				.antMatchers("/operate/memberDetail").hasAnyRole("ADMIN")
+//				.antMatchers("/operate/memberUpdate").hasAnyRole("ADMIN")
+//				
+				// 사용자의 신원에 따라 추가적인 제한을 추가할 경우
+//	            .antMatchers("/info/myDetail").accessDecisionManager(accessDecisionManager())
+	            
 //				.antMatchers("/operate/**").hasAnyRole("ADMIN")
 //				.antMatchers("/operate/").
 				//.antMatchers("/learning/**").hasAnyRole("STUDENT", "EDUCATOR", "ADMIN")
