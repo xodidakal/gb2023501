@@ -23,6 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 import com.choongang.gb2023501.configuration.auth.CustomAuthenticationProvider;
 //import com.choongang.gb2023501.configuration.auth.PrincipalDetailsService;
@@ -61,15 +62,30 @@ public class SecurityConfig {
         return new CustomAuthenticationSuccessHandler(memberService);
     }
     
-
     
-    
-//	@Autowired
-//	private CustomAuthenticationSuccessHandler successHandler;
+	//세션 관리 및 인증 실패 핸들링
+	@Bean
+	public SimpleUrlAuthenticationFailureHandler authenticationFailureHandler() {
+		//SimpleUrlAuthenticationFailureHandler 객체를 생성하여 반환
+		
+		SimpleUrlAuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
+	    failureHandler.setUseForward(true);
+	    failureHandler.setDefaultFailureUrl("/info/loginForm?error=true");
+	    
+	    return failureHandler;
+	}
 	 
-//	@Autowired
-//	private  CustomAuthenticationProvider authProvider;
+	// 인증요청으로 들어온 토큰이 올바른 유저인지 인증 수행하므로 빈 등록 필수!
+	@Bean
+	AuthenticationManager authenticationManager(
+		AuthenticationConfiguration authenticationConfiguration
+	) throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
+
 	
+	
+
 //	WebSecurityConfigurerAdapter는  Deprecated 되었으므로 사용하지 않고 아래와 같이 SecurityFilterChain을 Bean으로 등록하여 사용 
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -92,35 +108,6 @@ public class SecurityConfig {
 				
 				//운영자마당
 				.antMatchers("/operate/**").hasAnyRole("ADMIN")
-				
-				//운영자마당 -> 다 운영자만 들어가게 바뀜
-//				.antMatchers("/operate/gameList").hasAnyRole("ADMIN")
-//				.antMatchers("/operate/gameForm").hasAnyRole("ADMIN")
-//				.antMatchers("/operate/gameUpdate").hasAnyRole("ADMIN")
-//				.antMatchers("/operate/eduResourceForm").hasAnyRole("ADMIN")
-//				.antMatchers("/operate/eduResourceList").hasAnyRole("ADMIN")
-//				.antMatchers("/operate/salesInquiryDetail").hasAnyRole("ADMIN")
-//				.antMatchers("/operate/memberList").hasAnyRole("ADMIN")
-//				.antMatchers("/operate/eduResourceDetail").hasAnyRole("USER", "EDUCATOR", "ADMIN")
-//				.antMatchers("/operate/memberDetail").hasAnyRole("ADMIN")
-//				.antMatchers("/operate/memberUpdate").hasAnyRole("ADMIN")
-//				
-				// 사용자의 신원에 따라 추가적인 제한을 추가할 경우
-//	            .antMatchers("/info/myDetail").accessDecisionManager(accessDecisionManager())
-	            
-//				.antMatchers("/operate/**").hasAnyRole("ADMIN")
-//				.antMatchers("/operate/").
-				//.antMatchers("/learning/**").hasAnyRole("STUDENT", "EDUCATOR", "ADMIN")
-				//.antMatchers("/educator/**").hasAnyRole( "EDUCATOR", "ADMIN")
-
-				
-				
-				//				.antMatchers("/educator/**").hasRole("EDUCATOR")
-				/* 개발단계에서는 역할에 따른 접근제한 해제.
-				.antMatchers("/admin/**").hasRole(Role.ADMIN.getValue())
-				.antMatchers("/user/myPage/**").hasRole(Role.USER.getValue())
-				.antMatchers("/user/bizPage").hasRole(Role.BIZ.getValue())
-				*/
 				.anyRequest().permitAll()
 			);		
 		
@@ -132,7 +119,6 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login")	// login주소가 호출 되면 시큐리티가 낚아채서 대신 로그인 진행해줌
                 .failureUrl("/info/loginForm?error=true")
                 .successHandler(successHandler())
-//                .failureUrl("/loginFailure")
 //				.defaultSuccessUrl("/")			// 로그인 성공시 이동할 URL (메이페이지로 이동) 이거 때문에 successHandler실행 안됨 
 			);
 		
@@ -153,37 +139,18 @@ public class SecurityConfig {
 		// Authentication Provider 등록. -> CustomAuthenticationProvider에서 실제 로그인 처리
 //		http.authenticationProvider(authProvider);
 		
-//		http.authorizeRequests() //인증, 인가가 필요한 URL 지정
-////			.antMatchers("/user/**").authenticated() //authenticated() : 해당 URL에 진입하기 위해서 Authentication(인증, 로그인)이 필요 -> "/user/**"이런 주소로 들어오면 인증 필요
-////			.antMatchers("/admin/**").hasRole("ADMIN") //hasAuthority() : 해당 URL에 진입하기 위해서 Authorization(인가, ex)권한이 ADMIN인 유저만 진입 가능)이 필요 -> "/admin/**" 이런 주소로 들어오면 ROLE_ADMIN권한 필요 
-////			.antMatchers("/admin/**").hasRole(Role.USER.getValue()) //hasAuthority() : 해당 URL에 진입하기 위해서 Authorization(인가, ex)권한이 ADMIN인 유저만 진입 가능)이 필요 -> "/admin/**" 이런 주소로 들어오면 ROLE_ADMIN권한 필요 
-//			.anyRequest().permitAll() //위 url 외엔 어떤 요청이든 권한 허가
-//			.and() 
-//			.formLogin() //Form Login 방식 적용 (권한 없는 페이지에 요청 들어갈 때 로그인 페이지로 이동하기 위한 것)
-//			.loginPage("/info/loginForm") // 로그인 페이지 URL
-//			.usernameParameter("username") 
-//			.passwordParameter("password")
-//			.loginProcessingUrl("/login") //login주소가 호출 되면 시큐리티가 낚아채서 대신 로그인 진행해줌
-//			.defaultSuccessUrl("/") //로그인 성공시 이동할 URL (메이페이지로 이동)
-//			.failureUrl("/loginFailure")
-//			.and()
-//			.logout()
-//			.logoutSuccessUrl("/") //로그 아웃 성공시 이동할 URL (메이페이지로 이동)
-//			
-//			;
-//		// Authentication Provider 등록.
-//		http.authenticationProvider(authProvider);
+		 // 세션 설정 추가
+        http.sessionManagement()							//세션 관리 설정을 시작
+            .maximumSessions(2)								//동시에 허용되는 최대 세션 수
+            .expiredUrl("/info/loginForm?expired=true")		//세션이 만료된 경우 리디렉션할 URL(로그인 페이지로 이동)
+            .and()
+            .sessionAuthenticationFailureHandler(authenticationFailureHandler()); //세션에서의 인증 실패 시 처리를 담당하는 핸들러를
+
+		
 		
 		return http.build();
 	}
 	
 
-	// 인증요청으로 들어온 토큰이 올바른 유저인지 인증 수행하므로 빈 등록 필수!
-	@Bean
-	AuthenticationManager authenticationManager(
-		AuthenticationConfiguration authenticationConfiguration
-	) throws Exception {
-		return authenticationConfiguration.getAuthenticationManager();
-	}
 
 }
