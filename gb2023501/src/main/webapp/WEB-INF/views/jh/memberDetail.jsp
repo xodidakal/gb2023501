@@ -17,7 +17,9 @@
 	    category = "${criteria.category}";
 	    mshipType = "${criteria.mshipType}";
 	    page = "${page}";
-	
+		criteriaList = "${criteriaList}";
+	    
+	    
 	    alert("startDate " + startDate);
 	    alert("endDate " + endDate);
 	    alert("searchType " + searchType);
@@ -38,7 +40,8 @@
 	        location.href = "/operate/memberList?page=" + page;
 	    } else {
 	        alert("검색 유");
-	        location.href = "/operate/SearchMemberList?startDate=" + startDate + "&endDate=" + endDate + "&searchType=" + searchType + "&searchValue=" + searchValue + "&category=" + category + "&mshipType=" + mshipType + "&page=" + page;
+	        location.href = "/operate/SearchMemberList" + criteriaList;
+	        //location.href = "/operate/SearchMemberList?startDate=" + startDate + "&endDate=" + endDate + "&searchType=" + searchType + "&searchValue=" + searchValue + "&category=" + category + "&mshipType=" + mshipType + "&page=" + page;
 	    }
 	}
 	
@@ -77,6 +80,7 @@
        <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
            <div class="row g-3">
                <h2 class="display-7 mb-4">회원정보 상세</h2>
+               <h2 class="display-7 mb-4">${criteriaList}</h2>
 
                <hr class="my-3">
                <form id="joinForm">

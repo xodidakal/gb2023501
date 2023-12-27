@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.web.util.UriComponentsBuilder;
 
 import lombok.Data;
 
@@ -36,6 +37,21 @@ public class MemberSearchCriteriaDTO {
     private String startDate;
 
     // 검색 종료일
-    @Temporal(TemporalType.DATE)
+//    @Temporal(TemporalType.DATE)
     private String endDate;
+    
+    public String getCriteriaListLink() {
+    	UriComponentsBuilder builder = UriComponentsBuilder.fromPath("")
+    																	.queryParam("searchType", this.searchType)
+    																	.queryParam("searchValue", this.searchValue)
+    																	.queryParam("category", this.category)
+    																	.queryParam("mshipType", this.mshipType)
+    																	.queryParam("startDate", this.startDate)
+    																	.queryParam("endDate", this.endDate);
+    	return builder.toUriString();
+		
+	}
+    
+    
+    
 }

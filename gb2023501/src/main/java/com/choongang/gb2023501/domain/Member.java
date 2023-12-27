@@ -159,6 +159,10 @@ public class Member {
 //    @Transient
 //	private String 	endDate;		//종료 날짜
 //	
-	
+	public String phoneFormat() {
+		String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
+		String phone = this.phone;
+		return phone.replaceAll(regEx, "$1-$2-$3");
+	}
 
 }

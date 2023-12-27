@@ -54,11 +54,13 @@ public class JhController {
 	private final JavaMailSender mailSender;
 	private final PasswordEncoder passwordEncoder;
 	
+	//폰 포멧팅 -> dto에 직접 넣었음 좋았을 걸...이름도 phoneFormat로 바꿀걸
 	public String phone_format(String number) {
 	      String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
 	      return number.replaceAll(regEx, "$1-$2-$3");
 	}
 	
+	//
 	public Member aboutMember() {
 		Optional<Member> memberOptional = ms.selectUserById();
 		Member member = null;
@@ -574,6 +576,10 @@ public class JhController {
 		Page<Member> memberList = ms.findAll(pageable);
 		System.out.println("memberList.size() -> " + memberList.getSize());
 		
+		//폰번호 포멧팅
+		String phone = null;
+				
+				
 		// 전체 회원 수
 	    long totalMembers = memberList.getTotalElements();
 
@@ -588,6 +594,7 @@ public class JhController {
 	    int endPage = Math.min(startPage + pageBlock - 1, memberList.getTotalPages());		 //끝 페이지 번호
 	    int totalPage = memberList.getTotalPages();	//전체 페이지 수
 
+	    
 
 		model.addAttribute("memberList", memberList);
 		 model.addAttribute("startNumber", startNumber);
@@ -675,9 +682,11 @@ public class JhController {
 		Member member = ms.findByMmNum(mmNum);
 		System.out.println("회원정보 member -> " + member);
 		
+		String searchCriteriaList = searchCriteria.getCriteriaListLink();
 		
 		model.addAttribute("page", page);
 		model.addAttribute("criteria", searchCriteria);
+		model.addAttribute("criteriaList", searchCriteriaList);
 		model.addAttribute("member", member);
 		model.addAttribute("mmNum", mmNum);
 		return "jh/memberDetail";
