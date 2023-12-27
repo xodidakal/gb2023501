@@ -60,7 +60,7 @@ public class JhController {
 	      return number.replaceAll(regEx, "$1-$2-$3");
 	}
 	
-	//
+	//회원 정보 호출
 	public Member aboutMember() {
 		Optional<Member> memberOptional = ms.selectUserById();
 		Member member = null;
@@ -102,19 +102,19 @@ public class JhController {
 		System.out.println("JhController joinAgreeForm Start...");
 		
 		
-		//로그인 된 아이디 가져오기
-		String mmId = ms.getLoggedInId();
-		//로그로 아이디 확인
-		log.info("로그인된 아이디:{}", mmId);
-		
-		
-		
-		//로그인된 회원번호 가져오기 / 로그인 안된 경우 0
-		int mmNum = ms.selectMmNumById();
-		System.out.println("회원번호 int " + mmNum);
-		
-		Member member = aboutMember();
-		model.addAttribute("member", member);
+//		//로그인 된 아이디 가져오기
+//		String mmId = ms.getLoggedInId();
+//		//로그로 아이디 확인
+//		log.info("로그인된 아이디:{}", mmId);
+//		
+//		
+//		
+//		//로그인된 회원번호 가져오기 / 로그인 안된 경우 0
+//		int mmNum = ms.selectMmNumById();
+//		System.out.println("회원번호 int " + mmNum);
+//		
+//		Member member = aboutMember();
+//		model.addAttribute("member", member);
 
 		//로그인 된 회원정보 전체 가져오기 
 //		Optional<Member> memberOptional = ms.selectUserById();

@@ -4,9 +4,6 @@
 <html>
 <head>
     <script type="text/javascript">
-
- 
-
  $(document).ready(function() {
 	    // 전체 동의 체크박스를 클릭할 때 발생하는 이벤트 핸들러
 	    $('.chkbox_group').on('click', '#chkAll', function(event) {
@@ -65,19 +62,25 @@
         
         
 });
+
 		//이름 유효성 검사 숫자 못들어가게
         function validateName(){
         	var name = $('#name').val();
-        	var regex = /^[a-zA-Z가-힣]+$/; // 영문자 또는 한글만 허용하는 정규 표현식
+        	var regex = /^[a-zA-Zㄱ-ㅎ가-힣]*$/; // 영문자 또는 한글만 허용하는 정규 표현식
         	
         	if(regex.test(name)){
 				$('#nameValidationMessage').text('');
-        	} else {
-				$('#nameValidationMessage').text('이름에 숫자를 포함할 수 없습니다!');
 				
-        	}
+        	} else if(name == ''){
+				$('#nameValidationMessage').text('');
+				
+        	} else {
+				$('#nameValidationMessage').text('이름에 숫자나 특수문자를 포함할 수 없습니다!');
+			}
         	
         }
+		
+		
 //인증 수단 선택하기
  function toggleFields() {
 	    var phoneRadio = document.getElementById("phone");
