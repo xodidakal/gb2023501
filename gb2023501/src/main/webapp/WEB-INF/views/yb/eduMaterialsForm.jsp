@@ -13,7 +13,7 @@
 <!--         <h2 class="display-6 mb-4">교육 자료 등록</h2> -->
 <!--     </div> -->
 <div class="row g-0 justify-content-center">
-	<div class="col-lg-11 wow fadeInUp" data-wow-delay="0.5s">
+	<div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
 		<form action="insertEduMaterials" method="post" enctype="multipart/form-data">
 	        <div class="row g-3">
 	        <h2 class="display-7 mb-4">학습 자료 등록</h2>

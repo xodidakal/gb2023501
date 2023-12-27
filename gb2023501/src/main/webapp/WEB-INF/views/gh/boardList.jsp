@@ -109,15 +109,17 @@
 	    </div>
 
        	<table class="listTable">
-			<tr>
-				<th>No.</th>
-				<th>게시 분류</th>
-				<th>제목</th>
-				<th>작성자</th>
-				<th>등록일자</th>
-				<th>조회수</th>	
-				<th width="100px;"></th>				
-			</tr>
+	       		<thead>
+					<tr>
+						<th>No.</th>
+						<th>게시 분류</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>등록일자</th>
+						<th>조회수</th>	
+						<th width="100px;"></th>				
+					</tr>
+				</thead>
 				<tbody>
 					<c:forEach var="Blist" items="${Boardlist}">
 						<tr>

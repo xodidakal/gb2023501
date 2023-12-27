@@ -14,14 +14,14 @@ import com.choongang.gb2023501.model.SalesInquiryDTO;
 @Repository
 public interface YbRepository2 extends JpaRepository<GameOrder, Long> {
 	
-	@Query( 
-			"SELECT "
-			+ "new com.choongang.gb2023501.model.SalesInquiryDTO(go.goOrderDate, count(go.game), sum(goPayment)) "
-			+ "FROM GameOrder go "
-			+ "WHERE go.goOrderDate BETWEEN :startDate and :endDate "
-			+ "GROUP BY go.goOrderDate "
-			+ "order by go.goOrderDate desc" 
-	)
+	@Query(
+		    "SELECT " +
+		    "new com.choongang.gb2023501.model.SalesInquiryDTO(TO_DATE(go.goOrderDate, 'yy-MM-dd'), COUNT(go.game), SUM(go.goPayment)) " +
+		    "FROM GameOrder go " +
+		    "WHERE go.goOrderDate BETWEEN :startDate and :endDate " +
+		    "GROUP BY TO_DATE(go.goOrderDate, 'yy-MM-dd') " +
+		    "ORDER BY TO_DATE(go.goOrderDate, 'yy-MM-dd') desc"
+		)
 	List<SalesInquiryDTO> findSalesInquiryDtoJPQL(@Param("startDate") Date s_date, @Param("endDate") Date e_date);
 	
 //	@Query(
