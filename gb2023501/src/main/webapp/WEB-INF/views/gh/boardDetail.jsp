@@ -32,7 +32,7 @@
 		return d;
 	}
 	
-	//답변작성 작성일 오늘날짜 표시
+	// 답변작성 작성일 오늘날짜 표시
 	function getTodayDate() {
 	    var today = new Date();
 	    var year = today.getFullYear();
@@ -44,6 +44,7 @@
 	    
 	}
 	
+	// 답변 수정 submit
 	function answerUpdateSubmit() {
 	//	alert("클릭");
 		document.answerUpdateForm.submit();
@@ -55,15 +56,6 @@
 		$('input[name=b_regi_date]').val(getTodayDate);
 		
 	});
-	
-	/* function answerUpdateSubmit() {
-		alert("클릭함");
-		
-		var search_keyword = $('#search_keyword').val();
-		var search_type = $('#search_type').val();
-		
-		window.location.href="/customer/boardList?search_type=" + search_type + "&search_keyword=" + search_keyword + "&b_category=" + BoardCategory + "&rowPage=" + count_type;
-	} */
 	
 	// 댓글 등록
 	function insertComment() {
@@ -755,7 +747,7 @@
 	                			<input type="hidden" name="b_num" 			value="${BdDetail.b_num}"			id="ans_b_num">
 	                			<input type="hidden" name="b_category" 		value="${BdDetail.b_category}"		id="ans_b_category">
 	                			<input type="hidden" name="b_notie_type" 	value="${BdDetail.b_notie_type}" 	id="ans_b_notie_type">
-	                			<input type="hidden" name="b_flag" 			value="1" 							id="ans_b_flag">
+	                			<input type="hidden" name="b_flag" 			value="0" 							id="ans_b_flag">
 	                			<input type="hidden" name="b_ref_num" 		value="${BdDetail.b_ref_num}" 		id="ans_b_ref_num">
 	                		</td>
 	                	</tr>
