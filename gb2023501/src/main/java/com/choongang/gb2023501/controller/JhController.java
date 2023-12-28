@@ -38,7 +38,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.jhRepository.MemberRepository;
+import com.choongang.gb2023501.jhService.GameMyBatisService;
 import com.choongang.gb2023501.jhService.MemberService;
+import com.choongang.gb2023501.model.Game;
 import com.choongang.gb2023501.model.MemberSearchCriteriaDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -52,6 +54,8 @@ public class JhController {
 	private final MemberRepository mr;
 	//서비스 -> 레파지토리 이므로 여기선 mr 안 씀 -> 사용자 정보 업데이트할 때 사용
 	private final MemberService ms;
+	private final GameMyBatisService gs;
+	
 	private final JavaMailSender mailSender;
 //	private final PasswordEncoder passwordEncoder;
 	
@@ -72,6 +76,34 @@ public class JhController {
 		}
 		return member;
 	}
+	
+	@RequestMapping(value = "/")
+	public String main(Model model) {
+		System.out.println("JhController Main start...");
+
+		Optional<Member> memberOptional = ms.selectUserById();
+		Member member = null;		
+		if(memberOptional.isPresent()) {
+			member = memberOptional.get();
+			System.out.println("로그인 회원 정보 -> " + member);
+			System.out.println("member name -> " + member.getMmName());
+			
+		}
+		
+		//마이바티스 활용해 게임목록 조회(최근 등록순 상위 5개)
+		int totalListCnt = 5;
+		List<Game> selectGameList = gs.selectGameList(totalListCnt);
+		
+		//공지사항 리스트 최근 5개
+		
+		
+		
+		model.addAttribute("member", member);
+		model.addAttribute("selectGameList", selectGameList);
+		return "main";
+	}
+	
+	
 	
 	//로그인 화면 이동
 	@RequestMapping(value = "info/loginForm")
