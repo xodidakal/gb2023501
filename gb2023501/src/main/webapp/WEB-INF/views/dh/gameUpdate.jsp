@@ -56,7 +56,7 @@
 					 <tr>
 						<th>할인율</th>
 						<td colspan="3">
-		                    <input type="number" class="form-control" name="discount" value="${game.discount}" required >
+		                    <input type="number" class="form-control" name="discount" value="${game.discount}" required>
 		            	</td>
 					</tr>
 					 <tr>
