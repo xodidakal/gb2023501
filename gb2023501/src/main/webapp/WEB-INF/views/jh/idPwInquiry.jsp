@@ -290,15 +290,14 @@ function pwSubmitVarificationForm() {
                 } else if (response === "") {
                     alert("메일 전송에 실패했습니다.");
                 } else if (response === "1") {
-                    alert("임시비밀번호가 전송되었습니다.");
+                    alert("인증번호가 전송되었습니다.");
                     $("#pwVarificationNumButton").hide();
                     // 추가: 인증 번호 입력 필드 보이기
                     $("#pwVarificationNumInput").show();
                     $("#pwVarificationButton").show();
+                } else {
+                    alert("임시비밀번호는 " + response + " 입니다!");
                 } 
-                /* else {
-                    alert("비밀번호는 " + response + " 입니다!");
-                } */
             },
             error: function (error) {
                 alert("에러 발생!");

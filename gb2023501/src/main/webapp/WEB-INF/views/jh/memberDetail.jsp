@@ -80,7 +80,6 @@
        <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
            <div class="row g-3">
                <h2 class="display-7 mb-4">회원정보 상세</h2>
-               <h2 class="display-7 mb-4">${criteriaList}</h2>
 
                <hr class="my-3">
                <form id="joinForm">

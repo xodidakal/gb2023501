@@ -23,6 +23,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -52,7 +53,7 @@ public class JhController {
 	//서비스 -> 레파지토리 이므로 여기선 mr 안 씀 -> 사용자 정보 업데이트할 때 사용
 	private final MemberService ms;
 	private final JavaMailSender mailSender;
-	private final PasswordEncoder passwordEncoder;
+//	private final PasswordEncoder passwordEncoder;
 	
 	//폰 포멧팅 -> dto에 직접 넣었음 좋았을 걸...이름도 phoneFormat로 바꿀걸
 	public String phone_format(String number) {
@@ -328,10 +329,12 @@ public class JhController {
 		return result;
 	}
 	
+	//비밀번호 암호화
 	private Member encodedPassword (Member member) {
 		System.out.println("JhController encodedPassword Start... 비밀번호 인코딩");
 		// 비밀번호 암호화
 		//member 객체에서 비번 꺼내서 인코딩후 다시 멤버객체에 셋팅 후 멤버 리턴
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	    String encodedPassword = passwordEncoder.encode(member.getMmPswd());
 	    member.setMmPswd(encodedPassword);
 		
@@ -464,7 +467,7 @@ public class JhController {
 				member = encodedPassword(member);
 				//암호화된 임시비번으로 디비에 업데이트
 				mr.save(member);
-				result = temporaryPswd;
+				result = temporaryPswd; //사용자에게 보여주기 위해 해시 하지 않음
 //				String pswd = member.getMmPswd(); 예전에 쓰던거
 //				result = pswd;
 			} else{
@@ -553,7 +556,7 @@ public class JhController {
 	        password.append(CHARACTERS.charAt(randomIndex));
 	    }
 
-	    // 생성된 임시 비밀번호 반환 (해시하지 않음)
+	    // 생성된 임시 비밀번호 반환 (해시하지 않음)사용자에게 보여주기 위해 해시 하지 않음
 	    return password.toString();
 	}
 	
