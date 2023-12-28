@@ -18,13 +18,6 @@
 		location.href = "myGameOrderList?keyword="+keyword;
 	}
 	
-	$(function() {
-		var result = ${result};
-		if(result.equals("1")){
-			alert("게임이 정상적으로 결제되었습니다.");	
-		}
-	})
-	
 </script>
 <body>
 <div class="row g-0 justify-content-center">

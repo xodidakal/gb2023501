@@ -97,7 +97,7 @@ public class DhController {
 		for (int i = 0; i < g_num.size(); i++) {
 			System.out.println("g_num"+g_num.get(i));
 		}
-		Integer result = 0;
+		String result = "0";
 		
 		int m_num = ms.selectMmNumById();
 		gameOrder.setM_num(m_num);
@@ -114,7 +114,8 @@ public class DhController {
 		
 		try {
 			System.out.println("dhController gameOrderInsertResult() start..");
-			result = gos.insertGameOrder(map);
+			result = String.valueOf(gos.insertGameOrder(map));
+			System.out.println("dhController gameOrderInsertResult result -> "+result);
 			
 		} catch (Exception e) {
 			System.out.println("dhController gameOrderInsertResult() ->"+e.getMessage());
@@ -126,7 +127,7 @@ public class DhController {
 		
 	// 내구독 목록 조회
 	@RequestMapping(value = "subscribe/myGameOrderList")
-	public String myGameOrderList(Game game,String currentPage,Integer result, Model model) {
+	public String myGameOrderList(Game game,String currentPage,String result, Model model) {
 		System.out.println("dhController mygameOrderList() start..");
 		
 		int m_num = ms.selectMmNumById();
@@ -142,12 +143,13 @@ public class DhController {
 		game.setEnd(page.getEndRow());
 			
 		List<Game> listGameOrder = gos.listGameOrder2(game);
+		int result1 = Integer.parseInt(result);
 			
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("listGameOrder", listGameOrder);
 		model.addAttribute("page", page);	
 		model.addAttribute("totalSearchGameOrder",totalSearchGameOrder);
-		model.addAttribute("result",result);
+		model.addAttribute("result",result1);
 		
 		System.out.println("dhController mygameOrderList() end..");
 			
