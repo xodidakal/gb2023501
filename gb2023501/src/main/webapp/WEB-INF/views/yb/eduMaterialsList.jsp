@@ -13,11 +13,10 @@
 	function detailForm(em_num, ggNum) {
 		if(ggNum == null) {
 			ggNum = 0;
-			alert(em_num);
-			alert(ggNum);
+
 			location.href = "/operate/eduMaterialsDetail?em_num="+em_num+"&ggNum="+ggNum;
 		} else {
-			alert(em_num);
+
 			location.href = "/operate/eduMaterialsDetail?em_num="+em_num+"&ggNum="+ggNum;
 		}
 		

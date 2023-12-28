@@ -258,7 +258,7 @@ public class YbController {
 		model.addAttribute("selectEduMaterialsList", selectEduMaterialsList);
 		return "yb/eduMaterialsList";
 	}
-	
+	// 학습자료 리스트 정렬
 	@RequestMapping(value = "/operate/selectSearchType")
 	public String selectSearchType(String typeSelect1, String typeSelect2, String typeSelect3, 
 								   com.choongang.gb2023501.domain.EduMaterials eduMaterials, Model model, RedirectAttributes redirect) {

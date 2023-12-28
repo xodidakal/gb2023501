@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                 <a href="" class="navbar-brand m-0 p-0">
-                    <img src="../assets/img/한국기원 로고.png" alt="Logo"  style="max-width: 100%; height: auto;">
+                    <img src="../assets/img/한국기원!.png" alt="Logo"  style="max-width: 100%; height: auto;">
                 </a><p>
                     <p>게임하면서 쉽게 배우는 바둑!</p>
                     <div class="position-relative mx-auto" style="max-width: 400px;">
