@@ -19,23 +19,23 @@ public class GameDaoImpl implements GameDao {
 
 	@Override
 	public List<Game> selectGameList(int totalListCnt) {
-	System.out.println("GameDaoImpl selectGameList start...");
-	System.out.println("GameDaoImpl selectGameList selectGameList..." + totalListCnt);
-	List<Game> selectGameList = null;
+		System.out.println("GameDaoImpl selectGameList start...");
+		System.out.println("GameDaoImpl selectGameList selectGameList..." + totalListCnt);
+		List<Game> selectGameList = null;
 	
-	try {
+		try {
+			
+			selectGameList = session.selectList("jhSelectGameList", totalListCnt );
+			
+		} catch (Exception e) {
+			System.out.println("GameDaoImpl Exception " + e.getMessage());
+			
+		}
 		
-		selectGameList = session.selectList("jhSelectGameList", totalListCnt );
 		
-	} catch (Exception e) {
-		System.out.println("GameDaoImpl Exception " + e.getMessage());
-		
-	}
-	
-	
-	System.out.println("GameDaoImpl selectGameList " + selectGameList);
-		return selectGameList;
-	}
+		System.out.println("GameDaoImpl selectGameList " + selectGameList);
+			return selectGameList;
+		}
 
 
 }

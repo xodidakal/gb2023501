@@ -44,17 +44,87 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="fact-item bg-light rounded text-center h-100 p-5">
-                        <i class="fa fa-certificate fa-4x text-primary mb-4"></i>
+                    <div class="fact-item bg-light rounded text-center h-100 p-4">
+                         <i class="fa fa-check fa-4x text-primary mb-4"></i>
                         <h5 class="mb-3">공지사항</h5>
-                        <h1 class="display-5 mb-0" data-toggle="counter-up">1234</h1>
+							<table class="listTable" >
+					       		<thead>
+									<tr>
+										<th>분류</th>
+										<th>제목</th>
+									</tr>
+								</thead>
+								 <tbody>
+					<%-- 					 <c:forEach var="" items=""> --%>
+									<c:forEach var="notice" items="${NoticeBoardList}" varStatus="status">
+									 	<tr>
+									 		<td>${notice.b_title}</td>
+									 		<td>
+										 		<c:if test="${notice.b_notie_type == 1}">
+											 		공통
+										 		</c:if>
+									 		</td>
+									 		<td>
+										 		<c:if test="${notice.b_notie_type == 2}">
+										 		이벤트
+										 		</c:if>
+									 		</td>
+									 		<td>
+										 		<c:if test="${notice.b_notie_type == 3}">
+										 		업데이트
+										 		</c:if>
+									 		</td>
+									 		<td>
+										 		<c:if test="${notice.b_notie_type == 4}">
+										 		규정
+										 		</c:if>
+									 		</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="fact-item bg-light rounded text-center h-100 p-5">
+                    <div class="fact-item bg-light rounded text-center h-100 p-3">
                         <i class="fa fa-users-cog fa-4x text-primary mb-4"></i>
                         <h5 class="mb-3">FAQ</h5>
-                        <h1 class="display-5 mb-0" data-toggle="counter-up">1234</h1>
+							<table class="listTable" >
+					       		<thead>
+									<tr>
+										<th>분류</th>
+										<th>제목</th>
+									</tr>
+								</thead>
+								 <tbody>
+					<%-- 					 <c:forEach var="" items=""> --%>
+									<c:forEach var="FAQ" items="${FAQBoardList}" varStatus="status">
+									 	<tr>
+									 		<td>${FAQ.b_title}</td>
+									 		<td>
+										 		<c:if test="${FAQ.b_notie_type == 1}">
+											 		공통
+										 		</c:if>
+									 		</td>
+									 		<td>
+										 		<c:if test="${FAQ.b_notie_type == 2}">
+										 		이벤트
+										 		</c:if>
+									 		</td>
+									 		<td>
+										 		<c:if test="${FAQ.b_notie_type == 3}">
+										 		업데이트
+										 		</c:if>
+									 		</td>
+									 		<td>
+										 		<c:if test="${FAQ.b_notie_type == 4}">
+										 		규정
+										 		</c:if>
+									 		</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
                     </div>
                 </div>
             </div>

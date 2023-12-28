@@ -81,5 +81,14 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		}
 		
 	}
+	
+//    private String determineTargetUrl(HttpServletRequest request, HttpServletResponse response) {
+//        // 저장된 요청을 가져옴
+//        SavedRequest savedRequest = new HttpSessionRequestCache().getRequest(request, response);
+//        if (savedRequest != null) {
+//            return savedRequest.getRedirectUrl();
+//        }
+//        return null;
+//    }
 
 }

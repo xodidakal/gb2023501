@@ -3,6 +3,7 @@ package com.choongang.gb2023501.controller;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -38,8 +39,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.jhRepository.MemberRepository;
+import com.choongang.gb2023501.jhService.BoardMyBatisService;
 import com.choongang.gb2023501.jhService.GameMyBatisService;
 import com.choongang.gb2023501.jhService.MemberService;
+import com.choongang.gb2023501.model.Board;
 import com.choongang.gb2023501.model.Game;
 import com.choongang.gb2023501.model.MemberSearchCriteriaDTO;
 
@@ -55,6 +58,7 @@ public class JhController {
 	//서비스 -> 레파지토리 이므로 여기선 mr 안 씀 -> 사용자 정보 업데이트할 때 사용
 	private final MemberService ms;
 	private final GameMyBatisService gs;
+	private final BoardMyBatisService bs;
 	
 	private final JavaMailSender mailSender;
 //	private final PasswordEncoder passwordEncoder;
@@ -95,10 +99,26 @@ public class JhController {
 		List<Game> selectGameList = gs.selectGameList(totalListCnt);
 		
 		//공지사항 리스트 최근 5개
+		int noticeCategory = 2;
+		Map<String, Integer> noticeParams = new HashMap<>();
+		noticeParams.put("b_category", noticeCategory);
+		noticeParams.put("totalListCnt", totalListCnt);
+		List<Board> selectNoticeBoardList = bs.selectBoardList(noticeParams);
+		
+		
+		//FAQ 리스트 최근 5개
+		int FAQCategory = 3;
+		Map<String, Integer> FAQParams = new HashMap<>();
+		FAQParams.put("b_category", FAQCategory);
+		FAQParams.put("totalListCnt", totalListCnt);
+		List<Board> selectFAQBoardList = bs.selectBoardList(FAQParams);
+		
 		
 		
 		
 		model.addAttribute("member", member);
+		model.addAttribute("NoticeBoardList", selectNoticeBoardList);
+		model.addAttribute("FAQBoardList", selectFAQBoardList);
 		model.addAttribute("selectGameList", selectGameList);
 		return "main";
 	}
