@@ -433,7 +433,7 @@ function pwSubmitVarificationNum(){
                             </form>
                         <div class="d-grid gap-2 d-md-flex justify-content-center">
                     <input id="pwVarificationNumButton" class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="인증번호전송" onclick="pwSubmitVarificationForm()">
-                    <input id="pwVarificationButton" class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="인증확인2" onclick="pwSubmitVarificationNum()">
+                    <input id="pwVarificationButton" class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="인증확인" onclick="pwSubmitVarificationNum()">
                 </div>
                         
                      </div>

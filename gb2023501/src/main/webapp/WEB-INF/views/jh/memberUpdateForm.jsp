@@ -457,7 +457,7 @@
                 <div class="d-grid gap-2 d-md-flex justify-content-center" >
                 <c:choose>
                 	<c:when test="${my == 1 }">
-						<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="수정하기2" onclick="myUpdate()">
+						<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="수정하기" onclick="myUpdate()">
                 	</c:when>
                 	<c:otherwise>
 						<input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="수정하기" onclick="memberUpdate()" >
