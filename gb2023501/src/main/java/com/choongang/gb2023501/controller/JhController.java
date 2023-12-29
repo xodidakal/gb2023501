@@ -641,7 +641,7 @@ public class JhController {
 	    // 현재 페이지의 첫 번째 회원 번호 계산
 	    //long startNumber = totalMembers - (adjustedPageable.getPageNumber() * adjustedPageable.getPageSize());
 //	    int startNumber = (page - 1) * pageSize + 1;
-	    long startNumber = pageable.getOffset();
+	    long startNumber = pageable.getOffset() + 1;
 	    
 	    // 페이지 블록 계산
 	    int pageBlock = 10;
@@ -698,7 +698,7 @@ public class JhController {
 	    // 현재 페이지의 첫 번째 회원 번호 계산
 //	    long startNumber = totalMembers - (pageable.getPageNumber() * pageable.getPageSize());
 	    //int startNumber = (page - 1) * pageSize + 1;
-	    long startNumber = pageable.getOffset(); //시작행 번호
+	    long startNumber = pageable.getOffset()+1; //시작행 번호
 	    
 	    // 페이지 블록 계산
 	    int pageBlock = 10;
