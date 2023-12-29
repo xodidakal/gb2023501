@@ -98,7 +98,8 @@ public class SecurityConfig {
 				//구독서비스
 				.antMatchers("/subscribe/gameOrderForm").hasAnyRole("USER", "EDUCATOR")
 				.antMatchers("/subscribe/myGameOrderList").hasAnyRole("USER", "EDUCATOR")
-				.antMatchers("/subscribe/gameOrderList").hasAnyRole("USER", "EDUCATOR", "ADMIN")
+//				.antMatchers("/subscribe/gameOrderList").hasAnyRole("USER", "EDUCATOR", "ADMIN")
+				.antMatchers("/subscribe/gameOrderList").permitAll()
 				
 				//학습서비스
 				.antMatchers("/learning/**").hasAnyRole("STUDENT")
