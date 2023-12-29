@@ -20,13 +20,13 @@
 		criteriaList = "${criteriaList}";
 	    
 	    
-	    alert("startDate " + startDate);
-	    alert("endDate " + endDate);
-	    alert("searchType " + searchType);
-	    alert("searchValue " + searchValue);
-	    alert("category " + category);
-	    alert("mshipType " + mshipType);
-	    alert("page " + page);
+	   // alert("startDate " + startDate);
+//	    alert("endDate " + endDate);
+	//    alert("searchType " + searchType);
+	  //  alert("searchValue " + searchValue);
+	   // alert("category " + category);
+	   // alert("mshipType " + mshipType);
+	    //alert("page " + page);
 	
 	    if (
 	        startDate === '' &&
@@ -36,10 +36,10 @@
 	        category === '' &&
 	        mshipType === ''
 	    ) {
-	        alert("검색 무");
+	        //alert("검색 무");
 	        location.href = "/operate/memberList?page=" + page;
 	    } else {
-	        alert("검색 유");
+	       // alert("검색 유");
 	        location.href = "/operate/SearchMemberList" + criteriaList;
 	        //location.href = "/operate/SearchMemberList?startDate=" + startDate + "&endDate=" + endDate + "&searchType=" + searchType + "&searchValue=" + searchValue + "&category=" + category + "&mshipType=" + mshipType + "&page=" + page;
 	    }
@@ -62,10 +62,10 @@
 		        category === '' &&
 		        mshipType === ''
 		    ) {
-		        alert("검색 무");
+		       // alert("검색 무");
 		        location.href = "/operate/memberUpdateForm?mmNum="+pMmNum+"&page=" + page;
 		    } else {
-		        alert("검색 유");
+		       // alert("검색 유");
 		        location.href = "/operate/memberUpdateForm?mmNum="+pMmNum+"&startDate=" + startDate + "&endDate=" + endDate + "&searchType=" + searchType + "&searchValue=" + searchValue + "&category=" + category + "&mshipType=" + mshipType + "&page=" + page;
 		    }
 	}

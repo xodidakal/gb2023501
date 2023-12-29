@@ -58,7 +58,9 @@
                 
             </div>
             <div class="col-lg-6 col-md-12 text-center mt-3">
-            	<h2>게임으로 배우는 바둑 교실</h2>
+            	<a href="/" class="navbar-brand m-0 p-0">
+            		<h2>게임으로 배우는 바둑 교실</h2>
+            	</a>
             </div>
               <div class="col-lg-3 col-md-12 text-center text-lg-start">
           	   <div class="row">	

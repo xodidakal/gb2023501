@@ -3,7 +3,7 @@
 <%@ include file="common/headerFo.jsp" %>
 
     <!-- Carousel Start -->
-    <div class="container-fluid p-0 mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid p-0 mb-2 wow fadeIn" data-wow-delay="0.1s">
         <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
                 <c:forEach var="item" items="${selectGameList}" varStatus="status">
@@ -15,12 +15,13 @@
             <div class="carousel-inner">
                 <c:forEach var="item" items="${selectGameList}" varStatus="status">
                     <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
-                    <div>
-                      <a href="/subscribe/gameOrderList">
-                      <img class="w-100" src="${item.g_attach_name}" alt="Image" style="max-width: 600px; width: 100%; height: auto;"></a>
-                    </div>
+						<div style="max-height: 300px; overflow: hidden;">
+                      		<a href="/subscribe/gameOrderList">
+    							<img class="w-100" src="${item.g_attach_name}" alt="Image" style="width: 100%; height: auto;">
+					  	</div>
+
                         <div class="carousel-caption">
-                            <div class="p-3" style="max-width: 900px;">
+                            <div class="p-3" style="max-width: 400px;">
                                 <h4 class="text-white text-uppercase mb-4 animated zoomIn">${item.g_title}</h4>
                                 <%-- <h1 class="display-1 text-white mb-0 animated zoomIn">${item.caption2}</h1> --%>
                             </div>
@@ -42,7 +43,7 @@
 
 
     <!-- Facts Start -->
-    <div class="container-xxl py-5">
+    <div class="container-xxl py-1">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.1s">

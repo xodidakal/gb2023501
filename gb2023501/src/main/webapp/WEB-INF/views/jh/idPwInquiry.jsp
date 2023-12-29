@@ -189,7 +189,7 @@ function submitVarificationForm() {
         		 data["name"] = name.val();
         		 data[varificationType] = varificationValue;
         		 
-        		 alert("data -> " + JSON.stringify(data)); // 객체를 문자열로 변환해서 출력
+        		// alert("data -> " + JSON.stringify(data)); // 객체를 문자열로 변환해서 출력
        			$.ajax({
        				url : "/info/idInquiry",
        				type: "POST",
@@ -274,7 +274,7 @@ function pwSubmitVarificationForm() {
         data["id"] = id.val();
         data[varificationType] = varificationValue;
 
-        alert("data -> " + JSON.stringify(data)); // 객체를 문자열로 변환해서 출력
+       // alert("data -> " + JSON.stringify(data)); // 객체를 문자열로 변환해서 출력
 
         $.ajax({
             url: "/info/pswdInquiry",
@@ -283,7 +283,7 @@ function pwSubmitVarificationForm() {
             contentType: "application/json",
             dataType: 'text',
             success: function (response) {
-                alert("response" + response);
+                //alert("response" + response);
                 if (response === "0") {
                 	alert("가입되지 않은 회원입니다. 회원가입을 먼저 해주세요!");
                     location.href = "/info/joinAgreeForm";
@@ -308,7 +308,7 @@ function pwSubmitVarificationForm() {
 
 function pwSubmitVarificationNum(){
 	var pVarificationNum = parseInt(document.getElementById("pwVarificationNumInput").value);
-    alert("pVarificationNum : " + pVarificationNum);
+    //alert("pVarificationNum : " + pVarificationNum);
     
     
     $.ajax({

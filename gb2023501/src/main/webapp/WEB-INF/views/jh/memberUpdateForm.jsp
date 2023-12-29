@@ -153,10 +153,10 @@
 	}
 
 	function myUpdate() {
-		alert("마이 정보 수정");
+		//alert("마이 정보 수정");
 		// 폼 제출 전에 유효성 검사 수행
 		if (!isFormValid()) {
-		alert("필수항목 누락 -> ");
+		//alert("필수항목 누락 -> ");
         	return; // 필수 항목이 비어있으면 폼 제출 중단
 		}
 		 
@@ -169,7 +169,7 @@
  			alert('입력 정보를 확인해 주세요!')
  			return;
  		  }
-		alert("수정시작 -> ");
+		//alert("수정시작 -> ");
 
 	    // 폼을 선택하고 action, method 설정 후 submit 메서드 호출
 	    var form = document.getElementById("memberUpdateForm");
@@ -188,11 +188,11 @@
 	    var page = "${page}";
 	    var mmNum = ${member.mmNum};
 	    
-		alert("formData -> ");
+		//alert("formData -> ");
 
 		// 폼 제출 전에 유효성 검사 수행
 		if (!isFormValid()) {
-		alert("필수항목 누락 -> ");
+		//alert("필수항목 누락 -> ");
         	return; // 필수 항목이 비어있으면 폼 제출 중단
 		}
 		 
@@ -205,7 +205,7 @@
  			alert('입력 정보를 확인해 주세요!')
  			return;
  		  }
-		alert("수정시작 -> ");
+		//alert("수정시작 -> ");
 		
 		var form = document.getElementById("memberUpdateForm");
 	    form.action = "/operate/memberUpdate"; // 수정된 부분
@@ -224,13 +224,13 @@
 	    var mshipType = "${criteria.mshipType}";
 	    var page = "${page}";
 	
-	    alert("startDate " + startDate);
+	   /*  alert("startDate " + startDate);
 	    alert("endDate " + endDate);
 	    alert("searchType " + searchType);
 	    alert("searchValue " + searchValue);
 	    alert("category " + category);
 	    alert("mshipType " + mshipType);
-	    alert("page " + page);
+	    alert("page " + page); */
 	
 	    if (
 	        startDate === '' &&
@@ -240,10 +240,10 @@
 	        category === '' &&
 	        mshipType === ''
 	    ) {
-	        alert("검색 무");
+	       // alert("검색 무");
 	        location.href = "/operate/memberList?page=" + page;
 	    } else {
-	        alert("검색 유");
+	       // alert("검색 유");
 	        location.href = "/operate/SearchMemberList?startDate=" + startDate + "&endDate=" + endDate + "&searchType=" + searchType + "&searchValue=" + searchValue + "&category=" + category + "&mshipType=" + mshipType + "&page=" + page;
 	    }
 	}

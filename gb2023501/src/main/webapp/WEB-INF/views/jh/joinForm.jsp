@@ -282,7 +282,7 @@
 			async: false, // 동기적으로 처리
 			dataType : 'text',
 			success	 : function(data){
-						alert("result -> " + data);
+						//alert("result -> " + data);
 						if(data === "1"){
 							alert("회원가입이 완료되었습니다!");
 							location.href="/";

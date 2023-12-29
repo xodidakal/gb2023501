@@ -247,7 +247,7 @@
        						data["name"] = nameInputValue;
         					data[varificationType] = varificationValue;
             	
-            	alert("data -> " + JSON.stringify(data));
+            	//alert("data -> " + JSON.stringify(data));
             	
              	$.ajax({
             		url	: "/info/joinAgree",
@@ -291,7 +291,7 @@
             
 	function submitVarificationNum(){
 		var pVarificationNum = parseInt(document.getElementById("varificationNumInput").value);
-        alert("pVarificationNum : " + pVarificationNum);
+       // alert("pVarificationNum : " + pVarificationNum);
         
         
         $.ajax({
@@ -300,7 +300,7 @@
         	data 	 : {varificationNum : pVarificationNum},
         	dataType : "text",
         	success  : function(data){
-			        		alert("result -> " + data);
+			        		//alert("result -> " + data);
 			        		if(data === "1"){
 			        			 location.href="/info/joinForm";
 			        		} else {
