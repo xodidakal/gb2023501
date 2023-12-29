@@ -76,21 +76,21 @@ public class YbController {
 //		return member;
 //	}
 	
-	@RequestMapping(value = "/")
-	public String main(Model model) {
-		System.out.println("Main start...");
-
-		Optional<Member> memberOptional = ms.selectUserById();
-		Member member = null;		
-		if(memberOptional.isPresent()) {
-			member = memberOptional.get();
-			System.out.println("로그인 회원 정보 -> " + member);
-			System.out.println("member name -> " + member.getMmName());
-			
-		}
-		model.addAttribute("member", member);
-		return "main";
-	}
+//	@RequestMapping(value = "/")
+//	public String main(Model model) {
+//		System.out.println("Main start...");
+//
+//		Optional<Member> memberOptional = ms.selectUserById();
+//		Member member = null;		
+//		if(memberOptional.isPresent()) {
+//			member = memberOptional.get();
+//			System.out.println("로그인 회원 정보 -> " + member);
+//			System.out.println("member name -> " + member.getMmName());
+//			
+//		}
+//		model.addAttribute("member", member);
+//		return "main";
+//	}
 	// 학습자료 등록 페이지
 	@RequestMapping(value = "/operate/eduMaterialsForm")
 	public String eduResourceForm(Model model, Game game) {	
