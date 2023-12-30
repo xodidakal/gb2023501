@@ -36,7 +36,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: alphago5012@gmail.com #메일 주소
-    password: cvcp hxkj omoz ltbs   #메일 비번
+    password: eftp yzyh fbti vysc   #메일 비번
     properties: 
       mail: 
         smtp: 
