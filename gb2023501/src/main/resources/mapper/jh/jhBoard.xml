@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.choongang.gb2023501.jhBoardMapper"> 
+
+	<select id="jhSelectBoardList" parameterType="map" resultType="Board">
+		SELECT *
+		FROM (
+		    SELECT *
+		    FROM Board
+			<if test="b_category > 0">
+		    	WHERE b_category = #{b_category}
+		    </if>
+		    ORDER BY b_regi_date DESC
+		)
+		<if test="totalListCnt > 0">
+			<![CDATA[
+				WHERE ROWNUM <= #{totalListCnt}
+			]]>	    
+	    </if>
+		
+	</select>
+
+</mapper>

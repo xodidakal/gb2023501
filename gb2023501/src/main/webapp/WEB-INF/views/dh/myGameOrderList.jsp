@@ -27,16 +27,16 @@
 	         <h2 style="margin-bottom: 15px;">내 구독상품</h2>
 	         <p style="margin-bottom: 35px;">총 <fmt:formatNumber value="${totalSearchGameOrder}" groupingUsed="true"/> 건</p>
 	    </div>
-	    <div class="input-group col-md-5 mb-3">
+	    <!-- <div class="input-group col-md-5 mb-3">
 	    	<input class="form-control" type="date" id="startDate" name="startDate" required="required" style="width: 130px; margin: 10px;"><div class="mt-3">~</div>					
 			<input class="form-control" type="date" id="endDate" name="endDate" required="required" style="width: 130px; margin: 10px;">
-		</div>
+		</div> -->
 		<div class="input-group col-md-5 mb-3">
 			<!-- 카테고리 검색 -->
 			<select id="searchType" name="searchType" class="w-17 rounded" style="border-color: #ced4da">
 				<option value="title">게임명</option>
 			</select>&nbsp;&nbsp;
-            <input id="keyword" name="keyword" class="form-control rounded" placeholder="검색어를 입력하세요." type="text" style="width: 160px;">
+            <input id="keyword" name="keyword" class="form-control rounded" value="${game.keyword}" placeholder="검색어를 입력하세요." type="text" style="width: 160px;">
           	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
          		<a onclick="myGameOrderList()"><i class="bi bi-search mt-2"></i></a>
           	</div>	
@@ -67,7 +67,7 @@
 							</td>
 							<td valign="middle">${game.g_title}</td>
 							<td valign="middle"><fmt:formatNumber value="${game.g_sell_price}" groupingUsed="true"/>원 / ${game.g_period}개월</td>
-							<td valign="middle"><fmt:formatDate value="${game.go_order_date}" type="date" pattern="YY/MM/dd"/></td>
+							<td valign="middle"><fmt:formatDate value="${game.go_order_date}" type="date" pattern="YYYY-MM-dd"/></td>
 							<td valign="middle">${game.lg_title}</td>
 						</tr>
 						<c:set var="num" value="${num+1}"/>

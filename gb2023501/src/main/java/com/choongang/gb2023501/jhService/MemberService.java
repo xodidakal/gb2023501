@@ -8,7 +8,9 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.choongang.gb2023501.domain.LgJoin;
 import com.choongang.gb2023501.domain.Member;
+import com.choongang.gb2023501.model.MemberSearchCriteriaDTO;
 
 public interface MemberService {
 	//로그인된 아이디 가져오기
@@ -43,6 +45,16 @@ public interface MemberService {
 
 	//회원목록 전체 조회(페이지네이션)
 	public Page<Member> findAll(Pageable pageable);
+
+	//검색조건 있는 회원 목록 조회
+	public Page<Member> SearchMemberList(MemberSearchCriteriaDTO searchCriteria, Pageable pageable);
+
+	//회원번호로 회원정보 가져오기
+	public Member findByMmNum(int mmNum);
+
+	//회원번호로 가입된 학습그룹 리스트 가져오기
+	public List<LgJoin> selectJoinedLearnGroupList(Member member);
+
 
 
 }

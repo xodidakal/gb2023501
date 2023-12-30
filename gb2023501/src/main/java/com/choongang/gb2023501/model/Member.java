@@ -25,10 +25,10 @@ public class Member {
 	private int 	m_dele_status;	//삭제여부
 	
 	//검색 조회용
-	private String 	searchType;		//조건 검색 타입
-	private String 	SearchCriteria;	//조건 검색
-	private String 	startDate;		//시작 날짜
-	private String 	endDate;		//종료 날짜
+//	private String 	searchType;		//조건 검색 타입
+//	private String 	SearchCriteria;	//조건 검색
+//	private String 	startDate;		//시작 날짜
+//	private String 	endDate;		//종료 날짜
 	
 
 }

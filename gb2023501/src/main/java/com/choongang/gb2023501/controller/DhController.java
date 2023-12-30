@@ -49,6 +49,7 @@ public class DhController {
 		List<Game> listGameOrder = gos.listGameOrder(game);
 		
 		model.addAttribute("keyword", keyword);
+		model.addAttribute("game", game);
 		model.addAttribute("listGameOrder", listGameOrder);
 		model.addAttribute("page", page);
 		model.addAttribute("totalSearchGameOrder",totalSearchGameOrder);
@@ -57,7 +58,7 @@ public class DhController {
 		return "dh/gameOrderList";
 	}
 	
-	// 게임콘텐츠 구독신청
+	// 게임콘텐츠 구독 신청화면으로 이동
 	@RequestMapping(value = "subscribe/gameOrderInsertResult")
 	public String gameOrderInsertResult(@RequestParam(value="g_num") List<Integer> g_num, Model model) {
 			
@@ -79,7 +80,8 @@ public class DhController {
 		model.addAttribute("gamesum", gamesum);
 		model.addAttribute("phone",phone);
 		
-		return "forward:gameOrderInsert";
+		
+		return "dh/gameOrderForm";
 	}
 	
 	public String phone_format(String number) {
@@ -87,21 +89,42 @@ public class DhController {
 	      return number.replaceAll(regEx, "$1-$2-$3");
 	}
 		
-		@RequestMapping(value = "subscribe/gameOrderInsert")
-		public String gameOrderInsert(GameOrder gameOrder, Model model) {
-			int result = 0;
-			
-			try {
-				System.out.println("dhController gameOrderInsertResult() start..");
-				result = gos.insertGameOrder(gameOrder);
-			} catch (Exception e) {
-				System.out.println("dhController gameOrderInsertResult() ->"+e.getMessage());
-			} finally {
-				System.out.println("dhController gameOrderInsertResult() end..");
-			}
-			return "dh/gameOrderForm";
+	// 게임콘텐츠 구독신청
+	@RequestMapping(value = "subscribe/gameOrderInsert")
+	public String gameOrderInsert(@RequestParam(value="g_num") List<Integer> g_num,
+									GameOrder gameOrder, Model model) {
+		System.out.println("game");
+		for (int i = 0; i < g_num.size(); i++) {
+			System.out.println("g_num"+g_num.get(i));
 		}
-	
+		int result = 0;
+		
+		int m_num = ms.selectMmNumById();
+		gameOrder.setM_num(m_num);
+		
+		System.out.println("gameOrder"+gameOrder.getM_num());
+		// 선택한 게임정보 가져오기 
+		Map<String, Object> map1 = new HashMap<String, Object>();
+		map1.put("g_num", g_num);
+		List<Game> gamelist = gos.selectGameOrder(map1);
+		// 게임 주문테이블에 map을 insert하기 위함
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("gamelist", gamelist);
+		map.put("gameOrder", gameOrder);
+		
+		try {
+			System.out.println("dhController gameOrderInsertResult() start..");
+			result = gos.insertGameOrder(map);
+			System.out.println("dhController gameOrderInsertResult result -> "+result);
+			
+		} catch (Exception e) {
+			System.out.println("dhController gameOrderInsertResult() ->"+e.getMessage());
+		} finally {
+			System.out.println("dhController gameOrderInsertResult() end..");
+		}
+		return "redirect:myGameOrderList?result="+result;
+	}
+		
 	// 내구독 목록 조회
 	@RequestMapping(value = "subscribe/myGameOrderList")
 	public String myGameOrderList(Game game,String currentPage, Model model) {
@@ -123,7 +146,7 @@ public class DhController {
 			
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("listGameOrder", listGameOrder);
-		model.addAttribute("page", page);
+		model.addAttribute("page", page);	
 		model.addAttribute("totalSearchGameOrder",totalSearchGameOrder);
 		
 		System.out.println("dhController mygameOrderList() end..");

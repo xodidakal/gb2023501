@@ -19,6 +19,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.choongang.gb2023501.configuration.Role;
 
@@ -114,6 +115,7 @@ public class Member {
 	//둘 다 사용하려면 , 프로젝트의 의존성 관리 도구(예: Maven, Gradle)를 통해 Spring Data JPA와 JPA 구현체(Hibernate 등)를 추가해야 함
 	//여기선 gradle에 spring-boot-starter-data-jpa를 추가해서 사용중
 	@CreationTimestamp
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "m_regi_date")
 	private Date regiDate;		
 	
@@ -122,7 +124,8 @@ public class Member {
 	//엔티티의 마지막 수정 일자를 자동으로 관리하기 위해 사용
 	//엔티티의 특정 필드에 마지막으로 수정된 일자가 자동으로 업데이트되게 할 수 있음
 	//@Entity + LocalDateTime나 Date 타입이어야함
-	@UpdateTimestamp
+	@UpdateTimestamp 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "m_modi_date")
 	private Date modiDate;		
 	
@@ -147,15 +150,19 @@ public class Member {
     private Role role;  
 
 	//검색 조회용
-    @Transient
-	private String 	searchType;		//조건 검색 타입
-    @Transient
-	private String 	SearchCriteria;	//조건 검색
-    @Transient
-	private String 	startDate;		//시작 날짜
-    @Transient
-	private String 	endDate;		//종료 날짜
-	
-	
+//    @Transient
+//	private String 	searchType;		//조건 검색 타입
+//    @Transient
+//	private String 	SearchCriteria;	//조건 검색
+//    @Transient
+//	private String 	startDate;		//시작 날짜
+//    @Transient
+//	private String 	endDate;		//종료 날짜
+//	
+	public String phoneFormat() {
+		String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
+		String phone = this.phone;
+		return phone.replaceAll(regEx, "$1-$2-$3");
+	}
 
 }

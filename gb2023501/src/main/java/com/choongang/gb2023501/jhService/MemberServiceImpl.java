@@ -1,12 +1,17 @@
 package com.choongang.gb2023501.jhService;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,9 +20,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.choongang.gb2023501.domain.LgJoin;
 import com.choongang.gb2023501.domain.Member;
-import com.choongang.gb2023501.jhRepository.CustomMemberRepository;
+//import com.choongang.gb2023501.jhRepository.CustomMemberRepository;
+import com.choongang.gb2023501.jhRepository.LgJoinRepository;
 import com.choongang.gb2023501.jhRepository.MemberRepository;
+import com.choongang.gb2023501.model.MemberSearchCriteriaDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberServiceImpl implements MemberService {
 	
 	private final MemberRepository mr;
+	private final LgJoinRepository lr;
 	
 	
 	
@@ -115,6 +124,7 @@ public class MemberServiceImpl implements MemberService {
 		return existsByMmId;
 	}
 
+	//회원가입 
 	@Override
 	public Member join(@Valid Member member) {
 		System.out.println("MemberServiceImpl join Start...");
@@ -144,7 +154,7 @@ public class MemberServiceImpl implements MemberService {
 		return currentUser;
 	}
 
-	//회원목록 전체 조회
+	//회원목록 전체 조회 -> 삭제 예정
 	@Override
 	public List<Member> findAll() {
 		List<Member> memberList = mr.findAll();
@@ -155,19 +165,90 @@ public class MemberServiceImpl implements MemberService {
 	//회원목록 전체 조회(페이지네이션)
 	@Override
 	public Page<Member> findAll(Pageable pageable) {
+		System.out.println("MemberServiceImpl findAll Start...");
 		Page<Member> memberList = mr.findAll(pageable);
 		return memberList;
 	}
 
-	//회원목록 조회 (검색 조건 포함)
-//	@Override
-//	public List<Member> selectMemberList(Member member) {
-//		System.out.println("MemberServiceImpl findByMmIdAndEmailAndName Start...");
-//		List<Member> memberList = mr.selectMemberList(member);
-//		
-//		return memberList;
-//	}
+	//검색조건 있는 회원 목록 조회
+	@Override
+	public Page<Member> SearchMemberList(MemberSearchCriteriaDTO criteria, Pageable pageable) {
+		System.out.println("MemberServiceImpl SearchMemberList Start...");
+	    
+	    Specification<Member> spec = Specification.where(null);
 
+	    //!=만으로는 null체크를 못함 isEmpty까지 해야함->url로 파라미터 들어올 때 null이 아니라 빈문자열''로 들어오므로 null로 체크 못함
+        if (criteria.getStartDate() != null && !criteria.getStartDate().isEmpty() && criteria.getEndDate() != null && !criteria.getEndDate().isEmpty()) {
+        	System.out.println("날짜 검색 " + criteria.getStartDate() + "~" + criteria.getEndDate());
+            spec = spec.and(MemberSpecification.searchByPeriod(criteria));
+            System.out.println("날짜 검색 진행후");
+        }
+
+        if("null".equals(criteria.getSearchType())  && criteria.getSearchValue() != null) {
+        	System.out.println("타입 무선택 " + criteria.getSearchType());
+        	System.out.println("타입 무 검색값 " + criteria.getSearchValue());
+        	
+        	 spec = spec.and(MemberSpecification.searchById(criteria) // or로 하면 날짜 검색이 있는 경우 or일때랑 and일때랑 쿼리문이 달라짐(콘솔에서 확인 가능)
+        	            .or(MemberSpecification.searchByName(criteria))
+        	            .or(MemberSpecification.searchByPhon(criteria)));
+        	
+        }
+        
+        if (!"null".equals(criteria.getSearchType()) && criteria.getSearchType() != "null" && criteria.getSearchValue() != null) {
+        	System.out.println("타입 선택 " + criteria.getSearchType());
+        	System.out.println("타입 선택 검색값 " + criteria.getSearchValue());
+            switch (criteria.getSearchType()) {
+                case "mmId":
+                	System.out.println("아이디 검색 " + criteria.getSearchValue());
+                    spec = spec.and(MemberSpecification.searchById(criteria));
+                    break;
+                case "mmName":
+                	System.out.println("이름 검색 " + criteria.getSearchValue());
+                    spec = spec.and(MemberSpecification.searchByName(criteria));
+                    break;
+                case "phone":
+                	System.out.println("폰 검색 " + criteria.getSearchValue());
+                    spec = spec.and(MemberSpecification.searchByPhon(criteria));
+                    break;
+                // Add other cases as needed
+            }
+        }
+
+        if (criteria.getCategory() != 0 && criteria.getCategory() != null) {
+        	System.out.println("회원구분 검색 " + criteria.getCategory());
+            spec = spec.and(MemberSpecification.searchByCategory(criteria));
+        }
+
+        if (criteria.getMshipType() != 0 && criteria.getMshipType() != null) {
+        	System.out.println("회원자격 검색 " + criteria.getMshipType());
+            spec = spec.and(MemberSpecification.searchByMshipType(criteria));
+        }
+
+        return mr.findAll(spec, pageable);
+	}
+
+	//회원번호로 회원정보 가져오기
+	@Override
+	public Member findByMmNum(int mmNum) {
+		System.out.println("MemberServiceImpl findByMmNum Start...");
+
+		Optional<Member> memberOptional = mr.findByMmNum(mmNum);
+		
+		Member member = null;
+		if(memberOptional.isPresent()) {
+			member = memberOptional.get();
+		}
+		return member;
+	}
+
+	//회원번호로 가입된 학습그룹 리스트 가져오기
+	@Override
+	public List<LgJoin> selectJoinedLearnGroupList(Member member) {
+		System.out.println("MemberServiceImpl selectJoinedLearnGroupList Start...");
+
+		List<LgJoin> joinedLearnGroup = lr.findByMember(member);
+		return joinedLearnGroup;
+	}
 
 
 

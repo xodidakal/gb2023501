@@ -19,13 +19,13 @@
 		            <tr>
 						<th>게임명</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_title" id="g_title">
+		                    <input type="text" class="form-control" name="g_title" id="g_title" required>
 		            	</td>
 					</tr>
 					 <tr>
 						<th>학습난이도</th>
 						<td colspan="3">
-							<select id="g_step" name="g_step" class="w-100 rounded" style="margin-right: 20%; border-color: #ced4da">
+							<select id="g_step" name="g_step" class="w-17 rounded" style="margin-right: 110px; border-color: #ced4da; width: 100px">
 								<option value="1">초급</option>
 								<option value="2">중급</option>
 								<option value="3">고급</option>
@@ -34,38 +34,39 @@
 					</tr>
 					 <tr>
 						<th>구독기간</th>
-						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_period" id="g_period" >개월
-		            	</td>
+						<td>
+							<input type="number" class="form-control" name="g_period" id="g_period"style="width: 100px" required>
+		                </td>
+		                <td width="10px;">개월</td>
 					</tr>
 					 <tr>
 						<th>구독가능인원</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_to" id="g_to" >
+		                    <input type="number" class="form-control" name="g_to" id="g_to" required>
 		            	</td>
 					</tr>
 					 <tr>
 						<th>정가</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_price" id="g_price" >
+		                    <input type="number" class="form-control" name="g_price" id="g_price" required>
 		            	</td>
 					</tr>
 					 <tr>
 						<th>할인율</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="discount" id="discount" >
+		                    <input type="number" class="form-control" name="discount" id="discount" required >
 		            	</td>
 					</tr>
 					 <tr>
 						<th>판매가</th>
 						<td colspan="3">
-		                    <input type="text" class="form-control" name="g_sell_price" id="g_sell_price">
+		                    <input type="number" class="form-control" name="g_sell_price" id="g_sell_price" required>
 		            	</td>
 					</tr>
 					<tr>
 						<th>상품소개</th>
 						<td colspan="3">
-		                   	<textarea class="form-control" placeholder="상품에 대한 소개를 입력해주세요" name="g_content" id="g_content" style="height: 200px"></textarea>
+		                   	<textarea class="form-control" name="g_content" id="g_content" style="height: 200px" required></textarea>
 						</td>
 					</tr>
 	                <tr>
@@ -77,7 +78,7 @@
 	                <tr>
 						<th>전시여부</th>
 						<td width="150px;">
-		                    <input class="form-check-input" type="radio" name="g_dele_status" id="g_dele_status" value="0">
+		                    <input class="form-check-input" type="radio" name="g_dele_status" id="g_dele_status" value="0" checked="checked">
 		                    <label>전시</label>
 		                </td>
 		                <td width="150px;">

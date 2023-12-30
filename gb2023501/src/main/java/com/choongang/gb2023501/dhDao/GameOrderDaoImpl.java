@@ -155,10 +155,10 @@ public class GameOrderDaoImpl implements GameOrderDao {
 	}
 
 	@Override
-	public int insertGameOrder(GameOrder gameOrder) {
+	public int insertGameOrder(Map<String, Object> map) {
 		int result = 0;
 		try {
-			result = session.insert("dhGameOrderInsert", gameOrder);
+			result += session.insert("dhGameOrderInsert", map);
 		} catch (Exception e) {
 			System.out.println("GameOrderDaoImpl insertGameOrder->"+e.getMessage());
 		}

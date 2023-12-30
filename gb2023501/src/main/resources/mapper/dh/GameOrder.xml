@@ -6,13 +6,16 @@
 	<select id="dhGameOrderList" resultType="Game" parameterType="Game">
 		SELECT 	a.*
 		FROM   (SELECT rownum rn, g.*
-				FROM  game g
-				where g_dele_status = 0
-				<if test="keyword != null and keyword != ''">
-			 	and   g_title like '%' || #{keyword} || '%'
-			 	</if>
+				FROM  (select *
+					   from game g
+					   where g_dele_status = 0
+				       <if test="keyword != null and keyword != ''">
+			 	       and   g_title like '%' || #{keyword} || '%'
+			 	       </if>
+				       ORDER BY g_regi_date desc) g
 				) a
 		WHERE rn BETWEEN #{start} AND #{end}
+		
 		
 	</select>
 	
@@ -23,6 +26,7 @@
 		<if test="keyword != null and keyword != ''">
 		and  g_title like '%' || #{keyword} || '%'
 		</if>
+		
 	</select>
 	
 	<!-- 구독신청 -->
@@ -46,10 +50,33 @@
    		</foreach>	
    </select>
 	
-	<insert id="dhGameOrderInsert" parameterType="java.util.Map" >
-   		INSERT INTO game_order(go_num, g_num, m_num, go_order_type,go_payment,go_depositor,go_order_date)
-   		<foreach collection="g_num" item="g_num" open="(" separator="," close=")">
-   		VALUES(game_order_seq.nextval,#{g_num},#{m_num},#{go_order_type},#{go_payment},#{go_depositor},sysdate)
+	<!-- <insert id="dhGameOrderInsert" parameterType="java.util.Map" >
+   		INSERT ALL
+   		<foreach collection="gamelist" item="game" separator=" ">
+   			INTO game_order(go_num,g_num,m_num,go_order_type,go_payment,go_depositor,go_order_date)
+   			VALUES(game_order_seq.nextval,#{game.g_num},#{game.m_num},#{gameOrder.go_order_type},#{game.g_sell_price},#{gameOrder.go_depositor},sysdate)
+   		</foreach>
+   		SELECT * FROM DUAL
+   </insert> -->
+   <insert id="dhGameOrderInsert" parameterType="java.util.Map" >
+   		<foreach collection="gamelist" item="game" separator=";" open="DECLARE BEGIN" close="; END;">
+   			INSERT INTO game_order(
+   					 go_num
+   					,g_num
+   					,m_num
+   					,go_order_type
+   					,go_payment
+   					,go_depositor
+   					,go_order_date
+   								  )
+   			SELECT	   game_order_seq.nextval
+   					,#{game.g_num}
+   					,#{gameOrder.m_num}
+   					,#{gameOrder.go_order_type}
+   					,#{game.g_sell_price}
+   					,#{gameOrder.go_depositor}
+   					,sysdate
+   			FROM DUAL		
    		</foreach>
    </insert>
 	
@@ -63,13 +90,13 @@
                         (SELECT g_num, LISTAGG(lg_title,', ')WITHIN GROUP(ORDER BY lg_title) as lg_title
                          FROM learn_grp
                          GROUP BY g_num) l , game_order go
-            	 where  g.g_num = l.g_num
+            	 where  g.g_num = l.g_num(+)
             	 and	g.g_num = go.g_num
             	 and    go.m_num = ${m_num}
             	 <if test="keyword != null and keyword != ''">
 			 	 and 	g_title like '%' || #{keyword} || '%'
 			 	 </if>
-			    ) a
+			    ORDER BY go_order_date desc) a
 		 )
 	WHERE rn BETWEEN #{start} and #{end}
 	</select>
@@ -79,7 +106,7 @@
 		FROM   game g, (SELECT g_num, LISTAGG(lg_title,',')WITHIN GROUP(ORDER BY lg_title) as lg_title
                          FROM learn_grp
                          GROUP BY g_num) l , game_order go
-		where  g.g_num = l.g_num
+		where  g.g_num = l.g_num(+)
         and	   g.g_num = go.g_num
         and    go.m_num = ${m_num}
 		<if test="keyword != null and keyword != ''">
@@ -89,15 +116,17 @@
 	
 	<select id="dhGameList" resultType="Game" parameterType="Game">
 		SELECT 	a.*
-		FROM   (SELECT rownum rn, g.*
-				FROM  game g
-				<if test="keyword != null and keyword != ''">
-			 	where g_title like '%' || #{keyword} || '%'
-			 	</if>
-			 	<if test="g_dele_status != null and g_dele_status != ''">
-			 	and g_dele_status = #{g_dele_status}
-			 	</if>
-				) a
+		FROM(SELECT rownum rn, g.*
+			 FROM(select *
+			      from   game g
+					<if test="keyword != null and keyword != ''">
+			 	  where g_title like '%' || #{keyword} || '%'
+			 		</if>
+			 		<if test="g_dele_status != null and g_dele_status != ''">
+			 	  and g_dele_status = #{g_dele_status}
+			 		</if>
+				 ORDER BY g_regi_date desc ) g
+			)a	 
 		WHERE rn BETWEEN #{start} AND #{end}
 		
 	</select>
@@ -128,7 +157,7 @@
    
    <update id="updateGame2" parameterType="Game">
    		UPDATE 	game	
-   		SET		g_title = #{g_title}, g_step = #{g_step}, g_period = #{g_period}, g_to = #{g_to}, g_price = #{g_price}, g_content = #{g_content},g_attach_name = #{g_attach_name}, g_dele_status = #{g_dele_status}
+   		SET		g_title = #{g_title}, g_step = #{g_step}, g_period = #{g_period}, g_to = #{g_to}, g_price = #{g_price},discount = #{discount},g_sell_price = #{g_sell_price},g_content = #{g_content},g_attach_name = #{g_attach_name}, g_dele_status = #{g_dele_status}, g_modi_date = sysdate
    		WHERE	g_num = #{g_num}
    		AND     m_num = #{m_num}	
    </update>

@@ -18,13 +18,17 @@
 		location.href = "gameOrderList?keyword="+keyword;
 	}
 	
-	function check() {
-		var f = document.frm;
-		if(f.g_num.checked == false){
-		    alert("체크박스는 기본 입력사항입니다. 최소 한가지이상 선택해 주세요");
-		    return false;
-		}
-		
+	function totalCheck() {
+	      // g_num 체크박스에서 체크된 개수
+	      var totalG_numChecked = $("input[name=g_num]:checked").length;
+	      
+	      // h_num과 m_num이 0보다 커야 true
+	      if(totalG_numChecked > 0){
+	        document.forms['frm'].submit();
+	      }else if(totalG_numChecked < 1){
+	         alert("게임콘텐츠를 선택해주세요.");
+	         return false;
+	      }
 	}
 	
 </script>
@@ -41,7 +45,7 @@
 			<select id="searchType" name="searchType" class="w-17 rounded" style="border-color: #ced4da">
 				<option value="title">게임명</option>
 			</select>&nbsp;&nbsp;
-            <input id="keyword" name="keyword" class="form-control rounded" placeholder="검색어를 입력하세요." type="text" style="width: 160px;">
+            <input id="keyword" name="keyword" class="form-control rounded" value="${game.keyword}" placeholder="검색어를 입력하세요." type="text" style="width: 160px;">
           	<div style="margin-left: 10px; width: 65px; margin-top: 6px;">
          		<a onclick="gameOrderList()"><i class="bi bi-search mt-2"></i></a>
           	
@@ -49,7 +53,7 @@
 			<div class="col">
 			<div class="d-flex align-items-center justify-content-end">
           		<div style="width: 100px;">
-	          		<a><input class="btn rounded py-2 px-3" type="button" onclick="document.forms['frm'].submit();" style="background: #263d94; color: white;" value="구독하기"></a>
+	          		<a><input class="btn rounded py-2 px-3" type="button" onclick="totalCheck()" style="background: #263d94; color: white;" value="구독하기"></a>
             	</div>
             </div>
 			</div>
@@ -95,13 +99,13 @@
 		                <nav aria-label="Page navigation example">
 						  <ul class="pagination">
 						  	<c:if test="${page.startPage > page.pageLimit}">
-						  		<li class="page-item"><a class="page-link" href="gameOrderList?currentPage=${page.startPage-page.pageLimit}">이전</a></li>
+						  		<li class="page-item"><a class="page-link" href="gameOrderList?currentPage=${page.startPage-page.pageLimit}&keyword=${game.keyword}">이전</a></li>
 						  	</c:if>
 						    <c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
-						    	<li class="page-item"><a class="page-link" href="gameOrderList?currentPage=${i }">${i }</a></li>
+						    	<li class="page-item"><a class="page-link" href="gameOrderList?currentPage=${i }&keyword=${game.keyword}">${i }</a></li>
 						    </c:forEach>
 						 	<c:if test="${page.endPage < page.totalPage}">
-						 		<li class="page-item"><a class="page-link" href="gameOrderList?currentPage=${page.startPage+page.pageLimit}">다음</a></li>
+						 		<li class="page-item"><a class="page-link" href="gameOrderList?currentPage=${page.startPage+page.pageLimit}&keyword=${game.keyword}">다음</a></li>
 						 	</c:if>
 						  </ul>
 						</nav>

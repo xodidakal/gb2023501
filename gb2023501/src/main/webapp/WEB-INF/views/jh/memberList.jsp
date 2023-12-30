@@ -18,7 +18,64 @@
 }
 
 
-</style> 
+</style>
+<script type="text/javascript">
+	function pageMove(pPageNum) {
+		//검색 조건 선택 x하면 null이 아니라 빈문자열''이 됨
+	    startDate = $('#startDate').val() ;
+	    endDate = $('#endDate').val() ;
+	    searchType = $('#searchType').val() ;
+	    searchValue = $('#searchValue').val() ;
+	    category = $('#categorySelect').val() ;
+		//alert("category " +category);
+	    mshipType = $('#mshipType').val() ;
+		//alert("mshipType " +mshipType);
+	
+	    if (
+	        startDate === '' &&
+	        endDate === '' &&
+	        searchType === 'null' &&
+	        searchValue === '' &&
+	        category === '0' &&
+	        mshipType === '0'
+	    ) {
+	        location.href = "/operate/memberList?page=" + pPageNum;
+	    } else {
+	    	location.href = "/operate/SearchMemberList?startDate="+startDate+"&endDate="+endDate+"&searchType="+searchType+"&searchValue="+searchValue+"&category="+category+"&mshipType="+mshipType+"&page="+pPageNum;
+	    }
+	    // 이하 코드는 그대로 유지
+	}
+	
+	function memberDetail(pMmNum){
+		startDate = $('#startDate').val() ;
+	    endDate = $('#endDate').val() ;
+	    searchType = $('#searchType').val() ;
+	    searchValue = $('#searchValue').val() ;
+	    category = $('#categorySelect').val() ;
+		//alert("category " +category);
+	    mshipType = $('#mshipType').val() ;
+	    page = ${page};
+		//alert("page " +page);
+		//alert("pMmNum " +pMmNum);
+	    
+	    
+	    if (
+	    		startDate === '' &&
+		        endDate === '' &&
+		        searchType === 'null' &&
+		        searchValue === '' &&
+		        category === '0' &&
+		        mshipType === '0'
+		    ) {
+	    	//alert("pMmNum" +pMmNum);
+	    	location.href = "/operate/memberDetail?mmNum=" + pMmNum+"&page="+page;
+	    } else  {
+	    	//alert("검색 유");
+	    	location.href = "/operate/memberDetail?startDate="+startDate+"&endDate="+endDate+"&searchType="+searchType+"&searchValue="+searchValue+"&category="+category+"&mshipType="+mshipType+"&mmNum=" + pMmNum+"&page="+page;
+	    	
+	    } 
+	}
+</script> 
 </head>
 <body>
 <div class="row g-0 justify-content-center">
@@ -31,60 +88,91 @@
 
         <div class="row justify-content-center">
             <div class="col-md-9 ">
+            <form action="/operate/SearchMemberList" method="GET" >
                 <table class="formTable" id="searchForm">
                     <tr>
                         <th>기간</th>
                         <td style="width: 150px;">
-                            <input class="form-control" type="date" id="startDate" name="startDate">
+                        	<c:choose>
+	                        	<c:when test="${searchCriteria.startDate == null || empty searchCriteria.startDate}">
+		                            <input class="form-control" type="date" id="startDate" name="startDate">
+	                        	</c:when>
+	                        	<c:otherwise>
+		                            <input class="form-control" type="date" id="startDate" name="startDate" value="${searchCriteria.startDate }">
+	                        	</c:otherwise>
+                        	</c:choose>
                         </td>
                         <td style="width: 150px;">
                             <div class="text-center">~</div>
                         </td>
                         <td style="width: 150px;">
-                            <input class="form-control" type="date" id="endDate" name="endDate">
+                        	<c:choose>
+	                        	<c:when test="${searchCriteria.endDate == null || empty  searchCriteria.endDate}">
+		                            <input class="form-control" type="date" id="endDate" name="endDate">
+	                        	</c:when>
+	                        	<c:otherwise>
+		                            <input class="form-control" type="date" id="endDate" name="endDate" value="${searchCriteria.endDate }">
+	                        	</c:otherwise>
+                        	</c:choose>
                         </td>
-                    </tr>
+                    </tr> 
                     <tr>
                         <th>조건 검색</th>
                         <td>
-                            <select id="searchType" class="form-select" style="border-color: #ced4da">
-                                <option value="title">아이디</option>
-                                <option value="writer">이름</option>
-                                <option value="writer">휴대폰</option>
+                            <select id="searchType" name="searchType" class="form-select" style="border-color: #ced4da">
+                                <option value="null" <c:if test="${searchCriteria.searchType eq 'null' }">	selected="selected"</c:if>>검색조건</option>
+                                <option value="mmId" <c:if test="${searchCriteria.searchType eq 'mmId' }">	selected="selected"</c:if>>아이디</option>
+                                <option value="mmName" <c:if test="${searchCriteria.searchType eq 'mmName' }">	selected="selected"</c:if>>이름</option>
+                                <option value="phone" <c:if test="${searchCriteria.searchType eq 'phone' }">	selected="selected"</c:if>>휴대폰</option>
                             </select>
                         </td>
                         <td></td>
                         <td>
-                            <input type="text" class="form-control" id="SearchCriteria" name="SearchCriteria">
+                        	<c:choose>
+                        		<c:when test="${searchCriteria.searchValue != null}">
+		                            <input type="text" class="form-control" id="searchValue" name="searchValue" value="${searchCriteria.searchValue }">
+                        		</c:when>
+                        		<c:otherwise>
+		                            <input type="text" class="form-control" id="searchValue" name="searchValue">
+                        		</c:otherwise>
+                        	</c:choose>
                         </td>
                     </tr>
                     <tr>
                         <th>회원구분</th>
                         <td>
+<%--                         	<c:choose>
+                        		<c:when test="${searchCriteria. }">
+                        		</c:when>
+                        		<c:otherwise>
+                        		</c:otherwise>
+                        	</c:choose> --%>
                             <select id="categorySelect" class="form-select" name="category">
-                                <option value="1">교육자</option>
-                                <option value="2">학습자</option>
-                                <option value="3">일반인</option>
-                                <option value="4">운영자</option>
+                                <option value="0" <c:if test="${searchCriteria.category == 0 }">	selected="selected"</c:if>>회원구분</option>
+                                <option value="1" <c:if test="${searchCriteria.category == 1 }">	selected="selected"</c:if>>교육자</option>
+                                <option value="2" <c:if test="${searchCriteria.category == 2 }">	selected="selected"</c:if>>학습자</option>
+                                <option value="3" <c:if test="${searchCriteria.category == 3 }">	selected="selected"</c:if>>일반인</option>
+                                <option value="4" <c:if test="${searchCriteria.category == 4 }">	selected="selected"</c:if>>운영자</option>
                             </select>
                         </td>
                         <th class="text-center">자격</th>
                         <td>
-                            <select id="search_type" class="form-select" name="mshipType">
-                                <option value="null"></option>
-                                <option value="1">무료</option>
-                                <option value="2">유료</option>
+                            <select id="mshipType" class="form-select" name="mshipType">
+                                <option value="0" <c:if test="${searchCriteria.mshipType == 0 }">	selected="selected"</c:if>>회원 자격</option>
+                                <option value="1" <c:if test="${searchCriteria.mshipType == 1 }">	selected="selected"</c:if>>무료</option>
+                                <option value="2" <c:if test="${searchCriteria.mshipType == 2 }">	selected="selected"</c:if>>유료</option>
                             </select>
                         </td>
-                    </tr>
+                    </tr> 
                 </table>
             </div>
             
             <div class="col-md-1 mt-auto" id="searchBtn">
                 <div class="col-md-2" style="margin-left: 10px; width: 65px; margin-top: 6px;">
-                    <a href="#!"><i class="bi bi-search mt-2"></i></a>
+                    <button type="submit"><i class="bi bi-search mt-2"></i></a>
                 </div>
             </div>
+            </form>
         </div>
 
        	<table class="listTable">
@@ -101,9 +189,11 @@
 				</tr>
 			</thead>
 			 <tbody>
+			 <c:set var="num" value="${startNumber}"></c:set>
+<%-- 			 <c:set var="num" value="${totalMembers - startNumber +1}"></c:set> --%>
 			 <c:forEach var="member" items="${memberList.content}" varStatus="iterStat">
 			 	<tr>
-			 		<td>${startNumber - iterStat.count + 1}</td>
+			 		<td>${num}</td>
 			 		<td>
 			 			<c:if test="${member.category == 1 }">교육자</c:if> 
 			 			<c:if test="${member.category == 2 }">학습자</c:if> 
@@ -117,10 +207,12 @@
 			 			<c:if test="${member.mshipType == 1 }">무료</c:if>
 			 			<c:if test="${member.mshipType == 2 }">유료</c:if>
 			 		</td>
-			 		<td>${member.regiDate }</td>
-					<td width="100px;"><a href="#"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;">상세</button></a></td>
+			 		<td>
+				 		<fmt:formatDate value="${member.regiDate }" pattern="yyyy-MM-dd"></fmt:formatDate>
+			 		</td>
+					<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;" onclick="memberDetail(${member.mmNum})">상세</button></a></td>
 				</tr>
-				
+				<c:set var="num" value="${num + 1 }"></c:set>
 				
 			</c:forEach>				
                 </tbody>   
@@ -129,21 +221,33 @@
     <div class="d-flex justify-content-center" style="margin-top: 12px">
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="?page=${page - 1}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <c:forEach begin="0" end="${memberList.totalPages - 1}" var="pageIndex">
-                <li class="page-item" id="${pageIndex + 1}">
-                    <a class="page-link" href="?page=${pageIndex + 1}">${pageIndex + 1}</a>
-                </li>
+	        <c:if test="${startPage > pageBlock}">
+	            <li class="page-item">
+	                <a class="page-link" onclick="pageMove(${startPage - pageBlock})" href="?page=${startPage - pageBlock}" aria-label="Previous">
+	                    <span aria-hidden="true">&laquo;</span>
+	                </a>
+	            </li>
+	        </c:if>
+            <c:forEach begin="${startPage}" end="${endPage}" var="pageIndex">
+            	<c:if test="${page == pageIndex}">
+	                <li class="page-item active">
+	                    <a class="page-link"  onclick="pageMove(${pageIndex})">${pageIndex}</a>
+	                </li>
+            	</c:if>
+            	
+            	<c:if test="${page != pageIndex}">
+	                <li class="page-item">
+	                    <a class="page-link" onclick="pageMove(${pageIndex})">${pageIndex}</a>
+	                </li>
+            	</c:if>
             </c:forEach>
-            <li class="page-item">
-                <a class="page-link" href="?page=${page + 1}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
+            <c:if test="${endPage < totalPage}">
+	            <li class="page-item ">
+	                <a class="page-link" onclick="pageMove(${endPage + 1})" aria-label="Next">
+	                    <span aria-hidden="true">&raquo;</span>
+	                </a>
+	            </li>
+	        </c:if>
         </ul>
     </nav>
 </div>

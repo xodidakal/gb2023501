@@ -66,7 +66,7 @@ public class JpaEduMaterialsService {
 	// 매출 조회 화면
 	public List<GameOrder> getListAllGameOrder(Date orderDate) {
 		log.info("YbJpaEduMaterialsService getListAllEduMaterials start...");
-		List<GameOrder>	listSales = yr2.findByGoOrderDate(orderDate);
+		List<GameOrder>	listSales = yr.findByGoOrderDate(orderDate);
 		
 		return listSales;
 	}

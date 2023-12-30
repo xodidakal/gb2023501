@@ -99,9 +99,9 @@ public class GameOrderServiceImpl implements GameOrderService {
 	}
 
 	@Override
-	public int insertGameOrder(GameOrder gameOrder) {
+	public int insertGameOrder(Map<String, Object> map) {
 		int result = 0;
-		result = god.insertGameOrder(gameOrder);
+		result = god.insertGameOrder(map);
 		
 		return result;
 	}

@@ -1,6 +1,9 @@
 package com.choongang.gb2023501.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,6 +24,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -35,7 +39,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.jhRepository.MemberRepository;
+import com.choongang.gb2023501.jhService.BoardMyBatisService;
+import com.choongang.gb2023501.jhService.GameMyBatisService;
 import com.choongang.gb2023501.jhService.MemberService;
+import com.choongang.gb2023501.model.Board;
+import com.choongang.gb2023501.model.Game;
+import com.choongang.gb2023501.model.MemberSearchCriteriaDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,14 +57,19 @@ public class JhController {
 	private final MemberRepository mr;
 	//서비스 -> 레파지토리 이므로 여기선 mr 안 씀 -> 사용자 정보 업데이트할 때 사용
 	private final MemberService ms;
-	private final JavaMailSender mailSender;
-	private final PasswordEncoder passwordEncoder;
+	private final GameMyBatisService gs;
+	private final BoardMyBatisService bs;
 	
+	private final JavaMailSender mailSender;
+//	private final PasswordEncoder passwordEncoder;
+	
+	//폰 포멧팅 -> dto에 직접 넣었음 좋았을 걸...이름도 phoneFormat로 바꿀걸
 	public String phone_format(String number) {
 	      String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
 	      return number.replaceAll(regEx, "$1-$2-$3");
 	}
 	
+	//회원 정보 호출
 	public Member aboutMember() {
 		Optional<Member> memberOptional = ms.selectUserById();
 		Member member = null;
@@ -66,6 +80,50 @@ public class JhController {
 		}
 		return member;
 	}
+	
+	@RequestMapping(value = "/")
+	public String main(Model model) {
+		System.out.println("JhController Main start...");
+
+		Optional<Member> memberOptional = ms.selectUserById();
+		Member member = null;		
+		if(memberOptional.isPresent()) {
+			member = memberOptional.get();
+			System.out.println("로그인 회원 정보 -> " + member);
+			System.out.println("member name -> " + member.getMmName());
+			
+		}
+		
+		//마이바티스 활용해 게임목록 조회(최근 등록순 상위 5개)
+		int totalListCnt = 5;
+		List<Game> selectGameList = gs.selectGameList(totalListCnt);
+		
+		//공지사항 리스트 최근 5개
+		int noticeCategory = 2;
+		Map<String, Integer> noticeParams = new HashMap<>();
+		noticeParams.put("b_category", noticeCategory);
+		noticeParams.put("totalListCnt", totalListCnt);
+		List<Board> selectNoticeBoardList = bs.selectBoardList(noticeParams);
+		
+		
+		//FAQ 리스트 최근 5개
+		int FAQCategory = 3;
+		Map<String, Integer> FAQParams = new HashMap<>();
+		FAQParams.put("b_category", FAQCategory);
+		FAQParams.put("totalListCnt", totalListCnt);
+		List<Board> selectFAQBoardList = bs.selectBoardList(FAQParams);
+		
+		
+		
+		
+		model.addAttribute("member", member);
+		model.addAttribute("NoticeBoardList", selectNoticeBoardList);
+		model.addAttribute("FAQBoardList", selectFAQBoardList);
+		model.addAttribute("selectGameList", selectGameList);
+		return "main";
+	}
+	
+	
 	
 	//로그인 화면 이동
 	@RequestMapping(value = "info/loginForm")
@@ -97,19 +155,19 @@ public class JhController {
 		System.out.println("JhController joinAgreeForm Start...");
 		
 		
-		//로그인 된 아이디 가져오기
-		String mmId = ms.getLoggedInId();
-		//로그로 아이디 확인
-		log.info("로그인된 아이디:{}", mmId);
-		
-		
-		
-		//로그인된 회원번호 가져오기 / 로그인 안된 경우 0
-		int mmNum = ms.selectMmNumById();
-		System.out.println("회원번호 int " + mmNum);
-		
-		Member member = aboutMember();
-		model.addAttribute("member", member);
+//		//로그인 된 아이디 가져오기
+//		String mmId = ms.getLoggedInId();
+//		//로그로 아이디 확인
+//		log.info("로그인된 아이디:{}", mmId);
+//		
+//		
+//		
+//		//로그인된 회원번호 가져오기 / 로그인 안된 경우 0
+//		int mmNum = ms.selectMmNumById();
+//		System.out.println("회원번호 int " + mmNum);
+//		
+//		Member member = aboutMember();
+//		model.addAttribute("member", member);
 
 		//로그인 된 회원정보 전체 가져오기 
 //		Optional<Member> memberOptional = ms.selectUserById();
@@ -307,8 +365,12 @@ public class JhController {
 	public String join( @Valid Member member) {
 		System.out.println("JhController join Start...");
 		System.out.println("memeber -> " + member);
-		Member savedMember = null;
-		savedMember =  ms.join(member);
+		
+		member.setMshipType(1);
+		
+		member = encodedPassword(member);
+		
+		Member savedMember = ms.join(member);
 		String result = null;
 		
 		if(savedMember != null) {
@@ -319,6 +381,19 @@ public class JhController {
 		return result;
 	}
 	
+	//비밀번호 암호화
+	private Member encodedPassword (Member member) {
+		System.out.println("JhController encodedPassword Start... 비밀번호 인코딩");
+		// 비밀번호 암호화
+		//member 객체에서 비번 꺼내서 인코딩후 다시 멤버객체에 셋팅 후 멤버 리턴
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	    String encodedPassword = passwordEncoder.encode(member.getMmPswd());
+	    member.setMmPswd(encodedPassword);
+		
+		
+		return member;
+		
+	}
 	
 	
 	//아이디/비번 찾기 페이지
@@ -425,19 +500,28 @@ public class JhController {
 
 		String result = null;
 		
-		Optional<Member> currentUser = null;
-		Member user = null;
+		Optional<Member> currentMember = null;
+		Member member = null;
 		
 		//휴대폰 인증
 		if(phone != null) {
 			//기존 사용자인지 비교 먼저하고 결과 반환하기 
-			currentUser = ms.findByMmIdAndPhoneAndName(id, phone, name);
+			currentMember = ms.findByMmIdAndPhoneAndName(id, phone, name);
 			
-			if(currentUser.isPresent()) {
-				System.out.println("JhController joinAgree currentUser -> " + currentUser);
-				user = currentUser.get();
-				String pswd = user.getMmPswd();
-				result = pswd;
+			if(currentMember.isPresent()) {
+				System.out.println("JhController joinAgree currentUser -> " + currentMember);
+				member = currentMember.get();
+				//임시 비번 생성
+				String temporaryPswd = generateTemporaryPassword();
+				//임시비번 멤버에 셋팅
+				member.setMmPswd(temporaryPswd);
+				//세팅된 임시 비번 암호화
+				member = encodedPassword(member);
+				//암호화된 임시비번으로 디비에 업데이트
+				mr.save(member);
+				result = temporaryPswd; //사용자에게 보여주기 위해 해시 하지 않음
+//				String pswd = member.getMmPswd(); 예전에 쓰던거
+//				result = pswd;
 			} else{
 				System.out.println("JhController 유저 없음 ");
 				result = "0"; // 신규 가입자, 폼 이동 필요
@@ -448,10 +532,10 @@ public class JhController {
 		//메일 인증	
 		} else if (email != null) {
 			//기존 사용자인지 비교 먼저하고 결과 반환하기 
-			currentUser = ms.findByMmIdAndEmailAndName(id, email, name);
+			currentMember = ms.findByMmIdAndEmailAndName(id, email, name);
 			
-			if(currentUser.isPresent()) {
-				System.out.println("JhController joinAgree currentUser -> " + currentUser);
+			if(currentMember.isPresent()) {
+				System.out.println("JhController joinAgree currentUser -> " + currentMember);
 				int emailResult = emailVarification(email, name, session);
 				if (emailResult > 0) {
 					session.setAttribute("id", id);
@@ -487,11 +571,17 @@ public class JhController {
 				System.out.println("JhController pswdInquiryByEmail 유저정보..." + name+ email+ id);
 				
 				Optional<Member> currentUser = ms.findByMmIdAndEmailAndName(id, email, name);
-				Member user = currentUser.get();
-				System.out.println("JhController pswdInquiryByEmail 유저..." + user);
+				Member member = currentUser.get();
+				System.out.println("JhController pswdInquiryByEmail 유저..." + member);
+				
 				String temporaryPswd = generateTemporaryPassword();
-				user.setMmPswd(temporaryPswd);
-				mr.save(user);
+				
+				//임시비번 멤버에 셋팅
+				member.setMmPswd(temporaryPswd);
+				//세팅된 임시 비번 암호화
+				member = encodedPassword(member);
+				//암호화된 임시비번으로 디비에 업데이트
+				mr.save(member);
 				result = temporaryPswd;
 				System.out.println("JhController pswdInquiryByEmail 임시비번..." + temporaryPswd);
 			} else {
@@ -518,48 +608,262 @@ public class JhController {
 	        password.append(CHARACTERS.charAt(randomIndex));
 	    }
 
-	    // 생성된 임시 비밀번호 반환 (해시하지 않음)
+	    // 생성된 임시 비밀번호 반환 (해시하지 않음)사용자에게 보여주기 위해 해시 하지 않음
 	    return password.toString();
 	}
 	
 	
 	//회원 전체 목록 조회 - 회원 관리 메인 페이지
-	@RequestMapping(value = "operate/memberList")
-	public String memberList(@PageableDefault(size = 10, sort = "regiDate", direction = Sort.Direction.DESC ) Pageable pageable
-							, @RequestParam(name = "page", defaultValue = "1") int page
+	@GetMapping(value = "operate/memberList")
+	public String memberList(
+							 @RequestParam(name = "page", defaultValue = "1") int page
 							, Model model) {
-//		public String memberList(Member member,  Model model) {
 		System.out.println("JhController memberList Start...");
 		
-//		String startDate 		= member.getStartDate();
-//		String endDate	 		= member.getEndDate();
-//		String searchType		= member.getSearchType();
-//		String SearchCriteria	= member.getSearchCriteria();
-//		int	   category			= member.getCategory();
-//		int    mshipType		= member.getMshipType();
-//		System.out.println("startDate -> " + startDate);
-//		System.out.println("endDate -> " + endDate);
-//		System.out.println("searchType -> " + searchType);
-//		System.out.println("SearchCriteria -> " + SearchCriteria);
-//		System.out.println("category -> " + category);
-//		System.out.println("mshipType -> " + mshipType);
-//		
+		
+		int pageSize = 10; // 페이지당 아이템 수
+		Sort sort = Sort.by("regiDate").descending(); // 정렬 조건: regiDate 필드를 기준으로 내림차순 정렬
 		// 직접 Pageable 객체 생성하여 시작 페이지 번호 조정
-	    Pageable adjustedPageable = PageRequest.of(page - 1, pageable.getPageSize(), pageable.getSort());
-		Page<Member> memberList = ms.findAll(adjustedPageable);
+		//Pageable의 기본 시작번호는 0부터지만 웹에선 1부터 시작이므로 조정
+		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
+		
+		//회원 리스트
+		Page<Member> memberList = ms.findAll(pageable);
 		System.out.println("memberList.size() -> " + memberList.getSize());
+		
+		//폰번호 포멧팅
+		String phone = null;
+				
+				
 		// 전체 회원 수
 	    long totalMembers = memberList.getTotalElements();
 
 	    // 현재 페이지의 첫 번째 회원 번호 계산
-	    long startNumber = totalMembers - (adjustedPageable.getPageNumber() * adjustedPageable.getPageSize());
+	    //long startNumber = totalMembers - (adjustedPageable.getPageNumber() * adjustedPageable.getPageSize());
+//	    int startNumber = (page - 1) * pageSize + 1;
+	    long startNumber = pageable.getOffset() + 1;
+	    
+	    // 페이지 블록 계산
+	    int pageBlock = 10;
+	    int startPage = (int) (Math.floor((double) (page - 1) / pageBlock) * pageBlock) + 1; //시작 페이지 번호
+	    int endPage = Math.min(startPage + pageBlock - 1, memberList.getTotalPages());		 //끝 페이지 번호
+	    int totalPage = memberList.getTotalPages();	//전체 페이지 수
+
+	    
 
 		model.addAttribute("memberList", memberList);
 		 model.addAttribute("startNumber", startNumber);
 		model.addAttribute("totalMembers", totalMembers);
+		model.addAttribute("pageBlock", pageBlock);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPage", totalPage);
+	    model.addAttribute("page", page);
 		
 		return "jh/memberList";
 	}
 	
+	@GetMapping(value = "operate/SearchMemberList")
+	public String searchMemberList(MemberSearchCriteriaDTO searchCriteria
+								 //, @PageableDefault(size = 10, sort = "regiDate", direction = Sort.Direction.DESC ) Pageable pageable
+								 , @RequestParam(name = "page", defaultValue = "1") int page
+								 , Model model
+								 , HttpSession session) {
+		//Pageable adjustedPageable = PageRequest.of(page - 1 , pageable.getPageSize());
+		
+		System.out.println("JhController searchMemberList Start...");
+		System.out.println("조건 기간 시작 -> " + searchCriteria.getStartDate());
+		System.out.println("조건 기간 끝 -> " + searchCriteria.getEndDate());
+//		System.out.println("조건 아이디 -> " + searchCriteria.);
+//		System.out.println("조건 이름 -> " + searchCriteria.);
+//		System.out.println("조건 폰 -> " + searchCriteria.);
+		System.out.println("조건 타입 -> " + searchCriteria.getSearchType());
+		System.out.println("조건 값 -> " + searchCriteria.getSearchValue());
+		System.out.println("조건 회원구분 -> " + searchCriteria.getCategory());
+		System.out.println("조건 자격 -> " + searchCriteria.getMshipType());
+		System.out.println("페이지 번호-> " + page);
+		System.out.println("searchCriteria -> " + searchCriteria);
+		
+		
+		int pageSize = 10; // 페이지당 아이템 수
+		Sort sort = Sort.by("regiDate").descending(); // 정렬 조건: regiDate 필드를 기준으로 내림차순 정렬
+		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
+
+		//회원 리스트
+		Page<Member> memberList = ms.SearchMemberList(searchCriteria, pageable);
+		
+		// 전체 회원 수
+	    long totalMembers = memberList.getTotalElements();
+	    
+	    // 현재 페이지의 첫 번째 회원 번호 계산
+//	    long startNumber = totalMembers - (pageable.getPageNumber() * pageable.getPageSize());
+	    //int startNumber = (page - 1) * pageSize + 1;
+	    long startNumber = pageable.getOffset()+1; //시작행 번호
+	    
+	    // 페이지 블록 계산
+	    int pageBlock = 10;
+	    int startPage = (int) (Math.floor((double) (page - 1) / pageBlock) * pageBlock) + 1;
+	    int endPage = Math.min(startPage + pageBlock - 1, memberList.getTotalPages());
+	    int totalPage = memberList.getTotalPages();
+
+	    
+	    
+		model.addAttribute("memberList", memberList);
+		model.addAttribute("startNumber", startNumber);
+		model.addAttribute("totalMembers", totalMembers);
+		model.addAttribute("searchCriteria", searchCriteria);
+		model.addAttribute("pageBlock", pageBlock);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPage", totalPage);
+	    model.addAttribute("page", page);
+		
+//		long tototalMembers = memberList.
+		
+		return "jh/memberList";
+	}
 	
+	@GetMapping(value = "operate/memberDetail")
+	public String memberDetail(@RequestParam(name = "mmNum", required = true) int mmNum
+							 , Integer page
+							 , MemberSearchCriteriaDTO searchCriteria
+							 , Model model
+							 ) {
+		System.out.println("JhController memberDetail Start...");
+		System.out.println("mmNum -> " + mmNum);
+		System.out.println("page -> " + page);
+		System.out.println("searchCriteria -> " + searchCriteria);
+		
+		Member member = ms.findByMmNum(mmNum);
+		System.out.println("회원정보 member -> " + member);
+		
+		String searchCriteriaList = searchCriteria.getCriteriaListLink();
+		
+		model.addAttribute("page", page);
+		model.addAttribute("criteria", searchCriteria);
+		model.addAttribute("criteriaList", searchCriteriaList);
+		model.addAttribute("member", member);
+		model.addAttribute("mmNum", mmNum);
+		return "jh/memberDetail";
+		
+	}
+	
+	@GetMapping(value = "operate/memberUpdateForm")
+	public String memberUpdateForm(@RequestParam(name = "mmNum", required = true) int mmNum
+								 , Integer page
+								 , MemberSearchCriteriaDTO searchCriteria
+								 , Model model) {
+		System.out.println("JhController memberUpdateForm Start...");
+		System.out.println("mmNum -> " + mmNum);
+		System.out.println("page -> " + page);
+		System.out.println("searchCriteria -> " + searchCriteria);
+		
+		Member member = ms.findByMmNum(mmNum);
+		System.out.println("회원정보 member -> " + member);
+		
+		
+		model.addAttribute("page", page);
+		model.addAttribute("criteria", searchCriteria);
+		model.addAttribute("member", member);
+		model.addAttribute("mmNum", mmNum);
+		
+		return "jh/memberUpdateForm";
+		
+	}
+	
+	@PostMapping(value = "operate/memberUpdate")
+	public String memberUpdate(Member member
+							 , MemberSearchCriteriaDTO searchCriteria
+							 , Integer page
+							 , Model model) {
+		System.out.println("JhController memberUpdate Start...");
+		
+		int mmNum = member.getMmNum();
+		System.out.println("member -> " + member);
+		System.out.println("page -> " + page);
+		int pageNum = page;
+		System.out.println("pageNum -> " + pageNum);
+		System.out.println("searchCriteria -> " + searchCriteria);
+		System.out.println("가입일 -> " + member.getRegiDate());
+		
+		//회원정보 수정
+		ms.join(member);
+
+
+		String result = null;
+		if(searchCriteria == null) {
+			result = "redirect:/operate/memberDetail?mmNum=" + mmNum + "&page=" + page; 
+		} else if (searchCriteria != null) {
+			try {
+	            // MemberSearchCriteriaDTO의 각 필드값 가져오기
+	            String searchType = searchCriteria.getSearchType();
+	            String searchValue = URLEncoder.encode(searchCriteria.getSearchValue(), "UTF-8");
+	            Integer category = searchCriteria.getCategory();
+	            Integer mshipType = searchCriteria.getMshipType();
+	            String startDate = searchCriteria.getStartDate();
+	            String endDate = searchCriteria.getEndDate();
+
+	            result = "redirect:/operate/memberDetail?startDate=" + startDate +
+	                    "&endDate=" + endDate +
+	                    "&searchType=" + searchType +
+	                    "&searchValue=" + searchValue +
+	                    "&category=" + category +
+	                    "&mshipType=" + mshipType +
+	                    "&mmNum=" + mmNum +
+	                    "&page=" + page;
+	        } catch (UnsupportedEncodingException e) {
+	            // 예외 처리
+	            e.printStackTrace();
+	        }
+		}
+		
+		return result;
+	}
+	
+	@GetMapping(value = "info/myDetail")
+	public String myDetail(String mmId , Model model){
+		System.out.println("JhController myDetail Start...");
+
+		Optional<Member> memberOptional = ms.selectUserById();
+		Member member = memberOptional.get();
+		
+		String my = "1";
+		System.out.println("회원정보 member -> " + member);
+		model.addAttribute("member", member);
+		model.addAttribute("my", my);
+		return "jh/memberDetail";
+	}
+	
+	@GetMapping(value = "info/myUpdateForm")
+	public String myUpdateForm(@RequestParam(name = "mmNum", required = true) int mmNum, Model model) {
+		System.out.println("JhController myUpdateForm Start...");
+		Optional<Member> memberOptional = ms.selectUserById();
+		Member member = memberOptional.get();
+		
+		String my = "1";
+		System.out.println("회원정보 member -> " + member);
+		model.addAttribute("member", member);
+		model.addAttribute("my", my);
+		return "jh/memberUpdateForm";
+	}
+	
+	
+	@PostMapping(value = "info/myUpdate")
+	public String memberUpdate(Member member
+							 , Model model) {
+		System.out.println("JhController memberUpdate Start...");
+		System.out.println("member 암호화 전 비번-> " + member.getMmPswd());
+		member = encodedPassword(member);
+		System.out.println("member 암호화 후 비번-> " + member.getMmPswd());
+		String mmId = member.getMmId();
+		System.out.println("member -> " + member);
+//		System.out.println("mmId -> " + mmId);
+		System.out.println("가입일 -> " + member.getRegiDate());
+		
+		//회원정보 수정
+		ms.join(member);
+		
+		return "redirect:/info/myDetail?mmId="+mmId;
+	}
+
 }

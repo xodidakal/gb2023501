@@ -76,21 +76,21 @@ public class YbController {
 //		return member;
 //	}
 	
-	@RequestMapping(value = "/")
-	public String main(Model model) {
-		System.out.println("Main start...");
-
-		Optional<Member> memberOptional = ms.selectUserById();
-		Member member = null;		
-		if(memberOptional.isPresent()) {
-			member = memberOptional.get();
-			System.out.println("로그인 회원 정보 -> " + member);
-			System.out.println("member name -> " + member.getMmName());
-			
-		}
-		model.addAttribute("member", member);
-		return "main";
-	}
+//	@RequestMapping(value = "/")
+//	public String main(Model model) {
+//		System.out.println("Main start...");
+//
+//		Optional<Member> memberOptional = ms.selectUserById();
+//		Member member = null;		
+//		if(memberOptional.isPresent()) {
+//			member = memberOptional.get();
+//			System.out.println("로그인 회원 정보 -> " + member);
+//			System.out.println("member name -> " + member.getMmName());
+//			
+//		}
+//		model.addAttribute("member", member);
+//		return "main";
+//	}
 	// 학습자료 등록 페이지
 	@RequestMapping(value = "/operate/eduMaterialsForm")
 	public String eduResourceForm(Model model, Game game) {	
@@ -170,6 +170,7 @@ public class YbController {
 		com.choongang.gb2023501.domain.EduMaterials eduMaterials = null;
 		System.out.println("ybController operate/eduMaterialsDetail em_num -> " + em_num);
 		System.out.println("ybController operate/eduMaterialsDetail ggNum -> " + ggNum);
+		
 		Optional<com.choongang.gb2023501.domain.EduMaterials> OptiEduMaterials = js.findByEduMaterials(em_num);
 		System.out.println("ybController operate/eduMaterialsDetail Optional.eduMaterials -> " + OptiEduMaterials);
 		System.out.println("\"ybController YbJpa/updateEduMaterials beforeName -> " + beforeName);
@@ -257,7 +258,7 @@ public class YbController {
 		model.addAttribute("selectEduMaterialsList", selectEduMaterialsList);
 		return "yb/eduMaterialsList";
 	}
-	
+	// 학습자료 리스트 정렬
 	@RequestMapping(value = "/operate/selectSearchType")
 	public String selectSearchType(String typeSelect1, String typeSelect2, String typeSelect3, 
 								   com.choongang.gb2023501.domain.EduMaterials eduMaterials, Model model, RedirectAttributes redirect) {
@@ -380,7 +381,7 @@ public class YbController {
 	      System.out.println("ybController /operate/searchSalesInquiryDetail go_order_date -> " + go_order_date);
 	      System.out.println("go_order_date -> " + go_order_date);
 	      Date orderDate = null;
-
+	      String stringDate = null;
 	      List<GameOrder> selectSaleList = null;
 	      // 일별 상세 리스트
 	      if(go_order_date.length() == 8) {
@@ -391,9 +392,11 @@ public class YbController {
 	         gameOrder.setGoOrderDate(orderDate);
 
 	         selectSaleList = js.getListAllGameOrder(orderDate);
+	        
 	         log.info("selectSaleList -> " + selectSaleList);
+	      // 월별 상세 리스트
 	      } else if(go_order_date.length() == 6){
-	         String stringDate = go_order_date.substring(0,4) + "-" +go_order_date.substring(4,6);
+	         stringDate = go_order_date.substring(0,4) + "-" +go_order_date.substring(4,6);
 	         String firstDay = getFirstDayOfMonth(stringDate);
 	         String lastDay = getLastDayOfMonth(stringDate);
 	         Date s_date = java.sql.Date.valueOf(firstDay);
@@ -405,10 +408,12 @@ public class YbController {
 	         selectSaleList = js.getListAllGameOrder1(s_date, e_date);
 	         
 	      }
-	      selectSaleList.get(0);
-	      
+	      System.out.println("selectSaleList.size() -> " + selectSaleList.size());
+	      System.out.println("orderDate -> " + orderDate);
+//	      Date go_order_date1 = java.sql.Date.valueOf(go_order_date);
+	      model.addAttribute("stringDate", stringDate);
 	      model.addAttribute("selectSaleList", selectSaleList);
-	      model.addAttribute("date", selectSaleList.get(0).getGoOrderDate());
+	      model.addAttribute("date", orderDate);
 	      return "yb/searchSalesInquiryDetail";
 	   }
 	
@@ -546,7 +551,8 @@ public class YbController {
 		ObjectMapper objectMapper = new ObjectMapper();
 		String selectSaleListJson = objectMapper.writeValueAsString(selectSaleList);
 		String selectDateList = objectMapper.writeValueAsString(dateList);
-
+		
+		System.out.println("ybController /operate/saleInquiryChart selectSaleListJson -> " + dateList.get(0));
 		System.out.println("ybController /operate/saleInquiryChart selectSaleListJson -> " + selectSaleListJson.toString());
 		System.out.println("ybController /operate/saleInquiryChart selectSaleList.size() -> " + selectSaleList.size());
 		

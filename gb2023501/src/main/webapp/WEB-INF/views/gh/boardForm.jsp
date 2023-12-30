@@ -99,51 +99,6 @@
 	    }
 	});
 	
-	
-	
-	// ajax 할거?
-	/* function button_test() {
-		alert("버튼클릭");
-		var params = {};
-		params.b_category = $('select[name=b_category]').val();
-		params.b_notie_type = $('select[name=b_notie_type]').val();
-		params.b_flag = $('input[name=b_flag]').val();
-		params.b_title = $('input[name=b_title]').val();
-		params.b_regi_date = $('input[name=b_regi_date]').val();
-		params.b_content = $('textarea[name=b_content]').val();
-		params.file1 = $('input[name=file1]').val();
-
-		alert("b_category->"+params.b_category);
-		alert("b_notie_type->"+params.b_notie_type);
-		alert("b_flag->"+params.b_flag);
-		alert("b_title->"+params.b_title);
-		alert("b_regi_date->"+params.b_regi_date);
-		alert("b_content->"+params.b_content);
-		alert("file1->"+params.file1);
-		
-		$.ajax({
-			url			: "boardNotieList",
-			type		: 'POST',
-			contentType : 'application/json; charset:utf-8',
-			data		: JSON.stringify(params),
-			dataType	: 'text',
-			success		: function(data) {
-				if(data == "success") {
-					alert("전송 성공");
-				} else {
-					alert("전송 실패");
-				}
-			},
-			error : function(XHR, textStatus, errorThrown) {
-				// http 오류 번호를 반환하며 케이스별 오류 메시지 판정에 사용하면 유용
-				console.log( XHR.status );
-				// url의 full response를 반환하기 때문에ajax 오류 디버깅 시에 상당한 도움
-				alert( jqXHR.responseText );
-			}
-		});
-	} */
-	
-
 </script>
 <!-- JS END -->
 

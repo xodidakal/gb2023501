@@ -47,43 +47,20 @@
     <!-- Spinner End -->
 
 
-    <!-- Topbar Start -->
-    <div class="container-fluid bg-light px-0 wow fadeIn" data-wow-delay="0.1s">
-        <div class="row gx-0 align-items-center d-none d-lg-flex">
-            <div class="col-lg-6 px-5 text-start">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a class="small text-secondary" href="/">Home</a></li>
-                    <li class="breadcrumb-item"><a class="small text-secondary" href="#">Career</a></li>
-                    <li class="breadcrumb-item"><a class="small text-secondary" href="#">Terms</a></li>
-                    <li class="breadcrumb-item"><a class="small text-secondary" href="#">Privacy</a></li>
-                </ol>
-            </div>
-            <div class="col-lg-6 px-5 text-end">
-                <small>Follow us:</small>
-                <div class="h-100 d-inline-flex align-items-center">
-                    <a class="btn-square  border-end rounded-0" href=""><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn-square  border-end rounded-0" href=""><i class="fab fa-twitter"></i></a>
-                    <a class="btn-square  border-end rounded-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn-square  pe-0" href=""><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Topbar End -->
-
-
     <!-- Brand & Contact Start -->
     <div class="container-fluid py-4 px-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="row align-items-center top-bar">
             <div class="col-lg-3 col-md-12 text-center text-lg-start">
-                <a href="" class="navbar-brand m-0 p-0">
+                <a href="/" class="navbar-brand m-0 p-0">
 <!--                     <h1 class="fw-bold text-primary m-0"><i class="fa fa-laptop-code me-3"></i></h1> -->
                     <img src="../assets/img/한국기원.png" alt="Logo">
                 </a>
                 
             </div>
             <div class="col-lg-6 col-md-12 text-center mt-3">
-            	<h2>게임으로 배우는 바둑 교실</h2>
+            	<a href="/" class="navbar-brand m-0 p-0">
+            		<h2>게임으로 배우는 바둑 교실</h2>
+            	</a>
             </div>
               <div class="col-lg-3 col-md-12 text-center text-lg-start">
           	   <div class="row">	
@@ -105,7 +82,7 @@
 	           	 	  <c:otherwise>
  	                  	
  	                  	<div class="ps-3">            	 			
-	                       <h6 class="mb-0"><a href="/">${pageContext.request.userPrincipal.name}</a></h6>
+	                       <h6 class="mb-0"><a href="/info/myDetail?mmId=${pageContext.request.userPrincipal.name}">${pageContext.request.userPrincipal.name}</a></h6>
 	                    </div>
 	                    <div class="ps-3"> 
 	                       <h6 class="mb-0"><a href="/logout">로그아웃</a></h6>
@@ -128,7 +105,7 @@
     
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s" style="background: #263d94;" >
    
-        <a href="#" class="navbar-brand ms-3 d-lg-none">MENU</a>
+        <a href="/" class="navbar-brand ms-3 d-lg-none">MENU</a>
         <button type="button" class="navbar-toggler me-3" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -136,14 +113,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav mx-auto me-auto p-3 p-lg-0 text-center">
                 <a href="/" class="nav-item nav-link active" style="color: white;">Home</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">이용안내</a>
-                    <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">
-                        <a href="#!" class="dropdown-item">사이트 소개</a>
-                        <a href="#!" class="dropdown-item">이용 가이드</a>
-                        <a href="#!" class="dropdown-item">상품 소개</a>
-                    </div>
-                </div>
+                <a href="/userGuide" class="nav-item nav-link active" style="color: white;">이용안내</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">구독서비스</a>
                     <div class="dropdown-menu border-1 rounded-0 rounded-bottom m-0">

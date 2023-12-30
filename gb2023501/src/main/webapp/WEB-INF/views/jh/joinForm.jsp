@@ -156,7 +156,7 @@
         //휴대폰 번호 유효성 검사
         function validatePhone(){
         	
-        	var phoneInput = $(this).val();
+        	var phoneInput = $('#phoneInput').val();
         	var validatePhone = phoneInput.replace(/\D/g, ''); // 숫자 이외의 문자 모두 제거
         	
             if (phoneInput.length === 0) {
@@ -166,7 +166,7 @@
         	if(phoneInput !== validatePhone){
         		$('#phoneValidationMessage').text('숫자만 입력해주세요');
         		//문자 입력한 건 다 지워지고 숫자만 남김
-        		$(this).val(validatePhone);
+        		$('#phoneInput').val(validatePhone);
         	} else{
         		if(phoneInput.length < 11){
         		$('#phoneValidationMessage').text('휴대폰 번호 11자리를 입력해주세요');
@@ -187,13 +187,13 @@
         //전화번호 유효성 검증
         function validateTel(){
         	
-        	var telInput = $(this).val();
+        	var telInput = $('#telInput').val();
         	var validateTel = telInput.replace(/\D/g, ''); // 숫자 이외의 문자 모두 제거
         	
         	if(telInput !== validateTel){
         		$('#telValidationMessage').text('숫자만 입력해주세요');
         		//문자 입력한 건 다 지워지고 숫자만 남김
-        		$(this).val(validateTel);
+        		$('#telInput').val(validateTel);
         	} else{
         		$('#telValidationMessage').text('');
         	}
@@ -282,14 +282,17 @@
 			async: false, // 동기적으로 처리
 			dataType : 'text',
 			success	 : function(data){
-						alert("result -> " + data);
+						//alert("result -> " + data);
 						if(data === "1"){
 							alert("회원가입이 완료되었습니다!");
 							location.href="/";
 						} else{
 							alert("회원가입이 완료되지 않았습니다. 작성내용을 확인해 주세요!");
 						}
-			}
+			},
+			error: function (xhr, status, error) {
+		        alert("인증번호를 다시 받아 주세요!"); // 에러 메시지 표시
+		    }
 			
 		});
 		
@@ -307,25 +310,25 @@
                <form id="joinForm">
 	        	<table class="formTable">
 		            <tr>
-						<th>이름</th>
+						<th>이름 <span style="color: red;">*</span></th>
 						<td colspan="3">
 		                    <input type="text" class="form-control" id="mmName" name="mmName" value="${name }" readonly="readonly" required>
 		            	</td>
 					</tr>
 		            <tr id="phoneTr">
-						<th>휴대폰 번호</th>
+						<th>휴대폰 번호 <span style="color: red;">*</span></th>
 						<td colspan="3">
 		                    <input type="text" class="form-control" id="phone" name="phone" value="${phone }" readonly="readonly">
 		            	</td>
 					</tr>
 		            <tr id="emailTr">
-						<th>이메일 주소</th>
+						<th>이메일 주소 <span style="color: red;">*</span></th>
 						<td colspan="3">
 		                    <input type="text" class="form-control" id="email" name="email" value="${email }" readonly="readonly">
 		            	</td>
 					</tr>
 		            <tr>
-						<th>아이디</th>
+						<th>아이디 <span style="color: red;">*</span></th>
 						<td>
 		                    <input type="text" class="form-control" id="mmId" name="mmId" required>
 						</td>
@@ -341,11 +344,11 @@
 		                </td>
 					</tr>
 		            <tr>
-						<th>비밀번호</th>
+						<th>비밀번호 <span style="color: red;">*</span></th>
 						<td  width="150px;">
 		                    <input type="password" class="form-control" id="mmPswd" name="mmPswd" minlength="8" maxlength="10" required>
 		            	</td>
-						<th style="padding-left: 40px;" >비밀번호 확인</th>
+						<th style="padding-left: 40px;" >비밀번호 확인 <span style="color: red;">*</span></th>
 						<td  width="150px;">
 		                    <input type="password" class="form-control" id="mmPswdConfirm" minlength="8" maxlength="10" required>
 		            	</td>
@@ -358,12 +361,12 @@
 		                </td>
 					</tr>
 		            <tr>
-						<th>생년월일</th>
+						<th>생년월일 <span style="color: red;">*</span></th>
 						<td>
 <!-- 						<td colspan="3"> -->
 		                    <input type="date" class="form-control" id="birth" name="birth" required>
 		            	</td>
-		            	<th style="padding-left: 40px;">성별</th>
+		            	<th style="padding-left: 40px;">성별 <span style="color: red;">*</span></th>
                         <td width="180px">
 					        <div class="form-check form-check-inline">
 					            <input class="form-check-input" type="radio" name="gender" id="genderWoman" value="1" checked>
@@ -376,9 +379,9 @@
 					    </td>
 					</tr>
 		            <tr id="emailInputTr">
-						<th>이메일</th>
+						<th>이메일 <span style="color: red;">*</span></th>
 						<td colspan="3">
-		                    <input type="email" class="form-control" id="emailInput" name="email">
+		                    <input type="email" class="form-control" id="emailInput" name="email" required>
 		            	</td>
 					</tr>
 					<tr style="height: 5px;" id="emailValidationMessageTr">
@@ -394,7 +397,7 @@
 		            	</td>
 					</tr>
 		            <tr id="phoneInputTr">
-						<th>휴대폰 번호</th>
+						<th>휴대폰 번호 <span style="color: red;">*</th>
 						<td colspan="3">
 		                    <input type="tel" class="form-control" id="phoneInput" name="phone" placeholder="(-)없이 입력하세요"  maxlength="11">
 		            	</td>
@@ -411,7 +414,7 @@
 						<td  width="150px;">
 		                    <input type="tel" class="form-control" id="telInput" name="tel" placeholder="(-)없이 입력하세요" maxlength="11">
 		            	</td>
-						<th style="padding-left: 40px;">회원구분</th>
+						<th style="padding-left: 40px;">회원구분 <span style="color: red;">*</span></th>
 						<td   width="150px;">
 							<select id="categorySelect" class="form-select" name="category">
 							    <option value="1">교육자</option>
