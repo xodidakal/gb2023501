@@ -17,7 +17,7 @@
                     <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
 						<div style="max-height: 300px; overflow: hidden;">
                       		<a href="/subscribe/gameOrderList">
-    							<img class="w-100" src="${item.g_attach_name}" alt="Image" style="width: 100%; height: auto;">
+    							<img class="w-100" src="${item.g_attach_name}" alt="바둑"  style="width: 100%; height: 300px; object-fit: cover;">
 					  	</div>
 
                         <div class="carousel-caption">
