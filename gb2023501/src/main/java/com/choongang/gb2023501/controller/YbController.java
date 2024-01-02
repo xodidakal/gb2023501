@@ -76,21 +76,21 @@ public class YbController {
 //		return member;
 //	}
 	
-	@RequestMapping(value = "/")
-	public String main(Model model) {
-		System.out.println("Main start...");
-
-		Optional<Member> memberOptional = ms.selectUserById();
-		Member member = null;		
-		if(memberOptional.isPresent()) {
-			member = memberOptional.get();
-			System.out.println("로그인 회원 정보 -> " + member);
-			System.out.println("member name -> " + member.getMmName());
-			
-		}
-		model.addAttribute("member", member);
-		return "main";
-	}
+//	@RequestMapping(value = "/")
+//	public String main(Model model) {
+//		System.out.println("Main start...");
+//
+//		Optional<Member> memberOptional = ms.selectUserById();
+//		Member member = null;		
+//		if(memberOptional.isPresent()) {
+//			member = memberOptional.get();
+//			System.out.println("로그인 회원 정보 -> " + member);
+//			System.out.println("member name -> " + member.getMmName());
+//			
+//		}
+//		model.addAttribute("member", member);
+//		return "main";
+//	}
 	// 학습자료 등록 페이지
 	@RequestMapping(value = "/operate/eduMaterialsForm")
 	public String eduResourceForm(Model model, Game game) {	
@@ -210,7 +210,6 @@ public class YbController {
 			// 파일 원본 이름 저장
 			String savedName = uploadFile(file1.getOriginalFilename(), file1.getBytes(), uploadPath);
 			System.out.println("after update eduMaterials.savedNamekkk -> " + savedName);
-			System.out.println("쿠쿠");
 			eduMaterials.setEmAttachName(savedName);
 			eduMaterials.setEmAttachPath(uploadPath);
 		}
@@ -296,7 +295,7 @@ public class YbController {
 	}
 	
 	
-	// 매출 조회 화면 jpa
+	// 매출 조회 화면
 	@RequestMapping(value = "/operate/salesInquiryDetail")
 	public String salesInquiryDetail(Model model, String selectDate, Pageable pageable) {
 		System.out.println("ybController /operate/salesInquiryDetail start...");
