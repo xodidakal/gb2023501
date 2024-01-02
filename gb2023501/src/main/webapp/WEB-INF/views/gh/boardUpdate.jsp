@@ -53,11 +53,11 @@
         if (checkbox.checked) {
             // 체크되었을 때
             checkbox.value = "1";
-            alert("checkbox.value->"+checkbox.value);
+//          alert("checkbox.value->"+checkbox.value);
         } else {
             // 체크되지 않았을 때
             checkbox.value = "0";
-            alert("checkbox.value->"+checkbox.value);
+//          alert("checkbox.value->"+checkbox.value);
         }
     }
 	

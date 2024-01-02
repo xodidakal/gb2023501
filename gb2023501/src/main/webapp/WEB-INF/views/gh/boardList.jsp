@@ -26,8 +26,7 @@
     		var search_keyword = $('#search_keyword').val();
     		var search_type = $('#search_type').val();
     		
-    		alert("count_type->"+count_type);
-//   		window.location.href="/customer/boardList?b_category=" + BoardCategory + "&rowPage=" + count_type;	
+//    		alert("count_type->"+count_type);
     		window.location.href="/customer/boardList?search_type=" + search_type + "&search_keyword=" + search_keyword + "&b_category=" + BoardCategory + "&rowPage=" + count_type;
 
     	});
@@ -37,7 +36,7 @@
     		var search_keyword = document.getElementById("search_keyword").value;
     		var search_type = document.getElementById("search_type").value;
     		
-    		alert("검색시작");
+//    		alert("검색시작");
     		window.location.href="/customer/boardList?search_type=" + search_type + "&search_keyword=" + search_keyword + "&b_category=" + BoardCategory + "&rowPage=" + count_type;
     		
     	});
