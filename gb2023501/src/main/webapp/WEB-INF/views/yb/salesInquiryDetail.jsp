@@ -51,7 +51,6 @@
     
 	function saleInquiryChart(sDate, eDate) {
 		var date = document.getElementById('selectDate1').value
-		alert(date);
 		var popupW = 1000;
 		var popupH = 500;
 		var left = Math.ceil((window.screen.width - popupW)/2);
