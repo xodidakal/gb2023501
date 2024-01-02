@@ -26,9 +26,9 @@
 	    endDate = $('#endDate').val() ;
 	    searchType = $('#searchType').val() ;
 	    searchValue = $('#searchValue').val() ;
-	    category = $('#categorySelect').val() ;
+	    searchCategory = $('#categorySelect').val() ;
 		//alert("category " +category);
-	    mshipType = $('#mshipType').val() ;
+	    searchMshipType = $('#mshipType').val() ;
 		//alert("mshipType " +mshipType);
 	
 	    if (
@@ -36,12 +36,12 @@
 	        endDate === '' &&
 	        searchType === 'null' &&
 	        searchValue === '' &&
-	        category === '0' &&
-	        mshipType === '0'
+	        searchCategory === '0' &&
+	        searchMshipType === '0'
 	    ) {
 	        location.href = "/operate/memberList?page=" + pPageNum;
 	    } else {
-	    	location.href = "/operate/SearchMemberList?startDate="+startDate+"&endDate="+endDate+"&searchType="+searchType+"&searchValue="+searchValue+"&category="+category+"&mshipType="+mshipType+"&page="+pPageNum;
+	    	location.href = "/operate/SearchMemberList?startDate="+startDate+"&endDate="+endDate+"&searchType="+searchType+"&searchValue="+searchValue+"&searchCategory="+searchCategory+"&searchMshipType="+searchMshipType+"&page="+pPageNum;
 	    }
 	    // 이하 코드는 그대로 유지
 	}
@@ -51,9 +51,9 @@
 	    endDate = $('#endDate').val() ;
 	    searchType = $('#searchType').val() ;
 	    searchValue = $('#searchValue').val() ;
-	    category = $('#categorySelect').val() ;
+	    searchCategory = $('#categorySelect').val() ;
 		//alert("category " +category);
-	    mshipType = $('#mshipType').val() ;
+	    searchMshipType = $('#mshipType').val() ;
 	    page = ${page};
 		//alert("page " +page);
 		//alert("pMmNum " +pMmNum);
@@ -64,14 +64,14 @@
 		        endDate === '' &&
 		        searchType === 'null' &&
 		        searchValue === '' &&
-		        category === '0' &&
-		        mshipType === '0'
+		        searchCategory === '0' &&
+		        searchMshipType === '0'
 		    ) {
 	    	//alert("pMmNum" +pMmNum);
 	    	location.href = "/operate/memberDetail?mmNum=" + pMmNum+"&page="+page;
 	    } else  {
 	    	//alert("검색 유");
-	    	location.href = "/operate/memberDetail?startDate="+startDate+"&endDate="+endDate+"&searchType="+searchType+"&searchValue="+searchValue+"&category="+category+"&mshipType="+mshipType+"&mmNum=" + pMmNum+"&page="+page;
+	    	location.href = "/operate/memberDetail?startDate="+startDate+"&endDate="+endDate+"&searchType="+searchType+"&searchValue="+searchValue+"&searchCategory="+searchCategory+"&searchMshipType="+searchMshipType+"&mmNum=" + pMmNum+"&page="+page;
 	    	
 	    } 
 	}
@@ -147,20 +147,20 @@
                         		<c:otherwise>
                         		</c:otherwise>
                         	</c:choose> --%>
-                            <select id="categorySelect" class="form-select" name="category">
-                                <option value="0" <c:if test="${searchCriteria.category == 0 }">	selected="selected"</c:if>>회원구분</option>
-                                <option value="1" <c:if test="${searchCriteria.category == 1 }">	selected="selected"</c:if>>교육자</option>
-                                <option value="2" <c:if test="${searchCriteria.category == 2 }">	selected="selected"</c:if>>학습자</option>
-                                <option value="3" <c:if test="${searchCriteria.category == 3 }">	selected="selected"</c:if>>일반인</option>
-                                <option value="4" <c:if test="${searchCriteria.category == 4 }">	selected="selected"</c:if>>운영자</option>
+                            <select id="categorySelect" class="form-select" name="searchCategory">
+                                <option value="0" <c:if test="${searchCriteria.searchCategory == 0 }">	selected="selected"</c:if>>회원구분</option>
+                                <option value="1" <c:if test="${searchCriteria.searchCategory == 1 }">	selected="selected"</c:if>>교육자</option>
+                                <option value="2" <c:if test="${searchCriteria.searchCategory == 2 }">	selected="selected"</c:if>>학습자</option>
+                                <option value="3" <c:if test="${searchCriteria.searchCategory == 3 }">	selected="selected"</c:if>>일반인</option>
+                                <option value="4" <c:if test="${searchCriteria.searchCategory == 4 }">	selected="selected"</c:if>>운영자</option>
                             </select>
                         </td>
                         <th class="text-center">자격</th>
                         <td>
-                            <select id="mshipType" class="form-select" name="mshipType">
-                                <option value="0" <c:if test="${searchCriteria.mshipType == 0 }">	selected="selected"</c:if>>회원 자격</option>
-                                <option value="1" <c:if test="${searchCriteria.mshipType == 1 }">	selected="selected"</c:if>>무료</option>
-                                <option value="2" <c:if test="${searchCriteria.mshipType == 2 }">	selected="selected"</c:if>>유료</option>
+                            <select id="mshipType" class="form-select" name="searchMshipType">
+                                <option value="0" <c:if test="${searchCriteria.searchMshipType == 0 }">	selected="selected"</c:if>>회원 자격</option>
+                                <option value="1" <c:if test="${searchCriteria.searchMshipType == 1 }">	selected="selected"</c:if>>무료</option>
+                                <option value="2" <c:if test="${searchCriteria.searchMshipType == 2 }">	selected="selected"</c:if>>유료</option>
                             </select>
                         </td>
                     </tr> 

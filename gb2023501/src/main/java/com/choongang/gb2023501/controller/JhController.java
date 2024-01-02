@@ -679,8 +679,8 @@ public class JhController {
 //		System.out.println("조건 폰 -> " + searchCriteria.);
 		System.out.println("조건 타입 -> " + searchCriteria.getSearchType());
 		System.out.println("조건 값 -> " + searchCriteria.getSearchValue());
-		System.out.println("조건 회원구분 -> " + searchCriteria.getCategory());
-		System.out.println("조건 자격 -> " + searchCriteria.getMshipType());
+//		System.out.println("조건 회원구분 -> " + searchCriteria.getCategory());
+//		System.out.println("조건 자격 -> " + searchCriteria.getMshipType());
 		System.out.println("페이지 번호-> " + page);
 		System.out.println("searchCriteria -> " + searchCriteria);
 		
@@ -706,7 +706,9 @@ public class JhController {
 	    int endPage = Math.min(startPage + pageBlock - 1, memberList.getTotalPages());
 	    int totalPage = memberList.getTotalPages();
 
-	    
+		//검색조건 리스트
+		String searchCriteriaList = searchCriteria.getCriteriaListLink();
+		model.addAttribute("criteriaList", searchCriteriaList);
 	    
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("startNumber", startNumber);
@@ -737,11 +739,12 @@ public class JhController {
 		Member member = ms.findByMmNum(mmNum);
 		System.out.println("회원정보 member -> " + member);
 		
+		//검색조건 리스트
 		String searchCriteriaList = searchCriteria.getCriteriaListLink();
+		model.addAttribute("criteriaList", searchCriteriaList);
 		
 		model.addAttribute("page", page);
 		model.addAttribute("criteria", searchCriteria);
-		model.addAttribute("criteriaList", searchCriteriaList);
 		model.addAttribute("member", member);
 		model.addAttribute("mmNum", mmNum);
 		return "jh/memberDetail";
@@ -761,6 +764,9 @@ public class JhController {
 		Member member = ms.findByMmNum(mmNum);
 		System.out.println("회원정보 member -> " + member);
 		
+		//검색조건 리스트
+		String searchCriteriaList = searchCriteria.getCriteriaListLink();
+		model.addAttribute("criteriaList", searchCriteriaList);
 		
 		model.addAttribute("page", page);
 		model.addAttribute("criteria", searchCriteria);
@@ -774,15 +780,15 @@ public class JhController {
 	@PostMapping(value = "operate/memberUpdate")
 	public String memberUpdate(Member member
 							 , MemberSearchCriteriaDTO searchCriteria
-							 , Integer page
+//							 , Integer page
 							 , Model model) {
 		System.out.println("JhController memberUpdate Start...");
 		
 		int mmNum = member.getMmNum();
 		System.out.println("member -> " + member);
-		System.out.println("page -> " + page);
-		int pageNum = page;
-		System.out.println("pageNum -> " + pageNum);
+//		System.out.println("page -> " + page);
+		int page = searchCriteria.getPage();
+//		System.out.println("pageNum -> " + pageNum);
 		System.out.println("searchCriteria -> " + searchCriteria);
 		System.out.println("가입일 -> " + member.getRegiDate());
 		
@@ -790,28 +796,35 @@ public class JhController {
 		ms.join(member);
 
 
+		//검색조건 리스트
+		String searchCriteriaList = searchCriteria.getCriteriaListLink();
+		model.addAttribute("criteriaList", searchCriteriaList);
+		
+		model.addAttribute("criteria", searchCriteria);
+		
 		String result = null;
 		if(searchCriteria == null) {
 			result = "redirect:/operate/memberDetail?mmNum=" + mmNum + "&page=" + page; 
 		} else if (searchCriteria != null) {
 			try {
 	            // MemberSearchCriteriaDTO의 각 필드값 가져오기
-	            String searchType = searchCriteria.getSearchType();
-	            String searchValue = URLEncoder.encode(searchCriteria.getSearchValue(), "UTF-8");
-	            Integer category = searchCriteria.getCategory();
-	            Integer mshipType = searchCriteria.getMshipType();
-	            String startDate = searchCriteria.getStartDate();
-	            String endDate = searchCriteria.getEndDate();
+//	            String searchType = searchCriteria.getSearchType();
+//	            String searchValue = URLEncoder.encode(searchCriteria.getSearchValue(), "UTF-8");
+//	            Integer category = searchCriteria.getCategory();
+//	            Integer mshipType = searchCriteria.getMshipType();
+//	            String startDate = searchCriteria.getStartDate();
+//	            String endDate = searchCriteria.getEndDate();
 
-	            result = "redirect:/operate/memberDetail?startDate=" + startDate +
-	                    "&endDate=" + endDate +
-	                    "&searchType=" + searchType +
-	                    "&searchValue=" + searchValue +
-	                    "&category=" + category +
-	                    "&mshipType=" + mshipType +
-	                    "&mmNum=" + mmNum +
-	                    "&page=" + page;
-	        } catch (UnsupportedEncodingException e) {
+	            result = "redirect:/operate/memberDetail"+ searchCriteriaList + "&mmNum=" + mmNum;
+//	            result = "redirect:/operate/memberDetail?startDate=" + startDate +
+//	            		"&endDate=" + endDate +
+//	            		"&searchType=" + searchType +
+//	            		"&searchValue=" + searchValue +
+//	            		"&category=" + category +
+//	            		"&mshipType=" + mshipType +
+//	            		"&mmNum=" + mmNum +
+//	            		"&page=" + page;
+	        } catch (Exception e) {
 	            // 예외 처리
 	            e.printStackTrace();
 	        }

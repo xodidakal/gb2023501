@@ -183,8 +183,8 @@
 	    var endDate = "${criteria.endDate == null ? '' : criteria.endDate}";
 	    var searchType = "${criteria.searchType}";
 	    var searchValue = "${criteria.searchValue}";
-	    var category = "${criteria.category}";
-	    var mshipType = "${criteria.mshipType}";
+	    var category = "${criteria.searchCategory}";
+	    var mshipType = "${criteria.searchMshipType}";
 	    var page = "${page}";
 	    var mmNum = ${member.mmNum};
 	    
@@ -220,9 +220,10 @@
 	    var endDate = "${criteria.endDate == null ? '' : criteria.endDate}";
 	    var searchType = "${criteria.searchType}";
 	    var searchValue = "${criteria.searchValue}";
-	    var category = "${criteria.category}";
-	    var mshipType = "${criteria.mshipType}";
+	    var category = "${criteria.searchCategory}";
+	    var mshipType = "${criteria.searchMshipType}";
 	    var page = "${page}";
+	    //criteriaList = "${criteriaList}";
 	
 	   /*  alert("startDate " + startDate);
 	    alert("endDate " + endDate);
@@ -244,7 +245,7 @@
 	        location.href = "/operate/memberList?page=" + page;
 	    } else {
 	       // alert("검색 유");
-	        location.href = "/operate/SearchMemberList?startDate=" + startDate + "&endDate=" + endDate + "&searchType=" + searchType + "&searchValue=" + searchValue + "&category=" + category + "&mshipType=" + mshipType + "&page=" + page;
+	        location.href = "/operate/SearchMemberList?startDate=" + startDate + "&endDate=" + endDate + "&searchType=" + searchType + "&searchValue=" + searchValue + "&searchCategory=" + category + "&searchMshipType=" + mshipType + "&page=" + page;
 	    }
 	}
 	
@@ -260,13 +261,14 @@
 	               <form id="memberUpdateForm"  >
                <input type="hidden" id="mmNum" name="mmNum" value="${member.mmNum }">
                <input type="hidden" id="regiDate" name=regiDate value="${member.regiDate }">
-               <input type="hidden" id="page" name="page" value="${page }">
+               <input type="hidden" id="searchCriteria" name=searchCriteria value="${criteria}">
+                <input type="hidden" id="page" name="page" value="${page }">
                <input type="hidden" id="startDate" name="startDate" value="${criteria.startDate }">
                <input type="hidden" id="endDate" name="endDate" value="${criteria.endDate }">
                <input type="hidden" id="searchType" name="searchType" value="${criteria.searchType }">
-               <input type="hidden" id="searchValue" name="searchValue" value="${criteria.searchValue }">
-               <%-- <input type="hidden" id="category" name="category" value="${criteria.category }">
-               <input type="hidden" id="mshipType" name="mshipType" value="${criteria.mshipType }"> --%>
+               <input type="hidden" id="searchValue" name="searchValue" value="${criteria.searchValue }"> 
+               <input type="hidden" id="category" name="searchCategory" value="${criteria.searchCategory }">
+               <input type="hidden" id="mshipType" name="searchMshipType" value="${criteria.searchMshipType }">
 	        	<table class="formTable">
 		            <tr>
 						<th>이름</th>

@@ -14,8 +14,8 @@
 	    endDate = "${criteria.endDate == null ? '' : criteria.endDate}";
 	    searchType = "${criteria.searchType}";
 	    searchValue = "${criteria.searchValue}";
-	    category = "${criteria.category}";
-	    mshipType = "${criteria.mshipType}";
+	    category = "${criteria.searchCategory}";
+	    mshipType = "${criteria.searchMshipType}";
 	    page = "${page}";
 		criteriaList = "${criteriaList}";
 	    
@@ -50,9 +50,10 @@
 	    endDate = "${criteria.endDate == null ? '' : criteria.endDate}";
 	    searchType = "${criteria.searchType}";
 	    searchValue = "${criteria.searchValue}";
-	    category = "${criteria.category}";
-	    mshipType = "${criteria.mshipType}";
+	    category = "${criteria.searchCategory}";
+	    mshipType = "${criteria.searchMshipType}";
 	    page = "${page}";
+	    criteriaList = "${criteriaList}";
 	    
 	    if (
 		        startDate === '' &&
@@ -66,7 +67,7 @@
 		        location.href = "/operate/memberUpdateForm?mmNum="+pMmNum+"&page=" + page;
 		    } else {
 		       // alert("검색 유");
-		        location.href = "/operate/memberUpdateForm?mmNum="+pMmNum+"&startDate=" + startDate + "&endDate=" + endDate + "&searchType=" + searchType + "&searchValue=" + searchValue + "&category=" + category + "&mshipType=" + mshipType + "&page=" + page;
+		        location.href = "/operate/memberUpdateForm" + criteriaList+"&mmNum="+pMmNum;
 		    }
 	}
 	

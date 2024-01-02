@@ -21,10 +21,10 @@ public class MemberSearchCriteriaDTO {
 //	private String phone;
 	
 	//회원 구분(교육자/학습자/일반인/운영자)
-	private Integer category;	
+	private Integer searchCategory;	
 	
 	//회원 자격(유/무료)
-	private Integer mshipType;	
+	private Integer searchMshipType;	
 	
 //	 // 회원명 검색 조건
 //    private String mmName;
@@ -40,14 +40,17 @@ public class MemberSearchCriteriaDTO {
 //    @Temporal(TemporalType.DATE)
     private String endDate;
     
+    private int page;
+    
     public String getCriteriaListLink() {
     	UriComponentsBuilder builder = UriComponentsBuilder.fromPath("")
     																	.queryParam("searchType", this.searchType)
     																	.queryParam("searchValue", this.searchValue)
-    																	.queryParam("category", this.category)
-    																	.queryParam("mshipType", this.mshipType)
+    																	.queryParam("searchCategory", this.searchCategory)
+    																	.queryParam("searchMshipType", this.searchMshipType)
     																	.queryParam("startDate", this.startDate)
-    																	.queryParam("endDate", this.endDate);
+    																	.queryParam("endDate", this.endDate)
+    																	.queryParam("page", this.page);
     	return builder.toUriString();
 		
 	}

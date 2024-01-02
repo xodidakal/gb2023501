@@ -214,13 +214,13 @@ public class MemberServiceImpl implements MemberService {
             }
         }
 
-        if (criteria.getCategory() != 0 && criteria.getCategory() != null) {
-        	System.out.println("회원구분 검색 " + criteria.getCategory());
+        if (criteria.getSearchCategory() != 0 && criteria.getSearchCategory() != null) {
+        	System.out.println("회원구분 검색 " + criteria.getSearchCategory());
             spec = spec.and(MemberSpecification.searchByCategory(criteria));
         }
 
-        if (criteria.getMshipType() != 0 && criteria.getMshipType() != null) {
-        	System.out.println("회원자격 검색 " + criteria.getMshipType());
+        if (criteria.getSearchMshipType() != 0 && criteria.getSearchMshipType() != null) {
+        	System.out.println("회원자격 검색 " + criteria.getSearchMshipType());
             spec = spec.and(MemberSpecification.searchByMshipType(criteria));
         }
 

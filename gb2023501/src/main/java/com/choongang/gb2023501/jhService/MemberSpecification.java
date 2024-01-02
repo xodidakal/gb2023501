@@ -77,12 +77,12 @@ public class MemberSpecification {
     
     public static Specification<Member> searchByCategory(MemberSearchCriteriaDTO criteria) {
     	return (root, query, criteriaBuilder) ->
-    	criteriaBuilder.equal(root.get("category"), criteria.getCategory());
+    	criteriaBuilder.equal(root.get("category"), criteria.getSearchCategory());
     }
     
     public static Specification<Member> searchByMshipType(MemberSearchCriteriaDTO criteria) {
     	return (root, query, criteriaBuilder) ->
-    	criteriaBuilder.equal(root.get("mshipType"), criteria.getMshipType());
+    	criteriaBuilder.equal(root.get("mshipType"), criteria.getSearchMshipType());
     }
 }
 //@RequiredArgsConstructor
