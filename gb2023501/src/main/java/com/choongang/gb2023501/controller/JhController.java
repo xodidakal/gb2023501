@@ -3,6 +3,7 @@ package com.choongang.gb2023501.controller;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,6 +24,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -37,7 +39,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.choongang.gb2023501.domain.Member;
 import com.choongang.gb2023501.jhRepository.MemberRepository;
+import com.choongang.gb2023501.jhService.BoardMyBatisService;
+import com.choongang.gb2023501.jhService.GameMyBatisService;
 import com.choongang.gb2023501.jhService.MemberService;
+import com.choongang.gb2023501.model.Board;
+import com.choongang.gb2023501.model.Game;
 import com.choongang.gb2023501.model.MemberSearchCriteriaDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -51,8 +57,11 @@ public class JhController {
 	private final MemberRepository mr;
 	//서비스 -> 레파지토리 이므로 여기선 mr 안 씀 -> 사용자 정보 업데이트할 때 사용
 	private final MemberService ms;
+	private final GameMyBatisService gs;
+	private final BoardMyBatisService bs;
+	
 	private final JavaMailSender mailSender;
-	private final PasswordEncoder passwordEncoder;
+//	private final PasswordEncoder passwordEncoder;
 	
 	//폰 포멧팅 -> dto에 직접 넣었음 좋았을 걸...이름도 phoneFormat로 바꿀걸
 	public String phone_format(String number) {
@@ -71,6 +80,50 @@ public class JhController {
 		}
 		return member;
 	}
+	
+	@RequestMapping(value = "/")
+	public String main(Model model) {
+		System.out.println("JhController Main start...");
+
+		Optional<Member> memberOptional = ms.selectUserById();
+		Member member = null;		
+		if(memberOptional.isPresent()) {
+			member = memberOptional.get();
+			System.out.println("로그인 회원 정보 -> " + member);
+			System.out.println("member name -> " + member.getMmName());
+			
+		}
+		
+		//마이바티스 활용해 게임목록 조회(최근 등록순 상위 5개)
+		int totalListCnt = 5;
+		List<Game> selectGameList = gs.selectGameList(totalListCnt);
+		
+		//공지사항 리스트 최근 5개
+		int noticeCategory = 2;
+		Map<String, Integer> noticeParams = new HashMap<>();
+		noticeParams.put("b_category", noticeCategory);
+		noticeParams.put("totalListCnt", totalListCnt);
+		List<Board> selectNoticeBoardList = bs.selectBoardList(noticeParams);
+		
+		
+		//FAQ 리스트 최근 5개
+		int FAQCategory = 3;
+		Map<String, Integer> FAQParams = new HashMap<>();
+		FAQParams.put("b_category", FAQCategory);
+		FAQParams.put("totalListCnt", totalListCnt);
+		List<Board> selectFAQBoardList = bs.selectBoardList(FAQParams);
+		
+		
+		
+		
+		model.addAttribute("member", member);
+		model.addAttribute("NoticeBoardList", selectNoticeBoardList);
+		model.addAttribute("FAQBoardList", selectFAQBoardList);
+		model.addAttribute("selectGameList", selectGameList);
+		return "main";
+	}
+	
+	
 	
 	//로그인 화면 이동
 	@RequestMapping(value = "info/loginForm")
@@ -328,10 +381,12 @@ public class JhController {
 		return result;
 	}
 	
+	//비밀번호 암호화
 	private Member encodedPassword (Member member) {
 		System.out.println("JhController encodedPassword Start... 비밀번호 인코딩");
 		// 비밀번호 암호화
 		//member 객체에서 비번 꺼내서 인코딩후 다시 멤버객체에 셋팅 후 멤버 리턴
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	    String encodedPassword = passwordEncoder.encode(member.getMmPswd());
 	    member.setMmPswd(encodedPassword);
 		
@@ -464,7 +519,7 @@ public class JhController {
 				member = encodedPassword(member);
 				//암호화된 임시비번으로 디비에 업데이트
 				mr.save(member);
-				result = temporaryPswd;
+				result = temporaryPswd; //사용자에게 보여주기 위해 해시 하지 않음
 //				String pswd = member.getMmPswd(); 예전에 쓰던거
 //				result = pswd;
 			} else{
@@ -553,7 +608,7 @@ public class JhController {
 	        password.append(CHARACTERS.charAt(randomIndex));
 	    }
 
-	    // 생성된 임시 비밀번호 반환 (해시하지 않음)
+	    // 생성된 임시 비밀번호 반환 (해시하지 않음)사용자에게 보여주기 위해 해시 하지 않음
 	    return password.toString();
 	}
 	
@@ -586,7 +641,7 @@ public class JhController {
 	    // 현재 페이지의 첫 번째 회원 번호 계산
 	    //long startNumber = totalMembers - (adjustedPageable.getPageNumber() * adjustedPageable.getPageSize());
 //	    int startNumber = (page - 1) * pageSize + 1;
-	    long startNumber = pageable.getOffset();
+	    long startNumber = pageable.getOffset() + 1;
 	    
 	    // 페이지 블록 계산
 	    int pageBlock = 10;
@@ -643,7 +698,7 @@ public class JhController {
 	    // 현재 페이지의 첫 번째 회원 번호 계산
 //	    long startNumber = totalMembers - (pageable.getPageNumber() * pageable.getPageSize());
 	    //int startNumber = (page - 1) * pageSize + 1;
-	    long startNumber = pageable.getOffset(); //시작행 번호
+	    long startNumber = pageable.getOffset()+1; //시작행 번호
 	    
 	    // 페이지 블록 계산
 	    int pageBlock = 10;

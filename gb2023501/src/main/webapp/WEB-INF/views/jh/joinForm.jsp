@@ -282,7 +282,7 @@
 			async: false, // 동기적으로 처리
 			dataType : 'text',
 			success	 : function(data){
-						alert("result -> " + data);
+						//alert("result -> " + data);
 						if(data === "1"){
 							alert("회원가입이 완료되었습니다!");
 							location.href="/";
@@ -397,7 +397,7 @@
 		            	</td>
 					</tr>
 		            <tr id="phoneInputTr">
-						<th>휴대폰 번호</th>
+						<th>휴대폰 번호 <span style="color: red;">*</th>
 						<td colspan="3">
 		                    <input type="tel" class="form-control" id="phoneInput" name="phone" placeholder="(-)없이 입력하세요"  maxlength="11">
 		            	</td>

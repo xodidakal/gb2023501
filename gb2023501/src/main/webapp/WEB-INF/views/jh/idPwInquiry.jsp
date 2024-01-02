@@ -189,7 +189,7 @@ function submitVarificationForm() {
         		 data["name"] = name.val();
         		 data[varificationType] = varificationValue;
         		 
-        		 alert("data -> " + JSON.stringify(data)); // 객체를 문자열로 변환해서 출력
+        		// alert("data -> " + JSON.stringify(data)); // 객체를 문자열로 변환해서 출력
        			$.ajax({
        				url : "/info/idInquiry",
        				type: "POST",
@@ -274,7 +274,7 @@ function pwSubmitVarificationForm() {
         data["id"] = id.val();
         data[varificationType] = varificationValue;
 
-        alert("data -> " + JSON.stringify(data)); // 객체를 문자열로 변환해서 출력
+       // alert("data -> " + JSON.stringify(data)); // 객체를 문자열로 변환해서 출력
 
         $.ajax({
             url: "/info/pswdInquiry",
@@ -283,22 +283,21 @@ function pwSubmitVarificationForm() {
             contentType: "application/json",
             dataType: 'text',
             success: function (response) {
-                alert("response" + response);
+                //alert("response" + response);
                 if (response === "0") {
                 	alert("가입되지 않은 회원입니다. 회원가입을 먼저 해주세요!");
                     location.href = "/info/joinAgreeForm";
                 } else if (response === "") {
                     alert("메일 전송에 실패했습니다.");
                 } else if (response === "1") {
-                    alert("임시비밀번호가 전송되었습니다.");
+                    alert("인증번호가 전송되었습니다.");
                     $("#pwVarificationNumButton").hide();
                     // 추가: 인증 번호 입력 필드 보이기
                     $("#pwVarificationNumInput").show();
                     $("#pwVarificationButton").show();
+                } else {
+                    alert("임시비밀번호는 " + response + " 입니다!");
                 } 
-                /* else {
-                    alert("비밀번호는 " + response + " 입니다!");
-                } */
             },
             error: function (error) {
                 alert("에러 발생!");
@@ -309,7 +308,7 @@ function pwSubmitVarificationForm() {
 
 function pwSubmitVarificationNum(){
 	var pVarificationNum = parseInt(document.getElementById("pwVarificationNumInput").value);
-    alert("pVarificationNum : " + pVarificationNum);
+    //alert("pVarificationNum : " + pVarificationNum);
     
     
     $.ajax({
@@ -434,7 +433,7 @@ function pwSubmitVarificationNum(){
                             </form>
                         <div class="d-grid gap-2 d-md-flex justify-content-center">
                     <input id="pwVarificationNumButton" class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="인증번호전송" onclick="pwSubmitVarificationForm()">
-                    <input id="pwVarificationButton" class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="인증확인2" onclick="pwSubmitVarificationNum()">
+                    <input id="pwVarificationButton" class="btn rounded py-2 px-3" type="button" style="background: #263d94; color: white;" value="인증확인" onclick="pwSubmitVarificationNum()">
                 </div>
                         
                      </div>

@@ -58,10 +58,10 @@
                         <input type="password" class="form-control" id="pswd" name="mmPswd" placeholder="password">
 <!--                          <input type="text" class="form-control" id="id" name="username" placeholder="id">
                         <input type="password" class="form-control" id="pswd" name="password" placeholder="password">  
- -->                        <div class="mb-3 form-check">
+ -->                        <!-- <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1">
                             <label class="form-check-label" for="exampleCheck1">아이디 기억하기</label>
-                        </div>
+                        </div> -->
                         <div class="d-grid gap-2 d-md-flex justify-content-center">
                             <input class="btn rounded py-2 px-3" type="submit" style="background: #263d94; color: white;" value="한국기원 ID 로그인 하기" onclick="loginFormSubmit()">
                         </div>

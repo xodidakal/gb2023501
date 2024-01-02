@@ -55,7 +55,7 @@
 		//alert("category " +category);
 	    mshipType = $('#mshipType').val() ;
 	    page = ${page};
-		alert("page " +page);
+		//alert("page " +page);
 		//alert("pMmNum " +pMmNum);
 	    
 	    
@@ -67,10 +67,10 @@
 		        category === '0' &&
 		        mshipType === '0'
 		    ) {
-	    	alert("pMmNum" +pMmNum);
+	    	//alert("pMmNum" +pMmNum);
 	    	location.href = "/operate/memberDetail?mmNum=" + pMmNum+"&page="+page;
 	    } else  {
-	    	alert("검색 유");
+	    	//alert("검색 유");
 	    	location.href = "/operate/memberDetail?startDate="+startDate+"&endDate="+endDate+"&searchType="+searchType+"&searchValue="+searchValue+"&category="+category+"&mshipType="+mshipType+"&mmNum=" + pMmNum+"&page="+page;
 	    	
 	    } 
@@ -189,7 +189,7 @@
 				</tr>
 			</thead>
 			 <tbody>
-			 <c:set var="num" value="${totalMembers - startNumber}"></c:set>
+			 <c:set var="num" value="${startNumber}"></c:set>
 <%-- 			 <c:set var="num" value="${totalMembers - startNumber +1}"></c:set> --%>
 			 <c:forEach var="member" items="${memberList.content}" varStatus="iterStat">
 			 	<tr>
@@ -212,7 +212,7 @@
 			 		</td>
 					<td width="100px;"><button type="button" class="btn btn-light rounded py-2 px-3" style="background: #263d94; color: white;" onclick="memberDetail(${member.mmNum})">상세</button></a></td>
 				</tr>
-				<c:set var="num" value="${num - 1 }"></c:set>
+				<c:set var="num" value="${num + 1 }"></c:set>
 				
 			</c:forEach>				
                 </tbody>   
