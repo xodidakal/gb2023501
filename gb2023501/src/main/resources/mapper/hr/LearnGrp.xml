@@ -7,14 +7,13 @@
 	<!-- 교육자마당 > 학습그룹 등록 - 화면 (SELECT / MyBatis) -->
 	<select id="hrSelectGameList" resultType="Game" parameterType="SearchDTO">
 		SELECT   g.g_num, g.g_title, g.g_period,
-				 NVL((g.g_period - SUM(MONTHS_BETWEEN(TO_DATE(lg.lg_edate), TO_DATE(lg.lg_sdate)))), g.g_period) remainingPeriod,
+				 NVL((g.g_period - SUM(CASE WHEN lg.m_num = #{mNum} THEN MONTHS_BETWEEN(TO_DATE(lg.lg_edate), TO_DATE(lg.lg_sdate))END)), g.g_period) remainingPeriod,
 				 g.g_to,
-                 NVL((g.g_to - SUM(lg.lg_to)), g.g_to) remainingTo
+                 NVL((g.g_to - SUM(CASE WHEN lg.m_num = #{mNum} THEN lg.lg_to END)), g.g_to) remainingTo
 		FROM     game g, game_order go, learn_grp lg
 		WHERE    g.g_num = go.g_num 
 		AND      g.g_num = lg.g_num (+)
 		AND      go.m_num = #{mNum}
-		AND      lg.m_num = #{mNum}
 		<if test="num != 0">
 		AND      g.g_num = #{num}
 		</if>
